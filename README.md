@@ -22,7 +22,6 @@ Select a simulator with the corresponding version of iOS you wish to use.
 Go to the Locations panel and install the tools by selecting the most recent version in the Command Line Tools dropdown.
 
 ### Getting started
-`cd app`
 
 `expo start`
 
