@@ -7,6 +7,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
+import WebView from "react-native-webview";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -18,7 +19,8 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-          <Navigation colorScheme={colorScheme} />
+          <WebView source={{ uri: 'https://rocioferreiro.github.io/' }} style={{ marginTop: 20 }} />
+          {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />
         </ApolloProvider>
       </SafeAreaProvider>
