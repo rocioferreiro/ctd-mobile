@@ -8,6 +8,21 @@ import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
 import WebView from "react-native-webview";
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    map: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+});
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -19,7 +34,10 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-          <WebView source={{ uri: 'https://rocioferreiro.github.io/' }} style={{ marginTop: 20 }} />
+            <View style={styles.container}>
+                <MapView style={styles.map} />
+            </View>
+
           {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />
         </ApolloProvider>
