@@ -7,6 +7,8 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
+import LotsOfGreetings from "./components/capacitacionComponent/LostOfGreetings";
+import {CapacitacionReactNative} from "./components/capacitacionComponent/CapacitacionReactNative";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -18,8 +20,10 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-          <Navigation colorScheme={colorScheme} />
+          {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />
+          <LotsOfGreetings />
+          <CapacitacionReactNative />
         </ApolloProvider>
       </SafeAreaProvider>
     );
