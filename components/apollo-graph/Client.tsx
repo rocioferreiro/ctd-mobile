@@ -5,21 +5,19 @@ import { ApolloClient, InMemoryCache,
 import { onError } from '@apollo/client/link/error';
 
 
-export function getApolloClientInstance(): ApolloClient<object> {
-    return new ApolloClient<object>({
-        link: new HttpLink({
-            uri: 'http://localhost:8080/graphql',
-            headers: {
-                "Authorization": ''
-            }
 
+ export function getApolloClientInstance(): ApolloClient<object> {
+        return new ApolloClient<object>({
+            link: new HttpLink({
+                uri: 'http://localhost:8080/graphql',
+                headers: {},
+                useGETForQueries: true
+            }),
+            cache: new InMemoryCache(),
+            connectToDevTools: process.env.NODE_ENV === 'development',
+        });
+    };
 
-        }),
-        cache: new InMemoryCache(),
-        connectToDevTools: process.env.NODE_ENV === 'development',
-
-    });
-}
 
 
 // probably useful eventually \\|//

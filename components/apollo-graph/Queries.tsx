@@ -8,12 +8,13 @@ import { useQuery, gql } from '@apollo/client';
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
 query findChallengeById{
-  findChallengeById(id: "34902daf-a888-408b-a3aa-89baf00d829c"){
+  findChallengeById(id: "861b39ca-b5e3-4c13-af58-cc7908b7dfc6"){
     title
+    user
     address {
       coordinates {
-        x
-        y
+        longitude
+        latitude
       }
     }
   }

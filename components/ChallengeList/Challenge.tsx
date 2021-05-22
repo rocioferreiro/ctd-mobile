@@ -11,10 +11,13 @@ export function ChallengeList() {
     const query=FIND_CHALLENGE_BY_ID
     const cache = new InMemoryCache();
 // Create a instance of Apollo Client
-    const client = new ApolloClient({
+  /*  const client = new ApolloClient({
         uri,
-        cache
-    });
+        cache,
+        headers: {},
+        connectToDevTools: process.env.NODE_ENV === 'development',
+    });*/
+    const client= getApolloClientInstance()
 
     const {data,error,loading} = useQuery(FIND_CHALLENGE_BY_ID);
 
