@@ -10,6 +10,7 @@ import { getApolloClientInstance }  from './components/apollo-graph/Client';
 import WebView from "react-native-webview";
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import Map from "./components/Map";
+import {ChallengeList} from "./components/ChallengeList/Challenge";
 
 const styles = StyleSheet.create({
     container: {
@@ -38,7 +39,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-            <Map/>
+            <ChallengeList></ChallengeList>
             {/*<WebView source={{ uri: "http://192.168.1.117:5000/" }}/>*/}
             {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />
