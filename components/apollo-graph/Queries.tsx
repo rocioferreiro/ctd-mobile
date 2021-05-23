@@ -8,7 +8,7 @@ import {  gql } from '@apollo/client';
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
 query findChallengeById{
-  findChallengeById(id: "861b39ca-b5e3-4c13-af58-cc7908b7dfc6"){
+  findChallengeById(id: "12d273a5-d8e2-4a90-a8ba-4e52982f71e1"){
     title
     user
     address {

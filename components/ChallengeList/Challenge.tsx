@@ -17,7 +17,6 @@ export function ChallengeList() {
         return <Text>Error :(</Text>;
     }
 
-
     console.log(data.findChallengeById);
 
     return (

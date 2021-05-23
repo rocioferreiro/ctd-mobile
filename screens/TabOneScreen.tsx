@@ -1,11 +1,8 @@
-import React, { useEffect, useState} from 'react';
-import {StyleSheet, ActivityIndicator, FlatList} from 'react-native';
-import { useQuery } from '@apollo/react-hooks'
-import {A_QUERY} from '../components/apollo-graph/Queries';
+import React, { useEffect} from 'react';
+import {StyleSheet, ActivityIndicator} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import ListItem from '../components/ListItem';
 
 const TabOneScreen = () => {
 
