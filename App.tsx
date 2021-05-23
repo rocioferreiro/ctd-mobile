@@ -39,7 +39,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-            <ChallengeList></ChallengeList>
+            <Map></Map>
             {/*<WebView source={{ uri: "http://192.168.1.117:5000/" }}/>*/}
             {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />

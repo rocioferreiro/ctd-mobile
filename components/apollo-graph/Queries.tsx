@@ -38,3 +38,19 @@ query findUserById{
   }
 }
 `;
+
+export const FIND_NEARBY_CHALLENGES = gql`
+query findNearbyChallenges {
+  findNearbyChallenges(coordinates: {latitude: 10, longitude: 10}, xDis: 10, yDis: 10){
+    id
+    title
+    description
+    address {
+      coordinates {
+        longitude
+        latitude
+      }
+    }
+  }
+}
+`;
