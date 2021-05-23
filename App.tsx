@@ -8,9 +8,8 @@ import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
 import WebView from "react-native-webview";
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Map from "./components/Map";
-import {ChallengeList} from "./components/ChallengeList/Challenge";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,14 +31,13 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-            <ChallengeList></ChallengeList>
+            <Map></Map>
             {/*<WebView source={{ uri: "http://192.168.1.117:5000/" }}/>*/}
             {/*<Navigation colorScheme={colorScheme} />*/}
           <StatusBar />
