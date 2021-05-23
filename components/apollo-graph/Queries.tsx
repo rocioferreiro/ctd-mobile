@@ -23,7 +23,7 @@ query findChallengeById{
 
 export const FIND_USER_BY_ID = gql`
 query findUserById{
-  findUserById(id: "318173e5-e7d0-4b42-a303-f947073097ff"){
+  findUserById(id: "c3231e79-970d-44a3-ac55-b301a1d6e37d"){
     name
     id
     mail
@@ -31,8 +31,8 @@ query findUserById{
     lastname
     address {
       coordinates {
-        x
-        y
+        latitude
+        longitude
       }
     }
   }
