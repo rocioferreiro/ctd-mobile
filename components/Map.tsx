@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {useQuery} from "@apollo/client";
-import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS} from "./apollo-graph/Queries";
+import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
 
 type Marker = {
     title: string,
@@ -20,7 +20,8 @@ type Coordinates = {
 
 const Map = () => {
 
-    const {data,error,loading} = useQuery(FIND_NEARBY_USERS);
+    const {data: userData,error: userError,loading: userLoading} = useQuery(FIND_NEARBY_USERS);
+    const {data: challengeData,error: challengeError,loading: challengeLoading} = useQuery(FIND_NEARBY_CHALLENGES);
 
     // const markers = [{title:'hola', description: 'como va', latlng: {latitude: 37, longitude: -122}, child: <Icon
     //         reverse
@@ -40,11 +41,12 @@ const Map = () => {
     //         /> }
     // ]
 
-    const [markers, setMarkers] = useState<Marker[]>([])
+    const [userMarkers, setUserMarkers] = useState<Marker[]>([])
+    const [challengeMarkers, setChallengeMarkers] = useState<Marker[]>()
 
     useEffect(() => {
-        if(data){
-            const result = data.findNearbyUsers.map((u) => {
+        if(userData && challengeData){
+            const result = userData.findNearbyUsers.map((u) => {
                 return {
                     title: u.name,
                     description: u.lastname,
@@ -59,13 +61,35 @@ const Map = () => {
                             />
                 }
             })
-            setMarkers(result)
-        }
-    }, [data])
+            setUserMarkers(result)
 
-    if (loading) return <Text>Loading...</Text>;
-    if (error) {
-        console.log(error.message);
+            const cResult = challengeData.findNearbyChallenges.map((c) => {
+                return {
+                    title: c.title,
+                    description: c.description,
+                    latlng: {latitude: c.address.coordinates.latitude, longitude: c.address.coordinates.longitude},
+                    child: <Icon
+                        reverse
+                        name='flag'
+                        type='ionicon'
+                        color='#FFE933'
+                        size={15}
+                        iconStyle={styles.icon}
+                    />
+                }
+            })
+            setChallengeMarkers(cResult)
+        }
+    }, [userData, challengeData])
+
+
+    if (userLoading || challengeLoading) return <Text>Loading...</Text>;
+    if (userError) {
+        console.log(userError.message);
+        return <Text>Error :(</Text>;
+    }
+    if (challengeError) {
+        console.log(challengeError.message);
         return <Text>Error :(</Text>;
     }
 
@@ -78,7 +102,7 @@ const Map = () => {
                          latitudeDelta: 10,
                          longitudeDelta: 10,
                      }}>
-                {markers.map((marker, index) => (
+                {challengeMarkers ? challengeMarkers.map((marker, index) => (
                     <Marker
                         key={index}
                         title={marker.title}
@@ -87,7 +111,18 @@ const Map = () => {
                     >
                         {marker.child}
                     </Marker>
-                ))}
+                )): <></>}
+
+                {userMarkers ? userMarkers.map((marker, index) => (
+                    <Marker
+                        key={index}
+                        title={marker.title}
+                        description={marker.description}
+                        coordinate={marker.latlng}
+                    >
+                        {marker.child}
+                    </Marker>
+                )): <></>}
             </MapView>
         </View>
     )
