@@ -6,7 +6,7 @@ import {Icon} from "react-native-elements";
 import {useQuery} from "@apollo/client";
 import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
 
-type Marker = {
+type MarkerInfo = {
     title: string,
     description: string,
     latlng: Coordinates,
@@ -41,8 +41,8 @@ const Map = () => {
     //         /> }
     // ]
 
-    const [userMarkers, setUserMarkers] = useState<Marker[]>([])
-    const [challengeMarkers, setChallengeMarkers] = useState<Marker[]>()
+    const [userMarkers, setUserMarkers] = useState<MarkerInfo[]>([])
+    const [challengeMarkers, setChallengeMarkers] = useState<MarkerInfo[]>()
 
     useEffect(() => {
         if(userData && challengeData){

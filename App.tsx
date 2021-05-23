@@ -8,7 +8,7 @@ import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
 import WebView from "react-native-webview";
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import Map from "./components/Map";
 import {ChallengeList} from "./components/ChallengeList/Challenge";
 import UserList from './components/UserList/UserList';
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
 
   if (!isLoadingComplete) {
     return null;
