@@ -35,8 +35,8 @@ export enum Role {
 }
 
 export type Tuple = {
-    x: number,
-    y: number
+    longitude: number,
+    latitude: number
 }
 
 export function userToGeoJson(user: User): string {
@@ -45,7 +45,7 @@ export function userToGeoJson(user: User): string {
     "type": "Feature",
     "geometry": {
       "type": "Point",
-      "coordinates": [${user.address.coordinates.x}, ${user.address.coordinates.y}]
+      "coordinates": [${user.address.coordinates.longitude}, ${user.address.coordinates.latitude}]
     },
     "properties": {
       "name": ${user.name},
