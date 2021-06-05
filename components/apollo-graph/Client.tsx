@@ -9,7 +9,7 @@ import { onError } from '@apollo/client/link/error';
  export function getApolloClientInstance(): ApolloClient<object> {
         return new ApolloClient<object>({
             link: new HttpLink({
-                uri: 'http://localhost:8080/graphql',
+                uri: 'http://192.168.1.117:8080/graphql',
                 headers: {},
                 useGETForQueries: true
             }),

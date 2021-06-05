@@ -9,8 +9,8 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Map: undefined;
+  Challenges: undefined;
 };
 
 export type TabOneParamList = {
