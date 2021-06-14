@@ -1,13 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as RNLocalize from 'react-native-localize'
+import i18n from 'i18n-js'
+import memoize from 'lodash.memoize'
+import { SafeAreaView, StyleSheet, Text } from 'react-native'
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import { ApolloProvider } from '@apollo/client';
-import { getApolloClientInstance }  from './components/apollo-graph/Client';
-import { StyleSheet, Dimensions } from 'react-native';
+import {  Dimensions } from 'react-native';
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -24,12 +25,68 @@ const styles = StyleSheet.create({
         color: '#4625FF'
     }
 });
+const translationGetters = {
+    en: () => {return {"example": "this is an example"}},
+    es: () => {return {"example": "esto es un ejemplo"}},
+}
 
-export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+const translate = memoize(
+    (key, config) => i18n.t(key, config),
+    (key, config) => (config ? key + JSON.stringify(config) : key)
+)
+
+const setI18nConfig = () => {
+    const fallback = { languageTag: 'en' }
+    const { languageTag } = RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback
+    translate.cache.clear()
+    i18n.translations = { [languageTag]: translationGetters[languageTag]() }
+    i18n.locale = languageTag
+}
+
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+        setI18nConfig()
+
+    }
+/*    const isLoadingComplete = useCachedResources();
+    const colorScheme = useColorScheme();*/
 
 
+    // ...
+
+    componentDidMount() {
+        RNLocalize.addEventListener('change', this.handleLocalizationChange)
+    }
+    componentWillUnmount() {
+        RNLocalize.removeEventListener('change', this.handleLocalizationChange)
+    }
+    handleLocalizationChange = () => {
+        setI18nConfig()
+
+
+    }
+
+    render() {
+        return (
+
+            <view>
+                <view>
+                </view>
+                <text>
+                    {translate('example')}
+                </text>
+            </view>
+
+        );
+    }
+}
+
+
+
+
+
+/*
   if (!isLoadingComplete) {
     return null;
   } else {
@@ -41,5 +98,8 @@ export default function App() {
         </ApolloProvider>
       </SafeAreaProvider>
     );
-  }
-}
+  }*/
+
+
+export default App
+
