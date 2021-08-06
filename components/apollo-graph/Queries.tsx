@@ -58,12 +58,21 @@ query findNearbyChallenges {
     id
     title
     description
-    address {
-      coordinates {
+    coordinates {
         longitude
         latitude
-      }
     }
   }
 }
+`;
+
+export const FIND_CHALLENGES_OF_USER = gql`
+  query getCreatedChallengesByUser($userId: String!) {
+    getCreatedChallengesByUser(userId: $userId) {
+      id
+      title
+      description
+      startEvent
+    }
+  }
 `;

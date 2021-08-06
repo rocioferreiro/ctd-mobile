@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {useQuery} from "@apollo/client";
-import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
+import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
 
 type MarkerInfo = {
     title: string,
