@@ -26,7 +26,11 @@ export function ChallengeList() {
     participants: []
   }
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  );
   if (error) {
     console.log(error.message);
     return <Text>Error :(</Text>;
