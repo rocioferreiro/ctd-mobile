@@ -67,8 +67,8 @@ query findNearbyChallenges {
 `;
 
 export const FIND_CHALLENGES_OF_USER = gql`
-  query getCreatedChallengesByUser($userId: String!) {
-    getCreatedChallengesByUser(userId: $userId) {
+  query getCreatedChallengesByUser{
+    getCreatedChallengesByUser(userId: "meta0d78f6879-42ff-4163-9df8-ab8ba4fb6f76") {
       id
       title
       description
