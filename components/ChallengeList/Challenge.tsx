@@ -5,18 +5,24 @@ import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {useMutation, useQuery} from '@apollo/client';
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import {Challenge} from "../Models/Challenge";
-import {Button, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {Role} from "../Models/User";
+import {Button} from "react-native-paper";
+import CreateChallengeModal from "../CreateChallengeModal/CreateChallengeModal";
 
 export function ChallengeList() {
   const [challengeList, setChallengeList] = useState([]);
   const {data, error, loading} = useQuery(FIND_CHALLENGES_OF_USER);
+  const [createChallengeVisible, setCreateChallengeVisible] = useState(false);
+  const showModal = () => setCreateChallengeVisible(true);
+  const hideModal = () => setCreateChallengeVisible(false);
 
   const [create] = useMutation(CREATE_CHALLENGE, {
     onCompleted: result => {
       setChallengeList([...challengeList, result.saveChallenge])
     }
   });
+
   const challenge: Challenge = {
     address: {coordinates: {latitude: 10, longitude: 10}, id: '1'},
     date: '2021-09-09',
@@ -29,8 +35,13 @@ export function ChallengeList() {
   if (loading) return (
     <View>
       <Text>Loading...</Text>
+      <CreateChallengeModal visible={createChallengeVisible} onDismiss={hideModal}/>
+      <Button mode={'contained'} onPress={() => {
+        showModal()
+      }}>Create</Button>
     </View>
   );
+
   if (error) {
     console.log(error.message);
     return <Text>Error :(</Text>;
@@ -53,7 +64,7 @@ export function ChallengeList() {
             {c.getCreatedChallengesByUser.title}:{c.getCreatedChallengesByUser.startEvent}
           </Text>)
       })}
-      <Button title={"Create a Challenge"} onPress={createChallenge}>Create a Challenge</Button>
+      <Button onPress={createChallenge}>Create a Challenge</Button>
     </View>
   );
 }
