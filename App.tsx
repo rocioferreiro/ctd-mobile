@@ -8,6 +8,7 @@ import Navigation from './navigation';
 import { ApolloProvider } from '@apollo/client';
 import { getApolloClientInstance }  from './components/apollo-graph/Client';
 import { StyleSheet, Dimensions } from 'react-native';
+import Tabbar from "./navigation/BottomTabBar";
 
 const styles = StyleSheet.create({
     container: {
@@ -36,7 +37,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
-            <Navigation colorScheme={colorScheme} />
+          <Tabbar />
           <StatusBar />
         </ApolloProvider>
       </SafeAreaProvider>
