@@ -1,63 +1,84 @@
 import "react-apollo"
 import {Text, View} from "../Themed";
 import React, {useState} from "react";
-import {FIND_CHALLENGE_BY_ID} from "../apollo-graph/Queries";
+import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {useMutation, useQuery} from '@apollo/client';
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import {Challenge} from "../Models/Challenge";
-import {Button, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {Role} from "../Models/User";
+import {Button} from "react-native-paper";
+import CreateChallengeModal from "../CreateChallengeModal/CreateChallengeModal";
 
 export function ChallengeList() {
-    const [challengeList, setChallengeList] = useState([]);
-    const {data,error,loading} = useQuery(FIND_CHALLENGE_BY_ID);
+  const [challengeList, setChallengeList] = useState([]);
+  const {data, error, loading} = useQuery(FIND_CHALLENGES_OF_USER);
+  const [createChallengeVisible, setCreateChallengeVisible] = useState(false);
+  const showModal = () => setCreateChallengeVisible(true);
+  const hideModal = () => setCreateChallengeVisible(false);
 
-    const [create] = useMutation(CREATE_CHALLENGE, {
-        onCompleted: result => {
-            setChallengeList([...challengeList, result.saveChallenge])
-        }
-    });
-    const challenge: Challenge = {
-        address: {coordinates: {latitude: 10, longitude: 10}, id: '1'},
-        date: '2021-09-09',
-        title: 'ocean cleaning',
-        description: 'go clean the ocean',
-        user: {id: '1', name:'Pepito', mail: 'pepe@mail.com', lastname: 'Perez', role: Role.NORMAL},
-        participants: []
+  const [create] = useMutation(CREATE_CHALLENGE, {
+    onCompleted: result => {
+      setChallengeList([...challengeList, result.saveChallenge])
     }
+  });
 
-    if (loading) return <Text>Loading...</Text>;
-    if (error) {
-        console.log(error.message);
-        return <Text>Error :(</Text>;
-    }
+  const challenge: Challenge = {
+    coordinates: {latitude: 10, longitude: 10},
+    startEvent: '2021-09-09',
+    endEvent: '2021-09-09',
+    startInscription: '2021-09-09',
+    endInscription: '2021-09-09',
+    title: 'ocean cleaning',
+    description: 'go clean the ocean',
+    owner: 'metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515',
+    categories: ["1","2"],
+    objectives: [{name:"do something", points: 3}]
+  }
 
-    const createChallenge = () => {
-        create({variables: {newChallenge: challenge}}).catch(e => console.log(e));
-    }
+  if (loading) return (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  );
 
-    console.log(data.findChallengeById);
+  if (error) {
+    console.log(error.message);
+    return <Text>Error :(</Text>;
+  }
 
-    return (
-        <View style={styles.container}>
-            {
-                challengeList.map((challengeId, i) =>
-                    <Text key={i}>{i} == new challenge of id: {challengeId}</Text>
-                )
-            }
-            <Text>
-                {data.findChallengeById.title}:{data.findChallengeById.user}
-            </Text>
-            <Button title={"Create a Challenge"} onPress={createChallenge}>Create a Challenge</Button>
-        </View>
-    );
+  const createChallenge = () => {
+    create({variables: {newChallenge: challenge}}).catch(e => console.log(e));
+  }
+
+  return (
+    <View style={styles.container}>
+      {
+        challengeList.map((challengeId, i) =>
+          <Text key={i}>{i} == new challenge of id: {challengeId}</Text>
+        )
+      }
+      {data.getCreatedChallengesByUser.map(c => {
+        return (
+          <Text key={c.id}>
+            {c.title}:{c.startEvent}
+          </Text>)
+      })}
+      <Button onPress={createChallenge}>Create a Challenge</Button>
+      <Text>The one above is to use the mutation, the one below opens the modal</Text>
+      <CreateChallengeModal visible={createChallengeVisible} onDismiss={hideModal}/>
+      <Button mode={'contained'} onPress={() => {
+        showModal()
+      }}>Open Modal</Button>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
-    }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20
+  }
 });
