@@ -36,9 +36,6 @@ export function ChallengeList() {
     <View>
       <Text>Loading...</Text>
       <CreateChallengeModal visible={createChallengeVisible} onDismiss={hideModal}/>
-      <Button mode={'contained'} onPress={() => {
-        showModal()
-      }}>Create</Button>
     </View>
   );
 
@@ -65,6 +62,10 @@ export function ChallengeList() {
           </Text>)
       })}
       <Button onPress={createChallenge}>Create a Challenge</Button>
+      <Text>The one above is to use the mutation, the one below opens the modal</Text>
+      <Button mode={'contained'} onPress={() => {
+        showModal()
+      }}>Open Modal</Button>
     </View>
   );
 }
