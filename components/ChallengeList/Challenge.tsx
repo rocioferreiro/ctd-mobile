@@ -35,7 +35,6 @@ export function ChallengeList() {
   if (loading) return (
     <View>
       <Text>Loading...</Text>
-      <CreateChallengeModal visible={createChallengeVisible} onDismiss={hideModal}/>
     </View>
   );
 
@@ -55,14 +54,15 @@ export function ChallengeList() {
           <Text key={i}>{i} == new challenge of id: {challengeId}</Text>
         )
       }
-      {data.map(c => {
+      {data.getCreatedChallengesByUser.map(c => {
         return (
-          <Text>
-            {c.getCreatedChallengesByUser.title}:{c.getCreatedChallengesByUser.startEvent}
+          <Text key={c.id}>
+            {c.title}:{c.startEvent}
           </Text>)
       })}
       <Button onPress={createChallenge}>Create a Challenge</Button>
       <Text>The one above is to use the mutation, the one below opens the modal</Text>
+      <CreateChallengeModal visible={createChallengeVisible} onDismiss={hideModal}/>
       <Button mode={'contained'} onPress={() => {
         showModal()
       }}>Open Modal</Button>
