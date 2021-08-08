@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {useQuery} from "@apollo/client";
-import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
+import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
 
 type MarkerInfo = {
     title: string,
@@ -50,7 +50,7 @@ const Map = () => {
                 return {
                     title: u.name,
                     description: u.lastname,
-                    latlng: {latitude: u.address.coordinates.latitude, longitude: u.address.coordinates.longitude},
+                    latlng: {latitude: u.coordinates.latitude, longitude: u.coordinates.longitude},
                     child: <Icon
                                 reverse
                                 name='person'
@@ -67,7 +67,7 @@ const Map = () => {
                 return {
                     title: c.title,
                     description: c.description,
-                    latlng: {latitude: c.address.coordinates.latitude, longitude: c.address.coordinates.longitude},
+                    latlng: {latitude: c.coordinates.latitude, longitude: c.coordinates.longitude},
                     child: <Icon
                         reverse
                         name='flag'
@@ -83,7 +83,7 @@ const Map = () => {
     }, [userData, challengeData])
 
 
-    if (userLoading || challengeLoading) return <Text>Loading...</Text>;
+    if (userLoading || challengeLoading) return <View><Text>Loading...</Text></View>;
     if (userError) {
         console.log(userError.message);
         return <Text>Error :(</Text>;
@@ -97,8 +97,8 @@ const Map = () => {
         <View style={styles.container}>
             <MapView style={styles.map}
                      initialRegion={{
-                         latitude: 10,
-                         longitude: 10,
+                         latitude: 0,
+                         longitude: 0,
                          latitudeDelta: 10,
                          longitudeDelta: 10,
                      }}>
