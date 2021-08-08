@@ -10,7 +10,7 @@ export type Challenge  = {
     endInscription: String,
     id?: number,
     locationGeohash?: String,
-    objectives?: ChallengeObjective[],
+    objectives: ChallengeObjective[],
     owner: String,
     startEvent: String,
     startInscription: String,
@@ -21,7 +21,7 @@ export type Challenge  = {
 export type ChallengeObjective = {
     name: String,
     points: number,
-    id: number
+    id?: number
 }
 
 

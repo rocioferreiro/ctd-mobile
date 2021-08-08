@@ -32,7 +32,8 @@ export function ChallengeList() {
     title: 'ocean cleaning',
     description: 'go clean the ocean',
     owner: 'metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515',
-    categories: ["1","2"]
+    categories: ["1","2"],
+    objectives: [{name:"do something", points: 3}]
   }
 
   if (loading) return (
