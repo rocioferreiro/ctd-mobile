@@ -4,7 +4,7 @@ import {  gql } from '@apollo/client';
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
 query findChallengeById{
-  findChallengeById(id: "12d273a5-d8e2-4a90-a8ba-4e52982f71e1"){
+  findChallengeById(id: 30){
     title
     user
     address {
@@ -19,7 +19,7 @@ query findChallengeById{
 
 export const FIND_NEARBY_USERS = gql`
 query findNearbyUsers {
-  findNearbyUsers(coordinates: {latitude: 10, longitude: 10}, xDis: 10, yDis: 10){
+  findNearbyUsers(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
     id
     name
     lastname
@@ -36,7 +36,7 @@ query findNearbyUsers {
 
 export const FIND_USER_BY_ID = gql`
 query findUserById{
-  findUserById(id: "c3231e79-970d-44a3-ac55-b301a1d6e37d"){
+  findUserById(id: "metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515"){
     name
     id
     mail
@@ -54,7 +54,7 @@ query findUserById{
 
 export const FIND_NEARBY_CHALLENGES = gql`
 query findNearbyChallenges {
-  findNearbyChallenges(coordinates: {latitude: 10, longitude: 10}, xDis: 10, yDis: 10){
+  findNearbyChallenges(coordinates: {latitude: 0, longitude: 0}, xDis: 0.1, yDis: 0.1){
     id
     title
     description
@@ -68,7 +68,7 @@ query findNearbyChallenges {
 
 export const FIND_CHALLENGES_OF_USER = gql`
   query getCreatedChallengesByUser{
-    getCreatedChallengesByUser(userId: "meta0d78f6879-42ff-4163-9df8-ab8ba4fb6f76") {
+    getCreatedChallengesByUser(userId: "metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515") {
       id
       title
       description

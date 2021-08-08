@@ -24,12 +24,15 @@ export function ChallengeList() {
   });
 
   const challenge: Challenge = {
-    address: {coordinates: {latitude: 10, longitude: 10}, id: '1'},
-    date: '2021-09-09',
+    coordinates: {latitude: 10, longitude: 10},
+    startEvent: '2021-09-09',
+    endEvent: '2021-09-09',
+    startInscription: '2021-09-09',
+    endInscription: '2021-09-09',
     title: 'ocean cleaning',
     description: 'go clean the ocean',
-    user: {id: '1', name: 'Pepito', mail: 'pepe@mail.com', lastname: 'Perez', role: Role.NORMAL},
-    participants: []
+    owner: 'metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515',
+    categories: ["1","2"]
   }
 
   if (loading) return (
