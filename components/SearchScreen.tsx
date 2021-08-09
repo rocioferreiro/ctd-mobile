@@ -1,19 +1,50 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, Text} from "./Themed";
-import { Searchbar } from 'react-native-paper';
+import {Portal, Searchbar,Card,Divider} from 'react-native-paper';
+import {Challenge} from "./Models/Challenge";
+import ChallengeCard from "./ChallengeCard/ChallengeCard";
+import {useMutation} from "@apollo/client";
+import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
+import SearchBarComponent from "./SearchBar/SearchBarComponent";
+import {ScrollView} from "react-native";
 
 const SearchScreen = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
 
-    const onChangeSearch = query => setSearchQuery(query);
+    const [challengeList, setChallengeList] = useState([1,2,3]);
+
+
+    //aca hay que poner algo que funcione, puse esto para usar de ejemplo
+  /*  const [query] = useMutation(CREATE_CHALLENGE, {
+        onCompleted: result => {
+            setChallengeList([...challengeList, result.saveChallenge])
+        }
+    });*/
 
   return (
-        <Searchbar
-            placeholder="Search"
-            onChangeText={onChangeSearch}
-            value={searchQuery}
+  <View>
 
-        />
+      <Card style={{width:350,height:700}}>
+
+       <SearchBarComponent></SearchBarComponent>
+          <Divider />
+          <ScrollView>
+            {
+                challengeList.map((challengeId, i) =>
+                  <View style={{marginBottom:30}}>
+                      <ChallengeCard key={i}></ChallengeCard>
+                      <Divider />
+                  </View>
+
+                )
+            }
+          </ScrollView>
+
+      </Card>
+  </View>
+
+
+
+
 
   )
 }
