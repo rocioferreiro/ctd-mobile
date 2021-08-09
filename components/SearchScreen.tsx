@@ -23,15 +23,15 @@ const SearchScreen = () => {
   return (
   <View>
 
-      <Card style={{width:350,height:700}}>
+      <Card style={{width:350,height:500}}>
 
        <SearchBarComponent></SearchBarComponent>
           <Divider />
           <ScrollView>
             {
                 challengeList.map((challengeId, i) =>
-                  <View style={{marginBottom:30}}>
-                      <ChallengeCard key={i}></ChallengeCard>
+                  <View key={i} style={{marginBottom:30}}>
+                      <ChallengeCard ></ChallengeCard>
                       <Divider />
                   </View>
 
