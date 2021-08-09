@@ -76,7 +76,9 @@ export default function App() {
       accent: '#FFC300',
       background: '#4c4c4c',
       surface: '#FFF3E9',
-      text: '#8FA1FF',
+      text: '#8FA1ff',
+      notification: '#F24726',
+      extra: '#8FD14F'
     },
     fonts: configureFonts(fontConfig),
   };
@@ -88,7 +90,7 @@ export default function App() {
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
           <PaperProvider theme={reactNativePaperTheme}>
-            <Tabbar colorScheme={colorScheme}/>
+            <Tabbar colorScheme={reactNativePaperTheme}/>
           </PaperProvider>
           <StatusBar/>
         </ApolloProvider>

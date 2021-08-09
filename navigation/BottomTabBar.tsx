@@ -38,8 +38,31 @@ const icons = [
 const components = [
   <Home/>, <SearchScreen/>, <Map/>, <ChallengeList/>
 ]
-type Props = {};
-const Tabbar = () => {
+type Props = {
+  colorScheme
+};
+
+const Tabbar = (props: Props) => {
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: props.colorScheme.colors.backgroundColor,
+    },
+    welcome: {
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10,
+    },
+    instructions: {
+      textAlign: 'center',
+      color: '#333333',
+      marginBottom: 5,
+    },
+  });
+
 
   const [actualComponent, setActualComponent] = React.useState<number>()
 
@@ -65,8 +88,12 @@ const Tabbar = () => {
       {actualComponent? components[actualComponent] : components[0]}
       <AwesomeTabbar
         icons={icons} //array of icon views this array can be image or vector icon
-        selectedColor={['#8fa1ff', '#8fd14f', '#ffc300', '#f24726']} //color of selected item in tab bar
-        backgroundColor={'#fff3e9'} //background color of tab bar
+        selectedColor={[
+          props.colorScheme.colors.text,
+          props.colorScheme.colors.extra,
+          props.colorScheme.colors.accent,
+          props.colorScheme.colors.notification]} //color of selected item in tab bar
+        backgroundColor={props.colorScheme.colors.surface} //background color of tab bar
         onSelect={changeView} //on select an item , index starts at 1 :-D
       />
     </View>
@@ -75,21 +102,3 @@ const Tabbar = () => {
 
 export default Tabbar;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
