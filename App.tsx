@@ -10,6 +10,7 @@ import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
+import Tabbar from "./navigation/BottomTabBar";
 
 // I think this can be deleted... but I didn't because I am scared
 const styles = StyleSheet.create({
@@ -75,7 +76,9 @@ export default function App() {
       accent: '#FFC300',
       background: '#4c4c4c',
       surface: '#FFF3E9',
-      text: '#8FA1FF',
+      text: '#8FA1ff',
+      notification: '#F24726',
+      extra: '#8FD14F'
     },
     fonts: configureFonts(fontConfig),
   };
@@ -87,7 +90,7 @@ export default function App() {
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
           <PaperProvider theme={reactNativePaperTheme}>
-            <Navigation colorScheme={colorScheme}/>
+            <Tabbar colorScheme={reactNativePaperTheme}/>
           </PaperProvider>
           <StatusBar/>
         </ApolloProvider>
