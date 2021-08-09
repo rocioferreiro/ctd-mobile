@@ -8,9 +8,25 @@ import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {ScrollView} from "react-native";
 
+
+const mockedChallenges = [
+    {
+        id: 1,
+        title: "Challenge 1"
+    },
+    {
+        id: 1,
+        title: "Challenge Title 2"
+    },
+    {
+        id: 1,
+        title: "Best Challenge Title 3"
+    },
+]
+
 const SearchScreen = () => {
 
-    const [challengeList, setChallengeList] = useState([1,2,3]);
+    const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
 
 
     //aca hay que poner algo que funcione, puse esto para usar de ejemplo
@@ -20,18 +36,28 @@ const SearchScreen = () => {
         }
     });*/
 
+    const onChange = (searchValue: string) => {
+        if (!searchValue || searchValue === "") setChallengeList(mockedChallenges);
+        else {
+            const filteredChallenges = mockedChallenges.filter(challenge =>
+                challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
+            );
+            setChallengeList(filteredChallenges);
+        }
+    }
+
   return (
   <View>
 
       <Card style={{width:350,height:500}}>
 
-       <SearchBarComponent></SearchBarComponent>
+       <SearchBarComponent onChange={onChange}/>
           <Divider />
           <ScrollView>
             {
-                challengeList.map((challengeId, i) =>
+                challengeList.map((challenge, i) =>
                   <View key={i} style={{marginBottom:30}}>
-                      <ChallengeCard ></ChallengeCard>
+                      <ChallengeCard challenge={challenge}/>
                       <Divider />
                   </View>
 
