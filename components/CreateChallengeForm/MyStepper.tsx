@@ -31,7 +31,9 @@ const MyStepper = () => {
 
   return (
       <View style={{ marginVertical: 80, marginHorizontal: 20 }}>
+          <View style={{marginTop:20, marginBottom:20}}>
           <Text> Create Challenge</Text>
+          </View>
         <Stepper
             active={active}
             content={content}
