@@ -4,18 +4,15 @@ import {Challenge} from "../Models/Challenge";
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
+interface Props {
+    challenge: any;
+}
 
-
-
-
-
-
-
-const ChallengeCard = () => (
+const ChallengeCard = (props: Props) => (
     <Card>
         <Card.Title title="Username" subtitle="Level" left={LeftContent} />
         <Card.Content>
-            <Title>Challenge Title</Title>
+            <Title>{props.challenge.title}</Title>
             <Paragraph>Challenge Description</Paragraph>
         </Card.Content>
         <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
