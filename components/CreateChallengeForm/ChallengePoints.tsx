@@ -6,8 +6,9 @@ import {View,Text} from "../Themed";
 const ChallengePoints = () => {
     return (
         <View>
-            <Card style={{width:300,height:600}}>
+            <Card style={{width:300,height:50}}>
                 <Text> Challenge Points</Text>
+
 
             </Card>
         </View>

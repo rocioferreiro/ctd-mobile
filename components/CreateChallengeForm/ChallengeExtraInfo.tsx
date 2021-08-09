@@ -6,7 +6,7 @@ import {View,Text} from "../Themed";
 const ChallengeExtraInfo = () => {
     return (
         <View>
-            <Card style={{width:300,height:600}}>
+            <Card style={{width:300,height:50}}>
                 <Text> Challenge Extra Info</Text>
 
             </Card>

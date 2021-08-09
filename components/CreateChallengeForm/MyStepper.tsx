@@ -3,19 +3,27 @@ import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import Stepper from 'react-native-stepper-ui';
+import ChallengeDetails from "./ChallengeDetails";
+import ChallengeLocation from "./ChallengeLocation";
+import ChallengeExtraInfo from "./ChallengeExtraInfo";
+import ChallengePoints from "./ChallengePoints";
 
-const MyComponent = (props) => {
+/*const MyComponent = (props) => {
   return (
       <View>
         <Text>{props.title}</Text>
       </View>
   );
-};
+};*/
 
 const content = [
-  <MyComponent title="Component 1" />,
+    <ChallengeDetails/>,
+    <ChallengeLocation/>,
+    <ChallengeExtraInfo/>,
+    <ChallengePoints/>
+ /* <MyComponent title="Component 1" />,
   <MyComponent title="Component 2" />,
-  <MyComponent title="Component 3" />,
+  <MyComponent title="Component 3" />,*/
 ];
 
 const MyStepper = () => {
@@ -23,6 +31,7 @@ const MyStepper = () => {
 
   return (
       <View style={{ marginVertical: 80, marginHorizontal: 20 }}>
+          <Text> Create Challenge</Text>
         <Stepper
             active={active}
             content={content}
