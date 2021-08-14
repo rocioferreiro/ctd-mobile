@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {Card, TextInput} from "react-native-paper";
 import {View, Text} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
 import {StyleSheet} from "react-native";
 import { useTheme } from 'react-native-paper';
+// import Geolocation from 'react-native-geolocation-service';
 
 const ChallengeLocation = () => {
     const { colors } = useTheme();
@@ -28,13 +29,31 @@ const ChallengeLocation = () => {
             borderWidth: 5,
             borderStyle: 'solid',
             borderColor: marker? colors.extra : colors.surface,
-            margin: 5
+            borderRadius: 16,
+            overflow: 'hidden',
+            margin: 5,
+            alignItems: 'center',
+            justifyContent: 'center'
         },
         input: {
-            margin: 5,
-            width: '100%'
+            marginTop: 5,
+            width: '100%',
         }
     });
+
+    // Get the location of the user. Needs permissions to work
+    // useEffect(() => {
+    //     Geolocation.getCurrentPosition(
+    //         (position) => {
+    //             console.log(position);
+    //         },
+    //         (error) => {
+    //             // See error code charts below.
+    //             console.log(error.code, error.message);
+    //         },
+    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    //     );
+    // });
 
     return (
         <View>
@@ -61,7 +80,9 @@ const ChallengeLocation = () => {
                 </View>
                 <TextInput
                     style={styles.input}
-                    label="Add whatever additional info you want for the location..."
+                    mode={'outlined'}
+                    dense={'false'}
+                    label="Add additional info (optional)"
                     value={locationExtraInfo}
                     onChangeText={t => setLocationExtraInfo(t)}
                 />
