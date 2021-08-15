@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {View, Text} from "./Themed";
-import {Portal, Searchbar, Card, Divider, Modal} from 'react-native-paper';
+import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
 import {Challenge} from "./Models/Challenge";
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
 import {useMutation} from "@apollo/client";
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
+import {color} from "react-native-elements/dist/helpers";
+import ChallengeCardMini from "./ChallengeCard/ChallengesCardMini";
 
 
 const mockedChallenges = [
@@ -25,7 +27,7 @@ const mockedChallenges = [
 ]
 
 const SearchScreen = () => {
-
+    const { colors } = useTheme();
     const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
 
 
@@ -48,16 +50,18 @@ const SearchScreen = () => {
 
   return (
 
-      <View>
+      <View >
           <Card style={{
               width: Dimensions.get('window').width,
-              height: '90%',
+              height: '100%',
+              marginTop:50,
+              backgroundColor:color.surface
           }}>
        <SearchBarComponent onChange={onChange}/>
           <Divider />
           <ScrollView>
             {challengeList.map((challenge, i) =>
-                  <View key={i} style={{marginBottom:30}}>
+                  <View key={i} style={{marginBottom:5}}>
                       <ChallengeCard challenge={challenge}/>
                       <Divider />
                   </View>
