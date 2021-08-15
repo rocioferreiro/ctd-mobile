@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {Card, TextInput} from "react-native-paper";
 import {View, Text} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import { useTheme } from 'react-native-paper';
 // import Geolocation from 'react-native-geolocation-service';
 
@@ -22,7 +22,7 @@ const ChallengeLocation = () => {
         },
         card: {
             width: '100%',
-            height: 500,
+            height: Dimensions.get('window').height * 0.7,
             padding: '3%',
         },
         map: {
