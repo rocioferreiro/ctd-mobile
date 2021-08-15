@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme} from 'react-native-paper';
 import {Challenge} from "../Models/Challenge";
-import {StyleSheet} from "react-native";
+import {StyleSheet,Text} from "react-native";
 
 
 
@@ -19,7 +19,10 @@ const ChallengeCard = (props: Props) => {
             backgroundColor: colors.accent,
             width: 60,
             paddingLeft: 17,
-            marginBottom: 7
+            marginBottom: 7,
+            paddingRight: 17,
+            paddingTop: 8,
+            paddingBottom: 8
         },
         viewButton: {
             borderRadius: 20,
@@ -28,6 +31,7 @@ const ChallengeCard = (props: Props) => {
             paddingRight: 17,
             paddingTop: 8,
             paddingBottom: 8,
+            marginBottom: 7,
             backgroundColor: '#c1c1c1',
         }
     });
@@ -39,8 +43,8 @@ const ChallengeCard = (props: Props) => {
             </Card.Content>
             <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
-                <Button style={styles.viewButton}>View</Button>
-                <Button style={styles.joinButton}>Join</Button>
+                <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 80,marginLeft:60,marginRight:60}}>View </Button>
+                <Button style={ {backgroundColor: colors.accent, borderRadius: 20,  width: 80 }} >Join</Button>
             </Card.Actions>
         </Card>
 
