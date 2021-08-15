@@ -8,12 +8,14 @@ import ChallengeExtraInfo from "./ChallengeExtraInfo";
 import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
+import ChallengeCreationSuccessful from "./ChallengeCreationSuccessful";
 
 const content = [
     <ChallengeDetails/>,
     <ChallengeLocation/>,
     <ChallengeExtraInfo/>,
-    <ChallengePoints/>
+    <ChallengePoints/>,
+    <ChallengeCreationSuccessful/>
 ];
 
 const Stepper = () => {
