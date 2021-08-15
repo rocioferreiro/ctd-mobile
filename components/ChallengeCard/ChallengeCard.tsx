@@ -43,7 +43,7 @@ const ChallengeCard = (props: Props) => {
             </Card.Content>
             <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
-                <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 80,marginLeft:60,marginRight:60}}>View </Button>
+                <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 80,marginLeft:80,marginRight:60}}>View </Button>
                 <Button style={ {backgroundColor: colors.accent, borderRadius: 20,  width: 80 }} >Join</Button>
             </Card.Actions>
         </Card>

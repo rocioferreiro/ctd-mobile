@@ -51,13 +51,12 @@ const SearchScreen = () => {
       <View>
           <Card style={{
               width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height,
+              height: '90%',
           }}>
        <SearchBarComponent onChange={onChange}/>
           <Divider />
           <ScrollView>
-            {
-                challengeList.map((challenge, i) =>
+            {challengeList.map((challenge, i) =>
                   <View key={i} style={{marginBottom:30}}>
                       <ChallengeCard challenge={challenge}/>
                       <Divider />

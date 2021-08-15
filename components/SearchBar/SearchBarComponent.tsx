@@ -13,11 +13,16 @@ const SearchBarComponent = (props: Props) => {
         props.onChange(query);
     }
 
+
+
     return (
         <Searchbar
             placeholder="Search for Challenges"
             onChangeText={onChangeSearch}
             value={searchQuery}
+            style={{width:    '100%'}}
+
+
         />
     );
 };
