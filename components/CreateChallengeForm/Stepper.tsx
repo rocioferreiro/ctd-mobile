@@ -39,7 +39,7 @@ const Stepper = () => {
     });
 
     return (
-        <ProgressSteps>
+        <ProgressSteps completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary} completedProgressBarColor={colors.primary}>
             {content.map((step, index) => {
                 return (
                     <ProgressStep

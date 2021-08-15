@@ -14,11 +14,16 @@ const ChallengeLocation = () => {
 
     const styles = StyleSheet.create({
         title: {
-
+            fontSize: 35,
+            fontWeight: 'bold',
+            color: colors.primary,
+            marginLeft: 25,
+            marginTop: -22,
         },
         card: {
             width: '100%',
-            height: 350,
+            height: 500,
+            padding: '3%',
         },
         map: {
             width: '100%',
