@@ -43,6 +43,7 @@ const ChallengeLocation = () => {
         input: {
             marginTop: 5,
             width: '100%',
+            backgroundColor: colors.surface
         }
     });
 
@@ -68,8 +69,8 @@ const ChallengeLocation = () => {
                     <MapView
                         style={styles.map}
                         initialRegion={{
-                            latitude: 0,
-                            longitude: 0,
+                            latitude: -34,
+                            longitude: -58,
                             latitudeDelta: 10,
                             longitudeDelta: 10,
                         }}
@@ -85,7 +86,7 @@ const ChallengeLocation = () => {
                 </View>
                 <TextInput
                     style={styles.input}
-                    mode={'outlined'}
+                    mode={'flat'}
                     dense={'false'}
                     label="Add additional info (optional)"
                     value={locationExtraInfo}
