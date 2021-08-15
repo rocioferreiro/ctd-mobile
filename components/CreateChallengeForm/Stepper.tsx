@@ -14,8 +14,7 @@ const content = [
     <ChallengeDetails/>,
     <ChallengeLocation/>,
     <ChallengeExtraInfo/>,
-    <ChallengePoints/>,
-    <ChallengeCreationSuccessful/>
+    <ChallengePoints/>
 ];
 
 const Stepper = () => {
