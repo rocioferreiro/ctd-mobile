@@ -1,6 +1,6 @@
 import React from "react";
 import {View, Text} from "./Themed";
-import MyStepper from "./CreateChallengeForm/MyStepper";
+import Stepper from "./CreateChallengeForm/Stepper";
 import {Card} from "react-native-paper";
 import {Dimensions} from "react-native";
 
@@ -12,7 +12,7 @@ const Home = () => {
                 height: Dimensions.get('window').height,
             }}>
                 <Text> Home Screen </Text>
-                <MyStepper/>
+                <Stepper/>
             </Card>
         </View>
     )
