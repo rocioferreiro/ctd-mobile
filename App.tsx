@@ -74,7 +74,7 @@ export default function App() {
       ...DefaultTheme.colors,
       primary: '#15006D',
       accent: '#FFC300',
-      background: '#4c4c4c',
+      background: '#ffffff',
       surface: '#FFF3E9',
       text: '#8FA1ff',
       notification: '#F24726',
