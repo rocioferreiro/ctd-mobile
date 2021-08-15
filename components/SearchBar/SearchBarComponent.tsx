@@ -15,7 +15,7 @@ const SearchBarComponent = (props: Props) => {
 
     return (
         <Searchbar
-            placeholder="Search for Challenegs"
+            placeholder="Search for Challenges"
             onChangeText={onChangeSearch}
             value={searchQuery}
         />
