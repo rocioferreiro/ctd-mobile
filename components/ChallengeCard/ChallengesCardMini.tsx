@@ -1,3 +1,4 @@
+//Esta Challenge Card tiene menos info y es para la pantalla de my challenges
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme} from 'react-native-paper';
 import {Challenge} from "../Models/Challenge";
@@ -11,7 +12,7 @@ interface Props {
     challenge: any;
 }
 
-const ChallengeCard = (props: Props) => {
+const ChallengeCardMini = (props: Props) => {
     const { colors } = useTheme();
     const styles = StyleSheet.create({
         joinButton: {
@@ -36,7 +37,6 @@ const ChallengeCard = (props: Props) => {
         }
     });
     return (<Card style={{backgroundColor:colors.primary}}>
-            <Card.Title  title="Username" subtitle="Level"  left={LeftContent} />
             <Card.Content>
                 <Title style={{ fontSize: 25, color: colors.background,
                     marginTop: 5}}>{props.challenge.title}</Title>
@@ -46,13 +46,13 @@ const ChallengeCard = (props: Props) => {
             <Card.Actions>
                 <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}>
                     <Title style={{ fontSize: 15, color: colors.primary,
-                       }}>View</Title> </Button>
+                    }}>View</Title> </Button>
                 <Button style={ {backgroundColor: colors.accent, borderRadius: 20,  width: 100, }} > <Title style={{ fontSize: 15, color: colors.primary,
-                    }}>Join</Title></Button>
+                }}>Share</Title></Button>
             </Card.Actions>
         </Card>
 
     );
 }
 
-export default ChallengeCard;
+export default ChallengeCardMini;
