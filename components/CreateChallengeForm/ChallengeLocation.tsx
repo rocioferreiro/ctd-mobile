@@ -25,6 +25,7 @@ const ChallengeLocation = () => {
             height: 500,
             borderWidth: 0,
             padding: '3%',
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         map: {
             width: '100%',
@@ -63,7 +64,7 @@ const ChallengeLocation = () => {
     // });
 
     return (
-        <View>
+        <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
             <Card style={styles.card}>
                 <Text style={styles.title}>Where will your challenge be?</Text>
                 <View style={styles.mapWrapper}>
@@ -77,7 +78,7 @@ const ChallengeLocation = () => {
                         }}
                         onPress={(e) => {
                             setMarker(e.nativeEvent.coordinate);
-                            console.log(marker);
+                            console.log(e.nativeEvent.coordinate);
                         }}>
                         {
                             marker &&

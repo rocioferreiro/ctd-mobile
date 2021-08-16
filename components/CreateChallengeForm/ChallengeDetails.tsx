@@ -4,6 +4,7 @@ import {Button, Card, TextInput, useTheme, List} from "react-native-paper";
 import {View, Text, StyleSheet, Image, Dimensions, ImageBackground} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon} from "react-native-elements";
+import {colorShade} from "../Models/shadingColor";
 const onuBanner = require(`../../assets/images/onubanner.jpeg`)
 
 const ChallengeDetails = () => {
@@ -33,12 +34,12 @@ const ChallengeDetails = () => {
     input: {
       marginTop: 5,
       width: '100%',
-      backgroundColor: colors.surface,
+      backgroundColor: colorShade(colors.surface, -10),
       fontSize: 20
     },
     inputWithIcon: {
       width: '85%',
-      backgroundColor: colors.surface,
+      backgroundColor: colorShade(colors.surface, -10),
       fontSize: 20
     },
     goalAdder: {
@@ -92,21 +93,12 @@ const ChallengeDetails = () => {
       marginLeft: 10,
       marginRight:10
 
-    },
-    background: {
-      flex: 1,
-      justifyContent: "center",
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
-      position:"absolute",
-      zIndex:0
-    },
+    }
   });
 
 
   return (
     <View style={{flex: 1}}>
-      {/*<Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
       <Card style={styles.card}>
         <Text style={styles.title}>Create a new Challenge!</Text>
 

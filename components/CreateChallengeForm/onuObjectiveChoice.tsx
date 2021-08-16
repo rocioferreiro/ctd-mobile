@@ -59,6 +59,11 @@ const OnuObjectiveChoice  = (props: Props) => {
     image: {
       width: 85,
       height: 85,
+      opacity: 0.5
+    },
+    imageChecked: {
+      width: 85,
+      height: 85,
     },
     imageWrapperChecked: {
       borderColor: colors.text,
@@ -66,14 +71,12 @@ const OnuObjectiveChoice  = (props: Props) => {
       borderWidth:  5,
       width: 95,
       height: 95,
-      marginTop: -5,
-      marginLeft: -5,
-      marginRight: 5
     },
     imageWrapper: {
-      width: 95,
-      height: 95,
-      opacity: 0.5
+      width: 85,
+      height: 85,
+      margin: 5,
+      backgroundColor: colors.surface
     },
     onuContainer: {
       display: "flex",
@@ -109,7 +112,7 @@ const OnuObjectiveChoice  = (props: Props) => {
             }}>
             <View style={props.selected.includes(o) ? styles.imageWrapperChecked : styles.imageWrapper}>
               <Image
-                style={styles.image}
+                style={props.selected.includes(o) ? styles.imageChecked : styles.image}
                 source={onuPictures[index]}
 
               />
