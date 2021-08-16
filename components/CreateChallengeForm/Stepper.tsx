@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./ChallengeDetails";
@@ -15,6 +15,10 @@ const content = [
     <ChallengeExtraInfo/>,
     <ChallengePoints/>
 ];
+
+type Props = {
+    setOpen: (boolean) => void
+}
 
 const Stepper = () => {
     const { colors } = useTheme();
