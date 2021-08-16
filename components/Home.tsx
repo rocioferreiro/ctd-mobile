@@ -55,15 +55,15 @@ const Home = () => {
 
       </Card>}
       {create && <Card style={styles.creationCard}>
-        <Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
+        {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
         {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
-        {/*<Image source={require('../assets/images/connections.png')} resizeMode={'cover'} style={styles.background}/>*/}
-          <View style={{width: '50%', backgroundColor: 'rgba(0,0,0,0)', }}>
+        <Image source={require('../assets/images/connections.png')} resizeMode={'cover'} style={styles.background}/>
+          <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)', }}>
               <Button onPress={() => setCreate(false)}
                       icon={{name: 'chevron-back-outline', type: 'ionicon'}}
                       buttonStyle={styles.button}
                       titleStyle={{color: colors.primary}}
-                      title="Cancel creation"
+                      title="Cancel"
               />
           </View>
           <Stepper/>
