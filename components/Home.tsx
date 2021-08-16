@@ -47,7 +47,7 @@ const Home = () => {
         <Text> Home Screen </Text>
           <View style={{width: '60%',marginTop: 10}}>
               <Button raised={true}
-                      title={'Creat a new Challenge!'}
+                      title={'Create a new Challenge!'}
                       onPress={() => setCreate(true)}
                       buttonStyle={{backgroundColor: colors.primary}}
               />
