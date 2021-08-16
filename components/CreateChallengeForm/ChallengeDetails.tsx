@@ -71,13 +71,13 @@ const ChallengeDetails = () => {
       marginLeft: 'auto'
     },
     banner: {
-      width: 300,
+      width: 100,
       resizeMode: "contain",
       height: 150
     },
     imageButton: {
       width: '100%',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       display: 'flex',
       marginTop: 10,
       marginBottom: 10,

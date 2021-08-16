@@ -51,30 +51,32 @@ const OnuObjectiveChoice  = (props: Props) => {
     [selectedImage]
   );
 
+  const objetciveSize = Dimensions.get('window').width / 5;
+
   const styles = StyleSheet.create({
     container: {
       zIndex:5,
-      height: Dimensions.get('window').height * 0.52,
+      height: Dimensions.get('window').height * 0.6,
     },
     image: {
-      width: 85,
-      height: 85,
+      width: objetciveSize,
+      height: objetciveSize,
       opacity: 0.5
     },
     imageChecked: {
-      width: 85,
-      height: 85,
+      width: objetciveSize,
+      height: objetciveSize,
     },
     imageWrapperChecked: {
       borderColor: colors.text,
       borderStyle: 'solid',
       borderWidth:  5,
-      width: 95,
-      height: 95,
+      width: objetciveSize + 10,
+      height: objetciveSize + 10,
     },
     imageWrapper: {
-      width: 85,
-      height: 85,
+      width: objetciveSize,
+      height: objetciveSize,
       margin: 5,
       backgroundColor: colors.surface
     },
@@ -82,7 +84,7 @@ const OnuObjectiveChoice  = (props: Props) => {
       display: "flex",
       flexWrap: "wrap",
       flexDirection: "row",
-      height:300
+      height: 300
     },
     selectedImage: {
       position: "absolute",
