@@ -20,12 +20,17 @@ const Stepper = () => {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
+        container: {
+            borderWidth:0
+        },
         nextButton: {
-            borderRadius: 20,
             backgroundColor: colors.accent,
+            borderRadius: 20,
             width: 60,
             paddingLeft: 17,
-            marginBottom: 7
+            paddingRight: 17,
+            paddingTop: 8,
+            paddingBottom: 8,
         },
         previousButtonIcon: {
             borderRadius: 20,
@@ -42,14 +47,15 @@ const Stepper = () => {
         <ProgressSteps completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary} completedProgressBarColor={colors.primary}>
             {content.map((step, index) => {
                 return (
-                    <ProgressStep
+                    <ProgressStep style={styles.container}
                         key={index}
                         nextBtnText=
                         {<Icon
                             name={'arrow-forward-outline'}
                             type={'ionicon'}
+                            style={styles.nextButton}
                         />}
-                        nextBtnStyle={styles.nextButton}
+                        //nextBtnStyle={styles.nextButton}
                         previousBtnText=
                             {<Icon
                                 name={'arrow-back-outline'}

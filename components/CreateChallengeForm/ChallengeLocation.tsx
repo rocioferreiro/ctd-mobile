@@ -23,6 +23,7 @@ const ChallengeLocation = () => {
         card: {
             width: '100%',
             height: 500,
+            borderWidth: 0,
             padding: '3%',
         },
         map: {
@@ -87,7 +88,7 @@ const ChallengeLocation = () => {
                 <TextInput
                     style={styles.input}
                     mode={'flat'}
-                    dense={'false'}
+                    dense={false}
                     label="Add additional info (optional)"
                     value={locationExtraInfo}
                     onChangeText={t => setLocationExtraInfo(t)}

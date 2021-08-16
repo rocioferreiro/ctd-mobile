@@ -47,7 +47,6 @@ const Tabbar = (props: Props) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: props.colorScheme.colors.backgroundColor,
     },
@@ -107,7 +106,7 @@ const Tabbar = (props: Props) => {
       <AwesomeTabbar
         icons={icons} //array of icon views this array can be image or vector icon
         selectedColor={[
-          props.colorScheme.colors.text,
+          props.colorScheme.colors.light,
           props.colorScheme.colors.extra,
           props.colorScheme.colors.accent,
           props.colorScheme.colors.notification]} //color of selected item in tab bar

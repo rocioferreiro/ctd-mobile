@@ -1,32 +1,19 @@
 import React from "react";
 
-import {Button, Card, Checkbox, TextInput, useTheme} from "react-native-paper";
-import {View, Text, StyleSheet, Image, CheckBox, TouchableWithoutFeedback} from "react-native";
-import {ONUObjectives} from "./ONUObjectives";
-const obj1 = require(`../../assets/images/objetive1.png`)
-const obj2 = require(`../../assets/images/objetive2.png`)
-const obj3 = require(`../../assets/images/objetive3.png`)
-const obj4 = require(`../../assets/images/objetive4.png`)
-const obj5 = require(`../../assets/images/objetive5.png`)
-const obj6 = require(`../../assets/images/objetive6.png`)
-const obj7 = require(`../../assets/images/objetive7.png`)
-const obj8 = require(`../../assets/images/objetive8.png`)
-const obj9 = require(`../../assets/images/objetive9.png`)
-const obj10 = require(`../../assets/images/objetive10.png`)
-const obj11 = require(`../../assets/images/objetive11.png`)
-const obj12 = require(`../../assets/images/objetive12.png`)
-const obj13 = require(`../../assets/images/objetive13.png`)
-const obj14 = require(`../../assets/images/objetive14.png`)
-const obj15 = require(`../../assets/images/objetive15.png`)
-const obj16 = require(`../../assets/images/objetive16.png`)
-const obj17 = require(`../../assets/images/objetive17.png`)
+import {Button, Card, TextInput, useTheme, List} from "react-native-paper";
+import {View, Text, StyleSheet, Image, Dimensions, ImageBackground} from "react-native";
+import OnuObjectiveChoice from "./onuObjectiveChoice";
+import {Icon} from "react-native-elements";
+const onuBanner = require(`../../assets/images/onubanner.jpeg`)
 
 const ChallengeDetails = () => {
   const { colors } = useTheme();
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [goal, setGoal] = React.useState('');
+  const [goals, setGoals] = React.useState<string[]>([])
   const [onuObjectives, setOnuObjectives] = React.useState([]);
-  const onuPictures = [obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9, obj10, obj11, obj12, obj13, obj14, obj15, obj16, obj17]
+  const [openChoices, setOpenChoices] = React.useState(false);
 
   const styles = StyleSheet.create({
     title: {
@@ -34,40 +21,94 @@ const ChallengeDetails = () => {
       fontWeight: 'bold',
       color: colors.primary,
       marginLeft: 5,
-      marginTop: -22,
+      marginTop: -20,
     },
     card: {
       width: '100%',
-      height: 500,
+      minHeight: Dimensions.get('window').height * 0.74,
       padding: '3%',
+      borderWidth: 0,
+      backgroundColor: 'rgba(0,0,0,0)'
     },
     input: {
       marginTop: 5,
       width: '100%',
-      backgroundColor: colors.surface
+      backgroundColor: colors.surface,
+      fontSize: 20
     },
-    image: {
-      width: 70,
-      height: 70,
+    inputWithIcon: {
+      width: '85%',
+      backgroundColor: colors.surface,
+      fontSize: 20
     },
-    imageWrapperChecked: {
-      borderColor: 'rgb(243,117,122)',
-      borderStyle: 'solid',
-      borderWidth:  5,
-      width: 80,
-      height: 80,
+    goalAdder: {
+      marginTop: 5,
+      display: "flex",
+      flexWrap: "wrap",
+      flexDirection:"row"
     },
-    imageWrapper: {
-      width: 80,
-      height: 80,
-    }
+    goalAdderIcon: {
+      marginTop: '2.5%',
+      display: "flex",
+      justifyContent:"center",
+      width: 40,
+      height: 40,
+      borderRadius: 50,
+      backgroundColor: colors.primary,
+      marginLeft: 10,
+    },
+    icon: {
+      textAlign: 'center',
+    },
+    button: {
+      width: '60%',
+      justifyContent: 'center',
+      display: 'flex',
+      marginTop: 10,
+      marginBottom: 10,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+    },
+    banner: {
+      width: 300,
+      resizeMode: "contain",
+      height: 150
+    },
+    imageButton: {
+      width: '100%',
+      justifyContent: 'center',
+      display: 'flex',
+      marginTop: 10,
+      marginBottom: 10,
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    listItem: {
+      backgroundColor: colors.accent,
+      width: '90%',
+      borderRadius: 20,
+      marginTop: 10,
+      marginLeft: 10,
+      marginRight:10
+
+    },
+    background: {
+      flex: 1,
+      justifyContent: "center",
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+      position:"absolute",
+      zIndex:0
+    },
   });
 
 
   return (
-    <View>
+    <View style={{flex: 1}}>
+      {/*<Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
       <Card style={styles.card}>
-        <Text style={styles.title}> Create a new Challenge! </Text>
+        <Text style={styles.title}>Create a new Challenge!</Text>
 
         <TextInput
             label="Challenge Title"
@@ -78,29 +119,46 @@ const ChallengeDetails = () => {
 
         <TextInput
           label="Challenge Description"
-          style={styles.input}
+          style={[styles.input, {height: Dimensions.get("window").height * 0.15}]}
           value={description}
           multiline={true}
           onChangeText={description => setDescription(description)}
         />
 
-        <View style={{display: 'flex'}}>
-          {Object.keys(ONUObjectives).map((o, index) => {
-            return <TouchableWithoutFeedback
-              key={index}
-              onPress={() => {
+        <Button style={openChoices ? styles.button : styles.imageButton} mode={'contained'} onPress={() => setOpenChoices(!openChoices)}> {openChoices ?
+          'Close Options' :
+          <Image source={onuBanner} style={styles.banner}/>}</Button>
+        {openChoices && <OnuObjectiveChoice selected={onuObjectives} setSelected={setOnuObjectives}/>}
 
-              }}>
-              <View style={styles.imageWrapper}>
-                <Image
-                  style={styles.image}
-                  source={onuPictures[index]}
-                />
+        {!openChoices &&
+          <View>
+            <View style={styles.goalAdder}>
+              <TextInput
+                label="Challenge Goal"
+                style={styles.inputWithIcon}
+                value={goal}
+                onChangeText={t => setGoal(t)}
+              />
+              <View style={styles.goalAdderIcon}>
+                <Icon style={styles.icon} name={'add-outline'} type={'ionicon'} color={'#fff'} onPress={() => {
+                  if(goal !== '') {
+                    setGoals([...goals, goal])
+                    setGoal('')
+                  }
+                }} />
               </View>
-            </TouchableWithoutFeedback>
-          })}
+            </View>
 
-        </View>
+            {goals.map((t,index) =>
+              <List.Item key={index} style={styles.listItem}
+              title={t}
+              rippleColor={'#313131'}
+              right={props => <Icon {...props} name="trash-outline" type={'ionicon'} onPress={() => setGoals(goals.filter(i => i !== t))} />}
+              />)}
+
+          </View>
+        }
+
 
 
 
