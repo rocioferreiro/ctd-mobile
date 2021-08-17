@@ -4,9 +4,12 @@ import Stepper from "./CreateChallengeForm/Stepper";
 import {Card, IconButton, useTheme} from "react-native-paper";
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Button, Icon} from "react-native-elements";
+import {Challenge} from "./Models/Challenge";
+import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
 
 const Home = () => {
   const [create, setCreate] = React.useState(false)
+  const [creationSuccess, setCreationSuccess] = React.useState(false)
   const { colors } = useTheme();
 
   const styles = StyleSheet.create({
@@ -41,9 +44,14 @@ const Home = () => {
     }
   })
 
+  const onSubmitCreation = (challenge: Challenge) => {
+    setCreationSuccess(true);
+    setCreate(false)
+  }
+
   return (
     <View style={{backgroundColor: colors.surface}}>
-      {!create && <Card style={styles.homeCard}>
+      {(!create && !creationSuccess) && <Card style={styles.homeCard}>
         <Text> Home Screen </Text>
           <View style={{width: '60%',marginTop: 10}}>
               <Button raised={true}
@@ -66,8 +74,9 @@ const Home = () => {
                       title="Cancel"
               />
           </View>
-          <Stepper/>
+          <Stepper onSubmit={onSubmitCreation}/>
       </Card>}
+      {creationSuccess && <ChallengeCreationSuccessful close={() => setCreationSuccess(false)}/>}
     </View>
   )
 }

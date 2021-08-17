@@ -61,7 +61,7 @@ const ChallengeLocation = () => {
             marginTop: 5,
             width: '100%',
             backgroundColor: colors.surface,
-            height: Dimensions.get("window").height * 0.12
+            height: Dimensions.get("window").height * 0.1
         }
     });
 

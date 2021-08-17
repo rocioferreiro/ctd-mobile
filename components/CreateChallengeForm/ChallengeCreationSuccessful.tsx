@@ -1,18 +1,28 @@
 import React from 'react';
 import {View, Text} from "../Themed";
 import {Button, Card, useTheme} from "react-native-paper";
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import LottieView from 'lottie-react-native';
 
-const ChallengeCreationSuccessful = () => {
+type Props = {
+    close: () => void
+}
+
+const ChallengeCreationSuccessful = (props: Props) => {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
+        container: {
+            height: Dimensions.get('window').height,
+            marginTop: Dimensions.get('window').height * 0.2,
+            alignContent: 'center'
+        },
         title: {
             fontSize: 35,
             fontWeight: 'bold',
             color: colors.primary,
-            marginLeft: 25,
+            textAlign: 'center'
+
         },
         checkmark: {
             width: '100%',
@@ -32,8 +42,8 @@ const ChallengeCreationSuccessful = () => {
     });
 
     return(
-        <View>
-            <Card>
+        <Card style={styles.container}>
+            <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                 <Text style={styles.title}>Challenge created!</Text>
                 <LottieView
                     style={styles.checkmark}
@@ -44,10 +54,11 @@ const ChallengeCreationSuccessful = () => {
                     resizeMode={'cover'}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button dark={false} style={styles.button} mode={'contained'}>Return</Button>
+                    <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>Return</Button>
                 </View>
-            </Card>
-        </View>
+            </View>
+        </Card>
+
     );
 }
 
