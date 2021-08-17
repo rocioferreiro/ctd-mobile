@@ -3,10 +3,16 @@ import {View, Text} from "./Themed";
 import Stepper from "./CreateChallengeForm/Stepper";
 import {Card} from "react-native-paper";
 import {Dimensions} from "react-native";
+import Toast from 'react-native-toast-message';
+
+
 
 const Home = () => {
+
+
     return (
         <View>
+
             <Card style={{
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').height,

@@ -9,6 +9,7 @@ import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
 
+
 const content = [
     <ChallengeDetails/>,
     <ChallengeLocation/>,
@@ -17,6 +18,7 @@ const content = [
 ];
 
 const Stepper = () => {
+
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
