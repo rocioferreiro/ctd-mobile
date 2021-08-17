@@ -71,13 +71,14 @@ const ChallengeDetails = () => {
       marginLeft: 'auto'
     },
     banner: {
-      width: 100,
+      width: Dimensions.get('window').width * 0.7,
       resizeMode: "contain",
-      height: 150
+      height: Dimensions.get('window').height * 0.17
     },
     imageButton: {
       width: '100%',
-      justifyContent: 'flex-start',
+      height: Dimensions.get('window').height * 0.17,
+      justifyContent: 'center',
       display: 'flex',
       marginTop: 10,
       marginBottom: 10,
@@ -110,7 +111,7 @@ const ChallengeDetails = () => {
 
         <TextInput
           label="Challenge Description"
-          style={[styles.input, {height: Dimensions.get("window").height * 0.15}]}
+          style={[styles.input, {height: Dimensions.get("window").height * 0.12}]}
           value={description}
           multiline={true}
           onChangeText={description => setDescription(description)}
