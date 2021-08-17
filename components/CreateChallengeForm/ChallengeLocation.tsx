@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Card, TextInput, useTheme} from "react-native-paper";
 import {Text, View} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import * as Location from "expo-location";
 
 const ChallengeLocation = () => {
@@ -38,7 +38,9 @@ const ChallengeLocation = () => {
         card: {
             width: '100%',
             height: 500,
+            borderWidth: 0,
             padding: '3%',
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         map: {
             width: '100%',
@@ -58,12 +60,13 @@ const ChallengeLocation = () => {
         input: {
             marginTop: 5,
             width: '100%',
-            backgroundColor: colors.surface
+            backgroundColor: colors.surface,
+            height: Dimensions.get("window").height * 0.12
         }
     });
 
     return (
-        <View>
+        <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
             <Card style={styles.card}>
                 <Text style={styles.title}>Where will your challenge be?</Text>
                 <View style={styles.mapWrapper}>
@@ -91,6 +94,7 @@ const ChallengeLocation = () => {
                     style={styles.input}
                     mode={'flat'}
                     dense={false}
+                    multiline={true}
                     label="Add additional info (optional)"
                     value={locationExtraInfo}
                     onChangeText={t => setLocationExtraInfo(t)}

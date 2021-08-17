@@ -76,9 +76,10 @@ export default function App() {
       accent: '#FFC300',
       background: '#ffffff',
       surface: '#FFF3E9',
-      text: '#8FA1ff',
+      text: '#383c53',
       notification: '#F24726',
-      extra: '#8FD14F'
+      extra: '#8FD14F',
+      light: '#8FA1ff'
     },
     fonts: configureFonts(fontConfig),
   };
