@@ -53,6 +53,8 @@
     "react-native-screens": "~3.0.0",
     "react-native-stepper-ui": "0.0.9",
     "react-native-svg": "^12.1.1",
+    "react-native-toast-message": "^1.4.9",
+    "react-native-toastify": "^0.2.2",
     "react-native-web": "~0.13.12",
     "react-native-webview": "11.2.3",
     "react-navigation-stack": "^2.10.4",

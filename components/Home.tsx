@@ -6,8 +6,18 @@ import {Dimensions, StyleSheet, Image} from "react-native";
 import {Button, Icon} from "react-native-elements";
 import {Challenge} from "./Models/Challenge";
 import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
+import Toast from 'react-native-toast-message';
 
 const Home = () => {
+
+  function toastOn() {
+      Toast.show({
+        type:  'error',
+        text1: 'Challenge Creation Error',
+        text2: 'Try again later',
+        topOffset: Dimensions.get("window").height * 0.05,
+      });
+  }
   const [create, setCreate] = React.useState(false)
   const [creationSuccess, setCreationSuccess] = React.useState(false)
   const { colors } = useTheme();
@@ -45,8 +55,9 @@ const Home = () => {
   })
 
   const onSubmitCreation = (challenge: Challenge) => {
-    setCreationSuccess(true);
-    setCreate(false)
+    //setCreationSuccess(true);
+    //setCreate(false)
+    toastOn()
   }
 
   return (
