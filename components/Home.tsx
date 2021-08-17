@@ -6,8 +6,19 @@ import {Dimensions, StyleSheet, Image} from "react-native";
 import {Button, Icon} from "react-native-elements";
 import {Challenge} from "./Models/Challenge";
 import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
+import Toast from 'react-native-toast-message';
+
+
+
 
 const Home = () => {
+  function ToastOn () {
+      Toast.show({
+        type:  'error',
+        text1: 'Challenge Submition Error',
+        text2: 'Please try again'
+      });
+  }
   const [create, setCreate] = React.useState(false)
   const [creationSuccess, setCreationSuccess] = React.useState(false)
   const { colors } = useTheme();
@@ -44,9 +55,11 @@ const Home = () => {
     }
   })
 
-  const onSubmitCreation = (challenge: Challenge) => {
-    setCreationSuccess(true);
-    setCreate(false)
+ const OnSubmitCreation=()=> {
+    //setCreationSuccess(true);
+    //setCreate(false)
+    ToastOn()
+
   }
 
   return (
@@ -74,7 +87,7 @@ const Home = () => {
                       title="Cancel"
               />
           </View>
-          <Stepper onSubmit={onSubmitCreation}/>
+          <Stepper onSubmit={OnSubmitCreation}/>
       </Card>}
       {creationSuccess && <ChallengeCreationSuccessful close={() => setCreationSuccess(false)}/>}
     </View>

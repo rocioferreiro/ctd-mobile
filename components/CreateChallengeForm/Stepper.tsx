@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
@@ -9,6 +9,7 @@ import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
 
+
 const content = [
     <ChallengeDetails/>,
     <ChallengeLocation/>,
@@ -18,6 +19,7 @@ const content = [
 
 type Props = {
     onSubmit: (Challenge) => void
+
 }
 
 const Stepper = (props: Props) => {

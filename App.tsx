@@ -11,6 +11,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
+import Toast from 'react-native-toast-message';
 
 // I think this can be deleted... but I didn't because I am scared
 const styles = StyleSheet.create({
@@ -92,6 +93,7 @@ export default function App() {
         <ApolloProvider client={getApolloClientInstance()}>
           <PaperProvider theme={reactNativePaperTheme}>
             <Tabbar colorScheme={reactNativePaperTheme}/>
+            <Toast ref={(ref) => Toast.setRef(ref)} />
           </PaperProvider>
           <StatusBar/>
         </ApolloProvider>
