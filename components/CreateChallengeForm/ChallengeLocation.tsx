@@ -1,16 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
-import {Card, TextInput} from "react-native-paper";
-import {View, Text} from "../Themed";
+import {Card, TextInput, useTheme} from "react-native-paper";
+import {Text, View} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
-import {StyleSheet} from "react-native";
-import { useTheme } from 'react-native-paper';
-// import Geolocation from 'react-native-geolocation-service';
+import {Dimensions, StyleSheet} from "react-native";
+import * as Location from "expo-location";
 
 const ChallengeLocation = () => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
     const [locationExtraInfo, setLocationExtraInfo] = useState('');
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location.coords);
+        })();
+    }, []);
+
 
     const styles = StyleSheet.create({
         title: {
@@ -22,8 +37,10 @@ const ChallengeLocation = () => {
         },
         card: {
             width: '100%',
-            height: 500,
+            height: Dimensions.get('window').height * 0.7,
+            borderWidth: 0,
             padding: '3%',
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         map: {
             width: '100%',
@@ -33,7 +50,7 @@ const ChallengeLocation = () => {
             height: '70%',
             borderWidth: 5,
             borderStyle: 'solid',
-            borderColor: marker? colors.extra : colors.surface,
+            borderColor: marker ? colors.extra : colors.surface,
             borderRadius: 16,
             overflow: 'hidden',
             margin: 5,
@@ -43,51 +60,41 @@ const ChallengeLocation = () => {
         input: {
             marginTop: 5,
             width: '100%',
-            backgroundColor: colors.surface
+            backgroundColor: colors.surface,
+            height: Dimensions.get("window").height * 0.1
         }
     });
 
-    // Get the location of the user. Needs permissions to work
-    // useEffect(() => {
-    //     Geolocation.getCurrentPosition(
-    //         (position) => {
-    //             console.log(position);
-    //         },
-    //         (error) => {
-    //             // See error code charts below.
-    //             console.log(error.code, error.message);
-    //         },
-    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    //     );
-    // });
-
     return (
-        <View>
+        <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
             <Card style={styles.card}>
                 <Text style={styles.title}>Where will your challenge be?</Text>
                 <View style={styles.mapWrapper}>
+                    {location &&
                     <MapView
-                        style={styles.map}
-                        initialRegion={{
-                            latitude: -34,
-                            longitude: -58,
-                            latitudeDelta: 10,
-                            longitudeDelta: 10,
-                        }}
-                        onPress={(e) => {
-                            setMarker(e.nativeEvent.coordinate);
-                            console.log(marker);
-                        }}>
+                      style={styles.map}
+                      initialRegion={{
+                          latitude: location.latitude,
+                          longitude: location.longitude,
+                          latitudeDelta: 0.1,
+                          longitudeDelta: 0.1,
+                      }}
+                      onPress={(e) => {
+                          setMarker(e.nativeEvent.coordinate);
+                          console.log(marker);
+                      }}>
                         {
                             marker &&
                             <Marker coordinate={marker}/>
                         }
-                    </MapView>
+                    </MapView>}
+
                 </View>
                 <TextInput
                     style={styles.input}
                     mode={'flat'}
-                    dense={'false'}
+                    dense={false}
+                    multiline={true}
                     label="Add additional info (optional)"
                     value={locationExtraInfo}
                     onChangeText={t => setLocationExtraInfo(t)}

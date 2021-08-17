@@ -6,6 +6,7 @@ import Home from "../components/Home";
 import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
 import {ChallengeList} from "../components/ChallengeList/Challenge";
+import {colorShade} from "../components/Models/shadingColor";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -47,7 +48,6 @@ const Tabbar = (props: Props) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: props.colorScheme.colors.backgroundColor,
     },
@@ -83,31 +83,13 @@ const Tabbar = (props: Props) => {
     changeView(1)
   }, [])
 
-  const colorShade = (col, amt) => {
-    col = col.replace(/^#/, '')
-    if (col.length === 3) col = col[0] + col[0] + col[1] + col[1] + col[2] + col[2]
-
-    let [r, g, b] = col.match(/.{2}/g);
-    ([r, g, b] = [parseInt(r, 16) + amt, parseInt(g, 16) + amt, parseInt(b, 16) + amt])
-
-    r = Math.max(Math.min(255, r), 0).toString(16)
-    g = Math.max(Math.min(255, g), 0).toString(16)
-    b = Math.max(Math.min(255, b), 0).toString(16)
-
-    const rr = (r.length < 2 ? '0' : '') + r
-    const gg = (g.length < 2 ? '0' : '') + g
-    const bb = (b.length < 2 ? '0' : '') + b
-
-    return `#${rr}${gg}${bb}`
-  }
-
   return (
     <View style={styles.container}>
       {actualComponent? components[actualComponent] : components[0]}
       <AwesomeTabbar
         icons={icons} //array of icon views this array can be image or vector icon
         selectedColor={[
-          props.colorScheme.colors.text,
+          props.colorScheme.colors.light,
           props.colorScheme.colors.extra,
           props.colorScheme.colors.accent,
           props.colorScheme.colors.notification]} //color of selected item in tab bar
