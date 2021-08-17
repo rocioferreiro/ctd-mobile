@@ -37,7 +37,7 @@ const ChallengeLocation = () => {
         },
         card: {
             width: '100%',
-            height: 500,
+            height: Dimensions.get('window').height * 0.7,
             borderWidth: 0,
             padding: '3%',
             backgroundColor: 'rgba(0,0,0,0)'
@@ -61,7 +61,7 @@ const ChallengeLocation = () => {
             marginTop: 5,
             width: '100%',
             backgroundColor: colors.surface,
-            height: Dimensions.get("window").height * 0.12
+            height: Dimensions.get("window").height * 0.1
         }
     });
 
