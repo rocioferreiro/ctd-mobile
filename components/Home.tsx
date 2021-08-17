@@ -14,7 +14,8 @@ const Home = () => {
       Toast.show({
         type:  'error',
         text1: 'Challenge Creation Error',
-        text2: 'Try again later'
+        text2: 'Try again later',
+        topOffset: Dimensions.get("window").height * 0.05,
       });
   }
   const [create, setCreate] = React.useState(false)
