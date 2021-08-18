@@ -1,11 +1,11 @@
 import React from "react";
 
-import {Button, Card, TextInput, useTheme, List} from "react-native-paper";
-import {View, Text, StyleSheet, Image, Dimensions, ImageBackground} from "react-native";
+import {Button, Card, useTheme, List} from "react-native-paper";
+import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
-import {Icon} from "react-native-elements";
+import {Icon, Input} from "react-native-elements";
+import {ONUObjectives} from "./ONUObjectives";
 import {colorShade} from "../Models/shadingColor";
-const onuBanner = require(`../../assets/images/onubanner.jpeg`)
 
 const ChallengeDetails = () => {
   const { colors } = useTheme();
@@ -34,13 +34,21 @@ const ChallengeDetails = () => {
     input: {
       marginTop: 5,
       width: '100%',
-      backgroundColor: colorShade(colors.surface, -10),
-      fontSize: 20
+      backgroundColor: colors.surface,
+      fontSize: 20,
+      borderRadius: 30,
+      padding: 15,
+      shadowOffset: {width: 2, height: 2},
+      shadowOpacity: 0.5,
+      shadowColor: '#DAB99D',
+      elevation: 4
     },
     inputWithIcon: {
       width: '85%',
-      backgroundColor: colorShade(colors.surface, -10),
-      fontSize: 20
+      backgroundColor: colors.surface,
+      fontSize: 20,
+      borderRadius: 30,
+      padding: 10,
     },
     goalAdder: {
       marginTop: 5,
@@ -49,7 +57,6 @@ const ChallengeDetails = () => {
       flexDirection:"row"
     },
     goalAdderIcon: {
-      marginTop: '2.5%',
       display: "flex",
       justifyContent:"center",
       width: 40,
@@ -70,29 +77,41 @@ const ChallengeDetails = () => {
       marginRight: 'auto',
       marginLeft: 'auto'
     },
-    banner: {
-      width: Dimensions.get('window').width * 0.7,
-      resizeMode: "contain",
-      height: Dimensions.get('window').height * 0.17
+    optionsButton: {
+      width: Dimensions.get('window').width * 0.5,
+      height: Dimensions.get('window').height * 0.05,
+      borderRadius: 40,
+      backgroundColor: colors.accent,
+      textAlign: "center",
+      justifyContent: "center",
+      marginBottom: 10
     },
-    imageButton: {
-      width: '100%',
-      height: Dimensions.get('window').height * 0.17,
-      justifyContent: 'center',
-      display: 'flex',
-      marginTop: 10,
-      marginBottom: 10,
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      backgroundColor: 'rgba(0,0,0,0)'
+    editOptionsButton: {
+      width: Dimensions.get('window').width * 0.4,
+      height: Dimensions.get('window').height * 0.04,
+      borderRadius: 30,
+      backgroundColor: colorShade(colors.accent, 5),
+      textAlign: "center",
+      justifyContent: "center",
+      marginBottom: 10
     },
     listItem: {
-      backgroundColor: colors.accent,
+      backgroundColor: colors.surface,
       width: '90%',
       borderRadius: 20,
       marginTop: 10,
       marginLeft: 10,
-      marginRight:10
+      marginRight:10,
+      shadowOffset: {width: 2, height: 2},
+      shadowOpacity: 0.5,
+      shadowColor: '#DAB99D',
+      elevation: 3
+    },
+    label: {
+      fontWeight: "bold",
+      color: colors.primary,
+      marginLeft: 5,
+      fontSize: 20
     }
   });
 
@@ -100,54 +119,77 @@ const ChallengeDetails = () => {
   return (
     <View style={{flex: 1}}>
       <Card style={styles.card}>
-        <Text style={styles.title}>Create a new Challenge!</Text>
+        {openChoices ?
+          <OnuObjectiveChoice selected={onuObjectives} setSelected={setOnuObjectives} setOpen={setOpenChoices}/> :
 
-        <TextInput
-            label="Challenge Title"
-            style={styles.input}
-            value={title}
-            onChangeText={title => setTitle(title)}
-        />
-
-        <TextInput
-          label="Challenge Description"
-          style={[styles.input, {height: Dimensions.get("window").height * 0.12}]}
-          value={description}
-          multiline={true}
-          onChangeText={description => setDescription(description)}
-        />
-
-        <Button style={openChoices ? styles.button : styles.imageButton} mode={'contained'} onPress={() => setOpenChoices(!openChoices)}> {openChoices ?
-          'Close Options' :
-          <Image source={onuBanner} style={styles.banner}/>}</Button>
-        {openChoices && <OnuObjectiveChoice selected={onuObjectives} setSelected={setOnuObjectives}/>}
-
-        {!openChoices &&
           <View>
-            <View style={styles.goalAdder}>
-              <TextInput
-                label="Challenge Goal"
-                style={styles.inputWithIcon}
-                value={goal}
-                onChangeText={t => setGoal(t)}
-              />
-              <View style={styles.goalAdderIcon}>
-                <Icon style={styles.icon} name={'add-outline'} type={'ionicon'} color={'#fff'} onPress={() => {
-                  if(goal !== '') {
-                    setGoals([...goals, goal])
-                    setGoal('')
-                  }
-                }} />
+            <Text style={styles.title}>Create a new Challenge!</Text>
+
+            <Input
+              placeholder={"Challenge Title"}
+              style={styles.input}
+              value={title}
+              onChangeText={title => setTitle(title)}
+              inputContainerStyle={{borderBottomWidth: 0}}
+            />
+
+            <Input
+              placeholder={"Challenge Description"}
+              style={[styles.input, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
+              value={description}
+              onChangeText={t => setDescription(t)}
+              multiline={true}
+              inputContainerStyle={{borderBottomWidth: 0}}
+            />
+
+            <Text style={styles.label}> Sustainable objectives </Text>
+            {onuObjectives.length > 0 ?
+              <View style={{display: 'flex', flexDirection: 'column'}}>
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10, paddingTop: 10}}>
+                  {onuObjectives.map((s, index) => {
+                    return <TouchableWithoutFeedback key={index}>
+                      <Image style={{width: 50, height: 50, borderRadius: 25, marginHorizontal:10}} source={s.image}/>
+                    </TouchableWithoutFeedback>
+                  })}
+                </View>
+                <View style={{display: "flex", justifyContent: 'center', width:'100%', flexDirection: 'row', padding: 15}}>
+                  <Button style={styles.editOptionsButton} mode={'contained'} onPress={() => setOpenChoices(true)}> Edit objectives </Button>
+                </View>
+              </View> :
+              <View style={{display: "flex", justifyContent: 'center', width:'100%', flexDirection: 'row', padding: 15}}>
+                <Button style={styles.optionsButton} mode={'contained'} onPress={() => setOpenChoices(true)}> Choose objectives </Button>
               </View>
+            }
+            <Text style={styles.label}> Challenge Goals </Text>
+            <View>
+                <View style={styles.goalAdder}>
+
+                    <Input
+                      placeholder={"Goal..."}
+                      style={styles.inputWithIcon}
+                      value={goal}
+                      onChangeText={t => setGoal(t)}
+                      inputContainerStyle={{borderBottomWidth: 0}}
+                      rightIcon={
+                        <View style={styles.goalAdderIcon}>
+                        <Icon style={styles.icon} name={'add-outline'} type={'ionicon'} color={'#fff'} onPress={() => {
+                          if(goal !== '') {
+                            setGoals([...goals, goal])
+                            setGoal('')
+                          }
+                        }} />
+                        </View>
+                      }
+                    />
+                </View>
+              {goals.map((t,index) =>
+                <List.Item key={index} style={styles.listItem}
+                           title={t}
+                           rippleColor={'#313131'}
+                           right={props => <Icon {...props} name="close-outline" type={'ionicon'} onPress={() => setGoals(goals.filter(i => i !== t))} />}
+                />)}
+
             </View>
-
-            {goals.map((t,index) =>
-              <List.Item key={index} style={styles.listItem}
-              title={t}
-              rippleColor={'#313131'}
-              right={props => <Icon {...props} name="trash-outline" type={'ionicon'} onPress={() => setGoals(goals.filter(i => i !== t))} />}
-              />)}
-
           </View>
         }
       </Card>

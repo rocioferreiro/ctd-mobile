@@ -57,8 +57,10 @@ const Stepper = (props: Props) => {
     });
 
     return <ProgressSteps completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
-                       completedProgressBarColor={colors.primary}>
+                       completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}
+                          progressBarColor={colors.accent}>
             {content.map((step, index) => {
+                // @ts-ignore
                 return (
                   <ProgressStep style={styles.container}
                                 key={index}
@@ -67,13 +69,14 @@ const Stepper = (props: Props) => {
                                     name={'arrow-forward-outline'}
                                     type={'ionicon'}
                                     style={styles.nextButton}
+                                    color={colors.background}
                                   />}
                                 onSubmit={props.onSubmit}
                                 finishBtnText=
                                   {<Icon
-                                    name={'paper-plane-outline'}
+                                    name={'checkmark-outline'}
                                     type={'ionicon'}
-                                    style={styles.finishButton}
+                                    style={styles.nextButton}
                                   />}
                     //nextBtnStyle={styles.nextButton}
                                 previousBtnText=
