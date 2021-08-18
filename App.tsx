@@ -4,13 +4,21 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
 import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
+
+declare global {
+  namespace ReactNativePaper {
+    interface ThemeColors {
+      extra: string,
+      light: string
+    }
+  }
+}
 
 // I think this can be deleted... but I didn't because I am scared
 const styles = StyleSheet.create({

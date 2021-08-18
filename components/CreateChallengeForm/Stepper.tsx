@@ -21,11 +21,11 @@ type Props = {
 }
 
 const Stepper = (props: Props) => {
-    const { colors } = useTheme();
+    const {colors} = useTheme();
 
     const styles = StyleSheet.create({
         container: {
-            borderWidth:0
+            borderWidth: 0
         },
         nextButton: {
             backgroundColor: colors.accent,
@@ -57,40 +57,43 @@ const Stepper = (props: Props) => {
     });
 
     return <ProgressSteps completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
-                       completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}
+                          completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}
                           progressBarColor={colors.accent}>
-            {content.map((step, index) => {
-                // @ts-ignore
-                return (
-                  <ProgressStep style={styles.container}
-                                key={index}
-                                nextBtnText=
-                                  {<Icon
-                                    name={'arrow-forward-outline'}
-                                    type={'ionicon'}
-                                    style={styles.nextButton}
-                                    color={colors.background}
-                                  />}
-                                onSubmit={props.onSubmit}
-                                finishBtnText=
-                                  {<Icon
-                                    name={'checkmark-outline'}
-                                    type={'ionicon'}
-                                    style={styles.nextButton}
-                                  />}
-                    //nextBtnStyle={styles.nextButton}
-                                previousBtnText=
-                                  {<Icon
-                                    name={'arrow-back-outline'}
-                                    type={'ionicon'}
-                                    style={styles.previousButtonIcon}
-                                  />}
-                  >
-                      {step}
-                  </ProgressStep>
-                );
-            })}
-        </ProgressSteps>;
+        {content.map((step, index) => {
+            // @ts-ignore
+            return (
+                <ProgressStep
+                    style={styles.container}
+                    key={index}
+                    nextBtnText={
+                        <Icon
+                            name={'arrow-forward-outline'}
+                            type={'ionicon'}
+                            style={styles.nextButton}
+                            color={colors.background}
+                        /> as unknown as string
+                    }
+                    onSubmit={props.onSubmit}
+                    finishBtnText={
+                        <Icon
+                            name={'checkmark-outline'}
+                            type={'ionicon'}
+                            style={styles.nextButton}
+                        /> as unknown as string
+                    }
+                    previousBtnText={
+                        <Icon
+                            name={'arrow-back-outline'}
+                            type={'ionicon'}
+                            style={styles.previousButtonIcon}
+                        /> as unknown as string
+                    }
+                >
+                    {step}
+                </ProgressStep>
+            );
+        })}
+    </ProgressSteps>;
 }
 
 export default Stepper;

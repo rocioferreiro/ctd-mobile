@@ -4,7 +4,6 @@ import {ONUObjectives} from "./ONUObjectives";
 import {Button, IconButton, useTheme} from "react-native-paper";
 import ImageCarousel from "./objectivesScroll";
 import {Icon} from "react-native-elements";
-import { mdiCheck } from '@mdi/js';
 
 const obj1 = {image: require(`../../assets/images/objetive1.png`), title: "NO POVERTY", description: "Economic growth must be inclusive to provide sustainable jobs and promote equality."}
 const obj2 = {image: require(`../../assets/images/objetive2.png`), title: "ZERO HUNGER", description: "The food and agriculture sector offers key solutions for development, and is central for hunger and poverty eradication."}
