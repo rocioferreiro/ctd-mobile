@@ -99,7 +99,7 @@ const ChallengePoints = () => {
     return (
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
             <Card style={styles.card}>
-                <Text style={styles.title}>What will you Reward?</Text>
+                <Text style={styles.title}>How many points will you Reward?</Text>
                 <Text style={styles.subTitle}>Total points for completing the challenge</Text>
                 <Badge style={styles.points}>
                     {totalPoints}
