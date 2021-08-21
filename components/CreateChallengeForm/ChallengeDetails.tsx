@@ -14,7 +14,7 @@ const ChallengeDetails = (props: Props) => {
   const { colors } = useTheme();
   const {formik} = props;
   const [goal, setGoal] = React.useState('');
-  const [goals, setGoals] = React.useState<number[]>([])
+  const [goals, setGoals] = React.useState<ChallengeObjective[]>([])
   const [onuObjectives, setOnuObjectives] = React.useState([]);
   const [openChoices, setOpenChoices] = React.useState(false);
 
@@ -185,12 +185,12 @@ const ChallengeDetails = (props: Props) => {
                       }
                     />
                 </View>
-              {formik.values.challengeObjectives.map((t,index) =>
+              {goals.map((t,index) =>
                 <List.Item key={index} style={styles.listItem}
-                           title={t}
+                           title={t.name}
                            rippleColor={'#313131'}
                            right={props => <Icon {...props} name="close-outline" type={'ionicon'} onPress={() => {
-                             setGoals(goals.filter(i => i !== t));
+                             setGoals(goals.filter(i => i.name !== t.name));
                              formik.setFieldValue('challengeObjectives', goals);
                            }} />}
                 />)}
