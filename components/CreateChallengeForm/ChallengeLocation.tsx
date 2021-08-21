@@ -6,7 +6,11 @@ import MapView, {LatLng, Marker} from "react-native-maps";
 import {Dimensions, StyleSheet} from "react-native";
 import * as Location from "expo-location";
 
-const ChallengeLocation = () => {
+type Props = {
+    formik: any
+}
+
+const ChallengeLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
     const [locationExtraInfo, setLocationExtraInfo] = useState('');

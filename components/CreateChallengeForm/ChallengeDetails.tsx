@@ -1,13 +1,15 @@
 import React from "react";
-
 import {Button, Card, useTheme, List} from "react-native-paper";
 import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
-import {ONUObjectives} from "./ONUObjectives";
 import {colorShade} from "../Models/shadingColor";
 
-const ChallengeDetails = () => {
+type Props = {
+  formik: any
+}
+
+const ChallengeDetails = (props: Props) => {
   const { colors } = useTheme();
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');

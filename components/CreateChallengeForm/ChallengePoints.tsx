@@ -1,16 +1,20 @@
 import React, {useState} from "react";
 import Slider from '@react-native-community/slider';
 import {Badge, Card, IconButton, useTheme} from "react-native-paper";
-import {View,Text} from "../Themed";
+import {View, Text} from "../Themed";
 import {Dimensions, StyleSheet, TextInput} from "react-native";
+
+type Props = {
+    formik: any
+}
 
 const minPoints = 0;
 const maxPoints = 1000;
 
-const ChallengePoints = () => {
+const ChallengePoints = (props: Props) => {
     const [totalPoints, setTotalPoints] = useState(0);
     const [objectivePoints, setObjectivePoints] = useState("0");
-    const { colors } = useTheme();
+    const {colors} = useTheme();
 
     const styles = StyleSheet.create({
         card: {
@@ -104,16 +108,16 @@ const ChallengePoints = () => {
                 <Badge style={styles.points}>
                     {totalPoints}
                 </Badge>
-                    <Slider
-                        step={10}
-                        minimumValue={minPoints}
-                        maximumValue={maxPoints}
-                        aria-label="slider"
-                        minimumTrackTintColor={colors.primary}
-                        maximumTrackTintColor={`rgba(${colors.primary}, 0.5)`}
-                        thumbTintColor={colors.accent}
-                        onValueChange={(current) => setTotalPoints(current)}
-                    />
+                <Slider
+                    step={10}
+                    minimumValue={minPoints}
+                    maximumValue={maxPoints}
+                    aria-label="slider"
+                    minimumTrackTintColor={colors.primary}
+                    maximumTrackTintColor={`rgba(${colors.primary}, 0.5)`}
+                    thumbTintColor={colors.accent}
+                    onValueChange={(current) => setTotalPoints(current)}
+                />
                 <View style={styles.sliderContainer}>
                     <Text style={styles.sliderText}>{minPoints}</Text>
                     <Text style={styles.sliderText}>{maxPoints}</Text>
