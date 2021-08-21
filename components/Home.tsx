@@ -67,6 +67,7 @@ const Home = () => {
         description: '',
         challengeObjectives: [],
         coordinates: null,
+        locationExtraInfo: '',
         inscriptionsFrom: new Date(),
         inscriptionsTo: new Date(),
         startsFrom: new Date(),

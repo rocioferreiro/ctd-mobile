@@ -3,6 +3,7 @@ export type CreateChallengeFormValues = {
     description: string,
     challengeObjectives: ChallengeObjective[],
     coordinates: Coordinates,
+    locationExtraInfo: string,
     inscriptionsFrom?: Date,
     inscriptionsTo?: Date,
     startsFrom: Date,

@@ -13,7 +13,6 @@ type Props = {
 const ChallengeLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
-    const [locationExtraInfo, setLocationExtraInfo] = useState('');
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
@@ -29,7 +28,6 @@ const ChallengeLocation = (props: Props) => {
             setLocation(location.coords);
         })();
     }, []);
-
 
     const styles = StyleSheet.create({
         title: {
@@ -85,7 +83,9 @@ const ChallengeLocation = (props: Props) => {
                       }}
                       onPress={(e) => {
                           setMarker(e.nativeEvent.coordinate);
+                          props.formik.values.coordinates = {coordinates: [marker.latitude, marker.longitude]}
                           console.log(marker);
+                          console.log(props.formik.values.coordinates);
                       }}>
                         {
                             marker &&
@@ -100,8 +100,8 @@ const ChallengeLocation = (props: Props) => {
                     dense={false}
                     multiline={true}
                     label="Add additional info (optional)"
-                    value={locationExtraInfo}
-                    onChangeText={t => setLocationExtraInfo(t)}
+                    value={props.formik.values.locationExtraInfo}
+                    onChangeText={props.formik.handleChange}
                 />
             </Card>
         </View>

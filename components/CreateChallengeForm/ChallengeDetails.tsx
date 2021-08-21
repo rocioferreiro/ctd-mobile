@@ -11,8 +11,6 @@ type Props = {
 
 const ChallengeDetails = (props: Props) => {
   const { colors } = useTheme();
-  const [title, setTitle] = React.useState('');
-  const [description, setDescription] = React.useState('');
   const [goal, setGoal] = React.useState('');
   const [goals, setGoals] = React.useState<string[]>([])
   const [onuObjectives, setOnuObjectives] = React.useState([]);
@@ -130,16 +128,16 @@ const ChallengeDetails = (props: Props) => {
             <Input
               placeholder={"Challenge Title"}
               style={styles.input}
-              value={title}
-              onChangeText={title => setTitle(title)}
+              value={props.formik.values.title}
+              onChangeText={props.formik.handleChange}
               inputContainerStyle={{borderBottomWidth: 0}}
             />
 
             <Input
               placeholder={"Challenge Description"}
               style={[styles.input, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
-              value={description}
-              onChangeText={t => setDescription(t)}
+              value={props.formik.values.description}
+              onChangeText={props.formik.handleChange}
               multiline={true}
               inputContainerStyle={{borderBottomWidth: 0}}
             />
