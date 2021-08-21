@@ -129,7 +129,7 @@ const ChallengeDetails = (props: Props) => {
               placeholder={"Challenge Title"}
               style={styles.input}
               value={props.formik.values.title}
-              onChangeText={props.formik.handleChange}
+              onChangeText={(title) => props.formik.setFieldValue('title', title)}
               inputContainerStyle={{borderBottomWidth: 0}}
             />
 
@@ -137,7 +137,7 @@ const ChallengeDetails = (props: Props) => {
               placeholder={"Challenge Description"}
               style={[styles.input, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
               value={props.formik.values.description}
-              onChangeText={props.formik.handleChange}
+              onChangeText={(desc) => props.formik.setFieldValue('description', desc)}
               multiline={true}
               inputContainerStyle={{borderBottomWidth: 0}}
             />

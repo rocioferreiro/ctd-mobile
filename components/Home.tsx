@@ -59,6 +59,7 @@ const Home = () => {
     const onSubmitCreation = () => {
         //setCreationSuccess(true);
         //setCreate(false)
+        console.log(formik.values);
         toastOn()
     }
 
