@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} fro
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
 import {colorShade} from "../Models/shadingColor";
+import {ChallengeObjective} from "./Types";
 
 type Props = {
   formik: any
@@ -11,8 +12,9 @@ type Props = {
 
 const ChallengeDetails = (props: Props) => {
   const { colors } = useTheme();
+  const {formik} = props;
   const [goal, setGoal] = React.useState('');
-  const [goals, setGoals] = React.useState<string[]>([])
+  const [goals, setGoals] = React.useState<number[]>([])
   const [onuObjectives, setOnuObjectives] = React.useState([]);
   const [openChoices, setOpenChoices] = React.useState(false);
 
@@ -120,7 +122,7 @@ const ChallengeDetails = (props: Props) => {
     <View style={{flex: 1}}>
       <Card style={styles.card}>
         {openChoices ?
-          <OnuObjectiveChoice selected={onuObjectives} setSelected={setOnuObjectives} setOpen={setOpenChoices}/> :
+          <OnuObjectiveChoice formik={formik} selected={onuObjectives} setSelected={setOnuObjectives} setOpen={setOpenChoices}/> :
 
           <View>
             <Text style={styles.title}>Create a new Challenge!</Text>
@@ -128,16 +130,16 @@ const ChallengeDetails = (props: Props) => {
             <Input
               placeholder={"Challenge Title"}
               style={styles.input}
-              value={props.formik.values.title}
-              onChangeText={(title) => props.formik.setFieldValue('title', title)}
+              value={formik.values.title}
+              onChangeText={(title) => formik.setFieldValue('title', title)}
               inputContainerStyle={{borderBottomWidth: 0}}
             />
 
             <Input
               placeholder={"Challenge Description"}
               style={[styles.input, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
-              value={props.formik.values.description}
-              onChangeText={(desc) => props.formik.setFieldValue('description', desc)}
+              value={formik.values.description}
+              onChangeText={(desc) => formik.setFieldValue('description', desc)}
               multiline={true}
               inputContainerStyle={{borderBottomWidth: 0}}
             />
@@ -174,19 +176,23 @@ const ChallengeDetails = (props: Props) => {
                         <View style={styles.goalAdderIcon}>
                         <Icon style={styles.icon} name={'add-outline'} type={'ionicon'} color={'#fff'} onPress={() => {
                           if(goal !== '') {
-                            setGoals([...goals, goal])
-                            setGoal('')
+                            setGoals([...goals, {name: goal, points: 0}]);
+                            formik.setFieldValue('challengeObjectives', goals);
+                            setGoal('');
                           }
                         }} />
                         </View>
                       }
                     />
                 </View>
-              {goals.map((t,index) =>
+              {formik.values.challengeObjectives.map((t,index) =>
                 <List.Item key={index} style={styles.listItem}
                            title={t}
                            rippleColor={'#313131'}
-                           right={props => <Icon {...props} name="close-outline" type={'ionicon'} onPress={() => setGoals(goals.filter(i => i !== t))} />}
+                           right={props => <Icon {...props} name="close-outline" type={'ionicon'} onPress={() => {
+                             setGoals(goals.filter(i => i !== t));
+                             formik.setFieldValue('challengeObjectives', goals);
+                           }} />}
                 />)}
 
             </View>

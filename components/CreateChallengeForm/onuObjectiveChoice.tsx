@@ -26,7 +26,8 @@ const obj17 = {image: require(`../../assets/images/objetive17.png`), title: "PAR
 type Props = {
   selected: any[],
   setSelected: (any) => void,
-  setOpen: (boolean) => void
+  setOpen: (boolean) => void,
+  formik: any
 }
 const OnuObjectiveChoice  = (props: Props) => {
   const { colors } = useTheme();
@@ -55,7 +56,7 @@ const OnuObjectiveChoice  = (props: Props) => {
     [selectedImage]
   );
 
-  const objetciveSize = Dimensions.get('window').width / 5;
+  const objectiveSize = Dimensions.get('window').width / 5;
 
   const styles = StyleSheet.create({
     title: {
@@ -70,24 +71,24 @@ const OnuObjectiveChoice  = (props: Props) => {
       height: Dimensions.get('window').height * 0.6,
     },
     image: {
-      width: objetciveSize,
-      height: objetciveSize,
+      width: objectiveSize,
+      height: objectiveSize,
       opacity: 0.5
     },
     imageChecked: {
-      width: objetciveSize,
-      height: objetciveSize,
+      width: objectiveSize,
+      height: objectiveSize,
     },
     imageWrapperChecked: {
       borderColor: colors.text,
       borderStyle: 'solid',
       borderWidth:  5,
-      width: objetciveSize + 10,
-      height: objetciveSize + 10,
+      width: objectiveSize + 10,
+      height: objectiveSize + 10,
     },
     imageWrapper: {
-      width: objetciveSize,
-      height: objetciveSize,
+      width: objectiveSize,
+      height: objectiveSize,
       margin: 5,
       backgroundColor: colors.surface
     },
@@ -172,7 +173,10 @@ const OnuObjectiveChoice  = (props: Props) => {
         {props.selected.length > 0 ?
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
             {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
-              return <TouchableWithoutFeedback key={index} onPress={() => props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]))}>
+              return <TouchableWithoutFeedback key={index} onPress={() => {
+                  props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
+                  props.formik.setFieldValue('ONUObjective', props.formik.values.ONUObjective.filter(i => i !== index));
+              }}>
                 <Image style={styles.imageOpt} source={onuPictures[s.index].image}/>
               </TouchableWithoutFeedback>
             })}
@@ -190,8 +194,14 @@ const OnuObjectiveChoice  = (props: Props) => {
         <Text style={styles.text}>{onuPictures[currentIndex].description}</Text>
         <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
           onPress={() => {
-            if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0)
-              props.setSelected( [...props.selected, {obj: Object.keys(ONUObjectives)[currentIndex], index: currentIndex, image: onuPictures[currentIndex].image}])
+            if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
+              props.setSelected([...props.selected, {
+                obj: Object.keys(ONUObjectives)[currentIndex],
+                index: currentIndex,
+                image: onuPictures[currentIndex].image
+              }]);
+              props.formik.setFieldValue('ONUObjective', [...props.formik.values.ONUObjective, currentIndex]);
+            }
           }}
         />
       </View>
