@@ -54,7 +54,7 @@ query findUserById{
 
 export const FIND_NEARBY_CHALLENGES = gql`
 query findNearbyChallenges {
-  findNearbyChallenges(coordinates: {latitude: 0, longitude: 0}, xDis: 0.1, yDis: 0.1){
+  findNearbyChallenges(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
     id
     title
     description
