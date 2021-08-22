@@ -83,7 +83,7 @@ const ChallengeLocation = (props: Props) => {
                       }}
                       onPress={(e) => {
                           setMarker(e.nativeEvent.coordinate);
-                          props.formik.setFieldValue('coordinates', {coordinates: [marker.latitude, marker.longitude]});
+                          props.formik.setFieldValue('coordinates', {coordinates: [e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude]});
                           console.log(marker);
                           console.log(props.formik.values.coordinates);
                       }}>

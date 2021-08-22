@@ -3,9 +3,7 @@ import {Button, Card, useTheme, List} from "react-native-paper";
 import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
-import {colorShade} from "../Models/shadingColor";
-import {ChallengeObjective} from "./Types";
-import {ONUObjectives} from "../ONUObjectives";
+import {ChallengeObjective} from "../Types";
 import {colorShade} from "../../Models/shadingColor";
 
 type Props = {

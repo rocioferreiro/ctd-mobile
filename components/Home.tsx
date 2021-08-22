@@ -73,12 +73,11 @@ const Home = () => {
     const parseAndSendChallenge = (challenge) => {
         const newChallengeDTOInput = {
             "title": challenge.title,
-            "locationExtraInfo": challenge.locationExtraInfo,// TODO add to back?
             "startEvent": convertDateToString(challenge.startsFrom),
             "endEvent": convertDateToString(challenge.finishesOn),
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
-            "description": challenge.description,
+            "description": challenge.description + '\n' + challenge.locationExtraInfo,
             "owner": "metalaejfnwkbvg871b9d0b-829d-4a17-bb02-33358fc0c1c9",// TODO change to user id when users are implemented
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
@@ -92,7 +91,8 @@ const Home = () => {
         });
     }
     const onSubmitCreation = () => {
-        parseAndSendChallenge(formik.values);
+        // parseAndSendChallenge(formik.values);
+        console.log(formik.values);
     }
 
     const initialValues: CreateChallengeFormValues = {
