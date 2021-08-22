@@ -31,18 +31,30 @@ const DatePicker = (props: Props) => {
     },
     backdrop: {
       backgroundColor: 'rgba(0,0,0,0)'
-    }
+    },
+    selectedDateContainerStyle: {
+      height: 35,
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "blue",
+    },
+    selectedDateStyle: {
+      fontWeight: "bold",
+      color: "white",
+    },
   });
 
   return props.open &&
     <SafeAreaView style={styles.back}>
       <View style={styles.container}>
         <DateRangePicker
-            selectedDateContainerStyle={{backgroundColor: colors.accent}}
+            selectedDateContainerStyle={styles.selectedDateContainerStyle}
+            selectedDateStyle={styles.selectedDateStyle}
           onSelectDateRange={(range) => {
             setDates(range);
           }}
-          responseFormat="YYYY-MM-DD"
+          responseFormat="MMM-DD-YYYY"
         />
           <Button mode={'contained'} onPress={props.close}>Done</Button>
       </View>

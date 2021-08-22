@@ -9,10 +9,10 @@ import moment from "moment";
 
 const ChallengeExtraInfo = () => {
   const {colors} = useTheme()
-  const [startInscriptionDate, setStartInscriptionDate] = React.useState(moment().toString())
-  const [startChallengeDate, setStartChallengeDate] = React.useState(moment().toString())
-  const [endInscriptionDate, setEndInscriptionDate] = React.useState(moment().toString())
-  const [endChallengeDate, setEndChallengeDate] = React.useState(moment().toString())
+  const [startInscriptionDate, setStartInscriptionDate] = React.useState(moment().format('MMM-DD-YYYY'))
+  const [startChallengeDate, setStartChallengeDate] = React.useState(moment().format('MMM-DD-YYYY'))
+  const [endInscriptionDate, setEndInscriptionDate] = React.useState(moment().format('MMM-DD-YYYY'))
+  const [endChallengeDate, setEndChallengeDate] = React.useState(moment().format('MMM-DD-YYYY'))
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
 
@@ -47,11 +47,13 @@ const ChallengeExtraInfo = () => {
       fontSize: 15,
       borderRadius: 30,
       padding: 5,
+      paddingLeft: 10,
       shadowOffset: {width: 2, height: 2},
       shadowOpacity: 0.5,
       shadowColor: '#DAB99D',
       elevation: 4,
-      margin: 0
+      margin: 0,
+      opacity:1
     },
     goalAdderIcon: {
       display: "flex",
@@ -85,13 +87,11 @@ const ChallengeExtraInfo = () => {
               <Input
                 style={styles.input}
                 value={startInscriptionDate.toString()}
-                disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
                 value={endInscriptionDate.toString()}
-                disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
             </View>
