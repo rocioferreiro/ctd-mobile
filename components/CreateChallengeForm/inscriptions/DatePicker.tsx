@@ -1,8 +1,8 @@
 import React from "react";
 import {View} from "../../Themed";
-import {Dimensions, SafeAreaView, StyleSheet} from "react-native";
-import DateRangePicker from "rnv-date-range-picker";
-import {Button, useTheme} from "react-native-paper";
+import {SafeAreaView, StyleSheet} from "react-native";
+import DateRPicker from 'react-native-neat-date-picker'
+import {useTheme} from "react-native-paper";
 
 type Props = {
   startDate: any,
@@ -15,10 +15,9 @@ type Props = {
 const DatePicker = (props: Props) => {
   const {colors} = useTheme()
 
-  const setDates = (dates) => {
-    const {firstDate, secondDate} = dates
-    if (firstDate) props.setStartDate(firstDate)
-    if (secondDate) props.setEndDate(secondDate)
+  const setDates = (start, end) => {
+    props.setStartDate(start)
+    props.setEndDate(end)
   }
   const styles = StyleSheet.create({
     back: {
@@ -49,15 +48,22 @@ const DatePicker = (props: Props) => {
   return props.open &&
     <SafeAreaView style={styles.back}>
       <View style={styles.container}>
-        <DateRangePicker
-          selectedDateContainerStyle={styles.selectedDateContainerStyle}
-          selectedDateStyle={styles.selectedDateStyle}
-          onSelectDateRange={(range) => {
-            setDates(range);
+        <DateRPicker
+          isVisible={props.open}
+          mode={'range'}
+          onConfirm={(start, end) => {
+            setDates(start, end);
+            props.close()
           }}
-          blockSingleDateSelection={true}
+          startDate={props.startDate}
+          endDate={props.endDate}
+          onCancel={props.close}
+          colorOptions={{headerColor: colors.surface,
+            headerTextColor:colors.primary,
+            weekDaysColor: colors.primary,
+            selectedDateBackgroundColor: colors.primary,
+            confirmButtonColor: colors.primary}}
         />
-          <Button mode={'contained'} onPress={props.close}>Done</Button>
       </View>
     </SafeAreaView>
 }

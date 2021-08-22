@@ -9,10 +9,10 @@ import moment from "moment";
 
 const ChallengeExtraInfo = () => {
   const {colors} = useTheme()
-  const [startInscriptionDate, setStartInscriptionDate] = React.useState(moment())
-  const [startChallengeDate, setStartChallengeDate] = React.useState(moment())
-  const [endInscriptionDate, setEndInscriptionDate] = React.useState(moment())
-  const [endChallengeDate, setEndChallengeDate] = React.useState(moment())
+  const [startInscriptionDate, setStartInscriptionDate] = React.useState(new Date())
+  const [startChallengeDate, setStartChallengeDate] = React.useState(new Date())
+  const [endInscriptionDate, setEndInscriptionDate] = React.useState(new Date())
+  const [endChallengeDate, setEndChallengeDate] = React.useState(new Date())
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
 
@@ -70,7 +70,6 @@ const ChallengeExtraInfo = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
-      {(!openChallengeCalendar && !openInscriptionCalendar) &&
       <Card style={styles.card}>
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
           <Text style={styles.title}>When will your challenge be?</Text>
@@ -86,12 +85,12 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startInscriptionDate.format('MMM-DD-YYYY')}
+                value={startInscriptionDate.toDateString()}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endInscriptionDate.format('MMM-DD-YYYY')}
+                value={endInscriptionDate.toDateString()}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
             </View>
@@ -117,13 +116,13 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startChallengeDate.format('MMM-DD-YYYY')}
+                value={startChallengeDate.toDateString()}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endChallengeDate.format('MMM-DD-YYYY')}
+                value={endChallengeDate.toDateString()}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
@@ -146,7 +145,6 @@ const ChallengeExtraInfo = () => {
         <Text style={styles.label}>Upload Image</Text>
         <ImagePicker/>
       </Card>
-      }
 
       <DatePicker startDate={startInscriptionDate} setStartDate={setStartInscriptionDate} close={() => setOpenInscriptionCalendar(false)}
                   endDate={endInscriptionDate} setEndDate={setEndInscriptionDate} open={openInscriptionCalendar}/>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {View, Platform, Image, Dimensions, StyleSheet} from "react-native";
 import * as IPicker from 'expo-image-picker';
 import {Icon} from "react-native-elements";
-import {Button, useTheme} from "react-native-paper";
+import {useTheme, IconButton, Button} from "react-native-paper";
 // import Auth from '@aws-amplify/auth';
 // import Storage from '@aws-amplify/storage';
 // import Amplify from '@aws-amplify/core';
@@ -36,6 +36,7 @@ const ImagePicker = () =>  {
     },
     icon: {
       textAlign: 'center',
+      zIndex: 1
     },
     buttonWrap:{
       display: "flex",
@@ -151,8 +152,8 @@ const ImagePicker = () =>  {
       {image ? <Image source={{ uri: image }} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />:
       <Image source={require('../../../assets/images/no-image.png')} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />}
       <View style={styles.buttonWrap}>
-        <Button style={styles.iconWrap} onPress={pickImage}><Icon style={styles.icon} name={'image-outline'} type={'ionicon'}/></Button>
-        <Button style={styles.iconWrap} onPress={takeImage}><Icon style={styles.icon} name={'camera-outline'} type={'ionicon'}/></Button>
+        <IconButton style={styles.iconWrap} onPress={pickImage} icon={'folder-image'} color={'#fff'}/>
+        <IconButton style={styles.iconWrap} onPress={pickImage} icon={'camera'} color={'#fff'}/>
       </View>
     </View>
   );
