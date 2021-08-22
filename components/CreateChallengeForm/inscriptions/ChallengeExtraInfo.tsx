@@ -9,10 +9,10 @@ import moment from "moment";
 
 const ChallengeExtraInfo = () => {
   const {colors} = useTheme()
-  const [startInscriptionDate, setStartInscriptionDate] = React.useState(moment().format('MMM-DD-YYYY'))
-  const [startChallengeDate, setStartChallengeDate] = React.useState(moment().format('MMM-DD-YYYY'))
-  const [endInscriptionDate, setEndInscriptionDate] = React.useState(moment().format('MMM-DD-YYYY'))
-  const [endChallengeDate, setEndChallengeDate] = React.useState(moment().format('MMM-DD-YYYY'))
+  const [startInscriptionDate, setStartInscriptionDate] = React.useState(moment())
+  const [startChallengeDate, setStartChallengeDate] = React.useState(moment())
+  const [endInscriptionDate, setEndInscriptionDate] = React.useState(moment())
+  const [endChallengeDate, setEndChallengeDate] = React.useState(moment())
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
 
@@ -86,12 +86,12 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startInscriptionDate.toString()}
+                value={startInscriptionDate.format('MMM-DD-YYYY')}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endInscriptionDate.toString()}
+                value={endInscriptionDate.format('MMM-DD-YYYY')}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
             </View>
@@ -117,13 +117,13 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startChallengeDate.toString()}
+                value={startChallengeDate.format('MMM-DD-YYYY')}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endChallengeDate.toString()}
+                value={endChallengeDate.format('MMM-DD-YYYY')}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />

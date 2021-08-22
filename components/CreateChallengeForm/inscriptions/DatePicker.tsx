@@ -37,11 +37,12 @@ const DatePicker = (props: Props) => {
       width: "100%",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "blue",
+      backgroundColor: colors.accent,
     },
     selectedDateStyle: {
       fontWeight: "bold",
       color: "white",
+      backgroundColor: colors.accent,
     },
   });
 
@@ -49,12 +50,12 @@ const DatePicker = (props: Props) => {
     <SafeAreaView style={styles.back}>
       <View style={styles.container}>
         <DateRangePicker
-            selectedDateContainerStyle={styles.selectedDateContainerStyle}
-            selectedDateStyle={styles.selectedDateStyle}
+          selectedDateContainerStyle={styles.selectedDateContainerStyle}
+          selectedDateStyle={styles.selectedDateStyle}
           onSelectDateRange={(range) => {
             setDates(range);
           }}
-          responseFormat="MMM-DD-YYYY"
+          blockSingleDateSelection={true}
         />
           <Button mode={'contained'} onPress={props.close}>Done</Button>
       </View>
