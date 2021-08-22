@@ -2,9 +2,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import ChallengeDetails from "./ChallengeDetails";
+import ChallengeDetails from "./Details/ChallengeDetails";
 import ChallengeLocation from "./ChallengeLocation";
-import ChallengeExtraInfo from "./ChallengeExtraInfo";
+import ChallengeExtraInfo from "./inscriptions/ChallengeExtraInfo";
 import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
