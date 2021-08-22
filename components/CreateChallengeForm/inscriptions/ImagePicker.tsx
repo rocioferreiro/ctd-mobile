@@ -3,6 +3,13 @@ import {View, Platform, Image, Dimensions, StyleSheet} from "react-native";
 import * as IPicker from 'expo-image-picker';
 import {Icon} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
+// import Auth from '@aws-amplify/auth';
+// import Storage from '@aws-amplify/storage';
+// import Amplify from '@aws-amplify/core';
+// import awsconfig from './aws-exports';
+// Amplify.configure(awsconfig);
+
+// -------------- LOS COMMENTS DE ESTA CLASE SON PARA SUBIR Y BAJAR IMAGENES DE AWS S3, NO BORRAR --------------
 
 const ImagePicker = () =>  {
   const [image, setImage] = useState(null);
@@ -82,6 +89,62 @@ const ImagePicker = () =>  {
       setImage(result.uri);
     }
   };
+
+  // handleImagePicked = async (pickerResult) => {
+  //   try {
+  //     if (pickerResult.cancelled) {
+  //       alert('Upload cancelled');
+  //       return;
+  //     } else {
+  //       setPercentage(0);
+  //       const img = await fetchImageFromUri(pickerResult.uri);
+  //       const uploadUrl = await uploadImage('demo.jpg', img);
+  //       downloadImage(uploadUrl);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     alert('Upload failed');
+  //   }
+  // };
+  //
+  // uploadImage = (filename, img) => {
+  //   Auth.currentCredentials();
+  //   return Storage.put(filename, img, {
+  //     level: 'public',
+  //     contentType: 'image/jpeg',
+  //     progressCallback(progress) {
+  //       setLoading(progress);
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return response.key;
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       return error.response;
+  //     });
+  // };
+  //
+  // const setLoading = (progress) => {
+  //   const calculated = parseInt((progress.loaded / progress.total) * 100);
+  //   updatePercentage(calculated); // due to s3 put function scoped
+  // };
+  //
+  // const updatePercentage = (number) => {
+  //   setPercentage(number);
+  // };
+  //
+  // downloadImage = (uri) => {
+  //   Storage.get(uri)
+  //     .then((result) => setImage(result))
+  //     .catch((err) => console.log(err));
+  // };
+  //
+  // const fetchImageFromUri = async (uri) => {
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+  //   return blob;
+  // };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
