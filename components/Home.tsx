@@ -7,7 +7,9 @@ import {Button} from "react-native-elements";
 import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
 import Toast from 'react-native-toast-message';
 import {useFormik} from "formik";
-import {CreateChallengeFormValues} from "./CreateChallengeForm/Types";
+import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeForm/Types";
+import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
+import {useMutation} from "@apollo/client";
 
 const Home = () => {
 
@@ -23,6 +25,18 @@ const Home = () => {
     const [create, setCreate] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
+    const [createChallenge] = useMutation(CREATE_CHALLENGE, {
+        onCompleted: result => {
+            setCreationSuccess(true);
+            setCreate(false);
+            console.log(formik.values);
+        },
+        onError: err => {
+            toastOn();
+            console.log(err);
+        },
+        refetchQueries: []
+    });
 
     const styles = StyleSheet.create({
         background: {
@@ -54,13 +68,31 @@ const Home = () => {
             marginTop: Dimensions.get('window').height * 0.03,
             backgroundColor: colors.surface
         }
-    })
+    });
 
+    const parseAndSendChallenge = (challenge) => {
+        const newChallengeDTOInput = {
+            "title": challenge.title,
+            "locationExtraInfo": challenge.locationExtraInfo,// TODO add to back?
+            "startEvent": convertDateToString(challenge.startsFrom),
+            "endEvent": convertDateToString(challenge.finishesOn),
+            "startInscription": convertDateToString(challenge.inscriptionsFrom),
+            "endInscription": convertDateToString(challenge.inscriptionsTo),
+            "description": challenge.description,
+            "owner": "metalaejfnwkbvg871b9d0b-829d-4a17-bb02-33358fc0c1c9",// TODO change to user id when users are implemented
+            "categories": challenge.ONUObjective,
+            "objectives": challenge.challengeObjectives,
+            "coordinates": {
+                "latitude": challenge.coordinates.coordinates[1],
+                "longitude": challenge.coordinates.coordinates[0]
+            }
+        }
+        createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
+            toastOn();
+        });
+    }
     const onSubmitCreation = () => {
-        //setCreationSuccess(true);
-        //setCreate(false)
-        console.log(formik.values);
-        toastOn()
+        parseAndSendChallenge(formik.values);
     }
 
     const initialValues: CreateChallengeFormValues = {
