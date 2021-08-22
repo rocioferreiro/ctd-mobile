@@ -8,6 +8,7 @@ import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries"
 import {ActivityIndicator, useTheme} from "react-native-paper";
 import CreateChallengeModal from "./CreateChallengeModal/CreateChallengeModal";
 import LottieView from "lottie-react-native";
+import * as Location from "expo-location";
 
 type MarkerInfo = {
     title: string,
@@ -27,6 +28,8 @@ const Map = () => {
 
     const {data: userData,error: userError,loading: userLoading} = useQuery(FIND_NEARBY_USERS);
     const {data: challengeData,error: challengeError,loading: challengeLoading} = useQuery(FIND_NEARBY_CHALLENGES);
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
     const [modal, setModal] = React.useState(false)
     const showModal = () => setModal(true);
     const hideModal = () => setModal(false);
@@ -48,6 +51,19 @@ const Map = () => {
             color: colors.primary
         }
     });
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location.coords);
+        })();
+    }, []);
 
     useEffect(() => {
         if(userData && challengeData){
@@ -111,8 +127,8 @@ const Map = () => {
         <View style={styles.container}>
             <MapView style={styles.map}
                      initialRegion={{
-                         latitude: -34.4618343,
-                         longitude: -58.8705242,
+                         latitude: location.latitude,
+                         longitude: location.longitude,
                          latitudeDelta: 0.1,
                          longitudeDelta: 0.1,
                      }}>
