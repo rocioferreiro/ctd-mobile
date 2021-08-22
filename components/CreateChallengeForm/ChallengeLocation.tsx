@@ -83,7 +83,7 @@ const ChallengeLocation = (props: Props) => {
                       }}
                       onPress={(e) => {
                           setMarker(e.nativeEvent.coordinate);
-                          props.formik.values.coordinates = {coordinates: [marker.latitude, marker.longitude]}
+                          props.formik.setFieldValue('coordinates', {coordinates: [marker.latitude, marker.longitude]});
                           console.log(marker);
                           console.log(props.formik.values.coordinates);
                       }}>
@@ -101,7 +101,7 @@ const ChallengeLocation = (props: Props) => {
                     multiline={true}
                     label="Add additional info (optional)"
                     value={props.formik.values.locationExtraInfo}
-                    onChangeText={props.formik.handleChange}
+                    onChangeText={(value) => {props.formik.setFieldValue('locationExtraInfo', value)}}
                 />
             </Card>
         </View>
