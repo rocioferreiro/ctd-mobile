@@ -153,7 +153,7 @@ const ImagePicker = () =>  {
       <Image source={require('../../../assets/images/no-image.png')} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />}
       <View style={styles.buttonWrap}>
         <IconButton style={styles.iconWrap} onPress={pickImage} icon={'folder-image'} color={'#fff'}/>
-        <IconButton style={styles.iconWrap} onPress={pickImage} icon={'camera'} color={'#fff'}/>
+        <IconButton style={styles.iconWrap} onPress={takeImage} icon={'camera'} color={'#fff'}/>
       </View>
     </View>
   );
