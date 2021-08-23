@@ -5,14 +5,13 @@ import ImagePicker from "./ImagePicker";
 import DatePicker from "./DatePicker";
 import {Dimensions, StyleSheet, Text} from "react-native";
 import {Icon, Input} from "react-native-elements";
-import moment from "moment";
 
-const ChallengeExtraInfo = () => {
+type Props = {
+  formik: any
+}
+
+const ChallengeExtraInfo = (props: Props) => {
   const {colors} = useTheme()
-  const [startInscriptionDate, setStartInscriptionDate] = React.useState(new Date())
-  const [startChallengeDate, setStartChallengeDate] = React.useState(new Date())
-  const [endInscriptionDate, setEndInscriptionDate] = React.useState(new Date())
-  const [endChallengeDate, setEndChallengeDate] = React.useState(new Date())
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
 
@@ -85,12 +84,12 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startInscriptionDate.toDateString()}
+                value={props.formik.values.inscriptionsFrom.toDateString()}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endInscriptionDate.toDateString()}
+                value={props.formik.values.inscriptionsTo.toDateString()}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
             </View>
@@ -116,13 +115,13 @@ const ChallengeExtraInfo = () => {
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
               <Input
                 style={styles.input}
-                value={startChallengeDate.toDateString()}
+                value={props.formik.values.startsFrom.toDateString()}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, width: (Dimensions.get("window").width*0.5)}}
               />
               <Input
                 style={styles.input}
-                value={endChallengeDate.toDateString()}
+                value={props.formik.values.finishesOn.toDateString()}
                 disabled={true}
                 inputContainerStyle={{borderBottomWidth: 0, margin: 0, width: (Dimensions.get("window").width*0.5)}}
               />
@@ -146,10 +145,10 @@ const ChallengeExtraInfo = () => {
         <ImagePicker/>
       </Card>
 
-      <DatePicker startDate={startInscriptionDate} setStartDate={setStartInscriptionDate} close={() => setOpenInscriptionCalendar(false)}
-                  endDate={endInscriptionDate} setEndDate={setEndInscriptionDate} open={openInscriptionCalendar}/>
-      <DatePicker startDate={startChallengeDate} setStartDate={setStartChallengeDate} close={() => setOpenChallengeCalendar(false)}
-                    endDate={endChallengeDate} setEndDate={setEndChallengeDate} open={openChallengeCalendar}/>
+      <DatePicker startDate={props.formik.values.inscriptionsFrom} setStartDate={date => {props.formik.setFieldValue('inscriptionsFrom', date)}} close={() => setOpenInscriptionCalendar(false)}
+                  endDate={props.formik.values.inscriptionsTo} setEndDate={date => {props.formik.setFieldValue('inscriptionsTo', date)}} open={openInscriptionCalendar}/>
+      <DatePicker startDate={props.formik.values.startsFrom} setStartDate={date => {props.formik.setFieldValue('startsFrom', date)}} close={() => setOpenChallengeCalendar(false)}
+                    endDate={props.formik.values.finishesOn} setEndDate={date => {props.formik.setFieldValue('finishesOn', date)}} open={openChallengeCalendar}/>
 
     </View>
   )

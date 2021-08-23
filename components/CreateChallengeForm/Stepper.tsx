@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./Details/ChallengeDetails";
@@ -9,18 +9,19 @@ import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
 
-const content = [
-    <ChallengeDetails/>,
-    <ChallengeLocation/>,
-    <ChallengeExtraInfo/>,
-    <ChallengePoints/>
-];
-
 type Props = {
-    onSubmit: (Challenge) => void
+    onSubmit: (Challenge) => void,
+    formik: any
 }
 
 const Stepper = (props: Props) => {
+    const content = [
+        <ChallengeDetails formik={props.formik}/>,
+        <ChallengeLocation formik={props.formik}/>,
+        <ChallengeExtraInfo formik={props.formik}/>,
+        <ChallengePoints formik={props.formik}/>
+    ];
+
     const {colors} = useTheme();
 
     const styles = StyleSheet.create({

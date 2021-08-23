@@ -6,10 +6,13 @@ import MapView, {LatLng, Marker} from "react-native-maps";
 import {Dimensions, StyleSheet} from "react-native";
 import * as Location from "expo-location";
 
-const ChallengeLocation = () => {
+type Props = {
+    formik: any
+}
+
+const ChallengeLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
-    const [locationExtraInfo, setLocationExtraInfo] = useState('');
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
@@ -25,7 +28,6 @@ const ChallengeLocation = () => {
             setLocation(location.coords);
         })();
     }, []);
-
 
     const styles = StyleSheet.create({
         title: {
@@ -81,7 +83,9 @@ const ChallengeLocation = () => {
                       }}
                       onPress={(e) => {
                           setMarker(e.nativeEvent.coordinate);
+                          props.formik.setFieldValue('coordinates', {coordinates: [e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude]});
                           console.log(marker);
+                          console.log(props.formik.values.coordinates);
                       }}>
                         {
                             marker &&
@@ -96,8 +100,8 @@ const ChallengeLocation = () => {
                     dense={false}
                     multiline={true}
                     label="Add additional info (optional)"
-                    value={locationExtraInfo}
-                    onChangeText={t => setLocationExtraInfo(t)}
+                    value={props.formik.values.locationExtraInfo}
+                    onChangeText={(value) => {props.formik.setFieldValue('locationExtraInfo', value)}}
                 />
             </Card>
         </View>
