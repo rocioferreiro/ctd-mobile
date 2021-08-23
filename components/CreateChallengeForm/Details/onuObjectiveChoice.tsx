@@ -1,7 +1,7 @@
 import React from "react";
 import {Animated, Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import {ONUObjectives} from "../ONUObjectives";
-import {Button, IconButton, useTheme} from "react-native-paper";
+import {IconButton, useTheme} from "react-native-paper";
 import ImageCarousel from "./objectivesScroll";
 import {Icon} from "react-native-elements";
 
@@ -175,7 +175,7 @@ const OnuObjectiveChoice  = (props: Props) => {
       <Text style={styles.title}>Choose the sustainable objectives </Text>
 
       <View style={{height: Dimensions.get('window').height * 0.12}}>
-        <Text style={styles.label}>Current Objectives </Text>
+        <Text style={styles.label}> Current Objectives </Text>
         {props.selected.length > 0 ?
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
             {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {

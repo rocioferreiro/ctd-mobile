@@ -76,7 +76,7 @@ const Home = () => {
             "endEvent": convertDateToString(challenge.finishesOn),
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
-            "description": challenge.description + '\n' + challenge.locationExtraInfo,
+            "description": challenge.description + challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : '',
             "owner": "meta-hys6qpx-c67af8c8-132c-4a8e-a0d7-154c9b71bb17",// TODO change to user id when users are implemented
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
@@ -85,14 +85,12 @@ const Home = () => {
                 "longitude": challenge.coordinates.coordinates[1]
             }
         }
-        console.log(newChallengeDTOInput);
         createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
             toastOn();
         });
     }
     const onSubmitCreation = () => {
         parseAndSendChallenge(formik.values);
-        // console.log(formik.values);
     }
 
     const initialValues: CreateChallengeFormValues = {

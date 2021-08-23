@@ -34,6 +34,7 @@ export default function ImageCarousel(props: Props) {
       aspectRatio: 2.5,
       flexGrow: 0,
       marginBottom: 20,
+      marginTop: 20
     },
     itemView: {
       backgroundColor: colors.surface,
