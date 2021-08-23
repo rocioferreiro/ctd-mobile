@@ -52,6 +52,12 @@ query findUserById{
 }
 `;
 
+export const GET_SCORE = gql`
+query getScore($newChallenge: ChallengeDTOInput!){
+    getSuggestedScore(challengeDTO: $newChallenge)
+}
+`;
+
 export const FIND_NEARBY_CHALLENGES = gql`
 query findNearbyChallenges {
   findNearbyChallenges(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){

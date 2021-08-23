@@ -1,9 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Slider from '@react-native-community/slider';
 import {Badge, Card, IconButton, useTheme} from "react-native-paper";
 import {View, Text} from "../Themed";
 import {Dimensions, StyleSheet, TextInput} from "react-native";
 import {ChallengeObjective} from "./Types";
+import {useLazyQuery} from "@apollo/client";
+import Toast from "react-native-toast-message";
+import {GET_SCORE} from "../apollo-graph/Queries";
 
 type Props = {
     formik: any
@@ -13,9 +16,53 @@ const minPoints = 0;
 const maxPoints = 1000;
 
 const ChallengePoints = (props: Props) => {
+
+    function toastOn() {
+        Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            text2: 'Review previews fields',
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
+    const parseChallenge = (challenge) => {
+        return {
+            "startEvent":'',
+            "endEvent": '',
+            "startInscription": '',
+            "endInscription": '',
+            "owner": "",
+            "categories": challenge.ONUObjective,
+            "objectives": challenge.challengeObjectives,
+            "coordinates": {
+                "latitude": 0,
+                "longitude": 0
+            }
+        }
+    }
+
     const [totalPoints, setTotalPoints] = useState(0);
     const [objectivePoints, setObjectivePoints] = useState("0");
     const {colors} = useTheme();
+
+    const [getScore, {data: resultedPoints}] = useLazyQuery(GET_SCORE, {
+        variables: {newChallenge: parseChallenge(props.formik.values)},
+        onError: () => {
+            toastOn();
+        }
+    });
+
+    useEffect(() => {
+        getScore()
+    }, [])
+
+    useEffect(() => {
+        if(resultedPoints){
+            console.log(resultedPoints)
+            setTotalPoints(parseInt(resultedPoints.getSuggestedScore))
+        }
+    }, [resultedPoints])
 
     const styles = StyleSheet.create({
         card: {
@@ -116,13 +163,14 @@ const ChallengePoints = (props: Props) => {
             <Card style={styles.card}>
                 <Text style={styles.title}>How many points will you Reward?</Text>
                 <Text style={styles.subTitle}>Total points for completing the challenge</Text>
-                <Badge style={styles.points}>
+                <Badge style={styles.points} size={50}>
                     {totalPoints}
                 </Badge>
                 <Slider
                     step={10}
                     minimumValue={minPoints}
                     maximumValue={maxPoints}
+                    value={totalPoints}
                     aria-label="slider"
                     minimumTrackTintColor={colors.primary}
                     maximumTrackTintColor={`rgba(${colors.primary}, 0.5)`}
@@ -152,14 +200,14 @@ const ChallengePoints = (props: Props) => {
                                             color={colors.primary}
                                             size={30}
                                             onPress={() => onInputChanged(`${parseInt(objectivePoints) - 1}`, objective)}
-                                            style={{padding: 0, margin: 0, marginRight: -10}}
+                                            style={{padding: 0, marginRight: -10}}
                                         />
                                         <IconButton
                                             icon="plus"
                                             color={colors.primary}
                                             size={30}
                                             onPress={() => onInputChanged(`${parseInt(objectivePoints) + 1}`, objective)}
-                                            style={{padding: 0, margin: 0}}
+                                            style={{padding: 0}}
                                         />
                                     </View>
                                 </View>
