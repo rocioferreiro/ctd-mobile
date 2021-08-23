@@ -29,7 +29,6 @@ const Home = () => {
         onCompleted: result => {
             setCreationSuccess(true);
             setCreate(false);
-            console.log(formik.values);
         },
         onError: err => {
             toastOn();
@@ -78,21 +77,22 @@ const Home = () => {
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
             "description": challenge.description + '\n' + challenge.locationExtraInfo,
-            "owner": "metalaejfnwkbvg871b9d0b-829d-4a17-bb02-33358fc0c1c9",// TODO change to user id when users are implemented
+            "owner": "meta-hys6qpx-c67af8c8-132c-4a8e-a0d7-154c9b71bb17",// TODO change to user id when users are implemented
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
             "coordinates": {
-                "latitude": challenge.coordinates.coordinates[1],
-                "longitude": challenge.coordinates.coordinates[0]
+                "latitude": challenge.coordinates.coordinates[0],
+                "longitude": challenge.coordinates.coordinates[1]
             }
         }
+        console.log(newChallengeDTOInput);
         createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
             toastOn();
         });
     }
     const onSubmitCreation = () => {
-        // parseAndSendChallenge(formik.values);
-        console.log(formik.values);
+        parseAndSendChallenge(formik.values);
+        // console.log(formik.values);
     }
 
     const initialValues: CreateChallengeFormValues = {

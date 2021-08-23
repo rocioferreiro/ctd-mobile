@@ -16,11 +16,17 @@ export interface ChallengeObjective {
     name: string,
     points: number
 }
+
 export interface Coordinates {
     coordinates: [number, number]
 }
 
 export const convertDateToString: (Date) => string = (date: Date) => {
-    return date.toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    let d = date.getDate() + '';
+    let m = date.getMonth() + '';
+    const y = date.getFullYear();
+    if (parseInt(d) < 10) d = '0' + d;
+    if (parseInt(m) < 10) m = '0' + m;
+    return y + '-' + m + '-' + d;
 }
 
