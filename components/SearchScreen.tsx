@@ -11,6 +11,7 @@ import {color} from "react-native-elements/dist/helpers";
 import ChallengeCardMini from "./ChallengeCard/ChallengesCardMini";
 
 
+
 const mockedChallenges = [
     {
         id: 1,

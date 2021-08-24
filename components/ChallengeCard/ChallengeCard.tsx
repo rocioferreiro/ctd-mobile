@@ -9,6 +9,7 @@ const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 interface Props {
     challenge: any;
+
 }
 
 const ChallengeCard = (props: Props) => {
@@ -46,7 +47,9 @@ const ChallengeCard = (props: Props) => {
             <Card.Actions>
                 <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}>
                     <Title style={{ fontSize: 15, color: colors.primary,
-                       }}>View</Title> </Button>
+                       }}>View</Title>
+
+                </Button>
                 <Button style={ {backgroundColor: colors.accent, borderRadius: 20,  width: 100, }} > <Title style={{ fontSize: 15, color: colors.primary,
                     }}>Join</Title></Button>
             </Card.Actions>
