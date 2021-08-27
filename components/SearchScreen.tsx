@@ -9,7 +9,8 @@ import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
 import {color} from "react-native-elements/dist/helpers";
 import ChallengeCardMini from "./ChallengeCard/ChallengesCardMini";
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const mockedChallenges = [
