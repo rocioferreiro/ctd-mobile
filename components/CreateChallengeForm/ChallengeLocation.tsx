@@ -7,6 +7,7 @@ import {Dimensions, StyleSheet} from "react-native";
 import * as Location from "expo-location";
 
 type Props = {
+    setDisabled: (boolean) => void
     formik: any
 }
 
@@ -17,6 +18,13 @@ const ChallengeLocation = (props: Props) => {
     const [errorMsg, setErrorMsg] = useState(null);
 
     useEffect(() => {
+        if(!marker){
+            props.setDisabled(true)
+        }
+        if(props.formik.values.coordinates) {
+            setMarker({latitude: props.formik.values.coordinates.coordinates[0], longitude: props.formik.values.coordinates.coordinates[1]})
+            props.setDisabled(false)
+        }
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -82,6 +90,7 @@ const ChallengeLocation = (props: Props) => {
                           longitudeDelta: 0.1,
                       }}
                       onPress={(e) => {
+                          props.setDisabled(false)
                           setMarker(e.nativeEvent.coordinate);
                           props.formik.setFieldValue('coordinates', {coordinates: [e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude]});
                           console.log(marker);

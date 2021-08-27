@@ -11,8 +11,13 @@ import {useTheme, IconButton, Button} from "react-native-paper";
 
 // -------------- LOS COMMENTS DE ESTA CLASE SON PARA SUBIR Y BAJAR IMAGENES DE AWS S3, NO BORRAR --------------
 
-const ImagePicker = () =>  {
-  const [image, setImage] = useState(null);
+type Props = {
+  image: any,
+  setImage: (any) => void
+}
+
+const ImagePicker = (props: Props) =>  {
+  const {image, setImage} = props
   const {colors} = useTheme()
 
   const styles = StyleSheet.create({
