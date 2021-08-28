@@ -23,7 +23,7 @@ const mockedChallenges = [
     },
 ]
 
-const ChallengePage = () => {
+const ChallengePage = ({navigation}) => {
     const { colors } = useTheme();
 
 

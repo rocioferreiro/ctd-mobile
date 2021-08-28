@@ -28,7 +28,7 @@ const mockedChallenges = [
     },
 ]
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
     const { colors } = useTheme();
     const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
 
@@ -64,7 +64,7 @@ const SearchScreen = () => {
           <ScrollView>
             {challengeList.map((challenge, i) =>
                   <View key={i} style={{marginBottom:5}}>
-                      <ChallengeCard challenge={challenge}/>
+                      <ChallengeCard navigation={navigation} challenge={challenge} />
                       <Divider />
                   </View>
 

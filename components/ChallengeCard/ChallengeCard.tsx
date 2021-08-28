@@ -9,11 +9,13 @@ const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 interface Props {
     challenge: any;
+    navigation: any;
 
 }
 
 const ChallengeCard = (props: Props) => {
     const { colors } = useTheme();
+
     const styles = StyleSheet.create({
         joinButton: {
             borderRadius: 20,
@@ -45,9 +47,12 @@ const ChallengeCard = (props: Props) => {
             </Card.Content>
             <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
-                <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}>
-                    <Title style={{ fontSize: 15, color: colors.primary,
-                       }}>View</Title>
+                <Button  style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}
+                         onPress={() =>
+                             props.navigation.navigate('Profile', { name: 'Jane' })}
+
+                >
+                    View
 
                 </Button>
                 <Button style={ {backgroundColor: colors.accent, borderRadius: 20,  width: 100, }} > <Title style={{ fontSize: 15, color: colors.primary,
