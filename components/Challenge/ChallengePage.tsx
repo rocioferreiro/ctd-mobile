@@ -2,9 +2,12 @@ import React, {useState} from "react";
 
 import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
 
-import {Dimensions, ScrollView} from "react-native";
+import {Dimensions, ImageBackground, ScrollView} from "react-native";
 import {color} from "react-native-elements/dist/helpers";
-import {View} from "../Themed";
+import {View,Text} from "../Themed";
+import {  Image} from 'react-native';
+import { StyleSheet } from 'react-native';
+
 
 
 
@@ -23,7 +26,8 @@ const mockedChallenges = [
     },
 ]
 
-const ChallengePage = ({navigation}) => {
+
+const ChallengePage = () => {
     const { colors } = useTheme();
 
 
@@ -32,19 +36,29 @@ const ChallengePage = ({navigation}) => {
     return (
 
         <View >
-            <Card style={{
-                width: Dimensions.get('window').width,
-                height: '100%',
-                marginTop:50,
-                backgroundColor:color.surface
-            }}>
 
-                <Divider />
-                <ScrollView>
+             <ScrollView>
+                 <View style={{width: Dimensions.get('window').width,
+                     height: '100%',
+                     marginTop:50}}>
+                     <ImageBackground
+                        style={{width:"100%", height:300}}
+                         source={{uri: 'https://picsum.photos/700'}}
+                     >
 
-                </ScrollView>
 
-            </Card>
+
+                             <Text>Centered text</Text>
+
+
+
+                     </ImageBackground>
+
+                 </View>
+
+             </ScrollView>
+
+
         </View>
 
 
