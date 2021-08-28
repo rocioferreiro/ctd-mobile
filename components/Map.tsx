@@ -116,7 +116,7 @@ const Map = () => {
           loop
           speed={0.4}
           resizeMode={'cover'}
-        />;
+        />
     }
     if (challengeError) {
         console.log(challengeError.message);

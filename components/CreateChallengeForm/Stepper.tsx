@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions, StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./Details/ChallengeDetails";
@@ -7,19 +7,23 @@ import ChallengeLocation from "./ChallengeLocation";
 import ChallengeExtraInfo from "./inscriptions/ChallengeExtraInfo";
 import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
-import {useTheme} from "react-native-paper";
+import {ActivityIndicator, useTheme} from "react-native-paper";
+import LottieView from "lottie-react-native";
 
 type Props = {
     onSubmit: (Challenge) => void,
-    formik: any
+    formik: any,
+    isLoading: boolean
 }
 
 const Stepper = (props: Props) => {
+    const [disabled, setDisabled] = React.useState(true)
+
     const content = [
-        <ChallengeDetails formik={props.formik}/>,
-        <ChallengeLocation formik={props.formik}/>,
-        <ChallengeExtraInfo formik={props.formik}/>,
-        <ChallengePoints formik={props.formik}/>
+        <ChallengeDetails formik={props.formik} setDisabled={setDisabled}/>,
+        <ChallengeLocation formik={props.formik} setDisabled={setDisabled}/>,
+        <ChallengeExtraInfo formik={props.formik} setDisabled={setDisabled}/>,
+        <ChallengePoints formik={props.formik} setDisabled={setDisabled}/>
     ];
 
     const {colors} = useTheme();
@@ -29,7 +33,7 @@ const Stepper = (props: Props) => {
             borderWidth: 0
         },
         nextButton: {
-            backgroundColor: colors.accent,
+            backgroundColor: disabled ? '#c1c1c1' : colors.accent,
             borderRadius: 20,
             width: 60,
             paddingLeft: 17,
@@ -66,6 +70,7 @@ const Stepper = (props: Props) => {
                 <ProgressStep
                     style={styles.container}
                     key={index}
+                    nextBtnDisabled={disabled}
                     nextBtnText={
                         <Icon
                             name={'arrow-forward-outline'}
@@ -75,7 +80,7 @@ const Stepper = (props: Props) => {
                         /> as unknown as string
                     }
                     onSubmit={props.onSubmit}
-                    finishBtnText={
+                    finishBtnText={ props.isLoading ? <ActivityIndicator size="large" /> :
                         <Icon
                             name={'checkmark-outline'}
                             type={'ionicon'}

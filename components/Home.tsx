@@ -25,7 +25,7 @@ const Home = () => {
     const [create, setCreate] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
-    const [createChallenge] = useMutation(CREATE_CHALLENGE, {
+    const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
         onCompleted: result => {
             setCreationSuccess(true);
             setCreate(false);
@@ -139,7 +139,7 @@ const Home = () => {
                             title="Cancel"
                     />
                 </View>
-                <Stepper onSubmit={onSubmitCreation} formik={formik}/>
+                <Stepper onSubmit={onSubmitCreation} formik={formik} isLoading={loading}/>
             </Card>}
             {creationSuccess && <ChallengeCreationSuccessful close={() => setCreationSuccess(false)}/>}
         </View>

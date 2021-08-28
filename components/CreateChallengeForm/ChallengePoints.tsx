@@ -10,6 +10,7 @@ import {GET_SCORE} from "../apollo-graph/Queries";
 
 type Props = {
     formik: any
+    setDisabled: (boolean) => void
 }
 
 const minPoints = 0;
@@ -59,10 +60,15 @@ const ChallengePoints = (props: Props) => {
 
     useEffect(() => {
         if(resultedPoints){
-            console.log(resultedPoints)
             setTotalPoints(parseInt(resultedPoints.getSuggestedScore))
         }
     }, [resultedPoints])
+
+    useEffect(() => {
+        if(totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
+            props.setDisabled(false)
+        } else props.setDisabled(true)
+    }, [totalPoints])
 
     const styles = StyleSheet.create({
         card: {
@@ -117,7 +123,8 @@ const ChallengePoints = (props: Props) => {
             backgroundColor: 'rgba(0,0,0,0)',
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            marginBottom: 5
         },
         objectiveText: {
             fontSize: 18,
@@ -128,7 +135,7 @@ const ChallengePoints = (props: Props) => {
             justifyContent: "space-between",
             alignItems: "center",
             backgroundColor: colors.primary,
-            opacity: 0.5,
+            opacity: 0.4,
             width: 150,
             height: 40,
             borderRadius: 50,
@@ -140,7 +147,8 @@ const ChallengePoints = (props: Props) => {
         }
     });
 
-    const onInputChanged = (value, objective: ChallengeObjective) => {
+    const onInputChanged = (value: number, objective: ChallengeObjective) => {
+        console.log(value)
         if (!value) {
             setObjectivePoints("0");
             const currentObjectives = [...props.formik.values.challengeObjectives];
@@ -148,14 +156,16 @@ const ChallengePoints = (props: Props) => {
             changedObjective.points = '0';
             props.formik.setFieldValue('challengeObjectives', currentObjectives);
         }
-        const newValue = parseInt(value);
-        if (newValue && newValue <= maxPoints && newValue >= minPoints) {
-            setObjectivePoints(`${newValue}`);
+        if (value && value <= maxPoints && value >= minPoints) {
+            setObjectivePoints(`${value}`);
             const currentObjectives = [...props.formik.values.challengeObjectives];
             const changedObjective = currentObjectives.find(o => o.name == objective.name);
-            changedObjective.points = `${newValue}`;
+            changedObjective.points = value;
             props.formik.setFieldValue('challengeObjectives', currentObjectives);
         }
+        if(totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
+            props.setDisabled(false)
+        } else props.setDisabled(true)
     }
 
     return (
@@ -192,21 +202,21 @@ const ChallengePoints = (props: Props) => {
                                 <Text style={styles.objectiveText}>{objective.name}</Text>
                                 <View style={styles.objectivePointsInput}>
                                     <TextInput keyboardType={"numeric"} value={'' + objective.points}
-                                               onChangeText={(value) => onInputChanged(value, objective)}
-                                               style={{fontSize: 14, color: colors.primary, fontWeight: "bold"}}/>
+                                               onChangeText={(value) => onInputChanged(parseInt(value), objective)}
+                                               style={{fontSize: 14, color: colors.background, fontWeight: "bold"}}/>
                                     <View style={styles.buttonsContainer}>
                                         <IconButton
                                             icon="minus"
-                                            color={colors.primary}
+                                            color={colors.background}
                                             size={30}
-                                            onPress={() => onInputChanged(`${parseInt(objectivePoints) - 1}`, objective)}
+                                            onPress={() => onInputChanged(objective.points - 1, objective)}
                                             style={{padding: 0, marginRight: -10}}
                                         />
                                         <IconButton
                                             icon="plus"
-                                            color={colors.primary}
+                                            color={colors.background}
                                             size={30}
-                                            onPress={() => onInputChanged(`${parseInt(objectivePoints) + 1}`, objective)}
+                                            onPress={() => onInputChanged(objective.points + 1, objective)}
                                             style={{padding: 0}}
                                         />
                                     </View>
