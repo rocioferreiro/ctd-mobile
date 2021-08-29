@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {Button, Card, useTheme, List} from "react-native-paper";
-import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} from "react-native";
+import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image, ScrollView} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
 import {colorShade} from "../../Models/shadingColor";
@@ -147,6 +147,7 @@ const ChallengeDetails = (props: Props) => {
 
     return (
         <View style={{flex: 1}}>
+          <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
             <Card style={styles.card}>
                 {openChoices ?
                     <OnuObjectiveChoice formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
@@ -272,6 +273,7 @@ const ChallengeDetails = (props: Props) => {
                     </View>
                 }
             </Card>
+          </ScrollView>
         </View>
     )
 }

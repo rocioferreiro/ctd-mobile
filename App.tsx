@@ -10,6 +10,8 @@ import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 declare global {
   namespace ReactNativePaper {
