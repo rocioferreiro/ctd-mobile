@@ -107,7 +107,7 @@ const ChallengePage = (props:Props) => {
 
     return (
 
-    <View style={{flex:1, width:"100%",justifyContent: "center"}}>
+    <View style={{flex:1,width:"100%", height:Dimensions.get("window").height * 0.1}}>
 
              <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}}  >
 
@@ -115,17 +115,12 @@ const ChallengePage = (props:Props) => {
                         style={{width:"100%", height:300}}
                          source={{uri: 'https://picsum.photos/700'}}
                      >
-
-
-
                              <Text>Centered text</Text>
-
 
 
                      </ImageBackground>
 
-
-
+              <View style={{width:"100%",justifyContent: "center", alignItems: "center"}}>
                  <Card style={{width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}} >
 
                      <Card.Content>
@@ -136,7 +131,8 @@ const ChallengePage = (props:Props) => {
 
 
                  </Card>
-
+              </View>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center"}}>
                  <Card style={{backgroundColor:colors.primary,width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}}>
 
                      <Card.Content style={{marginRight:74}}>
@@ -153,10 +149,11 @@ const ChallengePage = (props:Props) => {
 
 
                  </Card>
+                 </View>
 
                  <Card >
 
-                     <Card.Content style={{width:"80%", alignItems: "center",display: 'flex', justifyContent: 'center'}}>
+                     <Card.Content >
                          <Title style={{ fontSize: 25, color: colors.primary,
                              marginTop: 5}}>Challenge Objectives: </Title>
                          <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
@@ -169,6 +166,7 @@ const ChallengePage = (props:Props) => {
 
 
                  </Card>
+
 
                          <Card style={styles.card}>
 
