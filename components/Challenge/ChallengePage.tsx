@@ -103,7 +103,7 @@ const ChallengePage = (props:Props) => {
                         style={{width:"100%", height:300}}
                          source={{uri: 'https://picsum.photos/700'}}
                      >
-                             <Text>{props.challenge.title}</Text>
+                             <Text> {props.challenge.title}</Text>
 
 
                      </ImageBackground>
