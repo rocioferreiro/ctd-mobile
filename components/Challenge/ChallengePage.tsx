@@ -97,37 +97,35 @@ const ChallengePage = (props:Props) => {
 
     <View style={{flex:1,width:"100%", height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
 
-             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}} style={{backgroundColor:"rgba(0,0,0,0)"}}  >
+             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}} style={{ flex: 1,backgroundColor:"rgba(0,0,0,0)"}}  >
 
                      <ImageBackground
                         style={{width:"100%", height:300}}
                          source={{uri: 'https://picsum.photos/700'}}
                      >
-                             <Text>Centered text</Text>
+                             <Text>{props.challenge.title}</Text>
 
 
                      </ImageBackground>
 
               <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5}}> This is a challenge descroption where users will specify what will be achievid</Title>
+                             marginTop: 5}}>{props.challenge.description}</Title>
 
               </View>
                  <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
 
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>Release Date:     10/11/2021</Title>
+                             marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>End Event:      10/11/2021</Title>
+                             marginTop: 5}}>End Event:   {props.challenge.endEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}> Inscriptions start:  10/11/2021</Title>
+                             marginTop: 5}}>Inscriptions start:   {props.challenge.startInscription}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}> Inscriptions end:   10/11/2021</Title>
+                             marginTop: 5}}>Inscriptions end:   {props.challenge.endInscription}</Title>
                  </View>
 
-                 <Card >
-
-                     <Card.Content >
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 25, color: colors.primary,
                              marginTop: 5}}>Challenge Objectives: </Title>
                          <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
@@ -135,14 +133,10 @@ const ChallengePage = (props:Props) => {
                          <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
                              marginTop: 5}}>Obj 2</Title>
 
-                     </Card.Content>
+                 </View>
 
 
-
-                 </Card>
-
-
-                         <Card style={styles.card}>
+                         <View style={styles.card}>
 
                              <View style={styles.mapWrapper}>
 
@@ -162,7 +156,7 @@ const ChallengePage = (props:Props) => {
                                  </MapView>
 
                              </View>
-                     </Card>
+                     </View>
 
 
 
