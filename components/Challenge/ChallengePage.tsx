@@ -172,12 +172,12 @@ const ChallengePage = (props:Props) => {
                      <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                          <Card style={styles.card}>
                              <View style={styles.mapWrapper}>
-                                 {location &&
+
                                  <MapView
                                      style={styles.map}
                                      initialRegion={{
-                                         latitude: location.latitude,
-                                         longitude: location.longitude,
+                                         latitude: -36.3789925,
+                                         longitude: -60.3855889,
                                          latitudeDelta: 0.1,
                                          longitudeDelta: 0.1,
                                      }}
@@ -186,7 +186,7 @@ const ChallengePage = (props:Props) => {
                                          marker &&
                                          <Marker coordinate={marker}/>
                                      }
-                                 </MapView>}
+                                 </MapView>
 
                              </View>
 
