@@ -11,6 +11,7 @@ import {color} from "react-native-elements/dist/helpers";
 import ChallengeCardMini from "./ChallengeCard/ChallengesCardMini";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChallengePage from "./Challenge/ChallengePage";
 
 
 const mockedChallenges = [
@@ -28,7 +29,9 @@ const mockedChallenges = [
     },
 ]
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = () => {
+    const [selectedChallenge,setSelectedChallenge]= useState(null)
+
     const { colors } = useTheme();
     const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
 
@@ -52,27 +55,29 @@ const SearchScreen = ({navigation}) => {
 
   return (
 
-      <View >
-          <Card style={{
-              width: Dimensions.get('window').width,
-              height: '100%',
-              marginTop:50,
-              backgroundColor:color.surface
-          }}>
-       <SearchBarComponent onChange={onChange}/>
-          <Divider />
-          <ScrollView>
-            {challengeList.map((challenge, i) =>
-                  <View key={i} style={{marginBottom:5}}>
-                      <ChallengeCard navigation={navigation} challenge={challenge} />
-                      <Divider />
-                  </View>
+       <View >
+            {selectedChallenge ? <ChallengePage  setSelectedChallenge={selectedChallenge} challenge={ selectedChallenge} ></ChallengePage>:
+               <Card style={{
+                   width: Dimensions.get('window').width,
+                   height: '100%',
+                   marginTop: 50,
+                   backgroundColor: color.surface
+               }}>
+                   <SearchBarComponent onChange={onChange}/>
+                   <Divider/>
+                   <ScrollView>
+                       {challengeList.map((challenge, i) =>
+                           <View key={i} style={{marginBottom: 5}}>
+                               <ChallengeCard setSelectedChallenge={selectedChallenge} challenge={challenge}/>
+                               <Divider/>
+                           </View>
+                       )
+                       }
+                   </ScrollView>
 
-                )
-            }
-          </ScrollView>
+               </Card>
 
-          </Card>
+           }
       </View>
 
 

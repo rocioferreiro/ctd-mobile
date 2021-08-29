@@ -97,7 +97,7 @@ export default function App() {
     return null;
   } else {
     return (
-        <NavigationContainer>
+
       <SafeAreaProvider>
         <ApolloProvider client={getApolloClientInstance()}>
           <PaperProvider theme={reactNativePaperTheme}>
@@ -107,7 +107,7 @@ export default function App() {
           <StatusBar/>
         </ApolloProvider>
       </SafeAreaProvider>
-        </NavigationContainer>
+
     );
   }
 }

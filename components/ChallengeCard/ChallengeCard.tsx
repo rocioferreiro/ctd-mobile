@@ -9,7 +9,8 @@ const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 interface Props {
     challenge: any;
-    navigation: any;
+    setSelectedChallenge:(Challenge)=>void
+
 
 }
 
@@ -48,8 +49,7 @@ const ChallengeCard = (props: Props) => {
             <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
                 <Button  style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}
-                         onPress={() =>
-                             props.navigation.navigate('Profile', { name: 'Jane' })}
+                         onPress={()=>props.setSelectedChallenge(props.challenge)}
 
                 >
                     View

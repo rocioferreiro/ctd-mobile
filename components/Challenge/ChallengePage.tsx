@@ -20,7 +20,8 @@ import {View,Text} from "../Themed";
 import {  Image} from 'react-native';
 import { StyleSheet } from 'react-native';
 import {Tuple} from "../Models/User";
-import {ChallengeObjective} from "../Models/Challenge";
+import {Challenge, ChallengeObjective} from "../Models/Challenge";
+import JoinFAB from "./JoinFAB";
 
 
 
@@ -43,29 +44,16 @@ const mockedChallenges = [
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 interface Props {
-    challenge: {
-        categories: [],
-        coordinates: [],
-        description: "Challenge Description",
-        endEvent: "11/6/2021",
-        endInscription: "11/6/2021",
-        objectives: ["Obj1","obj2"],
-        owner: "User",
-        startEvent: "11/6/2021",
-        startInscription: "11/6/2021",
-        title?: "Challenge Title",
-
-    }
-    navigation: any;
+    challenge: Challenge
+    setSelectedChallenge:(Challenge)=>void
 
 }
 
 
 const ChallengePage = (props:Props) => {
     const { colors } = useTheme();
-    const [marker, setMarker] = useState<LatLng>();
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+    const [marker, setMarker] = useState<LatLng>(props.challenge.coordinates);
+
     const styles = StyleSheet.create({
         title: {
             fontSize: 35,
@@ -197,6 +185,7 @@ const ChallengePage = (props:Props) => {
 
 
              </ScrollView>
+
     </View>
 
 

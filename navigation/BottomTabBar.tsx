@@ -32,7 +32,7 @@ const icons = [
 ];
 
 const components = [
-  <Home/>, <ChallengePage/>, <Map/>, <ChallengeList/>
+  <Home/>, <SearchScreen/>, <Map/>, <ChallengeList/>
 ]
 type Props = {
   colorScheme
