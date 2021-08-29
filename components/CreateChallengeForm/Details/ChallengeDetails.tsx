@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {Button, Card, useTheme, List} from "react-native-paper";
-import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image, ScrollView} from "react-native";
+import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image, ScrollView, Keyboard} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
 import {colorShade} from "../../Models/shadingColor";
@@ -15,6 +15,8 @@ type Props = {
 const ChallengeDetails = (props: Props) => {
   const { colors } = useTheme();
   const {formik} = props;
+  const [keyboardShown, setKeyboardShown] = React.useState(false);
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
   const [goal, setGoal] = React.useState('');
   const [goals, setGoals] = React.useState<any[]>([])
   const [onuObjectives, setOnuObjectives] = React.useState([]);
@@ -143,6 +145,22 @@ const ChallengeDetails = (props: Props) => {
     } else {
       verifyChange(false)
     }
+
+    const showSubscription = Keyboard.addListener("keyboardDidShow", e => {
+      setKeyboardShown(true);
+      setKeyboardHeight(e.endCoordinates.height)
+      console.log(e.endCoordinates.height)
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardShown(false);
+      setKeyboardHeight(0)
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+
   }, [])
 
     return (
@@ -230,12 +248,12 @@ const ChallengeDetails = (props: Props) => {
 
                                 <Input
                                     placeholder={"Goal..."}
-                                    style={styles.inputWithIcon}
+                                    style={[styles.inputWithIcon, {position: "absolute", bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.3 : 0}]}
                                     value={goal}
                                     onChangeText={t => {setGoal(t);}}
                                     inputContainerStyle={{borderBottomWidth: 0}}
                                     rightIcon={
-                                        <View style={styles.goalAdderIcon}>
+                                        <View style={[styles.goalAdderIcon, {position: "absolute",left: Dimensions.get('window').width*0.77}]}>
                                             <Icon style={styles.icon}
                                                   name={'add-outline'}
                                                   type={'ionicon'}

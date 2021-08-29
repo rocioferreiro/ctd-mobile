@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Card, TextInput, useTheme} from "react-native-paper";
 import {Text, View} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
-import {Dimensions, StyleSheet} from "react-native";
+import {Dimensions, Keyboard, StyleSheet} from "react-native";
 import * as Location from "expo-location";
 
 type Props = {
@@ -16,6 +16,8 @@ const ChallengeLocation = (props: Props) => {
     const [marker, setMarker] = useState<LatLng>();
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+    const [keyboardShown, setKeyboardShown] = React.useState(false);
+    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 
     useEffect(() => {
         if(!marker){
@@ -29,12 +31,25 @@ const ChallengeLocation = (props: Props) => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
-                return;
+            } else {
+                let location = await Location.getCurrentPositionAsync({});
+                setLocation(location.coords);
             }
-
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location.coords);
         })();
+
+        const showSubscription = Keyboard.addListener("keyboardDidShow", e => {
+            setKeyboardShown(true);
+            setKeyboardHeight(e.endCoordinates.height)
+        });
+        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+            setKeyboardShown(false);
+            setKeyboardHeight(0)
+        });
+
+        return () => {
+            showSubscription.remove();
+            hideSubscription.remove();
+        };
     }, []);
 
     const styles = StyleSheet.create({
@@ -69,6 +84,8 @@ const ChallengeLocation = (props: Props) => {
         },
         input: {
             marginTop: 5,
+            position: "absolute",
+            bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.15 : 0,
             width: '100%',
             backgroundColor: colors.surface,
             height: Dimensions.get("window").height * 0.1
