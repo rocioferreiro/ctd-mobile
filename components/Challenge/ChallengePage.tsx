@@ -107,10 +107,9 @@ const ChallengePage = (props:Props) => {
 
     return (
 
-    <View style={{flex:1, width:"100%"}}>
+    <View style={{flex:1, width:"100%",justifyContent: "center"}}>
 
-             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center" }}  >
-
+             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}}  >
 
                      <ImageBackground
                         style={{width:"100%", height:300}}
@@ -126,52 +125,53 @@ const ChallengePage = (props:Props) => {
                      </ImageBackground>
 
 
-                     <Card style={{width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}} >
 
-                         <Card.Content>
-                             <Title style={{ fontSize: 20, color: colors.primary,
-                                 marginTop: 5}}> This is a challenge descroption where users will specify what will be achievid</Title>
+                 <Card style={{width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}} >
 
-                         </Card.Content>
+                     <Card.Content>
+                         <Title style={{ fontSize: 20, color: colors.primary,
+                             marginTop: 5}}> This is a challenge descroption where users will specify what will be achievid</Title>
 
-
-                     </Card>
-
-                     <Card style={{backgroundColor:colors.primary,width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}}>
-
-                         <Card.Content style={{marginRight:74}}>
-                             <Title style={{ fontSize: 20, color: colors.background,
-                                 marginTop: 5}}>Release Date:     10/11/2021</Title>
-                             <Title style={{ fontSize: 20, color: colors.background,
-                                 marginTop: 5}}>End Event:      10/11/2021</Title>
-                             <Title style={{ fontSize: 20, color: colors.background,
-                                 marginTop: 5}}> Inscriptions start:  10/11/2021</Title>
-                             <Title style={{ fontSize: 20, color: colors.background,
-                                 marginTop: 5}}> Inscriptions end:   10/11/2021</Title>
-
-                         </Card.Content>
+                     </Card.Content>
 
 
-                     </Card>
+                 </Card>
 
-                     <Card >
+                 <Card style={{backgroundColor:colors.primary,width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}}>
 
-                         <Card.Content style={{width:"80%", alignItems: "center",display: 'flex', justifyContent: 'center'}}>
-                             <Title style={{ fontSize: 25, color: colors.primary,
-                                 marginTop: 5}}>Challenge Objectives: </Title>
-                             <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
-                                 marginTop: 5}}>Obj 1</Title>
-                             <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
-                                 marginTop: 5}}>Obj 2</Title>
+                     <Card.Content style={{marginRight:74}}>
+                         <Title style={{ fontSize: 20, color: colors.background,
+                             marginTop: 5}}>Release Date:     10/11/2021</Title>
+                         <Title style={{ fontSize: 20, color: colors.background,
+                             marginTop: 5}}>End Event:      10/11/2021</Title>
+                         <Title style={{ fontSize: 20, color: colors.background,
+                             marginTop: 5}}> Inscriptions start:  10/11/2021</Title>
+                         <Title style={{ fontSize: 20, color: colors.background,
+                             marginTop: 5}}> Inscriptions end:   10/11/2021</Title>
 
-                         </Card.Content>
+                     </Card.Content>
+
+
+                 </Card>
+
+                 <Card >
+
+                     <Card.Content style={{width:"80%", alignItems: "center",display: 'flex', justifyContent: 'center'}}>
+                         <Title style={{ fontSize: 25, color: colors.primary,
+                             marginTop: 5}}>Challenge Objectives: </Title>
+                         <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
+                             marginTop: 5}}>Obj 1</Title>
+                         <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
+                             marginTop: 5}}>Obj 2</Title>
+
+                     </Card.Content>
 
 
 
-                     </Card>
-
+                 </Card>
 
                          <Card style={styles.card}>
+
                              <View style={styles.mapWrapper}>
 
                                  <MapView
