@@ -30,7 +30,7 @@ const mockedChallenges = [
 ]
 
 const SearchScreen = () => {
-    const [selectedChallenge,setSelectedChallenge]= useState(null)
+    const [selectedChallenge,setSelectedChallenge]= useState()
 
     const { colors } = useTheme();
     const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
@@ -56,7 +56,7 @@ const SearchScreen = () => {
   return (
 
        <View >
-            {selectedChallenge ? <ChallengePage  setSelectedChallenge={selectedChallenge} challenge={ selectedChallenge} ></ChallengePage>:
+            {selectedChallenge ? <ChallengePage  setSelectedChallenge={setSelectedChallenge} challenge={ selectedChallenge} ></ChallengePage>:
                <Card style={{
                    width: Dimensions.get('window').width,
                    height: '100%',
@@ -68,7 +68,7 @@ const SearchScreen = () => {
                    <ScrollView>
                        {challengeList.map((challenge, i) =>
                            <View key={i} style={{marginBottom: 5}}>
-                               <ChallengeCard setSelectedChallenge={selectedChallenge} challenge={challenge}/>
+                               <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                                <Divider/>
                            </View>
                        )

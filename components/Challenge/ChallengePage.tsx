@@ -52,7 +52,7 @@ interface Props {
 
 const ChallengePage = (props:Props) => {
     const { colors } = useTheme();
-    const [marker, setMarker] = useState<LatLng>(props.challenge.coordinates);
+    const [marker, setMarker] = useState<LatLng>();
 
     const styles = StyleSheet.create({
         title: {
@@ -95,9 +95,9 @@ const ChallengePage = (props:Props) => {
 
     return (
 
-    <View style={{flex:1,width:"100%", height:Dimensions.get("window").height * 0.1}}>
+    <View style={{flex:1,width:"100%", height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
 
-             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}}  >
+             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center"}} style={{backgroundColor:"rgba(0,0,0,0)"}}  >
 
                      <ImageBackground
                         style={{width:"100%", height:300}}
@@ -108,22 +108,13 @@ const ChallengePage = (props:Props) => {
 
                      </ImageBackground>
 
-              <View style={{width:"100%",justifyContent: "center", alignItems: "center"}}>
-                 <Card style={{width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}} >
-
-                     <Card.Content>
+              <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
                              marginTop: 5}}> This is a challenge descroption where users will specify what will be achievid</Title>
 
-                     </Card.Content>
-
-
-                 </Card>
               </View>
-                 <View style={{width:"100%",justifyContent: "center", alignItems: "center"}}>
-                 <Card style={{backgroundColor:colors.primary,width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}}>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
 
-                     <Card.Content style={{marginRight:74}}>
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:     10/11/2021</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
@@ -132,11 +123,6 @@ const ChallengePage = (props:Props) => {
                              marginTop: 5}}> Inscriptions start:  10/11/2021</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}> Inscriptions end:   10/11/2021</Title>
-
-                     </Card.Content>
-
-
-                 </Card>
                  </View>
 
                  <Card >
