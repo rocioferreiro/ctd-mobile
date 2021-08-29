@@ -107,12 +107,11 @@ const ChallengePage = (props:Props) => {
 
     return (
 
-        <View >
+    <View style={{flex:1, width:"100%"}}>
 
-             <ScrollView>
-                 <View style={{width: Dimensions.get('window').width,
-                     height: '100%',
-                     marginTop:50}}>
+             <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center" }}  >
+
+
                      <ImageBackground
                         style={{width:"100%", height:300}}
                          source={{uri: 'https://picsum.photos/700'}}
@@ -127,28 +126,28 @@ const ChallengePage = (props:Props) => {
                      </ImageBackground>
 
 
-                     <Card >
+                     <Card style={{width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}} >
 
                          <Card.Content>
-                             <Title style={{ fontSize: 25, color: colors.primary,
-                                 marginTop: 5}}> props.challenge.description</Title>
+                             <Title style={{ fontSize: 20, color: colors.primary,
+                                 marginTop: 5}}> This is a challenge descroption where users will specify what will be achievid</Title>
 
                          </Card.Content>
 
 
                      </Card>
 
-                     <Card style={{backgroundColor:colors.primary}}>
+                     <Card style={{backgroundColor:colors.primary,width:"90%",display: 'flex', justifyContent: 'center',alignItems: "center"}}>
 
-                         <Card.Content>
-                             <Title style={{ fontSize: 25, color: colors.background,
-                                 marginTop: 5}}>Release Date: props.challenge.startEvent</Title>
-                             <Title style={{ fontSize: 25, color: colors.background,
-                                 marginTop: 5}}>End Event: props.challenge.endEvent</Title>
-                             <Title style={{ fontSize: 25, color: colors.background,
-                                 marginTop: 5}}> Inscriptions start: props.challenge.startInscription</Title>
-                             <Title style={{ fontSize: 25, color: colors.background,
-                                 marginTop: 5}}> Inscriptions end: props.challenge.endInscription</Title>
+                         <Card.Content style={{marginRight:74}}>
+                             <Title style={{ fontSize: 20, color: colors.background,
+                                 marginTop: 5}}>Release Date:     10/11/2021</Title>
+                             <Title style={{ fontSize: 20, color: colors.background,
+                                 marginTop: 5}}>End Event:      10/11/2021</Title>
+                             <Title style={{ fontSize: 20, color: colors.background,
+                                 marginTop: 5}}> Inscriptions start:  10/11/2021</Title>
+                             <Title style={{ fontSize: 20, color: colors.background,
+                                 marginTop: 5}}> Inscriptions end:   10/11/2021</Title>
 
                          </Card.Content>
 
@@ -157,19 +156,21 @@ const ChallengePage = (props:Props) => {
 
                      <Card >
 
-                         <Card.Content>
+                         <Card.Content style={{width:"80%", alignItems: "center",display: 'flex', justifyContent: 'center'}}>
                              <Title style={{ fontSize: 25, color: colors.primary,
-                                 marginTop: 5}}>Challenge Objectives</Title>
-                             <Title style={{ fontSize: 25, color: colors.primary,
+                                 marginTop: 5}}>Challenge Objectives: </Title>
+                             <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
                                  marginTop: 5}}>Obj 1</Title>
-                             <Title style={{ fontSize: 25, color: colors.primary,
+                             <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
                                  marginTop: 5}}>Obj 2</Title>
 
                          </Card.Content>
 
 
+
                      </Card>
-                     <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
+
+
                          <Card style={styles.card}>
                              <View style={styles.mapWrapper}>
 
@@ -189,17 +190,20 @@ const ChallengePage = (props:Props) => {
                                  </MapView>
 
                              </View>
-
-                         </Card>
-                     </View>
+                     </Card>
 
 
-                 </View>
+
+
+
+
 
              </ScrollView>
+    </View>
 
 
-        </View>
+
+
 
 
 
