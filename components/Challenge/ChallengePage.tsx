@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import MapView, {LatLng, Marker} from "react-native-maps";
 
+
 import {
     Portal,
     Searchbar,
@@ -11,7 +12,7 @@ import {
     Title,
     Paragraph,
     Avatar,
-    TextInput
+    TextInput, Button
 } from 'react-native-paper';
 
 import {Dimensions, ImageBackground, ScrollView} from "react-native";
@@ -22,6 +23,7 @@ import { StyleSheet } from 'react-native';
 import {Tuple} from "../Models/User";
 import {Challenge, ChallengeObjective} from "../Models/Challenge";
 import JoinFAB from "./JoinFAB";
+import JoinButton from "./JoinButton";
 
 
 
@@ -113,16 +115,18 @@ const ChallengePage = (props:Props) => {
                              marginTop: 5,fontWeight:"bold"}}> Challenge Description:  {props.challenge.description}</Title>
 
               </View>
-                 <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:15,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
 
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
-                         <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>End Event:   {props.challenge.endEvent}</Title>
+                         <Title style={{ fontSize: 20, color: colors.accent,
+                             marginTop: 5,fontWeight:"bold"}}>End Event:   {props.challenge.endEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Inscriptions start:   {props.challenge.startInscription}</Title>
-                         <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>Inscriptions end:   {props.challenge.endInscription}</Title>
+                         <Title style={{ fontSize: 20, color: colors.accent,
+                             marginTop: 5,fontWeight:"bold"}}>Inscriptions end:   {props.challenge.endInscription}</Title>
+                 </View>
                  </View>
 
                  <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
@@ -135,6 +139,9 @@ const ChallengePage = (props:Props) => {
 
                  </View>
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
+                     <JoinButton/>
+                 </View>
+                 <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
                      <Title style={{ fontSize: 20, color: colors.primary,
                          marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
@@ -142,6 +149,7 @@ const ChallengePage = (props:Props) => {
                          marginTop: 5}}>This a is short description of the challenge location</Title>
 
                  </View>
+
 
                          <View style={styles.card}>
 
@@ -164,9 +172,6 @@ const ChallengePage = (props:Props) => {
 
                              </View>
                      </View>
-
-
-
 
 
 
