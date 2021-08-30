@@ -51,8 +51,8 @@ const Home = () => {
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height - 20,
+            width: Dimensions.get('screen').width,
+            height: Dimensions.get('screen').height,
         },
         button: {
             backgroundColor: 'rgba(0,0,0,0)',
