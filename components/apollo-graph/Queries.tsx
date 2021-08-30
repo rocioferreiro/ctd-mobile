@@ -35,8 +35,8 @@ query findNearbyUsers($latitude: Float!, $longitude: Float!) {
 `;
 
 export const FIND_USER_BY_ID = gql`
-query findUserById{
-  findUserById(id: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8"){
+query findUserById($userId: String!){
+  findUserById(id: $userId){
     name
     id
     mail
@@ -64,21 +64,50 @@ query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
     id
     title
     description
+    owner
+    categories
+    endEvent
+    endInscription
+    locationGeohash
+    objectives {
+      points
+      name
+    }
     coordinates {
         longitude
         latitude
     }
+    startEvent
+    startInscription
   }
 }
 `;
 
 export const FIND_CHALLENGES_OF_USER = gql`
   query getCreatedChallengesByUser{
-    getCreatedChallengesByUser(userId: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8") {
-      id
-      title
-      description
-      startEvent
+    getCreatedChallengesByUser(userId: "meta-69y5fn6vr0qp-345b9e1b-0c5d-45bf-b9f9-b7b242b5ce80") {
+       boost
+       categories
+       coordinates {
+        longitude
+        latitude
+      }
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives {
+        points
+        name
+      }
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
     }
   }
+  
 `;

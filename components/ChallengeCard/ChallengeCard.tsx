@@ -7,6 +7,9 @@ const LeftContent = props => <Avatar.Text label={'UN'} {...props}/>
 
 interface Props {
     challenge: any;
+    setSelectedChallenge:(Challenge)=>void
+
+
 }
 
 const ChallengeCard = (props: Props) => {
@@ -51,7 +54,9 @@ const ChallengeCard = (props: Props) => {
                     width: 100,
                     marginLeft: 40,
                     marginRight: 120,
-                }}>
+                }}
+                        onPress={()=>props.setSelectedChallenge(props.challenge)}
+                >
                     <Title style={{
                         fontSize: 15, color: colors.primary,
                     }}>View</Title> </Button>

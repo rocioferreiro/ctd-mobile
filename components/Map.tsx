@@ -5,17 +5,19 @@ import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {useLazyQuery, useQuery} from "@apollo/client";
 import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
-import {ActivityIndicator, useTheme} from "react-native-paper";
+import {ActivityIndicator, Button, Modal, useTheme} from "react-native-paper";
 import CreateChallengeModal from "./CreateChallengeModal/CreateChallengeModal";
 import LottieView from "lottie-react-native";
 import * as Location from "expo-location";
 import {find} from "react-native-redash/lib/typescript/v1";
+import ChallengePage from "./Challenge/ChallengePage";
 
 type MarkerInfo = {
     title: string,
     description: string,
     latlng: Coordinates,
-    child: any
+    child: any,
+    identifier: string
 }
 
 type Coordinates = {
@@ -35,9 +37,16 @@ const Map = () => {
     const [findNearbyChallenges, {data: challengeData,error: challengeError,loading: challengeLoading}] = useLazyQuery(FIND_NEARBY_CHALLENGES, {variables: getLocationLazily()});
     const [findNearbyUsers, {data: userData,error: userError,loading: userLoading}] = useLazyQuery(FIND_NEARBY_USERS, {variables: getLocationLazily()});
     const [errorMsg, setErrorMsg] = useState(null);
-    const [modal, setModal] = React.useState(false)
-    const showModal = () => setModal(true);
-    const hideModal = () => setModal(false);
+    const [modal, setModal] = React.useState(false);
+    const [modalID, setModalID] = React.useState(undefined);
+    const showModal = (id) => {
+        setModal(true);
+        setModalID(id)
+    }
+    const hideModal = () => {
+        setModal(false);
+        setModalID(undefined)
+    }
 
     const [userMarkers, setUserMarkers] = useState<MarkerInfo[]>([])
     const [challengeMarkers, setChallengeMarkers] = useState<MarkerInfo[]>([])
@@ -48,6 +57,7 @@ const Map = () => {
             alignItems: 'center',
             justifyContent: 'center',
         },
+        containerStyle: {flex: 1},
         map: {
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
@@ -83,6 +93,7 @@ const Map = () => {
                 return {
                     title: u.name,
                     description: u.lastname,
+                    identifier: u.id,
                     latlng: {latitude: u.address.coordinates.latitude, longitude: u.address.coordinates.longitude},
                     child: <Icon
                                 reverse
@@ -100,6 +111,7 @@ const Map = () => {
                 return {
                     title: c.title,
                     description: c.description,
+                    identifier: c.id,
                     latlng: {latitude: c.coordinates.latitude, longitude: c.coordinates.longitude},
                     child: <Icon
                         reverse
@@ -150,7 +162,7 @@ const Map = () => {
                         title={marker.title}
                         description={marker.description}
                         coordinate={marker.latlng}
-                        onPress={showModal}
+                        onPress={() => showModal(marker.identifier)}
                     >
                         {marker.child}
                     </Marker>
@@ -162,15 +174,17 @@ const Map = () => {
                         title={marker.title}
                         description={marker.description}
                         coordinate={marker.latlng}
-                        onPress={showModal}
+                        onPress={() => showModal(marker.identifier)}
                     >
                         {marker.child}
                     </Marker>
                 )): <></>}
 
 
-                <CreateChallengeModal visible={modal} onDismiss={hideModal}/>
             </MapView>
+            <Modal visible={modal} onDismiss={hideModal} contentContainerStyle={styles.containerStyle}>
+                { challengeData && <ChallengePage challenge={challengeData.findNearbyChallenges.find(c => c.id === modalID)} setSelectedChallenge={(challenge) => hideModal()}/>}
+            </Modal>
         </View>
     )
 }
