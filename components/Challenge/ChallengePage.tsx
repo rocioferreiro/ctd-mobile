@@ -4,9 +4,10 @@ import {
   useTheme,
   Title,
   Avatar,
+    Button,
   ActivityIndicator
 } from 'react-native-paper';
-import {Dimensions, ImageBackground, ScrollView} from "react-native";
+import { Dimensions, ImageBackground, ScrollView} from "react-native";
 import {View,Text} from "../Themed";
 import { StyleSheet } from 'react-native';
 import {Challenge} from "../Models/Challenge";
@@ -110,6 +111,11 @@ const ChallengePage = (props:Props) => {
     return (props.challenge && data) ?
 
     <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
+        <View style={{width:"100%",alignItems:"flex-start" ,padding:10, backgroundColor:colors.surface}}>
+        <Button icon="keyboard-backspace" onPress={()=>props.setSelectedChallenge(null)}>
+           Back
+        </Button>
+        </View>
              <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center", width: '100%'}} style={{ flex: 1,backgroundColor:"rgba(0,0,0,0)"}}  >
 
                      <ImageBackground
@@ -157,7 +163,12 @@ const ChallengePage = (props:Props) => {
                  <View style={{width:"100%",justifyContent: "center",padding:10, backgroundColor:colors.surface}}>
                      <JoinButton/>
                  </View>
+                 <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
+                 <Title style={{ fontSize: 25, color: colors.primary,
+                     marginTop: 5,alignItems: "center", fontWeight:"bold"}}>ONU Objetives: </Title>
 
+
+                 </View>
               <ChallengeONUObjetives challenge={props.challenge}/>
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
