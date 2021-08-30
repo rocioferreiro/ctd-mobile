@@ -75,10 +75,21 @@ query findNearbyChallenges {
 export const FIND_CHALLENGES_OF_USER = gql`
     query getCreatedChallengesByUser{
     getCreatedChallengesByUser(userId: "meta-69y5fn6vr0qp-8be2dc34-cd4b-48ef-85a3-453ac00496eb") {
-      id
-      title
-      description
-      startEvent
+       boost
+       categories
+       coordinates
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
     }
   }
 `;
