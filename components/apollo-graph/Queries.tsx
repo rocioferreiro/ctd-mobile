@@ -36,7 +36,7 @@ query findNearbyUsers {
 
 export const FIND_USER_BY_ID = gql`
 query findUserById{
-  findUserById(id: "meta0ed44de8a-b6bf-4a31-a553-fb7df9a67aed"){
+  findUserById(id: "meta-69y5fn6vr0qp-8be2dc34-cd4b-48ef-85a3-453ac00496eb"){
     name
     id
     mail
@@ -73,8 +73,8 @@ query findNearbyChallenges {
 `;
 
 export const FIND_CHALLENGES_OF_USER = gql`
-  query getCreatedChallengesByUser{
-    getCreatedChallengesByUser(userId: "meta0ed44de8a-b6bf-4a31-a553-fb7df9a67aed") {
+    query getCreatedChallengesByUser{
+    getCreatedChallengesByUser(userId: "meta-69y5fn6vr0qp-8be2dc34-cd4b-48ef-85a3-453ac00496eb") {
       id
       title
       description

@@ -1,54 +1,42 @@
 import React, {useState} from "react";
 import {View, Text} from "./Themed";
 import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
-import {Challenge} from "./Models/Challenge";
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
-import {useMutation, useQuery} from "@apollo/client";
-import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
+import {ApolloProvider, useMutation, useQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
 import {color} from "react-native-elements/dist/helpers";
-import ChallengeCardMini from "./ChallengeCard/ChallengesCardMini";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "./Challenge/ChallengePage";
+import {getApolloClientInstance} from "./apollo-graph/Client";
+import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 
 
-const mockedChallenges = [
-    {
-        id: 1,
-        title: "Challenge 1"
-    },
-    {
-        id: 1,
-        title: "Challenge Title 2"
-    },
-    {
-        id: 1,
-        title: "Best Challenge Title 3"
-    },
-]
+
 
 const SearchScreen = () => {
     const [selectedChallenge,setSelectedChallenge]= useState()
 
     const { colors } = useTheme();
-    const [challengeList, setChallengeList] = useState<any>(mockedChallenges);
 
+    const client= getApolloClientInstance()
 
-    const [query] = useMutation(CREATE_CHALLENGE, {
-        onCompleted: result => {
-            setChallengeList([...challengeList, result.saveChallenge])
-        }}
-    );
+    const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER);
+    const [challengeList, setChallengeList] = useState<any>(data);
+
+    if (loading) return <Text>Loading...</Text>;
+    if (error) {
+        console.log(error.message);
+        return <Text>Error :(</Text>;
+    }
+
 
 
 
 
     const onChange = (searchValue: string) => {
-        if (!searchValue || searchValue === "") setChallengeList(mockedChallenges);
+        if (!searchValue || searchValue === "") setChallengeList(data);
         else {
-            const filteredChallenges = mockedChallenges.filter(challenge =>
+            const filteredChallenges = challengeList.filter(challenge =>
                 challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
             );
             setChallengeList(filteredChallenges);
@@ -56,7 +44,7 @@ const SearchScreen = () => {
     }
 
   return (
-
+      <ApolloProvider client={client}>
        <View >
             {selectedChallenge ? <ChallengePage  setSelectedChallenge={setSelectedChallenge} challenge={ selectedChallenge} ></ChallengePage>:
                <Card style={{
@@ -81,6 +69,7 @@ const SearchScreen = () => {
 
            }
       </View>
+      </ApolloProvider>
 
 
 
