@@ -45,7 +45,7 @@ const ChallengePage = (props:Props) => {
     const [onuObjectives, setOnuObjectives] = React.useState([]);
     const [openChoices, setOpenChoices] = React.useState(false);
     const { colors } = useTheme();
-    const [marker, setMarker] = useState<LatLng>(props.challenge.coordinates);
+    const [marker, setMarker] = useState<LatLng>(props.challenge ? props.challenge.coordinates: {latitude: 0, longitude: 0});
     const getOwner = () => {
       if(props.challenge) return props.challenge.owner
       else return ''
@@ -53,6 +53,7 @@ const ChallengePage = (props:Props) => {
     const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {variables:{userId: getOwner()}})
 
     useEffect(() => {
+      console.log(props.challenge)
       if(props.challenge) getUser()
     }, [props.challenge])
 
@@ -111,7 +112,7 @@ const ChallengePage = (props:Props) => {
     return (props.challenge && data) ?
 
     <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
-        <View style={{width:"100%",alignItems:"flex-start" ,padding:10, backgroundColor:colors.surface}}>
+        <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20,backgroundColor:colors.surface}}>
         <Button icon="keyboard-backspace" onPress={()=>props.setSelectedChallenge(null)}>
            Back
         </Button>
@@ -195,8 +196,8 @@ const ChallengePage = (props:Props) => {
                                  <MapView
                                      style={styles.map}
                                      initialRegion={{
-                                         latitude: props.challenge.coordinates.latitude,
-                                         longitude: props.challenge.coordinates.longitude,
+                                         latitude: props.challenge? props.challenge.coordinates.latitude: 0,
+                                         longitude: props.challenge? props.challenge.coordinates.longitude: 0,
                                          latitudeDelta: 0.1,
                                          longitudeDelta: 0.1,
                                      }}
