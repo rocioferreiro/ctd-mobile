@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {View, Text} from "./Themed";
 import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
-import {ApolloProvider, useMutation, useQuery} from "@apollo/client";
+import {ApolloProvider, useQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
 import {color} from "react-native-elements/dist/helpers";
@@ -21,13 +21,12 @@ const SearchScreen = () => {
     const client= getApolloClientInstance()
 
     const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER);
-    const [challengeList, setChallengeList] = useState<any>(data);
-
     if (loading) return <Text>Loading...</Text>;
     if (error) {
         console.log(error.message);
         return <Text>Error :(</Text>;
     }
+    const [challengeList, setChallengeList] = useState<any>(data.getCreatedChallengesByUser);
 
 
 
