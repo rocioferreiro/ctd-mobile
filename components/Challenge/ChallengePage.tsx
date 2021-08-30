@@ -109,14 +109,15 @@ const ChallengePage = (props:Props) => {
 
 
                      </ImageBackground>
-
-              <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+              <View style={{width:"90%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
                              marginTop: 5,fontWeight:"bold"}}> Challenge Description:  {props.challenge.description}</Title>
 
               </View>
+                 </View>
                  <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                 <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
+                 <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:10}}>
 
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
@@ -138,9 +139,11 @@ const ChallengePage = (props:Props) => {
                              marginTop: 5}}>Obj 2</Title>
 
                  </View>
-                 <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
+
+                 <View style={{width:"100%",justifyContent: "center",padding:10, backgroundColor:colors.surface}}>
                      <JoinButton/>
                  </View>
+
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
                      <Title style={{ fontSize: 20, color: colors.primary,
