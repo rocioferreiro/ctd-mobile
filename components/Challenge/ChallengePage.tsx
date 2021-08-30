@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MapView, {LatLng, Marker} from "react-native-maps";
 
+
 import {
   Portal,
   Searchbar,
@@ -11,7 +12,7 @@ import {
   Title,
   Paragraph,
   Avatar,
-  TextInput, ActivityIndicator
+  TextInput, ActivityIndicator, Button
 } from 'react-native-paper';
 
 import {Dimensions, ImageBackground, ScrollView} from "react-native";
@@ -25,6 +26,7 @@ import JoinFAB from "./JoinFAB";
 import {useLazyQuery} from "@apollo/client";
 import {GET_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
+import JoinButton from "./JoinButton";
 
 
 
@@ -130,31 +132,47 @@ const ChallengePage = (props:Props) => {
                        <Text style={{color: colors.background}}> {data.findUserById.mail} </Text>
 
                      </ImageBackground>
-
-              <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+              <View style={{width:"90%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5}}> Challenge Description:  {props.challenge.description}</Title>
+                             marginTop: 5,fontWeight:"bold"}}> Challenge Description:  {props.challenge.description}</Title>
 
               </View>
-                 <View style={{justifyContent: "center", alignItems: "center",padding:10,marginRight:20,marginLeft:20, backgroundColor:colors.primary,borderRadius:40}}>
+                 </View>
+                 <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:20,marginLeft:20, backgroundColor:colors.primary,borderRadius:10}}>
 
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
-                         <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>End Event:   {props.challenge.endEvent}</Title>
+                         <Title style={{ fontSize: 20, color: colors.accent,
+                             marginTop: 5,fontWeight:"bold"}}>End Event:   {props.challenge.endEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Inscriptions start:   {props.challenge.startInscription}</Title>
-                         <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>Inscriptions end:   {props.challenge.endInscription}</Title>
+                         <Title style={{ fontSize: 20, color: colors.accent,
+                             marginTop: 5,fontWeight:"bold"}}>Inscriptions end:   {props.challenge.endInscription}</Title>
+                 </View>
                  </View>
 
-                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 25, color: colors.primary,
-                             marginTop: 5}}>Challenge Objectives: </Title>
+                             marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives: </Title>
                          <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
                              marginTop: 5}}>Obj 1</Title>
                          <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
                              marginTop: 5}}>Obj 2</Title>
+
+                 </View>
+
+                 <View style={{width:"100%",justifyContent: "center",padding:10, backgroundColor:colors.surface}}>
+                     <JoinButton/>
+                 </View>
+
+                 <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
+
+                     <Title style={{ fontSize: 20, color: colors.primary,
+                         marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
+                     <Title style={{ fontSize: 15, color: colors.primary,
+                         marginTop: 5}}>This a is short description of the challenge location</Title>
 
                  </View>
 
@@ -180,9 +198,6 @@ const ChallengePage = (props:Props) => {
 
                              </View>
                      </View>
-
-
-
 
 
 
