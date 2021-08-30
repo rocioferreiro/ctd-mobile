@@ -1,22 +1,27 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Card, useTheme, List} from "react-native-paper";
-import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image} from "react-native";
+import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback, Image, ScrollView, Keyboard} from "react-native";
 import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
-import {ChallengeObjective} from "../Types";
 import {colorShade} from "../../Models/shadingColor";
+import {onuPictures} from './onuObjectiveInfo';
+import {ONUObjectives} from "../ONUObjectives";
 
 type Props = {
-    formik: any
+  setDisabled: (boolean) => void
+  formik: any
 }
 
 const ChallengeDetails = (props: Props) => {
-    const {colors} = useTheme();
-    const {formik} = props;
-    const [goal, setGoal] = React.useState('');
-    const [goals, setGoals] = React.useState<ChallengeObjective[]>([])
-    const [onuObjectives, setOnuObjectives] = React.useState([]);
-    const [openChoices, setOpenChoices] = React.useState(false);
+  const { colors } = useTheme();
+  const {formik} = props;
+  const [keyboardShown, setKeyboardShown] = React.useState(false);
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+  const [goal, setGoal] = React.useState('');
+  const [goals, setGoals] = React.useState<any[]>([])
+  const [onuObjectives, setOnuObjectives] = React.useState([]);
+  const [openChoices, setOpenChoices] = React.useState(false);
+  const [errorMarker, setErrorMarker] = React.useState({title: false, description: false, goals: false, onu: false})
 
     const styles = StyleSheet.create({
         title: {
@@ -117,9 +122,50 @@ const ChallengeDetails = (props: Props) => {
         }
     });
 
+  const verifyChange = (addingGoal) => {
+    if(addingGoal) {
+      if(formik.values.title.length > 1 && formik.values.description.length > 1 && formik.values.ONUObjective.length > 0)
+        props.setDisabled(false)
+      else props.setDisabled(true)
+    } else{
+      if(formik.values.title.length > 1 && formik.values.description.length > 1 && goals.length>0 && formik.values.ONUObjective.length > 0)
+        props.setDisabled(false)
+      else props.setDisabled(true)
+    }
+
+  }
+
+  useEffect(() => {
+    if(formik.values.ONUObjective && formik.values.ONUObjective.length > 0) {
+        setOnuObjectives(formik.values.ONUObjective.map(i =>{return {image: onuPictures[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
+    }
+    if(formik.values.challengeObjectives && formik.values.challengeObjectives.length > 0){
+      setGoals(formik.values.challengeObjectives)
+      verifyChange(true)
+    } else {
+      verifyChange(false)
+    }
+
+    const showSubscription = Keyboard.addListener("keyboardDidShow", e => {
+      setKeyboardShown(true);
+      setKeyboardHeight(e.endCoordinates.height)
+      console.log(e.endCoordinates.height)
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardShown(false);
+      setKeyboardHeight(0)
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+
+  }, [])
 
     return (
         <View style={{flex: 1}}>
+          <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
             <Card style={styles.card}>
                 {openChoices ?
                     <OnuObjectiveChoice formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
@@ -129,18 +175,26 @@ const ChallengeDetails = (props: Props) => {
                         <Text style={styles.title}>Create a new Challenge!</Text>
 
                         <Input
-                            placeholder={"Challenge Title"}
-                            style={styles.input}
-                            value={formik.values.title}
-                            onChangeText={(title) => formik.setFieldValue('title', title)}
-                            inputContainerStyle={{borderBottomWidth: 0}}
+                          placeholder={"Challenge Title"}
+                          style={[styles.input, errorMarker.title ? {borderColor: colors.error, borderWidth:1} : {}]}
+                          value={formik.values.title}
+                          onChangeText={title => {
+                            formik.setFieldValue('title', title)
+                            verifyChange(false)
+                            setErrorMarker({title: title.length <= 1, description: errorMarker.description, goals: errorMarker.goals, onu: errorMarker.onu})
+                          }}
+                          inputContainerStyle={{borderBottomWidth: 0}}
                         />
 
                         <Input
                             placeholder={"Challenge Description"}
-                            style={[styles.input, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
+                            style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {}, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
                             value={formik.values.description}
-                            onChangeText={(desc) => formik.setFieldValue('description', desc)}
+                            onChangeText={(desc) => {
+                                formik.setFieldValue('description', desc);
+                                verifyChange(false)
+                                setErrorMarker({title: errorMarker.title, description: desc.length <= 1, goals: errorMarker.goals, onu: errorMarker.onu})
+                            }}
                             multiline={true}
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
@@ -174,16 +228,19 @@ const ChallengeDetails = (props: Props) => {
                                             onPress={() => setOpenChoices(true)}> Edit objectives </Button>
                                 </View>
                             </View> :
-                            <View style={{
-                                display: "flex",
-                                justifyContent: 'center',
-                                width: '100%',
-                                flexDirection: 'row',
-                                padding: 15
-                            }}>
-                                <Button style={styles.optionsButton} mode={'contained'}
-                                        onPress={() => setOpenChoices(true)}> Choose objectives </Button>
-                            </View>
+                              <View>
+                                  <Text style={{width: '100%', marginLeft: 10, color: colors.primary, paddingTop: 10}}> Select at least one Objective! </Text>
+                                  <View style={{
+                                      display: "flex",
+                                      justifyContent: 'center',
+                                      width: '100%',
+                                      flexDirection: 'row',
+                                      padding: 15
+                                  }}>
+                                      <Button style={styles.optionsButton} mode={'contained'}
+                                              onPress={() => setOpenChoices(true)}> Choose objectives </Button>
+                                  </View>
+                              </View>
                         }
                         <Text style={styles.label}> Challenge Goals </Text>
                         <View>
@@ -191,12 +248,12 @@ const ChallengeDetails = (props: Props) => {
 
                                 <Input
                                     placeholder={"Goal..."}
-                                    style={styles.inputWithIcon}
+                                    style={[styles.inputWithIcon, {position: "absolute", bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.3 : 0}]}
                                     value={goal}
-                                    onChangeText={t => setGoal(t)}
+                                    onChangeText={t => {setGoal(t);}}
                                     inputContainerStyle={{borderBottomWidth: 0}}
                                     rightIcon={
-                                        <View style={styles.goalAdderIcon}>
+                                        <View style={[styles.goalAdderIcon, {position: "absolute",left: Dimensions.get('window').width*0.77}]}>
                                             <Icon style={styles.icon}
                                                   name={'add-outline'}
                                                   type={'ionicon'}
@@ -206,6 +263,8 @@ const ChallengeDetails = (props: Props) => {
                                                           setGoals([...goals, {name: goal, points: 0}]);
                                                           formik.setFieldValue('challengeObjectives', [...formik.values.challengeObjectives, {name: goal, points: 0}]);
                                                           setGoal('');
+                                                          setErrorMarker({title: errorMarker.title, description: errorMarker.description, goals: false, onu: errorMarker.onu})
+                                                          verifyChange(true)
                                                       }
                                                   }}
                                             />
@@ -213,14 +272,18 @@ const ChallengeDetails = (props: Props) => {
                                     }
                                 />
                             </View>
+                            {errorMarker.goals && <Text style={[styles.label, {color: colors.error, display: "flex", flexDirection: "row", justifyContent: "center"}]}> You need to set at least one goal </Text>}
                             {goals.map((t, index) =>
                                 <List.Item key={index} style={styles.listItem}
                                            title={t.name}
                                            rippleColor={'#313131'}
                                            right={props => <Icon {...props} name="close-outline" type={'ionicon'}
                                                                  onPress={() => {
-                                                                     setGoals(goals.filter(i => i.name !== t.name));
-                                                                     formik.setFieldValue('challengeObjectives', goals);
+                                                                    const newGoals = goals.filter(i => i.name !== t.name)
+                                                                     setGoals(newGoals);
+                                                                     formik.setFieldValue('challengeObjectives', newGoals);
+                                                                     setErrorMarker({title: errorMarker.title, description: errorMarker.description, goals: goals.length <= 1, onu: errorMarker.onu})
+                                                                     verifyChange(false)
                                                                  }}/>}
                                 />)}
 
@@ -228,6 +291,7 @@ const ChallengeDetails = (props: Props) => {
                     </View>
                 }
             </Card>
+          </ScrollView>
         </View>
     )
 }

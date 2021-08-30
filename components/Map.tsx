@@ -3,12 +3,13 @@ import {Text, View} from "./Themed";
 import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {useQuery} from "@apollo/client";
+import {useLazyQuery, useQuery} from "@apollo/client";
 import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
 import {ActivityIndicator, useTheme} from "react-native-paper";
 import CreateChallengeModal from "./CreateChallengeModal/CreateChallengeModal";
 import LottieView from "lottie-react-native";
 import * as Location from "expo-location";
+import {find} from "react-native-redash/lib/typescript/v1";
 
 type MarkerInfo = {
     title: string,
@@ -26,9 +27,13 @@ const Map = () => {
 
     const {colors} = useTheme()
 
-    const {data: userData,error: userError,loading: userLoading} = useQuery(FIND_NEARBY_USERS);
-    const {data: challengeData,error: challengeError,loading: challengeLoading} = useQuery(FIND_NEARBY_CHALLENGES);
     const [location, setLocation] = useState(null);
+    const getLocationLazily = () => {
+        if (location && location.latitude && location.longitude) return {latitude: location.latitude, longitude: location.longitude}
+        else return {latitude: 0.0, longitude: 0.0}
+    };
+    const [findNearbyChallenges, {data: challengeData,error: challengeError,loading: challengeLoading}] = useLazyQuery(FIND_NEARBY_CHALLENGES, {variables: getLocationLazily()});
+    const [findNearbyUsers, {data: userData,error: userError,loading: userLoading}] = useLazyQuery(FIND_NEARBY_USERS, {variables: getLocationLazily()});
     const [errorMsg, setErrorMsg] = useState(null);
     const [modal, setModal] = React.useState(false)
     const showModal = () => setModal(true);
@@ -66,6 +71,13 @@ const Map = () => {
     }, []);
 
     useEffect(() => {
+        if (location) {
+            findNearbyChallenges();
+            findNearbyUsers();
+        }
+    }, [location]);
+
+    useEffect(() => {
         if(userData && challengeData){
             const result = userData.findNearbyUsers.map((u) => {
                 return {
@@ -99,10 +111,9 @@ const Map = () => {
                     />
                 }
             })
-            console.log(cResult)
             setChallengeMarkers(cResult)
         }
-    }, [userData, challengeData])
+    }, [userData, challengeData]);
 
 
     if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', marginTop:Dimensions.get('window').height*0.4, justifyContent:'center'}}><ActivityIndicator size="large" /></View>;
@@ -116,7 +127,7 @@ const Map = () => {
           loop
           speed={0.4}
           resizeMode={'cover'}
-        />;
+        />
     }
     if (challengeError) {
         console.log(challengeError.message);

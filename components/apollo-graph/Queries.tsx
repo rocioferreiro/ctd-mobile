@@ -18,8 +18,8 @@ query findChallengeById{
 `;
 
 export const FIND_NEARBY_USERS = gql`
-query findNearbyUsers {
-  findNearbyUsers(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
+query findNearbyUsers($latitude: Float!, $longitude: Float!) {
+  findNearbyUsers(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     name
     lastname
@@ -55,6 +55,7 @@ query findUserById{
 export const GET_USER_BY_ID = gql`
 query findUserById($userId: String!){
   findUserById(id: $userId){
+  findUserById(id: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8"){
     name
     id
     mail
@@ -77,8 +78,8 @@ query getScore($newChallenge: ChallengeDTOInput!){
 `;
 
 export const FIND_NEARBY_CHALLENGES = gql`
-query findNearbyChallenges {
-  findNearbyChallenges(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
+query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
+  findNearbyChallenges(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     title
     description

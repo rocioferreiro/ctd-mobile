@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Card, useTheme} from "react-native-paper";
 import {View} from "../../Themed";
 import ImagePicker from "./ImagePicker";
@@ -8,12 +8,16 @@ import {Icon, Input} from "react-native-elements";
 
 type Props = {
   formik: any
+  setDisabled: (boolean) => void
 }
 
 const ChallengeExtraInfo = (props: Props) => {
   const {colors} = useTheme()
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
+  const [image, setImage] = React.useState(null)
+  const [errorIns, setErrorIns] = React.useState(false)
+  const [errorCh, setErrorCh] = React.useState(false)
 
   const styles = StyleSheet.create({
     container: {
@@ -38,7 +42,7 @@ const ChallengeExtraInfo = (props: Props) => {
       color: colors.primary,
       marginLeft: 5,
       marginTop: 10,
-      marginBottom: 15,
+      marginBottom: 5,
       fontSize: 20
     },
     input: {
@@ -67,6 +71,39 @@ const ChallengeExtraInfo = (props: Props) => {
     },
   });
 
+  const addDays = (days : number, date): Date => {
+    var futureDate = new Date(date);
+    futureDate.setDate(futureDate. getDate() + days);
+    return futureDate;
+  }
+
+  const verifyErrors = () => {
+    if(addDays(7, props.formik.values.inscriptionsFrom).getTime() > new Date(props.formik.values.inscriptionsTo).getTime()){
+      setErrorIns(true)
+      props.setDisabled(true)
+    } else {
+      setErrorIns(false)
+      props.setDisabled(false)
+    }
+    if(addDays(2, props.formik.values.inscriptionsTo).getTime() > new Date(props.formik.values.startsFrom).getTime()) {
+      setErrorCh(true)
+      props.setDisabled(true)
+    } else {
+      setErrorCh(false)
+      props.setDisabled(false)
+    }
+
+    if(!image) props.setDisabled(true)
+
+  }
+  useEffect(() => {
+    verifyErrors()
+  }, [])
+
+  useEffect(() => {
+    verifyErrors()
+  }, [openInscriptionCalendar, openChallengeCalendar, image])
+
   return (
     <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
       <Card style={styles.card}>
@@ -74,6 +111,7 @@ const ChallengeExtraInfo = (props: Props) => {
           <Text style={styles.title}>When will your challenge be?</Text>
 
           <Text style={styles.label}>Inscriptions open</Text>
+          <Text style={{color: errorIns ? colors.error : colors.primary, marginLeft: 5, marginBottom: 10}}> At least a week </Text>
 
           <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'row'}}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column', justifyContent:"space-evenly", marginLeft: 30,}}>
@@ -105,6 +143,7 @@ const ChallengeExtraInfo = (props: Props) => {
           </View>
 
           <Text style={styles.label}>Challenge is active</Text>
+          {errorCh && <Text style={{color: colors.error, marginLeft: 5, marginBottom: 10}}> Select a valid Date </Text>}
 
           <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'row'}}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column', justifyContent:"space-evenly", marginLeft: 30,}}>
@@ -134,21 +173,17 @@ const ChallengeExtraInfo = (props: Props) => {
                 }} />
               </View>
             </View>
-
-
           </View>
-
-
         </View>
 
         <Text style={styles.label}>Upload Image</Text>
-        <ImagePicker/>
+        <ImagePicker image={image} setImage={setImage}/>
       </Card>
 
       <DatePicker startDate={props.formik.values.inscriptionsFrom} setStartDate={date => {props.formik.setFieldValue('inscriptionsFrom', date)}} close={() => setOpenInscriptionCalendar(false)}
                   endDate={props.formik.values.inscriptionsTo} setEndDate={date => {props.formik.setFieldValue('inscriptionsTo', date)}} open={openInscriptionCalendar}/>
       <DatePicker startDate={props.formik.values.startsFrom} setStartDate={date => {props.formik.setFieldValue('startsFrom', date)}} close={() => setOpenChallengeCalendar(false)}
-                    endDate={props.formik.values.finishesOn} setEndDate={date => {props.formik.setFieldValue('finishesOn', date)}} open={openChallengeCalendar}/>
+                    endDate={props.formik.values.finishesOn} setEndDate={date => {props.formik.setFieldValue('finishesOn', date)}} open={openChallengeCalendar} minDate={addDays(3,props.formik.values.inscriptionsTo)}/>
 
     </View>
   )

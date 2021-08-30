@@ -1,7 +1,7 @@
 import React from "react";
 import {View} from "../../Themed";
 import {SafeAreaView, StyleSheet} from "react-native";
-import DateRPicker from 'react-native-neat-date-picker'
+import DateRPicker from 'react-native-neat-date-picker';
 import {useTheme} from "react-native-paper";
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
   setEndDate: (any) => void,
   open: boolean,
   close: () => void
+  minDate?: Date
 }
 const DatePicker = (props: Props) => {
   const {colors} = useTheme()
@@ -58,6 +59,7 @@ const DatePicker = (props: Props) => {
           startDate={props.startDate}
           endDate={props.endDate}
           onCancel={props.close}
+          minDate={props.minDate}
           colorOptions={{headerColor: colors.surface,
             headerTextColor:colors.primary,
             weekDaysColor: colors.primary,
