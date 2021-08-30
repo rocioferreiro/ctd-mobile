@@ -136,7 +136,6 @@ const ChallengePage = (props:Props) => {
                  </View>
                  <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                  <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:20,marginLeft:20, backgroundColor:colors.primary,borderRadius:10}}>
-
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.accent,
@@ -149,8 +148,10 @@ const ChallengePage = (props:Props) => {
                  </View>
 
                  <View style={{width:"100%",justifyContent: "center", padding:15,marginLeft:4, backgroundColor:colors.surface}}>
+                     <Button icon="check-bold" style={{backgroundColor:"rgba(0,0,0,0)"}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives</Title>
+                             padding:10}}>Challenge Objectives</Title>
+                     </Button>
                      {props.challenge.objectives.map((objective, i) =>
                          <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
                              <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
