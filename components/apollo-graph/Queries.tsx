@@ -18,8 +18,8 @@ query findChallengeById{
 `;
 
 export const FIND_NEARBY_USERS = gql`
-query findNearbyUsers {
-  findNearbyUsers(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
+query findNearbyUsers($latitude: Float!, $longitude: Float!) {
+  findNearbyUsers(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     name
     lastname
@@ -36,7 +36,7 @@ query findNearbyUsers {
 
 export const FIND_USER_BY_ID = gql`
 query findUserById{
-  findUserById(id: "meta0ed44de8a-b6bf-4a31-a553-fb7df9a67aed"){
+  findUserById(id: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8"){
     name
     id
     mail
@@ -59,8 +59,8 @@ query getScore($newChallenge: ChallengeDTOInput!){
 `;
 
 export const FIND_NEARBY_CHALLENGES = gql`
-query findNearbyChallenges {
-  findNearbyChallenges(coordinates: {latitude: -34.4618343, longitude: -58.8705242}, xDis: 0.1, yDis: 0.1){
+query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
+  findNearbyChallenges(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     title
     description
@@ -74,7 +74,7 @@ query findNearbyChallenges {
 
 export const FIND_CHALLENGES_OF_USER = gql`
   query getCreatedChallengesByUser{
-    getCreatedChallengesByUser(userId: "meta0ed44de8a-b6bf-4a31-a553-fb7df9a67aed") {
+    getCreatedChallengesByUser(userId: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8") {
       id
       title
       description
