@@ -110,7 +110,7 @@ const ChallengePage = (props:Props) => {
 
               <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5}}>{props.challenge.description}</Title>
+                             marginTop: 5}}> Challenge Description:  {props.challenge.description}</Title>
 
               </View>
                  <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
