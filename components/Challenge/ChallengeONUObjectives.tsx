@@ -124,7 +124,7 @@ const ChallengeONUObjetives = (props: Props) => {
             {props.challenge.objectives.map((s, index) => {
                 return <TouchableWithoutFeedback key={index}>
                     <Image
-                        style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                        style={{width: 70, height: 70, borderRadius: 25, marginHorizontal: 10}}
                         source={onuPictures[index].image}/>
                 </TouchableWithoutFeedback>
             })}

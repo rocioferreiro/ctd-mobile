@@ -148,9 +148,9 @@ const ChallengePage = (props:Props) => {
                  </View>
                  </View>
 
-                 <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
-                         <Title style={{ fontSize: 25, color: colors.primary,
-                             marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives: </Title>
+                 <View style={{width:"100%",justifyContent: "center", padding:15,marginLeft:4, backgroundColor:colors.surface}}>
+                         <Title style={{ fontSize: 20, color: colors.primary,
+                             marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives</Title>
                      {props.challenge.objectives.map((objective, i) =>
                          <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
                              <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
@@ -164,12 +164,18 @@ const ChallengePage = (props:Props) => {
                      <JoinButton/>
                  </View>
                  <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
-                 <Title style={{ fontSize: 25, color: colors.primary,
-                     marginTop: 5,alignItems: "center", fontWeight:"bold"}}>ONU Objetives: </Title>
+
+                     <Button icon="information" style={{backgroundColor:"rgba(0,0,0,0)"}}>
+                         <Title style={{ fontSize: 20, color: colors.primary,
+                             padding:10}}>Sustainable Objectives</Title>
+                     </Button>
 
 
+
+
+                     <ChallengeONUObjetives challenge={props.challenge}/>
                  </View>
-              <ChallengeONUObjetives challenge={props.challenge}/>
+
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
 
