@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {View, Text} from "./Themed";
-import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
+import {Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
-import {ApolloProvider, useQuery} from "@apollo/client";
+import {useQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
 import {color} from "react-native-elements/dist/helpers";
 import ChallengePage from "./Challenge/ChallengePage";
 import {getApolloClientInstance} from "./apollo-graph/Client";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
-
-
 
 
 const SearchScreen = () => {
@@ -73,7 +71,7 @@ const SearchScreen = () => {
       </View>
 
   )
-}
+};
+
+
 export default SearchScreen;
-
-

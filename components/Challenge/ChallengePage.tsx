@@ -1,37 +1,20 @@
 import React, {useEffect, useState} from "react";
 import MapView, {LatLng, Marker} from "react-native-maps";
-
-
 import {
-  Portal,
-  Searchbar,
-  Card,
-  Divider,
-  Modal,
   useTheme,
   Title,
-  Paragraph,
   Avatar,
-  TextInput, ActivityIndicator, Button
+  ActivityIndicator
 } from 'react-native-paper';
-
 import {Dimensions, ImageBackground, ScrollView} from "react-native";
-import {color} from "react-native-elements/dist/helpers";
 import {View,Text} from "../Themed";
-import {  Image} from 'react-native';
 import { StyleSheet } from 'react-native';
-import {Tuple} from "../Models/User";
-import {Challenge, ChallengeObjective} from "../Models/Challenge";
-import JoinFAB from "./JoinFAB";
+import {Challenge} from "../Models/Challenge";
 import {useLazyQuery} from "@apollo/client";
-import {GET_USER_BY_ID} from "../apollo-graph/Queries";
+import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
-import ChallengeCard from "../ChallengeCard/ChallengeCard";
-import OnuObjectiveChoice from "../CreateChallengeForm/Details/onuObjectiveChoice";
 import ChallengeONUObjetives from "./ChallengeONUObjectives";
-
-
 
 
 const mockedChallenges = [
@@ -66,7 +49,7 @@ const ChallengePage = (props:Props) => {
       if(props.challenge) return props.challenge.owner
       else return ''
     }
-    const [getUser, {data, loading, error}] = useLazyQuery(GET_USER_BY_ID, {variables:{userId: getOwner()}})
+    const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {variables:{userId: getOwner()}})
 
     useEffect(() => {
       if(props.challenge) getUser()
@@ -82,8 +65,8 @@ const ChallengePage = (props:Props) => {
         card: {
             width: '100%',
             height: Dimensions.get('window').height * 0.7,
-            borderWidth: 10,
-            borderColor:colors.accent,
+            // borderWidth: 10,
+            // borderColor:colors.accent,
             padding: '3%',
             backgroundColor: 'rgba(0,0,0,0)'
         },
@@ -95,8 +78,8 @@ const ChallengePage = (props:Props) => {
             height: '70%',
             borderWidth: 5,
             borderStyle: 'solid',
-            borderColor: marker ? colors.extra : colors.surface,
-            borderRadius: 16,
+            borderColor: '#c1c1c1',
+            borderRadius: 5,
             overflow: 'hidden',
             margin: 5,
             alignItems: 'center',
@@ -163,12 +146,11 @@ const ChallengePage = (props:Props) => {
                          <Title style={{ fontSize: 25, color: colors.primary,
                              marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives: </Title>
                      {props.challenge.objectives.map((objective, i) =>
-                         <View key={i} style={{marginBottom: 5}}>
+                         <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
                              <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
-                                 marginTop: 5}}>{objective}</Title>
+                                 marginTop: 5}}>{objective.name}</Title>
                          </View>
-                     )
-                     }
+                     )}
 
                  </View>
 
@@ -176,14 +158,14 @@ const ChallengePage = (props:Props) => {
                      <JoinButton/>
                  </View>
 
-              <ChallengeONUObjetives challenge={props.challenge}></ChallengeONUObjetives>
+              <ChallengeONUObjetives challenge={props.challenge}/>
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
 
                      <Title style={{ fontSize: 20, color: colors.primary,
                          marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
-                     <Title style={{ fontSize: 15, color: colors.primary,
-                         marginTop: 5}}>This a is short description of the challenge location</Title>
+                     {/*<Title style={{ fontSize: 15, color: colors.primary,*/}
+                     {/*    marginTop: 5}}>This a is short description of the challenge location</Title>*/}
 
                  </View>
 
