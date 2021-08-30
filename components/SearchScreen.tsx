@@ -47,9 +47,8 @@ const SearchScreen = () => {
     }
 
   return (
-      <ApolloProvider client={client}>
-       <View >
-            {selectedChallenge ? <ChallengePage  setSelectedChallenge={setSelectedChallenge} challenge={ selectedChallenge} ></ChallengePage>:
+       <View>
+            {selectedChallenge ? <ChallengePage  setSelectedChallenge={setSelectedChallenge} challenge={ selectedChallenge} />:
                <Card style={{
                    width: Dimensions.get('window').width,
                    height: '100%',
@@ -72,11 +71,6 @@ const SearchScreen = () => {
 
            }
       </View>
-      </ApolloProvider>
-
-
-
-
 
   )
 }
