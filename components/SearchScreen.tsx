@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {View, Text} from "./Themed";
 import {Portal, Searchbar, Card, Divider, Modal, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
@@ -21,16 +21,20 @@ const SearchScreen = () => {
     const client= getApolloClientInstance()
 
     const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER);
+    const [challengeList, setChallengeList] = useState<any>([]);
+
+
+    useEffect(() => {
+        if(data) {
+            setChallengeList(data.getCreatedChallengesByUser)
+        }
+    }, [data])
+
     if (loading) return <Text>Loading...</Text>;
     if (error) {
         console.log(error.message);
         return <Text>Error :(</Text>;
     }
-    const [challengeList, setChallengeList] = useState<any>(data.getCreatedChallengesByUser);
-
-
-
-
 
     const onChange = (searchValue: string) => {
         if (!searchValue || searchValue === "") setChallengeList(data);
