@@ -52,25 +52,6 @@ query findUserById{
 }
 `;
 
-export const GET_USER_BY_ID = gql`
-query findUserById($userId: String!){
-  findUserById(id: $userId){
-  findUserById(id: "meta-hys6qpxheecv-3a33afbe-e86e-4dc7-acf3-c1e564dc1df8"){
-    name
-    id
-    mail
-    role
-    lastname
-    address {
-      coordinates {
-        latitude
-        longitude
-      }
-    }
-  }
-}
-`;
-
 export const GET_SCORE = gql`
 query getScore($newChallenge: ChallengeDTOInput!){
     getSuggestedScore(challengeDTO: $newChallenge)
@@ -117,4 +98,5 @@ export const FIND_CHALLENGES_OF_USER = gql`
        upVotes
     }
   }
+  
 `;
