@@ -110,10 +110,10 @@ const ChallengePage = (props:Props) => {
 
               <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5}}> Challenge Description:  {props.challenge.description}</Title>
+                             marginTop: 5,fontWeight:"bold"}}> Challenge Description:  {props.challenge.description}</Title>
 
               </View>
-                 <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
+                 <View style={{width:"100%",justifyContent: "center", alignItems: "center",padding:15,marginRight:6,marginLeft:6, backgroundColor:colors.primary,borderRadius:40}}>
 
                          <Title style={{ fontSize: 20, color: colors.background,
                              marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
@@ -125,16 +125,23 @@ const ChallengePage = (props:Props) => {
                              marginTop: 5}}>Inscriptions end:   {props.challenge.endInscription}</Title>
                  </View>
 
-                 <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                 <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 25, color: colors.primary,
-                             marginTop: 5}}>Challenge Objectives: </Title>
+                             marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives: </Title>
                          <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
                              marginTop: 5}}>Obj 1</Title>
                          <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
                              marginTop: 5}}>Obj 2</Title>
 
                  </View>
+                 <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
 
+                     <Title style={{ fontSize: 20, color: colors.primary,
+                         marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
+                     <Title style={{ fontSize: 15, color: colors.primary,
+                         marginTop: 5}}>This a is short description of the challenge location</Title>
+
+                 </View>
 
                          <View style={styles.card}>
 
