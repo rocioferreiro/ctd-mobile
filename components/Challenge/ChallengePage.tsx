@@ -27,6 +27,9 @@ import {useLazyQuery} from "@apollo/client";
 import {GET_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
+import ChallengeCard from "../ChallengeCard/ChallengeCard";
+import OnuObjectiveChoice from "../CreateChallengeForm/Details/onuObjectiveChoice";
+import ChallengeONUObjetives from "./ChallengeONUObjectives";
 
 
 
@@ -55,6 +58,8 @@ interface Props {
 }
 
 const ChallengePage = (props:Props) => {
+    const [onuObjectives, setOnuObjectives] = React.useState([]);
+    const [openChoices, setOpenChoices] = React.useState(false);
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
     const getOwner = () => {
@@ -77,7 +82,8 @@ const ChallengePage = (props:Props) => {
         card: {
             width: '100%',
             height: Dimensions.get('window').height * 0.7,
-            borderWidth: 0,
+            borderWidth: 10,
+            borderColor:colors.accent,
             padding: '3%',
             backgroundColor: 'rgba(0,0,0,0)'
         },
@@ -156,10 +162,13 @@ const ChallengePage = (props:Props) => {
                  <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 25, color: colors.primary,
                              marginTop: 5,alignItems: "center", fontWeight:"bold"}}>Challenge Objectives: </Title>
-                         <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
-                             marginTop: 5}}>Obj 1</Title>
-                         <Title style={{  marginLeft: 4, fontSize: 20, color: colors.primary,
-                             marginTop: 5}}>Obj 2</Title>
+                     {props.challenge.objectives.map((objective, i) =>
+                         <View key={i} style={{marginBottom: 5}}>
+                             <Title style={{ marginLeft: 4,fontSize: 20, color: colors.primary,
+                                 marginTop: 5}}>{objective}</Title>
+                         </View>
+                     )
+                     }
 
                  </View>
 
@@ -167,7 +176,9 @@ const ChallengePage = (props:Props) => {
                      <JoinButton/>
                  </View>
 
+              <ChallengeONUObjetives challenge={props.challenge}></ChallengeONUObjetives>
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
+
 
                      <Title style={{ fontSize: 20, color: colors.primary,
                          marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
