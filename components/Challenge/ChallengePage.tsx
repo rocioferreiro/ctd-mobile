@@ -45,7 +45,7 @@ const ChallengePage = (props:Props) => {
     const [onuObjectives, setOnuObjectives] = React.useState([]);
     const [openChoices, setOpenChoices] = React.useState(false);
     const { colors } = useTheme();
-    const [marker, setMarker] = useState<LatLng>();
+    const [marker, setMarker] = useState<LatLng>(props.challenge.coordinates);
     const getOwner = () => {
       if(props.challenge) return props.challenge.owner
       else return ''
@@ -188,8 +188,8 @@ const ChallengePage = (props:Props) => {
                                  <MapView
                                      style={styles.map}
                                      initialRegion={{
-                                         latitude: -36.3789925,
-                                         longitude: -60.3855889,
+                                         latitude: props.challenge.coordinates.latitude,
+                                         longitude: props.challenge.coordinates.longitude,
                                          latitudeDelta: 0.1,
                                          longitudeDelta: 0.1,
                                      }}
