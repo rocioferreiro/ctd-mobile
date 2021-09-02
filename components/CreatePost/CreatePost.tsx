@@ -55,7 +55,12 @@ const CreatePost = (props:Props) => {
                         backgroundColor: "rgba(0,0,0,0)"
                     }}>
                         {addImage ?
-                            <View>
+                            <View style={{
+                                display: "flex",
+                                width: '100%',
+                                padding: 10,
+                                backgroundColor: "rgba(0,0,0,0)"
+                            }}>
                           <CancelButton setAddImage={setAddImage}></CancelButton>
                             <ImagePicker image={image} setImage={setImage}></ImagePicker>
                             </View>
@@ -65,10 +70,10 @@ const CreatePost = (props:Props) => {
                                 justifyContent: 'flex-start',
                                 width: '100%',
                                 flexDirection: 'row',
-                                padding: 15,
+                                padding: 10,
                                 backgroundColor: "rgba(0,0,0,0)"
                             }}>
-
+                            <Text> Add Image</Text>
                             <ImageButton setAddImage={setAddImage}></ImageButton>
                             </View>
                         }
