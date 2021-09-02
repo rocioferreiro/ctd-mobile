@@ -31,7 +31,16 @@ const CreatePost = (props:Props) => {
                 </Button>
         <Text>Create Post</Text>
                 <ScrollView>
+                    <View style={{
+                        display: "flex",
+                        justifyContent: 'center',
+                        width: '100%',
+                        flexDirection: 'row',
+                        padding: 15,
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }}>
                 <PostTextInput></PostTextInput>
+                    </View>
                 </ScrollView>
             </View>
 

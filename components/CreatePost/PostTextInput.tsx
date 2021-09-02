@@ -6,8 +6,11 @@ const PostTextInput = () => {
 
     return (
         <TextInput
-            label="Email"
+            style={{width:"90%"}}
+            label="Your post here..."
+            multiline={true}
             value={text}
+
             onChangeText={text => setText(text)}
         />
     );
