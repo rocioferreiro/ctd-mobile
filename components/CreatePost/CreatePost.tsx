@@ -6,6 +6,9 @@ import {Dimensions, ScrollView, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {colorShade} from "../Models/shadingColor";
 import PostTextInput from "./PostTextInput";
+import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
+import ImageButton from "./ImageButton";
+import CancelButton from "./CancelButton";
 type Props = {
 
     formik: any
@@ -15,6 +18,8 @@ type Props = {
 const CreatePost = (props:Props) => {
     const {formik} = props;
     const { colors } = useTheme();
+    const [image, setImage] = React.useState(null)
+    const [ addImage, setAddImage] = React.useState(false)
 
     const onChange = (searchValue: string) => {
 
@@ -40,6 +45,34 @@ const CreatePost = (props:Props) => {
                         backgroundColor: "rgba(0,0,0,0)"
                     }}>
                 <PostTextInput></PostTextInput>
+                    </View>
+                    <View style={{
+                        display: "flex",
+                        justifyContent: 'center',
+                        width: '100%',
+                        flexDirection: 'row',
+                        padding: 15,
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }}>
+                        {addImage ?
+                            <View>
+                          <CancelButton setAddImage={setAddImage}></CancelButton>
+                            <ImagePicker image={image} setImage={setImage}></ImagePicker>
+                            </View>
+                                :
+                            <View style={{
+                                display: "flex",
+                                justifyContent: 'flex-start',
+                                width: '100%',
+                                flexDirection: 'row',
+                                padding: 15,
+                                backgroundColor: "rgba(0,0,0,0)"
+                            }}>
+
+                            <ImageButton setAddImage={setAddImage}></ImageButton>
+                            </View>
+                        }
+
                     </View>
                 </ScrollView>
             </View>
