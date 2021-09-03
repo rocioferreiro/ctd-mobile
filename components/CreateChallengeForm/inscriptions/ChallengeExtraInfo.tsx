@@ -106,7 +106,7 @@ const ChallengeExtraInfo = (props: Props) => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
-      <Card style={styles.card}>
+      <View style={styles.card}>
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
           <Text style={styles.title}>When will your challenge be?</Text>
 
@@ -178,7 +178,7 @@ const ChallengeExtraInfo = (props: Props) => {
 
         <Text style={styles.label}>Upload Image</Text>
         <ImagePicker image={image} setImage={setImage}/>
-      </Card>
+      </View>
 
       <DatePicker startDate={props.formik.values.inscriptionsFrom} setStartDate={date => {props.formik.setFieldValue('inscriptionsFrom', date)}} close={() => setOpenInscriptionCalendar(false)}
                   endDate={props.formik.values.inscriptionsTo} setEndDate={date => {props.formik.setFieldValue('inscriptionsTo', date)}} open={openInscriptionCalendar}/>

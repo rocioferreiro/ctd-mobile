@@ -116,7 +116,7 @@ const ChallengePoints = (props: Props) => {
         },
         objectivesContainer: {
             backgroundColor: 'rgba(0,0,0,0)',
-            paddingLeft: 50,
+            paddingLeft: 30,
             paddingRight: 50,
         },
         objective: {
@@ -129,6 +129,7 @@ const ChallengePoints = (props: Props) => {
         objectiveText: {
             fontSize: 18,
             color: colors.primary,
+            width: Dimensions.get('window').width*0.35
         },
         objectivePointsInput: {
             flexDirection: "row",
@@ -170,7 +171,7 @@ const ChallengePoints = (props: Props) => {
 
     return (
         <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
-            <Card style={styles.card}>
+            <View style={styles.card}>
                 <Text style={styles.title}>How many points will you Reward?</Text>
                 <Text style={styles.subTitle}>Total points for completing the challenge</Text>
                 <Badge style={styles.points} size={50}>
@@ -224,7 +225,7 @@ const ChallengePoints = (props: Props) => {
                             </View>)
                     })}
                 </View>
-            </Card>
+            </View>
         </View>
     )
 }

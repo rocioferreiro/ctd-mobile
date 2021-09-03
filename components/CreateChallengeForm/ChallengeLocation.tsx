@@ -21,7 +21,7 @@ const ChallengeLocation = (props: Props) => {
 
     useEffect(() => {
         if(!marker){
-            props.setDisabled(true)
+            props.setDisabled(false)
         }
         if(props.formik.values.coordinates) {
             setMarker({latitude: props.formik.values.coordinates.coordinates[0], longitude: props.formik.values.coordinates.coordinates[1]})
@@ -30,9 +30,10 @@ const ChallengeLocation = (props: Props) => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
+                setLocation({"latitude": 0, "longitude":0});
             } else {
                 let location = await Location.getCurrentPositionAsync({});
+                console.log(location)
                 setLocation(location.coords);
             }
         })();
@@ -84,7 +85,7 @@ const ChallengeLocation = (props: Props) => {
         },
         input: {
             marginTop: 5,
-            position: "absolute",
+            position: "relative",
             bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.15 : 0,
             width: '100%',
             backgroundColor: colors.surface,
@@ -94,7 +95,7 @@ const ChallengeLocation = (props: Props) => {
 
     return (
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-            <Card style={styles.card}>
+            <View style={styles.card}>
                 <Text style={styles.title}>Where will your challenge be?</Text>
                 <View style={styles.mapWrapper}>
                     {location &&
@@ -129,7 +130,7 @@ const ChallengeLocation = (props: Props) => {
                     value={props.formik.values.locationExtraInfo}
                     onChangeText={(value) => {props.formik.setFieldValue('locationExtraInfo', value)}}
                 />
-            </Card>
+            </View>
         </View>
     );
 }

@@ -128,7 +128,7 @@ const Map = () => {
     }, [userData, challengeData]);
 
 
-    if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', marginTop:Dimensions.get('window').height*0.4, justifyContent:'center'}}><ActivityIndicator size="large" /></View>;
+    if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
     if (userError) {
         console.log(userError.message);
         return <LottieView
