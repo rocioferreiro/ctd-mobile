@@ -10,7 +10,7 @@ const ImageButton = (props:Props) => (
     <IconButton
         icon="camera"
         color={Colors.blue400}
-        size={40}
+        size={20}
         onPress={() => props.setAddImage(true)}
     > Add Image</IconButton>
 );

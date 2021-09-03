@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { TextInput } from 'react-native-paper';
+import {TextInput, useTheme} from 'react-native-paper';
 
 const PostTextInput = () => {
     const [text, setText] = React.useState('');
+    const { colors } = useTheme();
 
     return (
         <TextInput
-            style={{width:"90%"}}
+            outlineColor={colors.primary}
+            placeholderTextColor={colors.primary}
+
+            style={{width:"90%",fontSize:25,color:colors.primary,backgroundColor:colors.background}}
             label="Your post here..."
             multiline={true}
             value={text}

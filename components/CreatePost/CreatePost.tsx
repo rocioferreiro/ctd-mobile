@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import {Button, Card, Divider, useTheme} from 'react-native-paper';
+import {Button, Card, Colors, Divider, useTheme} from 'react-native-paper';
 import {View,Text} from "../Themed";
 import {Dimensions, ScrollView, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
@@ -9,6 +9,7 @@ import PostTextInput from "./PostTextInput";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import ImageButton from "./ImageButton";
 import CancelButton from "./CancelButton";
+import PublishButton from "./PublishButton";
 type Props = {
 
     formik: any
@@ -20,6 +21,10 @@ const CreatePost = (props:Props) => {
     const { colors } = useTheme();
     const [image, setImage] = React.useState(null)
     const [ addImage, setAddImage] = React.useState(false)
+
+    const handlePublish = () =>{
+
+    }
 
     const onChange = (searchValue: string) => {
 
@@ -34,14 +39,29 @@ const CreatePost = (props:Props) => {
                 <Button icon="keyboard-backspace" >
                     Back
                 </Button>
-        <Text>Create Post</Text>
+                <View style={{
+                    display: "flex",
+                    justifyContent: 'flex-start',
+                    width: '100%',
+                    flexDirection: 'row',
+                    padding: 15,
+                    backgroundColor: "rgba(0,0,0,0)"
+                }}>
+        <Text style={{
+            fontSize: 35,
+            fontWeight: 'bold',
+            color: colors.primary,
+            marginLeft: 5,
+            marginTop: -20,
+        }}>Create Post</Text>
+                </View>
                 <ScrollView>
                     <View style={{
                         display: "flex",
                         justifyContent: 'center',
                         width: '100%',
                         flexDirection: 'row',
-                        padding: 15,
+                        padding: 5,
                         backgroundColor: "rgba(0,0,0,0)"
                     }}>
                 <PostTextInput></PostTextInput>
@@ -70,14 +90,30 @@ const CreatePost = (props:Props) => {
                                 justifyContent: 'flex-start',
                                 width: '100%',
                                 flexDirection: 'row',
-                                padding: 10,
-                                backgroundColor: "rgba(0,0,0,0)"
+                                backgroundColor: "rgba(0,0,0,0)",
+                                alignItems:'center'
                             }}>
-                            <Text> Add Image</Text>
+                            <Text  style={{
+                                fontSize: 15,
+                                fontWeight: 'normal',
+                                color:Colors.blue400,
+                                marginLeft: 5,
+                                marginTop: -5,
+                            }}> Add Image</Text>
                             <ImageButton setAddImage={setAddImage}></ImageButton>
                             </View>
                         }
 
+                    </View>
+                    <View style={{
+                        display: "flex",
+                        justifyContent: 'center',
+                        width: '100%',
+                        flexDirection: 'row',
+                        padding: 15,
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }}>
+                        <PublishButton handlePublish={handlePublish} formik={formik}></PublishButton>
                     </View>
                 </ScrollView>
             </View>
