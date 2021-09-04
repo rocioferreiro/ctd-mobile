@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
@@ -8,7 +8,6 @@ import ChallengeExtraInfo from "./inscriptions/ChallengeExtraInfo";
 import ChallengePoints from "./ChallengePoints";
 import {Icon} from "react-native-elements";
 import {ActivityIndicator, useTheme} from "react-native-paper";
-import LottieView from "lottie-react-native";
 
 type Props = {
     onSubmit: (Challenge) => void,
@@ -30,7 +29,9 @@ const Stepper = (props: Props) => {
 
     const styles = StyleSheet.create({
         container: {
-            borderWidth: 0
+            borderWidth: 0,
+            backgroundColor: 'rgba(0,0,0,0)',
+            overflow: "visible"
         },
         nextButton: {
             backgroundColor: disabled ? '#c1c1c1' : colors.accent,
@@ -61,11 +62,13 @@ const Stepper = (props: Props) => {
         },
     });
 
-    return <ProgressSteps completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
+    const [theStep, setStep] = useState<ReactElement>(content[0])
+    const [theIndex, setIndex] = useState(0)
+
+    return <ProgressSteps style={{position: 'relative', overflow: 'visible'}} completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
                           completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}
                           progressBarColor={colors.accent}>
         {content.map((step, index) => {
-            // @ts-ignore
             return (
                 <ProgressStep
                     style={styles.container}
