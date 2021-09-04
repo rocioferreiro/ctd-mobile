@@ -62,8 +62,11 @@ const CreatePost = (props:Props) => {
                         width: '100%',
                         flexDirection: 'row',
                         padding: 5,
-                        backgroundColor: "rgba(0,0,0,0)"
-                    }}>
+                        backgroundColor: "rgba(0,0,0,0)",
+                        borderBottomWidth: 0
+
+                    }}
+                          >
                 <PostTextInput></PostTextInput>
                     </View>
                     <View style={{
