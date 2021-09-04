@@ -16,9 +16,6 @@ const SearchScreen = () => {
     const [selectedChallenge,setSelectedChallenge]= useState()
 
     const { colors } = useTheme();
-
-    const client= getApolloClientInstance()
-
     const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER);
     const [challengeList, setChallengeList] = useState<any>([]);
 

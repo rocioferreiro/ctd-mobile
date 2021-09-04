@@ -21,7 +21,7 @@ const ChallengeLocation = (props: Props) => {
 
     useEffect(() => {
         if(!marker){
-            props.setDisabled(false)
+            props.setDisabled(true)
         }
         if(props.formik.values.coordinates) {
             setMarker({latitude: props.formik.values.coordinates.coordinates[0], longitude: props.formik.values.coordinates.coordinates[1]})
