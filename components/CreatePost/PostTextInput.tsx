@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {TextInput, useTheme} from 'react-native-paper';
+import {Dimensions} from "react-native";
 
 const PostTextInput = () => {
     const [text, setText] = React.useState('');
@@ -20,7 +21,8 @@ const PostTextInput = () => {
                 shadowOffset: {width: 2, height: 2},
                 shadowOpacity: 0.5,
                 shadowColor: '#DAB99D',
-                elevation: 4}}
+                elevation: 4,
+                minHeight: Dimensions.get("window").height * 0.12, paddingTop: 20}}
 
             multiline={true}
             value={text}
