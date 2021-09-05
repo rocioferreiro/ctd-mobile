@@ -37,7 +37,7 @@ const CreatePost = (props:Props) => {
         <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
             <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20,backgroundColor:colors.surface}}>
                 <Button icon="keyboard-backspace" >
-                    Back
+                Back
                 </Button>
                 <View style={{
                     display: "flex",
@@ -63,7 +63,7 @@ const CreatePost = (props:Props) => {
                         flexDirection: 'row',
                         padding: 5,
                         backgroundColor: "rgba(0,0,0,0)",
-                        borderBottomWidth: 0
+
 
                     }}
                           >
@@ -114,7 +114,8 @@ const CreatePost = (props:Props) => {
                         width: '100%',
                         flexDirection: 'row',
                         padding: 15,
-                        backgroundColor: "rgba(0,0,0,0)"
+                        backgroundColor: "rgba(0,0,0,0)",
+                        borderRadius:10
                     }}>
                         <PublishButton handlePublish={handlePublish} formik={formik}></PublishButton>
                     </View>

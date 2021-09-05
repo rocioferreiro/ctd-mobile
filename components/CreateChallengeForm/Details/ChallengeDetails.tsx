@@ -188,7 +188,8 @@ const ChallengeDetails = (props: Props) => {
 
                         <Input
                             placeholder={"Challenge Description"}
-                            style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {}, {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
+                            style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {},
+                                {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
                             value={formik.values.description}
                             onChangeText={(desc) => {
                                 formik.setFieldValue('description', desc);

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {TextInput, useTheme} from 'react-native-paper';
+import { useTheme} from 'react-native-paper';
+import { Input} from "react-native-elements";
 import {Dimensions} from "react-native";
 
 const PostTextInput = () => {
@@ -7,8 +8,8 @@ const PostTextInput = () => {
     const { colors } = useTheme();
 
     return (
-        <TextInput
-            outlineColor={colors.primary}
+        <Input
+
             placeholderTextColor={colors.primary}
             placeholder={"Your post here..."}
 
@@ -26,6 +27,7 @@ const PostTextInput = () => {
 
             multiline={true}
             value={text}
+            inputContainerStyle={{borderBottomWidth: 0}}
 
             onChangeText={text => setText(text)}
         />
