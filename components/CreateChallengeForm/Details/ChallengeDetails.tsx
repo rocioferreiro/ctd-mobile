@@ -25,7 +25,7 @@ const ChallengeDetails = (props: Props) => {
 
     const styles = StyleSheet.create({
         title: {
-            fontSize: 35,
+            fontSize: 30,
             fontWeight: 'bold',
             color: colors.primary,
             marginLeft: 5,
@@ -56,6 +56,10 @@ const ChallengeDetails = (props: Props) => {
             fontSize: 20,
             borderRadius: 30,
             padding: 10,
+            shadowOffset: {width: 2, height: 2},
+            shadowOpacity: 0.5,
+            shadowColor: '#DAB99D',
+            elevation: 4
         },
         goalAdder: {
             marginTop: 5,
@@ -166,7 +170,7 @@ const ChallengeDetails = (props: Props) => {
     return (
         <View style={{flex: 1}}>
           <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
-            <Card style={styles.card}>
+            <View style={styles.card}>
                 {openChoices ?
                     <OnuObjectiveChoice formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
                                         setOpen={setOpenChoices}/> :
@@ -188,8 +192,7 @@ const ChallengeDetails = (props: Props) => {
 
                         <Input
                             placeholder={"Challenge Description"}
-                            style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {},
-                                {height: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
+                            style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {}, {minHeight: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
                             value={formik.values.description}
                             onChangeText={(desc) => {
                                 formik.setFieldValue('description', desc);
@@ -291,7 +294,7 @@ const ChallengeDetails = (props: Props) => {
                         </View>
                     </View>
                 }
-            </Card>
+            </View>
           </ScrollView>
         </View>
     )

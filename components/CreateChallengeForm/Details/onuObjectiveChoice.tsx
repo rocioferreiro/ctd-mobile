@@ -56,7 +56,6 @@ const OnuObjectiveChoice  = (props: Props) => {
       display: "flex",
       flexWrap: "wrap",
       flexDirection: "row",
-      height: Dimensions.get('window').height*0.17
     },
     nonSelected: {
       display: "none"
@@ -173,9 +172,9 @@ const OnuObjectiveChoice  = (props: Props) => {
         <Text style={styles.label}>Objective {currentIndex+1}:</Text>
         <Text style={styles.label}>{onuPictures[currentIndex].title}</Text>
         <Text style={styles.text}>{onuPictures[currentIndex].description}</Text>
-      </View>
-      <View style={{justifyContent: "center", display: "flex", flexDirection: 'row'}}>
-        <IconButton style={styles.done} icon={"check-bold"} onPress={() => props.setOpen(false)} color={colors.background}/>
+        <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
+          <IconButton style={styles.done} icon={"check-bold"} onPress={() => props.setOpen(false)} color={colors.background}/>
+        </View>
       </View>
     </View>
   )

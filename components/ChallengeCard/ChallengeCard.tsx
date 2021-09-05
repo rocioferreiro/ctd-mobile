@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme} from 'react-native-paper';
-import {Challenge} from "../Models/Challenge";
 import {StyleSheet, Text} from "react-native";
 
 const LeftContent = props => <Avatar.Text label={'UN'} {...props}/>
@@ -8,8 +7,6 @@ const LeftContent = props => <Avatar.Text label={'UN'} {...props}/>
 interface Props {
     challenge: any;
     setSelectedChallenge:(Challenge)=>void
-
-
 }
 
 const ChallengeCard = (props: Props) => {
@@ -27,13 +24,13 @@ const ChallengeCard = (props: Props) => {
         },
         viewButton: {
             borderRadius: 20,
+            backgroundColor: '#c1c1c1',
             width: 60,
             paddingLeft: 17,
+            marginBottom: 7,
             paddingRight: 17,
             paddingTop: 8,
-            paddingBottom: 8,
-            marginBottom: 7,
-            backgroundColor: '#c1c1c1',
+            paddingBottom: 8
         }
     });
     return (<Card style={{backgroundColor: colors.surface}}>
@@ -54,15 +51,22 @@ const ChallengeCard = (props: Props) => {
                     width: 100,
                     marginLeft: 40,
                     marginRight: 120,
+                }} onPress={()=>props.setSelectedChallenge(props.challenge)}
+                ><Title style={{
+                        fontSize: 15, color: colors.primary,padding: 0
+                    }}>View</Title>
+                </Button>
+                <Button style={{
+                    backgroundColor: colors.accent,
+                    borderRadius: 20,
+                    width: 100,
                 }}
-                        onPress={()=>props.setSelectedChallenge(props.challenge)}
-                >
-                    <Title style={{
-                        fontSize: 15, color: colors.primary,
-                    }}>View</Title> </Button>
-                <Button style={{backgroundColor: colors.accent, borderRadius: 20, width: 100,}}> <Title style={{
-                    fontSize: 15, color: colors.primary,
-                }}>Join</Title></Button>
+                ><Title style={{
+                        fontSize: 15, color: colors.primary, padding: 0
+                    }}>Join</Title>
+                </Button>
+
+
             </Card.Actions>
         </Card>
 
