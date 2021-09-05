@@ -4,7 +4,7 @@ import {  gql } from '@apollo/client';
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
 query findChallengeById{
-  findChallengeById(id: "12d273a5-d8e2-4a90-a8ba-4e52982f71e1"){
+  findChallengeById(id: 1){
     title
     user
     address {
@@ -18,8 +18,8 @@ query findChallengeById{
 `;
 
 export const FIND_NEARBY_USERS = gql`
-query findNearbyUsers {
-  findNearbyUsers(coordinates: {latitude: 10, longitude: 10}, xDis: 10, yDis: 10){
+query findNearbyUsers($latitude: Float!, $longitude: Float!) {
+  findNearbyUsers(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     name
     lastname
@@ -35,8 +35,8 @@ query findNearbyUsers {
 `;
 
 export const FIND_USER_BY_ID = gql`
-query findUserById{
-  findUserById(id: "c3231e79-970d-44a3-ac55-b301a1d6e37d"){
+query findUserById($userId: String!){
+  findUserById(id: $userId){
     name
     id
     mail
@@ -52,18 +52,62 @@ query findUserById{
 }
 `;
 
+export const GET_SCORE = gql`
+query getScore($newChallenge: ChallengeDTOInput!){
+    getSuggestedScore(challengeDTO: $newChallenge)
+}
+`;
+
 export const FIND_NEARBY_CHALLENGES = gql`
-query findNearbyChallenges {
-  findNearbyChallenges(coordinates: {latitude: 10, longitude: 10}, xDis: 10, yDis: 10){
+query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
+  findNearbyChallenges(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
     id
     title
     description
-    address {
-      coordinates {
+    owner
+    categories
+    endEvent
+    endInscription
+    locationGeohash
+    objectives {
+      points
+      name
+    }
+    coordinates {
+        longitude
+        latitude
+    }
+    startEvent
+    startInscription
+  }
+}
+`;
+
+export const FIND_CHALLENGES_OF_USER = gql`
+  query getCreatedChallengesByUser{
+    getCreatedChallengesByUser(userId: "meta-69v65rfc9s2j-f76fe488-cfb1-4179-aadd-e423b0aa1030") {
+       boost
+       categories
+       coordinates {
         longitude
         latitude
       }
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives {
+        points
+        name
+      }
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
     }
   }
-}
+  
 `;

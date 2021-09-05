@@ -3,14 +3,21 @@ import {Text, View} from "./Themed";
 import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {useQuery} from "@apollo/client";
-import {FIND_CHALLENGE_BY_ID, FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
+import {useLazyQuery, useQuery} from "@apollo/client";
+import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
+import {ActivityIndicator, Button, Modal, useTheme} from "react-native-paper";
+import CreateChallengeModal from "./CreateChallengeModal/CreateChallengeModal";
+import LottieView from "lottie-react-native";
+import * as Location from "expo-location";
+import {find} from "react-native-redash/lib/typescript/v1";
+import ChallengePage from "./Challenge/ChallengePage";
 
 type MarkerInfo = {
     title: string,
     description: string,
     latlng: Coordinates,
-    child: any
+    child: any,
+    identifier: string
 }
 
 type Coordinates = {
@@ -20,29 +27,65 @@ type Coordinates = {
 
 const Map = () => {
 
-    const {data: userData,error: userError,loading: userLoading} = useQuery(FIND_NEARBY_USERS);
-    const {data: challengeData,error: challengeError,loading: challengeLoading} = useQuery(FIND_NEARBY_CHALLENGES);
+    const {colors} = useTheme()
 
-    // const markers = [{title:'hola', description: 'como va', latlng: {latitude: 37, longitude: -122}, child: <Icon
-    //         reverse
-    //         name='flag'
-    //         type='ionicon'
-    //         color='#FFE933'
-    //         size={15}
-    //         iconStyle={styles.icon}
-    //     /> },
-    //     {title:'AAAAAAAA', description: 'como va', latlng: {latitude: 37.78825, longitude: -120}, child: <Icon
-    //             reverse
-    //             name='person'
-    //             type='ionicon'
-    //             color='#FFE933'
-    //             size={15}
-    //             iconStyle={styles.icon}
-    //         /> }
-    // ]
+    const [location, setLocation] = useState(null);
+    const getLocationLazily = () => {
+        if (location && location.latitude && location.longitude) return {latitude: location.latitude, longitude: location.longitude}
+        else return {latitude: 0.0, longitude: 0.0}
+    };
+    const [findNearbyChallenges, {data: challengeData,error: challengeError,loading: challengeLoading}] = useLazyQuery(FIND_NEARBY_CHALLENGES, {variables: getLocationLazily()});
+    const [findNearbyUsers, {data: userData,error: userError,loading: userLoading}] = useLazyQuery(FIND_NEARBY_USERS, {variables: getLocationLazily()});
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [modal, setModal] = React.useState(false);
+    const [modalID, setModalID] = React.useState(undefined);
+    const showModal = (id) => {
+        setModal(true);
+        setModalID(id)
+    }
+    const hideModal = () => {
+        setModal(false);
+        setModalID(undefined)
+    }
 
     const [userMarkers, setUserMarkers] = useState<MarkerInfo[]>([])
-    const [challengeMarkers, setChallengeMarkers] = useState<MarkerInfo[]>()
+    const [challengeMarkers, setChallengeMarkers] = useState<MarkerInfo[]>([])
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        containerStyle: {flex: 1},
+        map: {
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+        },
+        icon: {
+            color: colors.primary
+        }
+    });
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location.coords);
+        })();
+    }, []);
+
+    useEffect(() => {
+        if (location) {
+            findNearbyChallenges();
+            findNearbyUsers();
+        }
+    }, [location]);
 
     useEffect(() => {
         if(userData && challengeData){
@@ -50,12 +93,13 @@ const Map = () => {
                 return {
                     title: u.name,
                     description: u.lastname,
+                    identifier: u.id,
                     latlng: {latitude: u.address.coordinates.latitude, longitude: u.address.coordinates.longitude},
                     child: <Icon
                                 reverse
                                 name='person'
                                 type='ionicon'
-                                color='#FFE933'
+                                color={colors.accent}
                                 size={15}
                                 iconStyle={styles.icon}
                             />
@@ -67,12 +111,13 @@ const Map = () => {
                 return {
                     title: c.title,
                     description: c.description,
-                    latlng: {latitude: c.address.coordinates.latitude, longitude: c.address.coordinates.longitude},
+                    identifier: c.id,
+                    latlng: {latitude: c.coordinates.latitude, longitude: c.coordinates.longitude},
                     child: <Icon
                         reverse
                         name='flag'
                         type='ionicon'
-                        color='#FFE933'
+                        color={colors.accent}
                         size={15}
                         iconStyle={styles.icon}
                     />
@@ -80,13 +125,21 @@ const Map = () => {
             })
             setChallengeMarkers(cResult)
         }
-    }, [userData, challengeData])
+    }, [userData, challengeData]);
 
 
-    if (userLoading || challengeLoading) return <Text>Loading...</Text>;
+    if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
     if (userError) {
         console.log(userError.message);
-        return <Text>Error :(</Text>;
+        return <LottieView
+          style={{ width: '95%',
+              height: 400,marginTop:Dimensions.get('window').height*0.07}}
+          source={require('../assets/lottie/network-lost.json')}
+          autoPlay
+          loop
+          speed={0.4}
+          resizeMode={'cover'}
+        />
     }
     if (challengeError) {
         console.log(challengeError.message);
@@ -97,21 +150,11 @@ const Map = () => {
         <View style={styles.container}>
             <MapView style={styles.map}
                      initialRegion={{
-                         latitude: 10,
-                         longitude: 10,
-                         latitudeDelta: 10,
-                         longitudeDelta: 10,
+                         latitude: location.latitude,
+                         longitude: location.longitude,
+                         latitudeDelta: 0.1,
+                         longitudeDelta: 0.1,
                      }}>
-                {challengeMarkers ? challengeMarkers.map((marker, index) => (
-                    <Marker
-                        key={index}
-                        title={marker.title}
-                        description={marker.description}
-                        coordinate={marker.latlng}
-                    >
-                        {marker.child}
-                    </Marker>
-                )): <></>}
 
                 {userMarkers ? userMarkers.map((marker, index) => (
                     <Marker
@@ -119,28 +162,33 @@ const Map = () => {
                         title={marker.title}
                         description={marker.description}
                         coordinate={marker.latlng}
+                        onPress={() => showModal(marker.identifier)}
                     >
                         {marker.child}
                     </Marker>
                 )): <></>}
+
+                {challengeMarkers ? challengeMarkers.map((marker, index) => (
+                    <Marker
+                        key={index}
+                        title={marker.title}
+                        description={marker.description}
+                        coordinate={marker.latlng}
+                        onPress={() => showModal(marker.identifier)}
+                    >
+                        {marker.child}
+                    </Marker>
+                )): <></>}
+
+
             </MapView>
+            <Modal visible={modal} onDismiss={hideModal} contentContainerStyle={styles.containerStyle}>
+                { challengeData && <ChallengePage challenge={challengeData.findNearbyChallenges.find(c => c.id === modalID)} setSelectedChallenge={(challenge) => hideModal()}/>}
+            </Modal>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-    },
-    icon: {
-        color: '#4625FF'
-    }
-});
+
 
 export default Map;

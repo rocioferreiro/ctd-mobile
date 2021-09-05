@@ -1,14 +1,27 @@
-import {Address, User} from "./User"
+import {Address, Tuple, User} from "./User"
 
 export type Challenge  = {
-    address?: Address,
-    date?: string,
-    description?: string,
-    id?: string,
-    participants: User[],
-    title: string,
-    user: User,
-    coordinates?: [number, number]
+    boost?: Boolean,
+    categories: String[],
+    coordinates: Tuple,
+    description?: String,
+    downVotes?: number,
+    endEvent: String,
+    endInscription: String,
+    id?: number,
+    locationGeohash?: String,
+    objectives: ChallengeObjective[],
+    owner: String,
+    startEvent: String,
+    startInscription: String,
+    title?: String,
+    upVotes?: number
+}
+
+export type ChallengeObjective = {
+    name: String,
+    points: number,
+    id?: number
 }
 
 
@@ -20,20 +33,14 @@ export function challengeToGeoJson(challenge: Challenge): string {
     "type": "Feature",
     "geometry": {
       "type": "Point",
-      "coordinates": [${challenge.address.coordinates.x}, ${challenge.address.coordinates.y}]
+      "coordinates": [${challenge.coordinates.longitude}, ${challenge.coordinates.latitude}]
     },
     "properties": {
       "name": ${challenge.title},
       "description": ${challenge.description},
       "id": ${challenge.id},
-      "date": ${challenge.date},
-      "addressId": ${challenge.address.id}
-      "country": ${challenge.address.country}
-      "number": ${challenge.address.number}
-      "locality": ${challenge.address.locality}
-      "province": ${challenge.address.province}
-      "street": ${challenge.address.street}
-      "created by": ${challenge.user.id}
+      "date": ${challenge.startEvent},
+      "created by": ${challenge.owner}
     }
   }
   `;
