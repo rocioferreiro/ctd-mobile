@@ -85,7 +85,6 @@ const Home = () => {
                 "longitude": challenge.coordinates.coordinates[1]
             }
         }
-        console.log(newChallengeDTOInput)
         createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
             toastOn();
         });
@@ -117,7 +116,7 @@ const Home = () => {
     return (
         <View style={{backgroundColor: colors.surface}}>
             {(!create && !creationSuccess) && <Card style={styles.homeCard}>
-                <Text> Home Screen </Text>
+                <Text> Aca va a ir la Home Screen </Text>
                 <View style={{width: '60%', marginTop: 10}}>
                     <Button raised={true}
                             title={'Create a new Challenge!'}

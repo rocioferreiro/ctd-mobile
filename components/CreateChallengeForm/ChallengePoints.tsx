@@ -28,13 +28,14 @@ const ChallengePoints = (props: Props) => {
     }
 
     const parseChallenge = (challenge) => {
+        console.log(challenge);
         return {
-            "startEvent":'',
+            "startEvent": '',
             "endEvent": '',
             "startInscription": '',
             "endInscription": '',
             "owner": "",
-            "categories": challenge.ONUObjective,
+            "categories": challenge.ONUObjective.map(c => c + 1),
             "objectives": challenge.challengeObjectives,
             "coordinates": {
                 "latitude": 0,
@@ -59,13 +60,13 @@ const ChallengePoints = (props: Props) => {
     }, [])
 
     useEffect(() => {
-        if(resultedPoints){
+        if (resultedPoints) {
             setTotalPoints(parseInt(resultedPoints.getSuggestedScore))
         }
     }, [resultedPoints])
 
     useEffect(() => {
-        if(totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
+        if (totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
             props.setDisabled(false)
         } else props.setDisabled(true)
     }, [totalPoints])
@@ -164,7 +165,7 @@ const ChallengePoints = (props: Props) => {
             changedObjective.points = value;
             props.formik.setFieldValue('challengeObjectives', currentObjectives);
         }
-        if(totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
+        if (totalPoints === props.formik.values.challengeObjectives.map(i => i.points).reduce((sum, current) => parseInt(sum) + parseInt(current))) {
             props.setDisabled(false)
         } else props.setDisabled(true)
     }
