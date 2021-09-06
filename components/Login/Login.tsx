@@ -1,10 +1,10 @@
 import React from 'react';
-import {View} from "../Themed";
+import {Text, View} from "../Themed";
 
 const Login = () => {
     return (
         <View>
-
+            <Text>Hello from login</Text>
         </View>
     );
 }

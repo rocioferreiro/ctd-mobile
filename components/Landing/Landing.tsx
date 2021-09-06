@@ -2,9 +2,11 @@ import React from 'react';
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
+import Login from "../Login/Login";
 
 const Landing = () => {
     const { colors } = useTheme();
+    const [loginOpen, setLoginOpen] = React.useState(false);
 
     const styles = StyleSheet.create({
         background: {
@@ -27,7 +29,6 @@ const Landing = () => {
         },
         content: {
             display: "flex",
-            zIndex: 1,
             width: Dimensions.get('screen').width,
             height: '30%',
             justifyContent: 'space-between',
@@ -37,17 +38,21 @@ const Landing = () => {
         button: {
             backgroundColor: '#FFC300',
             borderRadius: 20,
+            zIndex: 1
         }
     });
 
     return (
         <View style={styles.root}>
             <Image source={require('../../assets/images/background/dots-background.png')} resizeMode={'cover'} style={styles.background}/>
+            {loginOpen && <Login/>}
+            {!loginOpen &&
             <View style={styles.content}>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button style={styles.button} mode={'contained'}>Login</Button>
-                <Button style={styles.button} mode={'contained'}>Register</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {console.log('register')}}>Register</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
             </View>
+            }
         </View>
     )
 }
