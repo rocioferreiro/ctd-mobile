@@ -11,6 +11,7 @@ import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-nat
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import { LogBox } from 'react-native';
+import Landing from "./components/Landing/Landing";
 LogBox.ignoreAllLogs();
 
 declare global {
@@ -94,8 +95,16 @@ export default function App() {
     fonts: configureFonts(fontConfig),
   };
 
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
   if (!isLoadingComplete || !loaded) {
     return null;
+  } else if (!loggedIn) {
+    return (
+        <PaperProvider theme={reactNativePaperTheme}>
+          <Landing/>
+        </PaperProvider>
+    )
   } else {
     return (
 
