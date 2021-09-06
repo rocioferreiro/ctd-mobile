@@ -24,7 +24,7 @@ const Landing = () => {
         title: {
             backgroundColor: 'rgba(0,0,0,0)',
             fontSize: 30,
-            color: '#FFC300',
+            color: '#ffffff',
             fontWeight: 'bold'
         },
         content: {
@@ -36,9 +36,13 @@ const Landing = () => {
             backgroundColor: 'rgba(0,0,0,0)'
         },
         button: {
-            backgroundColor: '#FFC300',
+            backgroundColor: colors.primary,
             borderRadius: 20,
-            zIndex: 1
+            borderWidth: 2,
+            zIndex: 1,
+            borderColor: colors.light,
+            fontWeight: 'bold',
+            minWidth: '40%'
         },
         logo: {
             height: 100,

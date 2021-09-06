@@ -55,14 +55,20 @@ const Login = (props: Props) => {
             height: 60
         },
         button: {
-            backgroundColor: '#FFC300',
+            backgroundColor: colors.primary,
             borderRadius: 20,
+            borderWidth: 2,
             zIndex: 1,
-            padding: 5,
+            borderColor: colors.light,
+            fontWeight: 'bold',
+            padding: 2
         },
         cancelButton: {
             borderRadius: 20,
-            backgroundColor: '#808080'
+            backgroundColor: '#909090',
+            fontWeight: 'bold',
+            padding: 2,
+            opacity: 0.8
         },
         logo: {
             height: 100,
