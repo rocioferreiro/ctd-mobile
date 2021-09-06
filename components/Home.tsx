@@ -77,7 +77,7 @@ const Home = () => {
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
             "description": challenge.description + (challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : ''),
-            "owner": "meta-69v65rfc9s2j-f76fe488-cfb1-4179-aadd-e423b0aa1030",// TODO change to user id when users are implemented
+            "owner": "meta-69y5fn6vr0qp-345b9e1b-0c5d-45bf-b9f9-b7b242b5ce80",// TODO change to user id when users are implemented
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
             "coordinates": {
@@ -85,7 +85,6 @@ const Home = () => {
                 "longitude": challenge.coordinates.coordinates[1]
             }
         }
-        console.log(newChallengeDTOInput)
         createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
             toastOn();
         });
@@ -117,7 +116,7 @@ const Home = () => {
     return (
         <View style={{backgroundColor: colors.surface}}>
             {(!create && !creationSuccess) && <Card style={styles.homeCard}>
-                <Text> Home Screen </Text>
+                <Text> Aca va a ir la Home Screen </Text>
                 <View style={{width: '60%', marginTop: 10}}>
                     <Button raised={true}
                             title={'Create a new Challenge!'}
