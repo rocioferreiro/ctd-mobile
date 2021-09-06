@@ -2,7 +2,7 @@ import {Address, Tuple, User} from "./User"
 
 export type Challenge  = {
     boost?: Boolean,
-    categories: String[],
+    categories: string[],
     coordinates: Tuple,
     description?: String,
     downVotes?: number,

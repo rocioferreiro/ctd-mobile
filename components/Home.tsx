@@ -77,7 +77,7 @@ const Home = () => {
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
             "description": challenge.description + (challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : ''),
-            "owner": "meta-69v65rfc9s2j-f76fe488-cfb1-4179-aadd-e423b0aa1030",// TODO change to user id when users are implemented
+            "owner": "meta-69y5fn6vr0qp-345b9e1b-0c5d-45bf-b9f9-b7b242b5ce80",// TODO change to user id when users are implemented
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
             "coordinates": {
