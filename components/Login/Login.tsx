@@ -36,7 +36,7 @@ const Login = (props: Props) => {
         title: {
             backgroundColor: 'rgba(0,0,0,0)',
             fontSize: 30,
-            color: '#FFC300',
+            color: '#ffffff',
             fontWeight: 'bold',
             textAlignVertical: "center",
             height: 80
@@ -61,14 +61,16 @@ const Login = (props: Props) => {
             zIndex: 1,
             borderColor: colors.light,
             fontWeight: 'bold',
-            padding: 2
+            padding: 2,
+            minWidth: '40%'
         },
         cancelButton: {
             borderRadius: 20,
             backgroundColor: '#909090',
             fontWeight: 'bold',
             padding: 2,
-            opacity: 0.8
+            opacity: 0.8,
+            minWidth: '40%'
         },
         logo: {
             height: 100,
