@@ -31,7 +31,7 @@ export function ChallengeList() {
     endInscription: '2021-09-09',
     title: 'ocean cleaning',
     description: 'go clean the ocean',
-    owner: 'metalaejfnwkbvgc5763f45-c3dc-4029-b0c3-d85b27fea515',
+    owner: 'meta-9q9hvqcqp1h2-06d4cf2e-9356-4577-b9d6-bbe203c2e3f8',
     categories: ["1","2"],
     objectives: [{name:"do something", points: 3}]
   }
