@@ -39,15 +39,20 @@ const Landing = () => {
             backgroundColor: '#FFC300',
             borderRadius: 20,
             zIndex: 1
+        },
+        logo: {
+            height: 100,
+            width: 100,
         }
     });
 
     return (
         <View style={styles.root}>
             <Image source={require('../../assets/images/background/dots-background.png')} resizeMode={'cover'} style={styles.background}/>
-            {loginOpen && <Login/>}
+            {loginOpen && <Login onCancel={() => {setLoginOpen(false)}}/>}
             {!loginOpen &&
             <View style={styles.content}>
+                <Image source={require('../../assets/images/ctd-logo.jpg')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
                 <Button style={styles.button} mode={'contained'} onPress={() => {console.log('register')}}>Register</Button>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>

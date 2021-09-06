@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
 import {Text, View} from "../Themed";
-import {Dimensions, StyleSheet} from "react-native";
+import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 
-const Login = () => {
+type Props = {
+    onCancel: () => void
+}
+
+const Login = (props: Props) => {
     const { colors } = useTheme();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,8 +17,8 @@ const Login = () => {
         root: {
             display: "flex",
             width: Dimensions.get('screen').width,
-            height: '50%',
-            justifyContent: 'space-between',
+            height: Dimensions.get('screen').height,
+            justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)'
         },
@@ -23,7 +27,8 @@ const Login = () => {
             fontSize: 30,
             color: '#FFC300',
             fontWeight: 'bold',
-            flex: 1
+            textAlignVertical: "center",
+            height: 80
         },
         input: {
             marginTop: 5,
@@ -36,7 +41,7 @@ const Login = () => {
             shadowOpacity: 0.5,
             shadowColor: '#DAB99D',
             elevation: 4,
-            flex: 1
+            height: 60
         },
         button: {
             backgroundColor: '#FFC300',
@@ -47,11 +52,16 @@ const Login = () => {
         cancelButton: {
             borderRadius: 20,
             backgroundColor: '#808080'
+        },
+        logo: {
+            height: 100,
+            width: 100,
         }
     })
 
     return (
         <View style={styles.root}>
+            <Image source={require('../../assets/images/ctd-logo.jpg')} style={styles.logo}/>
             <Text style={styles.title}>Login</Text>
             <Input
                 placeholder={"Email"}
@@ -71,9 +81,9 @@ const Login = () => {
                 }}
                 inputContainerStyle={{borderBottomWidth: 0}}
             />
-            <View style={{flex: 2, backgroundColor: 'rgba(0,0,0,0)', display: "flex", justifyContent: 'space-around'}}>
+            <View style={{height: 150, backgroundColor: 'rgba(0,0,0,0)', display: "flex", justifyContent: 'space-around'}}>
                 <Button style={styles.button} mode={'contained'} onPress={() => {console.log('login')}}>Login</Button>
-                <Button style={styles.cancelButton} mode={'contained'} onPress={() => {console.log('cancel')}}>Cancel</Button>
+                <Button style={styles.cancelButton} mode={'contained'} onPress={() => {props.onCancel()}}>Cancel</Button>
             </View>
         </View>
     );
