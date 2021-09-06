@@ -65,7 +65,7 @@ const Home = () => {
         },
         creationCard: {
             width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height * 0.95,
+            height: Dimensions.get('window').height,
             marginTop: Dimensions.get('window').height * 0.03,
             backgroundColor: colors.surface
         }
