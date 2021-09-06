@@ -100,7 +100,11 @@ export default function App() {
   if (!isLoadingComplete || !loaded) {
     return null;
   } else if (!loggedIn) {
-    return <Landing/>
+    return (
+        <PaperProvider theme={reactNativePaperTheme}>
+          <Landing/>
+        </PaperProvider>
+    )
   } else {
     return (
 
