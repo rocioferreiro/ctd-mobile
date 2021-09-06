@@ -7,7 +7,7 @@ import {
     Button,
   ActivityIndicator
 } from 'react-native-paper';
-import { Dimensions, ImageBackground, ScrollView} from "react-native";
+import {Dimensions, Image, ImageBackground, ScrollView, TouchableWithoutFeedback} from "react-native";
 import {View,Text} from "../Themed";
 import { StyleSheet } from 'react-native';
 import {Challenge} from "../Models/Challenge";
@@ -16,6 +16,7 @@ import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import ChallengeONUObjetives from "./ChallengeONUObjectives";
+import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 
 
 const mockedChallenges = [
@@ -172,10 +173,23 @@ const ChallengePage = (props:Props) => {
                              padding:10}}>Sustainable Objectives</Title>
                      </Button>
 
+                   <View style={{
+                     display: 'flex',
+                     flexDirection: 'row',
+                     justifyContent: "center",
+                     paddingHorizontal: 10,
+                     paddingTop: 10,
+                     backgroundColor: 'rgba(0,0,0,0)'
+                   }}>
+                     {props.challenge.categories.map((s, index) => {
+                       return <TouchableWithoutFeedback key={index}>
+                         <Image
+                           style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                           source={onuPictures[parseInt(s)].image}/>
+                       </TouchableWithoutFeedback>
+                     })}
+                   </View>
 
-
-
-                     <ChallengeONUObjetives challenge={props.challenge}/>
                  </View>
 
                  <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
