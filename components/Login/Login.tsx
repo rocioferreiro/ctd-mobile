@@ -73,8 +73,8 @@ const Login = (props: Props) => {
             minWidth: '40%'
         },
         logo: {
-            height: 100,
-            width: 100,
+            height: 110,
+            width: 110,
             margin: 30
         },
         animatedContainer: {
@@ -107,7 +107,7 @@ const Login = (props: Props) => {
             </Animated.View>
             {animationFinished &&
                 <View style={styles.root}>
-                <Image source={require('../../assets/images/ctd-logo.jpg')} style={styles.logo}/>
+                <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 {/*<Text style={styles.title}>Login</Text>*/}
                 <Input
                     placeholder={"Email"}

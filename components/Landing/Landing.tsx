@@ -45,8 +45,8 @@ const Landing = () => {
             minWidth: '40%'
         },
         logo: {
-            height: 100,
-            width: 100,
+            height: 110,
+            width: 110,
         }
     });
 
@@ -56,7 +56,7 @@ const Landing = () => {
             {loginOpen && <Login onCancel={() => {setLoginOpen(false)}}/>}
             {!loginOpen &&
             <View style={styles.content}>
-                <Image source={require('../../assets/images/ctd-logo.jpg')} style={styles.logo}/>
+                <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
                 <Button style={styles.button} mode={'contained'} onPress={() => {console.log('register')}}>Register</Button>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
