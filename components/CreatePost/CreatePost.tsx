@@ -13,6 +13,7 @@ import PublishButton from "./PublishButton";
 type Props = {
 
     formik: any
+    onPublish: (boolean) => void,
 }
 
 
@@ -23,6 +24,7 @@ const CreatePost = (props:Props) => {
     const [ addImage, setAddImage] = React.useState(false)
 
     const handlePublish = () =>{
+        props.onPublish(false)
 
     }
 
@@ -34,11 +36,8 @@ const CreatePost = (props:Props) => {
 
 
     return (
-        <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
-            <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20,backgroundColor:colors.surface}}>
-                <Button icon="keyboard-backspace" >
-                Back
-                </Button>
+        <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1, backgroundColor: 'rgba(0,0,0,0)'}}>
+            <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20, backgroundColor: 'rgba(0,0,0,0)'}}>
                 <View style={{
                     display: "flex",
                     justifyContent: 'flex-start',

@@ -10,6 +10,7 @@ import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeForm/Types";
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
+import CreatePost from "./CreatePost/CreatePost";
 
 const Home = () => {
 
@@ -23,6 +24,7 @@ const Home = () => {
     }
 
     const [create, setCreate] = React.useState(false)
+    const [createPost, setCreatePost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
     const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
@@ -116,7 +118,7 @@ const Home = () => {
 
     return (
         <View style={{backgroundColor: colors.surface}}>
-            {(!create && !creationSuccess) && <Card style={styles.homeCard}>
+            {(!create && !creationSuccess && !createPost) && <Card style={styles.homeCard}>
                 <Text> Home Screen </Text>
                 <View style={{width: '60%', marginTop: 10}}>
                     <Button raised={true}
@@ -124,9 +126,40 @@ const Home = () => {
                             onPress={() => setCreate(true)}
                             buttonStyle={{backgroundColor: colors.primary}}
                     />
+
+                    <View style={{ marginTop: 10,backgroundColor: colors.surface}}>
+                    <Button raised={true}
+                            title={'Create a new Post'}
+                            onPress={() => setCreatePost(true)}
+                            buttonStyle={{backgroundColor: colors.primary}}
+                    />
+                    </View>
+
                 </View>
 
             </Card>}
+
+
+
+
+
+
+            {createPost &&<Card style={styles.creationCard}>
+                {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
+                {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
+                <Image source={require('../assets/images/connections.png')} resizeMode={'cover'}
+                       style={styles.background}/>
+                <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
+                    <Button onPress={() => setCreatePost(false)}
+                            icon={{name: 'chevron-back-outline', type: 'ionicon'}}
+                            buttonStyle={styles.button}
+                            titleStyle={{color: colors.primary}}
+                            title="Cancel"
+                    />
+                </View>
+                <CreatePost onPublish={setCreatePost} formik={formik}></CreatePost>
+            </Card>
+            }
             {create && <Card style={styles.creationCard}>
                 {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
                 {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
