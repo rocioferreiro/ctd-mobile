@@ -7,8 +7,9 @@ import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
 import {ChallengeList} from "../components/ChallengeList/Challenge";
 import {colorShade} from "../components/Models/shadingColor";
-import SearchScreenNavigator from "./SearchScreenNavigator";
+
 import ChallengePage from "../components/Challenge/ChallengePage";
+import CreatePost from "../components/CreatePost/CreatePost";
 
 //array of icon views this array can be image or vector icon for tab  bar
 // array size can be 1 to maximum 5 !
