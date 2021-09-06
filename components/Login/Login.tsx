@@ -75,6 +75,7 @@ const Login = (props: Props) => {
         logo: {
             height: 100,
             width: 100,
+            margin: 30
         },
         animatedContainer: {
             width: Dimensions.get('screen').width,
@@ -107,7 +108,7 @@ const Login = (props: Props) => {
             {animationFinished &&
                 <View style={styles.root}>
                 <Image source={require('../../assets/images/ctd-logo.jpg')} style={styles.logo}/>
-                <Text style={styles.title}>Login</Text>
+                {/*<Text style={styles.title}>Login</Text>*/}
                 <Input
                     placeholder={"Email"}
                     style={styles.input}
