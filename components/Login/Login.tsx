@@ -125,6 +125,7 @@ const Login = (props: Props) => {
                     onChangeText={t => {
                         setPassword(t);
                     }}
+                    secureTextEntry={true}
                     inputContainerStyle={{borderBottomWidth: 0}}
                 />
                 <View style={{
