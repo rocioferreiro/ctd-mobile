@@ -3,9 +3,11 @@ import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
 import Login from "../Login/Login";
+import Register from "../Register/Register";
 
 const Landing = () => {
     const { colors } = useTheme();
+    const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
 
     const styles = StyleSheet.create({
@@ -53,12 +55,13 @@ const Landing = () => {
     return (
         <View style={styles.root}>
             <Image source={require('../../assets/images/background/dots-background.png')} resizeMode={'cover'} style={styles.background}/>
+            {registerOpen && <Register onCancel={() => {setRegisterOpen(false)}}/>}
             {loginOpen && <Login onCancel={() => {setLoginOpen(false)}}/>}
-            {!loginOpen &&
+            {(!loginOpen && !registerOpen) &&
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button style={styles.button} mode={'contained'} onPress={() => {console.log('register')}}>Register</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>Register</Button>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
             </View>
             }
