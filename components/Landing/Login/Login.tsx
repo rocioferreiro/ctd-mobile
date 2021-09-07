@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "../Themed";
+import {Text, View} from "../../Themed";
 import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {validateEmail} from "../validations";
 
 type Props = {
     onCancel: () => void
@@ -15,6 +16,7 @@ const Login = (props: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [animationFinished, setAnimationFinished] = useState(false);
+    const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
 
     const reanimatedStyle = useAnimatedStyle(() => {
@@ -84,6 +86,10 @@ const Login = (props: Props) => {
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)',
             position: "absolute",
+        },
+        error: {
+            color: colors.error,
+            fontSize: 15
         }
     });
 
@@ -95,7 +101,7 @@ const Login = (props: Props) => {
         <View style={styles.root}>
             <Animated.View style={[styles.animatedContainer, reanimatedStyle]}>
                 <LottieView
-                    source={require('../../assets/lottie/liquid-transition.json')}
+                    source={require('../../../assets/lottie/liquid-transition.json')}
                     autoPlay
                     loop={false}
                     speed={3}
@@ -106,15 +112,17 @@ const Login = (props: Props) => {
                 />
             </Animated.View>
             {animationFinished &&
-                <View style={styles.root}>
-                <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                {/*<Text style={styles.title}>Login</Text>*/}
+            <View style={styles.root}>
+                <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')}
+                       style={styles.logo}/>
+                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                 <Input
                     placeholder={"Email"}
                     style={styles.input}
                     value={email}
                     onChangeText={t => {
                         setEmail(t);
+                        setErrorMarker({email: !validateEmail(t)});
                     }}
                     inputContainerStyle={{borderBottomWidth: 0}}
                 />

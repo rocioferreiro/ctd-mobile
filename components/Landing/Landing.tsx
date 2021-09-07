@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
-import Login from "../Login/Login";
+import Login from "./Login/Login";
 
 const Landing = () => {
     const { colors } = useTheme();
