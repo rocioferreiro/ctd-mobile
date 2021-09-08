@@ -23,6 +23,15 @@ const Home = () => {
         });
     }
 
+    function toastOnPostError() {
+        Toast.show({
+            type: 'error',
+            text1: 'Post Creation Error',
+            text2: 'Try again later',
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     const [create, setCreate] = React.useState(false)
     const [createPost, setCreatePost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
@@ -157,7 +166,7 @@ const Home = () => {
                             title="Cancel"
                     />
                 </View>
-                <CreatePost onPublish={setCreatePost} formik={formik}></CreatePost>
+                <CreatePost toastOn={toastOnPostError} setCreatePost={setCreatePost} ></CreatePost>
             </Card>
             }
             {create && <Card style={styles.creationCard}>
