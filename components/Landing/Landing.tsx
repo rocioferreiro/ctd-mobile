@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
-import Register from "../Register/Register";
+import Register from "./Register/Register";
 
 const Landing = () => {
     const { colors } = useTheme();

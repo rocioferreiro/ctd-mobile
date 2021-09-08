@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "../Themed";
+import {Text, View} from "../../Themed";
 import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
@@ -107,7 +107,7 @@ const Register = (props: Props) => {
         <View style={styles.root}>
             <Animated.View style={[styles.animatedContainer, reanimatedStyle]}>
                 <LottieView
-                    source={require('../../assets/lottie/liquid-transition.json')}
+                    source={require('../../../assets/lottie/liquid-transition.json')}
                     autoPlay
                     loop={false}
                     speed={3}
@@ -119,7 +119,7 @@ const Register = (props: Props) => {
             </Animated.View>
             {animationFinished &&
                 <View style={styles.root}>
-                    <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
+                    <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')} style={styles.logo}/>
                     <View style={styles.fullNameContainer}>
                         <View style={styles.nameInputContainer}>
                         <Input
