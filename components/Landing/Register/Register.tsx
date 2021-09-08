@@ -5,6 +5,7 @@ import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {validateEmail, validatePassword} from "../validations";
 
 type Props = {
     onCancel: () => void
@@ -18,6 +19,7 @@ const Register = (props: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [animationFinished, setAnimationFinished] = useState(false);
+    const [errorMarker, setErrorMarker] = useState({firstName: false, lastName: false, username: false, email: false, password: false});
     const visible = useSharedValue(3);
 
     const reanimatedStyle = useAnimatedStyle(() => {
@@ -96,6 +98,10 @@ const Register = (props: Props) => {
             flex: 1,
             width: '40%',
             backgroundColor: 'rgba(0,0,0,0)',
+        },
+        error: {
+            color: colors.error,
+            fontSize: 15
         }
     });
 
@@ -120,14 +126,18 @@ const Register = (props: Props) => {
             {animationFinished &&
                 <View style={styles.root}>
                     <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')} style={styles.logo}/>
+                    {errorMarker.firstName && <Text style={styles.error}> first name must be min. 2 characters </Text>}
+                    {errorMarker.lastName && <Text style={styles.error}> last name must be min. 2 characters </Text>}
                     <View style={styles.fullNameContainer}>
                         <View style={styles.nameInputContainer}>
                         <Input
                             placeholder={"First Name"}
                             style={styles.input}
                             value={firstName}
+                            maxLength={20}
                             onChangeText={t => {
                                 setFirstName(t);
+                                setErrorMarker({...errorMarker, firstName: !(firstName.length>=1)});
                             }}
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
@@ -137,37 +147,47 @@ const Register = (props: Props) => {
                             placeholder={"Last Name"}
                             style={styles.input}
                             value={lastName}
+                            maxLength={20}
                             onChangeText={t => {
                                 setLastName(t);
+                                setErrorMarker({...errorMarker, lastName: !(lastName.length>=1)});
                             }}
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
                         </View>
                     </View>
+                    {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
                     <Input
                         placeholder={"Username"}
                         style={styles.input}
                         value={username}
+                        maxLength={20}
                         onChangeText={t => {
                             setUsername(t);
+                            setErrorMarker({...errorMarker, username: !(username.length>=1)});
                         }}
                         inputContainerStyle={{borderBottomWidth: 0}}
                     />
+                    {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                     <Input
                         placeholder={"E-mail"}
                         style={styles.input}
                         value={email}
                         onChangeText={t => {
                             setEmail(t);
+                            setErrorMarker({...errorMarker, email: !validateEmail(t)});
                         }}
                         inputContainerStyle={{borderBottomWidth: 0}}
                     />
+                    {errorMarker.password && <Text style={styles.error}> Password requires at least 8 digits, an upper case character and a number </Text>}
                     <Input
                         placeholder={"Password"}
                         style={styles.input}
                         value={password}
+                        maxLength={35}
                         onChangeText={t => {
                             setPassword(t);
+                            setErrorMarker({...errorMarker, password: !validatePassword(t)});
                         }}
                         secureTextEntry={true}
                         inputContainerStyle={{borderBottomWidth: 0}}
@@ -182,7 +202,7 @@ const Register = (props: Props) => {
                         console.log('Registered')
                     }}>Register</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
-                        props.onCancel()
+                        props.onCancel();
                     }}>Cancel</Button>
                 </View>
             </View>

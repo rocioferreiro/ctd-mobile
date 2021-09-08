@@ -3,3 +3,9 @@ export const validateEmail = (email) => {
 
     return expression.test(String(email).toLowerCase())
 }
+
+export const validatePassword = (password) => {
+    const expression = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/i;
+
+    return expression.test(String(password));
+}
