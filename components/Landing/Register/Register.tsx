@@ -19,7 +19,13 @@ const Register = (props: Props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [animationFinished, setAnimationFinished] = useState(false);
-    const [errorMarker, setErrorMarker] = useState({firstName: false, lastName: false, username: false, email: false, password: false});
+    const [errorMarker, setErrorMarker] = useState({
+        firstName: false,
+        lastName: false,
+        username: false,
+        email: false,
+        password: false
+    });
     const visible = useSharedValue(3);
 
     const reanimatedStyle = useAnimatedStyle(() => {
@@ -130,74 +136,97 @@ const Register = (props: Props) => {
                 />
             </Animated.View>
             {animationFinished &&
-                <View style={styles.root}>
-                    <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                    <View style={styles.fullNameContainer}>
-                        <View style={styles.nameInputContainer}>
+            <View style={styles.root}>
+                <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')}
+                       style={styles.logo}/>
+                <View style={styles.fullNameContainer}>
+                    <View style={styles.nameInputContainer}>
                         {errorMarker.firstName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
                             placeholder={"First Name"}
-                            style={errorMarker.firstName ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
+                            style={errorMarker.firstName ? [styles.input, {
+                                borderWidth: 3,
+                                borderColor: colors.error,
+                                borderStyle: 'solid'
+                            }] : styles.input}
                             value={firstName}
                             maxLength={20}
                             onChangeText={t => {
                                 setFirstName(t);
-                                setErrorMarker({...errorMarker, firstName: !(firstName.length>=1)});
+                                setErrorMarker({...errorMarker, firstName: !(firstName.length >= 1)});
                             }}
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
-                        </View>
-                        <View style={styles.nameInputContainer}>
+                    </View>
+                    <View style={styles.nameInputContainer}>
                         {errorMarker.lastName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
                             placeholder={"Last Name"}
-                            style={errorMarker.lastName ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
+                            style={errorMarker.lastName ? [styles.input, {
+                                borderWidth: 3,
+                                borderColor: colors.error,
+                                borderStyle: 'solid'
+                            }] : styles.input}
                             value={lastName}
                             maxLength={20}
                             onChangeText={t => {
                                 setLastName(t);
-                                setErrorMarker({...errorMarker, lastName: !(lastName.length>=1)});
+                                setErrorMarker({...errorMarker, lastName: !(lastName.length >= 1)});
                             }}
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
-                        </View>
                     </View>
-                    {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
-                    <Input
-                        placeholder={"Username"}
-                        style={errorMarker.username ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
-                        value={username}
-                        maxLength={20}
-                        onChangeText={t => {
-                            setUsername(t);
-                            setErrorMarker({...errorMarker, username: !(username.length>=1)});
-                        }}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
-                    {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
-                    <Input
-                        placeholder={"E-mail"}
-                        style={errorMarker.email ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
-                        value={email}
-                        onChangeText={t => {
-                            setEmail(t);
-                            setErrorMarker({...errorMarker, email: !validateEmail(t)});
-                        }}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
-                    {errorMarker.password && <Text style={styles.error} numberOfLines={1} ellipsizeMode={'tail'}> min. 8 digits, an upper case letter and a number </Text>}
-                    <Input
-                        placeholder={"Password"}
-                        style={errorMarker.password ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
-                        value={password}
-                        maxLength={35}
-                        onChangeText={t => {
-                            setPassword(t);
-                            setErrorMarker({...errorMarker, password: !validatePassword(t)});
-                        }}
-                        secureTextEntry={true}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
+                </View>
+                {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
+                <Input
+                    placeholder={"Username"}
+                    style={errorMarker.username ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
+                    value={username}
+                    maxLength={20}
+                    onChangeText={t => {
+                        setUsername(t);
+                        setErrorMarker({...errorMarker, username: !(username.length >= 1)});
+                    }}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
+                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
+                <Input
+                    placeholder={"E-mail"}
+                    style={errorMarker.email ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
+                    value={email}
+                    onChangeText={t => {
+                        setEmail(t);
+                        setErrorMarker({...errorMarker, email: !validateEmail(t)});
+                    }}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
+                {errorMarker.password &&
+                <Text style={styles.error} numberOfLines={1} ellipsizeMode={'tail'}> min. 8 digits, an upper case letter
+                    and a number </Text>}
+                <Input
+                    placeholder={"Password"}
+                    style={errorMarker.password ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
+                    value={password}
+                    maxLength={35}
+                    onChangeText={t => {
+                        setPassword(t);
+                        setErrorMarker({...errorMarker, password: !validatePassword(t)});
+                    }}
+                    secureTextEntry={true}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
                 <View style={{
                     height: 150,
                     backgroundColor: 'rgba(0,0,0,0)',
@@ -205,7 +234,7 @@ const Register = (props: Props) => {
                     justifyContent: 'space-around'
                 }}>
                     <Button style={styles.button} mode={'contained'} onPress={() => {
-                        console.log('Registered')
+                        if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email) || (errorMarker.firstName) || (errorMarker.lastName) || (errorMarker.password) || (errorMarker.password))) console.log('Registered');
                     }}>Register</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel();

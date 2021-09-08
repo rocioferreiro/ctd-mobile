@@ -13,9 +13,9 @@ type Props = {
 
 const Login = (props: Props) => {
     const {colors} = useTheme();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [animationFinished, setAnimationFinished] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [animationFinished, setAnimationFinished] = useState<boolean>(false);
     const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
 
@@ -64,7 +64,7 @@ const Login = (props: Props) => {
             borderColor: colors.light,
             fontWeight: 'bold',
             padding: 2,
-            minWidth: '40%'
+            minWidth: '40%',
         },
         cancelButton: {
             borderRadius: 20,
@@ -123,7 +123,11 @@ const Login = (props: Props) => {
                 {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                 <Input
                     placeholder={"Email"}
-                    style={errorMarker.email ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
+                    style={errorMarker.email ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
                     value={email}
                     onChangeText={t => {
                         setEmail(t);
@@ -147,9 +151,11 @@ const Login = (props: Props) => {
                     display: "flex",
                     justifyContent: 'space-around'
                 }}>
-                    <Button style={styles.button} disabled={errorMarker.email} mode={'contained'} onPress={() => {
-                        console.log('login')
-                    }}>Login</Button>
+                    <Button style={styles.button}
+                            mode={'contained'}
+                            onPress={() => {
+                                if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) console.log('login')
+                            }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel()
                     }}>Cancel</Button>
