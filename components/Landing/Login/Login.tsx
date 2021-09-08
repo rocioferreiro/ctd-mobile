@@ -89,7 +89,12 @@ const Login = (props: Props) => {
         },
         error: {
             color: colors.error,
-            fontSize: 15
+            fontSize: 14,
+            marginLeft: 13,
+            marginRight: 13,
+            textAlign: 'center',
+            marginBottom: -25,
+            zIndex: 5,
         }
     });
 
@@ -118,7 +123,7 @@ const Login = (props: Props) => {
                 {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                 <Input
                     placeholder={"Email"}
-                    style={styles.input}
+                    style={errorMarker.email ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                     value={email}
                     onChangeText={t => {
                         setEmail(t);
@@ -142,7 +147,7 @@ const Login = (props: Props) => {
                     display: "flex",
                     justifyContent: 'space-around'
                 }}>
-                    <Button style={styles.button} mode={'contained'} onPress={() => {
+                    <Button style={styles.button} disabled={errorMarker.email} mode={'contained'} onPress={() => {
                         console.log('login')
                     }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {

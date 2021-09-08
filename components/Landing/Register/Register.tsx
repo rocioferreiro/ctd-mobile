@@ -31,7 +31,7 @@ const Register = (props: Props) => {
 
     const styles = StyleSheet.create({
         root: {
-            display: "flex",
+            display: 'flex',
             width: Dimensions.get('screen').width,
             height: Dimensions.get('screen').height,
             justifyContent: 'center',
@@ -43,7 +43,7 @@ const Register = (props: Props) => {
             fontSize: 30,
             color: '#ffffff',
             fontWeight: 'bold',
-            textAlignVertical: "center",
+            textAlignVertical: 'center',
             height: 80
         },
         input: {
@@ -88,10 +88,10 @@ const Register = (props: Props) => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)',
-            position: "absolute",
+            position: 'absolute',
         },
         fullNameContainer: {
-            flexDirection: "row",
+            flexDirection: 'row',
             backgroundColor: 'rgba(0,0,0,0)',
         },
         nameInputContainer: {
@@ -100,8 +100,14 @@ const Register = (props: Props) => {
             backgroundColor: 'rgba(0,0,0,0)',
         },
         error: {
+            display: 'flex',
             color: colors.error,
-            fontSize: 15
+            fontSize: 14,
+            marginLeft: 13,
+            marginRight: 13,
+            textAlign: 'center',
+            marginBottom: -25,
+            zIndex: 5,
         }
     });
 
@@ -126,13 +132,12 @@ const Register = (props: Props) => {
             {animationFinished &&
                 <View style={styles.root}>
                     <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                    {errorMarker.firstName && <Text style={styles.error}> first name must be min. 2 characters </Text>}
-                    {errorMarker.lastName && <Text style={styles.error}> last name must be min. 2 characters </Text>}
                     <View style={styles.fullNameContainer}>
                         <View style={styles.nameInputContainer}>
+                        {errorMarker.firstName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
                             placeholder={"First Name"}
-                            style={styles.input}
+                            style={errorMarker.firstName ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                             value={firstName}
                             maxLength={20}
                             onChangeText={t => {
@@ -143,9 +148,10 @@ const Register = (props: Props) => {
                         />
                         </View>
                         <View style={styles.nameInputContainer}>
+                        {errorMarker.lastName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
                             placeholder={"Last Name"}
-                            style={styles.input}
+                            style={errorMarker.lastName ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                             value={lastName}
                             maxLength={20}
                             onChangeText={t => {
@@ -159,7 +165,7 @@ const Register = (props: Props) => {
                     {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
                     <Input
                         placeholder={"Username"}
-                        style={styles.input}
+                        style={errorMarker.username ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                         value={username}
                         maxLength={20}
                         onChangeText={t => {
@@ -171,7 +177,7 @@ const Register = (props: Props) => {
                     {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                     <Input
                         placeholder={"E-mail"}
-                        style={styles.input}
+                        style={errorMarker.email ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                         value={email}
                         onChangeText={t => {
                             setEmail(t);
@@ -179,10 +185,10 @@ const Register = (props: Props) => {
                         }}
                         inputContainerStyle={{borderBottomWidth: 0}}
                     />
-                    {errorMarker.password && <Text style={styles.error}> Password requires at least 8 digits, an upper case character and a number </Text>}
+                    {errorMarker.password && <Text style={styles.error} numberOfLines={1} ellipsizeMode={'tail'}> min. 8 digits, an upper case letter and a number </Text>}
                     <Input
                         placeholder={"Password"}
-                        style={styles.input}
+                        style={errorMarker.password ? [styles.input, {borderWidth: 3, borderColor: colors.error, borderStyle: 'solid'}] : styles.input}
                         value={password}
                         maxLength={35}
                         onChangeText={t => {
