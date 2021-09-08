@@ -7,3 +7,10 @@ mutation createChallenge($newChallenge: ChallengeDTOInput!){
   }
 }
 `;
+export const CREATE_POST = gql`
+mutation createPost($newPost: PostDTOInput!){
+  savePost(post:$newPost){
+    id
+  }
+}
+`;
