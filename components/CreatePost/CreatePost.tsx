@@ -45,6 +45,9 @@ const CreatePost = (props:Props) => {
         "image": "asdasd",
         "upvotes": 0
     }
+    const onSubmitCreation = () => {
+        parseAndSendPost(formik.values);
+    }
     const formik = useFormik(
         {
             initialValues: initialValues,
@@ -65,16 +68,14 @@ const CreatePost = (props:Props) => {
             //toastOn();
         });
     }
-    const onSubmitCreation = () => {
-        parseAndSendPost(formik.values);
-    }
+
 
 
 
 
 
     const handlePublish = () =>{
-        props.onPublish(false)
+        onSubmitCreation()
 
     }
 
