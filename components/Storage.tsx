@@ -9,3 +9,7 @@ export async function saveToken(value) {
 export async function getToken() {
     return await SecureStore.getItemAsync(tokenName);
 }
+
+export async function deleteToken() {
+    return await SecureStore.deleteItemAsync(tokenName);
+}

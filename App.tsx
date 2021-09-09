@@ -112,7 +112,7 @@ export default function App() {
                                 <Toast ref={(ref) => Toast.setRef(ref)}/>
                             </>
                             :
-                            <Landing/>
+                            <Landing onLogin={() => {setLoggedIn(true)}}/>
                         }
                     </PaperProvider>
                     <StatusBar/>

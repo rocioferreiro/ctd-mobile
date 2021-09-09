@@ -11,7 +11,8 @@ import {LOGIN} from "../../apollo-graph/Mutations";
 import {saveToken} from "../../Storage";
 
 type Props = {
-    onCancel: () => void
+    onCancel: () => void,
+    onLogin: () => void
 }
 
 const Login = (props: Props) => {
@@ -19,7 +20,7 @@ const Login = (props: Props) => {
     const [loginMutation] = useMutation(LOGIN, {
         onCompleted: token => {
             saveToken(token.login).then(r => {
-
+                props.onLogin();
             });
         }
     });
