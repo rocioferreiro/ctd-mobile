@@ -28,14 +28,15 @@ const ChallengeLocation = (props: Props) => {
             props.setDisabled(false)
         }
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setLocation({"latitude": 0, "longitude":0});
-            } else {
-                let location = await Location.getCurrentPositionAsync({});
-                console.log(location)
-                setLocation(location.coords);
+            let enabled = await Location.hasServicesEnabledAsync();
+            console.log(enabled)
+            if (!enabled) {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') setLocation({"latitude": 0, "longitude":0});
             }
+            let location = await Location.getLastKnownPositionAsync({});
+            console.log(location)
+            setLocation(location.coords);
         })();
 
         const showSubscription = Keyboard.addListener("keyboardDidShow", e => {

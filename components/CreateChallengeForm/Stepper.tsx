@@ -31,7 +31,7 @@ const Stepper = (props: Props) => {
         container: {
             borderWidth: 0,
             backgroundColor: 'rgba(0,0,0,0)',
-            overflow: "visible"
+            overflow: "visible",
         },
         nextButton: {
             backgroundColor: disabled ? '#c1c1c1' : colors.accent,

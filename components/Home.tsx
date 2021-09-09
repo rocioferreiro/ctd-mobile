@@ -140,10 +140,6 @@ const Home = () => {
             </Card>}
 
 
-
-
-
-
             {createPost &&<Card style={styles.creationCard}>
                 {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
                 {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
@@ -157,7 +153,7 @@ const Home = () => {
                             title="Cancel"
                     />
                 </View>
-                <CreatePost onPublish={setCreatePost} formik={formik}></CreatePost>
+                <CreatePost onPublish={setCreatePost} formik={formik}/>
             </Card>
             }
             {create && <Card style={styles.creationCard}>
@@ -175,6 +171,7 @@ const Home = () => {
                 </View>
                 <Stepper onSubmit={onSubmitCreation} formik={formik} isLoading={loading}/>
             </Card>}
+
             {creationSuccess && <ChallengeCreationSuccessful close={() => setCreationSuccess(false)}/>}
         </View>
     )

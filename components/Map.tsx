@@ -3,13 +3,12 @@ import {Text, View} from "./Themed";
 import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {useLazyQuery, useQuery} from "@apollo/client";
-import {FIND_NEARBY_USERS, FIND_NEARBY_CHALLENGES} from "./apollo-graph/Queries";
-import {ActivityIndicator, Button, Modal, useTheme} from "react-native-paper";
-import CreateChallengeModal from "./CreateChallengeModal/CreateChallengeModal";
+import {useLazyQuery} from "@apollo/client";
+import {FIND_NEARBY_CHALLENGES, FIND_NEARBY_USERS} from "./apollo-graph/Queries";
+import {ActivityIndicator, Modal, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import * as Location from "expo-location";
-import {find} from "react-native-redash/lib/typescript/v1";
+import {LocationAccuracy} from "expo-location";
 import ChallengePage from "./Challenge/ChallengePage";
 
 type MarkerInfo = {
@@ -69,13 +68,16 @@ const Map = () => {
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
+            let enabled = await Location.hasServicesEnabledAsync();
+            console.log(enabled)
+            if (!enabled) {
+                let {status} = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
             }
-
-            let location = await Location.getCurrentPositionAsync({});
+            let location = await Location.getLastKnownPositionAsync({});
             setLocation(location.coords);
         })();
     }, []);
