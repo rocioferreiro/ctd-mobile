@@ -8,8 +8,7 @@ import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-nati
 import {validateEmail, validatePassword} from "../validations";
 
 type Props = {
-    onCancel: () => void,
-    onLogin: () => void
+    onCancel: () => void
 }
 
 const Register = (props: Props) => {

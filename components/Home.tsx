@@ -11,7 +11,6 @@ import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeF
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
-import {deleteToken} from "./Storage";
 
 const Home = () => {
 
@@ -134,18 +133,6 @@ const Home = () => {
                             onPress={() => setCreatePost(true)}
                             buttonStyle={{backgroundColor: colors.primary}}
                     />
-                    </View>
-
-                    <View style={{ marginTop: 10,backgroundColor: colors.surface}}>
-                        <Button raised={true}
-                                title={'Logout'}
-                                onPress={() => {
-                                    deleteToken().then(() => {
-
-                                    }).catch(e => console.log(e));
-                                }}
-                                buttonStyle={{backgroundColor: colors.error}}
-                        />
                     </View>
 
                 </View>

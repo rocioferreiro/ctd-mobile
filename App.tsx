@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
@@ -7,11 +7,13 @@ import useColorScheme from './hooks/useColorScheme';
 import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {StyleSheet, Dimensions} from 'react-native';
-import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import {configureFonts, DefaultTheme, Provider as PaperProvider, Text} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
+import {deleteToken, getToken, saveToken} from "./components/Storage";
+import {View} from "./components/Themed";
 
 LogBox.ignoreAllLogs();
 
@@ -40,6 +42,15 @@ const styles = StyleSheet.create({
         color: '#4625FF'
     }
 });
+
+type Auth = {
+    signIn: (any) => Promise<void>,
+    signOut: () => Promise<void>,
+    signUp: () => void
+}
+
+// @ts-ignore
+export const AuthContext = React.createContext<Auth>();
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
@@ -96,24 +107,96 @@ export default function App() {
         fonts: configureFonts(fontConfig),
     };
 
-    const [loggedIn, setLoggedIn] = React.useState(false);
+    const initialLoginState = {
+        isLoading: true,
+        userToken: null,
+    };
 
-    if (!isLoadingComplete || !loaded) {
-        return null;
+    const loginReducer = (prevState, action) => {
+        switch (action.type) {
+            case 'RETRIEVE_TOKEN':
+                return {
+                    ...prevState,
+                    userToken: action.token,
+                    isLoading: false,
+                };
+            case 'LOGIN':
+                return {
+                    ...prevState,
+                    userToken: action.token,
+                    isLoading: false,
+                };
+            case 'LOGOUT':
+                return {
+                    ...prevState,
+                    userToken: null,
+                    isLoading: false,
+                };
+            case 'REGISTER':
+                return {
+                    ...prevState,
+                    userToken: action.token,
+                    isLoading: false,
+                };
+        }
+    };
+
+    const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+
+    const authContext: Auth = React.useMemo(() => ({
+        signIn: async (userToken) => {
+            saveToken(userToken).catch(e => {
+                console.log(e);
+            });
+            dispatch({type: 'LOGIN', token: userToken});
+        },
+        signOut: async () => {
+            deleteToken().catch(e => {
+                console.log(e);
+            });
+            dispatch({type: 'LOGOUT'});
+        },
+        signUp: () => {
+            // Sign Up
+        }
+    }), []);
+
+    // This useEffect fetches the token from the storage so that the user doesn't have to log in every time
+    useEffect(() => {
+        setTimeout(async () => {
+            getToken().then(t => {
+                dispatch({type: 'RETRIEVE_TOKEN', token: t});
+            }).catch(e => {
+                console.log(e);
+                dispatch({type: 'RETRIEVE_TOKEN', token: null});
+            })
+        }, 1000);
+    }, []);
+
+    if (!isLoadingComplete || !loaded || loginState.isLoading) {
+        return (
+            <SafeAreaProvider>
+                <View>
+                    <Text>Loading...</Text>
+                </View>
+            </SafeAreaProvider>
+        );
     } else {
         return (
 
             <SafeAreaProvider>
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
-                        {loggedIn ?
-                            <>
-                                <Tabbar colorScheme={reactNativePaperTheme}/>
-                                <Toast ref={(ref) => Toast.setRef(ref)}/>
-                            </>
-                            :
-                            <Landing onLogin={() => {setLoggedIn(true)}}/>
-                        }
+                        <AuthContext.Provider value={authContext}>
+                            {loginState.userToken ?
+                                <>
+                                    <Tabbar colorScheme={reactNativePaperTheme}/>
+                                    <Toast ref={(ref) => Toast.setRef(ref)}/>
+                                </>
+                                :
+                                <Landing/>
+                            }
+                        </AuthContext.Provider>
                     </PaperProvider>
                     <StatusBar/>
                 </ApolloProvider>

@@ -14,7 +14,7 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import Map from "../components/Map";
-import {ChallengeList} from "../components/ChallengeList/Challenge";
+import {Profile} from "../components/Profile/Profile";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -34,7 +34,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Challenges"
-        component={ChallengeList}
+        component={Profile}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}

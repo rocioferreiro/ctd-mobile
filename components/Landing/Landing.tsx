@@ -5,11 +5,7 @@ import {Button, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 
-type Props = {
-    onLogin: () => void
-}
-
-const Landing = (props: Props) => {
+const Landing = () => {
     const { colors } = useTheme();
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
@@ -61,8 +57,8 @@ const Landing = (props: Props) => {
         <View style={styles.root}>
             <Image source={require('../../assets/images/background/dots-background.png')} resizeMode={'cover'} style={styles.background}/>
             <View style={[styles.background, {backgroundColor: 'rgb(50,50,70)', zIndex: -1, opacity: 0.4}]}/>
-            {registerOpen && <Register onLogin={props.onLogin} onCancel={() => {setRegisterOpen(false)}}/>}
-            {loginOpen && <Login onLogin={props.onLogin} onCancel={() => {setLoginOpen(false)}}/>}
+            {registerOpen && <Register onCancel={() => {setRegisterOpen(false)}}/>}
+            {loginOpen && <Login onCancel={() => {setLoginOpen(false)}}/>}
             {(!loginOpen && !registerOpen) &&
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>

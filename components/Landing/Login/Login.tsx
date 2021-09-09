@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Text, View} from "../../Themed";
 import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
@@ -8,19 +8,20 @@ import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-nati
 import {validateEmail} from "../validations";
 import {useMutation} from "@apollo/client";
 import {LOGIN} from "../../apollo-graph/Mutations";
-import {saveToken} from "../../Storage";
+import {AuthContext} from "../../../App";
 
 type Props = {
-    onCancel: () => void,
-    onLogin: () => void
+    onCancel: () => void
 }
 
 const Login = (props: Props) => {
     const {colors} = useTheme();
+    const auth = useContext(AuthContext);
     const [loginMutation] = useMutation(LOGIN, {
         onCompleted: token => {
-            saveToken(token.login).then(r => {
-                props.onLogin();
+            // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
+            auth.signIn(token.login).catch(e => {
+                console.log(e);
             });
         }
     });
