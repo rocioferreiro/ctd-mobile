@@ -171,7 +171,6 @@ const Login = (props: Props) => {
                             mode={'contained'}
                             onPress={() => {
                                 if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) {
-                                    console.log('login');
                                     login();
                                 }
                             }}>Login</Button>

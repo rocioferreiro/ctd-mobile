@@ -3,10 +3,8 @@ import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
 import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
-import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider, Text} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
@@ -26,22 +24,30 @@ declare global {
     }
 }
 
-// I think this can be deleted... but I didn't because I am scared
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+const _fontConfig = {
+    regular: {
+        fontFamily: 'ApfelGrotezk',
+        fontWeight: 'normal' as 'normal',
     },
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+    medium: {
+        fontFamily: 'ApfelGrotezk',
+        fontWeight: 'normal' as 'normal',
     },
-    icon: {
-        color: '#4625FF'
-    }
-});
+    light: {
+        fontFamily: 'ApfelGrotezk',
+        fontWeight: 'normal' as 'normal',
+    },
+    thin: {
+        fontFamily: 'ApfelGrotezk',
+        fontWeight: 'normal' as 'normal',
+    },
+};
+
+const fontConfig = {
+    ios: _fontConfig,
+    android: _fontConfig,
+    web: _fontConfig
+}
 
 type Auth = {
     signIn: (any) => Promise<void>,
@@ -54,40 +60,9 @@ export const AuthContext = React.createContext<Auth>();
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
-    // I think this colorScheme thing can be deleted too, it is used to tell the navigation component
-    // if we are using dark or light mode, but as we are using material ui paper instead I think it doesn't matter.
-    // I didn't delete it tho...
-    const colorScheme = useColorScheme();
-
     const [loaded] = useFonts({
         ApfelGrotezk: require('./assets/fonts/ApfelGrotezk-Regular.ttf'),
     });
-
-    const _fontConfig = {
-        regular: {
-            fontFamily: 'ApfelGrotezk',
-            fontWeight: 'normal' as 'normal',
-        },
-        medium: {
-            fontFamily: 'ApfelGrotezk',
-            fontWeight: 'normal' as 'normal',
-        },
-        light: {
-            fontFamily: 'ApfelGrotezk',
-            fontWeight: 'normal' as 'normal',
-        },
-        thin: {
-            fontFamily: 'ApfelGrotezk',
-            fontWeight: 'normal' as 'normal',
-        },
-    };
-
-    const fontConfig = {
-        ios: _fontConfig,
-        android: _fontConfig,
-        web: _fontConfig
-    }
-
     // React Native Paper Theme.
     // To check all options see:
     // (https://github.com/callstack/react-native-paper/blob/main/src/styles/DefaultTheme.tsx)
@@ -111,7 +86,6 @@ export default function App() {
         isLoading: true,
         userToken: null,
     };
-
     const loginReducer = (prevState, action) => {
         switch (action.type) {
             case 'RETRIEVE_TOKEN':
@@ -140,9 +114,7 @@ export default function App() {
                 };
         }
     };
-
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
     const authContext: Auth = React.useMemo(() => ({
         signIn: async (userToken) => {
             saveToken(userToken).catch(e => {
@@ -160,7 +132,6 @@ export default function App() {
             // Sign Up
         }
     }), []);
-
     // This useEffect fetches the token from the storage so that the user doesn't have to log in every time
     useEffect(() => {
         setTimeout(async () => {
@@ -176,14 +147,11 @@ export default function App() {
     if (!isLoadingComplete || !loaded || loginState.isLoading) {
         return (
             <SafeAreaProvider>
-                <View>
-                    <Text>Loading...</Text>
-                </View>
+                <View/>
             </SafeAreaProvider>
         );
     } else {
         return (
-
             <SafeAreaProvider>
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
