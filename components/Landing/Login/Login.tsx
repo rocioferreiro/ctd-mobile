@@ -8,6 +8,7 @@ import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-nati
 import {validateEmail} from "../validations";
 import {useMutation} from "@apollo/client";
 import {LOGIN} from "../../apollo-graph/Mutations";
+import {saveToken} from "../../Storage";
 
 type Props = {
     onCancel: () => void
@@ -17,7 +18,9 @@ const Login = (props: Props) => {
     const {colors} = useTheme();
     const [loginMutation] = useMutation(LOGIN, {
         onCompleted: token => {
-            console.log(token.login);
+            saveToken(token.login).then(r => {
+
+            });
         }
     });
     const [email, setEmail] = useState<string>('');
