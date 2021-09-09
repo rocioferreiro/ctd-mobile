@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "../Themed";
+import {Text, View} from "../../Themed";
 import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {validateEmail} from "../validations";
 
 type Props = {
     onCancel: () => void
 }
 
-const Register = (props: Props) => {
+const Login = (props: Props) => {
     const {colors} = useTheme();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [animationFinished, setAnimationFinished] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [animationFinished, setAnimationFinished] = useState<boolean>(false);
+    const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
 
     const reanimatedStyle = useAnimatedStyle(() => {
@@ -55,7 +54,7 @@ const Register = (props: Props) => {
             shadowOpacity: 0.5,
             shadowColor: '#DAB99D',
             elevation: 4,
-            height: 60,
+            height: 60
         },
         button: {
             backgroundColor: colors.primary,
@@ -65,7 +64,7 @@ const Register = (props: Props) => {
             borderColor: colors.light,
             fontWeight: 'bold',
             padding: 2,
-            minWidth: '40%'
+            minWidth: '40%',
         },
         cancelButton: {
             borderRadius: 20,
@@ -88,14 +87,14 @@ const Register = (props: Props) => {
             backgroundColor: 'rgba(0,0,0,0)',
             position: "absolute",
         },
-        fullNameContainer: {
-            flexDirection: "row",
-            backgroundColor: 'rgba(0,0,0,0)',
-        },
-        nameInputContainer: {
-            flex: 1,
-            width: '40%',
-            backgroundColor: 'rgba(0,0,0,0)',
+        error: {
+            color: colors.error,
+            fontSize: 14,
+            marginLeft: 13,
+            marginRight: 13,
+            textAlign: 'center',
+            marginBottom: -25,
+            zIndex: 5,
         }
     });
 
@@ -107,7 +106,7 @@ const Register = (props: Props) => {
         <View style={styles.root}>
             <Animated.View style={[styles.animatedContainer, reanimatedStyle]}>
                 <LottieView
-                    source={require('../../assets/lottie/liquid-transition.json')}
+                    source={require('../../../assets/lottie/liquid-transition.json')}
                     autoPlay
                     loop={false}
                     speed={3}
@@ -118,69 +117,45 @@ const Register = (props: Props) => {
                 />
             </Animated.View>
             {animationFinished &&
-                <View style={styles.root}>
-                    <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                    <View style={styles.fullNameContainer}>
-                        <View style={styles.nameInputContainer}>
-                        <Input
-                            placeholder={"First Name"}
-                            style={styles.input}
-                            value={firstName}
-                            onChangeText={t => {
-                                setFirstName(t);
-                            }}
-                            inputContainerStyle={{borderBottomWidth: 0}}
-                        />
-                        </View>
-                        <View style={styles.nameInputContainer}>
-                        <Input
-                            placeholder={"Last Name"}
-                            style={styles.input}
-                            value={lastName}
-                            onChangeText={t => {
-                                setLastName(t);
-                            }}
-                            inputContainerStyle={{borderBottomWidth: 0}}
-                        />
-                        </View>
-                    </View>
-                    <Input
-                        placeholder={"Username"}
-                        style={styles.input}
-                        value={username}
-                        onChangeText={t => {
-                            setUsername(t);
-                        }}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
-                    <Input
-                        placeholder={"E-mail"}
-                        style={styles.input}
-                        value={email}
-                        onChangeText={t => {
-                            setEmail(t);
-                        }}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
-                    <Input
-                        placeholder={"Password"}
-                        style={styles.input}
-                        value={password}
-                        onChangeText={t => {
-                            setPassword(t);
-                        }}
-                        secureTextEntry={true}
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                    />
+            <View style={styles.root}>
+                <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')}
+                       style={styles.logo}/>
+                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
+                <Input
+                    placeholder={"Email"}
+                    style={errorMarker.email ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
+                    value={email}
+                    onChangeText={t => {
+                        setEmail(t);
+                        setErrorMarker({email: !validateEmail(t)});
+                    }}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
+                <Input
+                    placeholder={"Password"}
+                    style={styles.input}
+                    value={password}
+                    onChangeText={t => {
+                        setPassword(t);
+                    }}
+                    secureTextEntry={true}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
                 <View style={{
                     height: 150,
                     backgroundColor: 'rgba(0,0,0,0)',
                     display: "flex",
                     justifyContent: 'space-around'
                 }}>
-                    <Button style={styles.button} mode={'contained'} onPress={() => {
-                        console.log('Registered')
-                    }}>Register</Button>
+                    <Button style={styles.button}
+                            mode={'contained'}
+                            onPress={() => {
+                                if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) console.log('login')
+                            }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel()
                     }}>Cancel</Button>
@@ -191,4 +166,4 @@ const Register = (props: Props) => {
     );
 }
 
-export default Register;
+export default Login;
