@@ -7,3 +7,9 @@ mutation createChallenge($newChallenge: ChallengeDTOInput!){
   }
 }
 `;
+
+export const LOGIN = gql`
+mutation login($loginUser: LoginUserInput!){
+  login(loginUser:$loginUser)
+}
+`;

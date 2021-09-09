@@ -10,113 +10,114 @@ import {StyleSheet, Dimensions} from 'react-native';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
+
 LogBox.ignoreAllLogs();
 
 declare global {
-  namespace ReactNativePaper {
-    interface ThemeColors {
-      extra: string,
-      light: string
+    namespace ReactNativePaper {
+        interface ThemeColors {
+            extra: string,
+            light: string
+        }
     }
-  }
 }
 
 // I think this can be deleted... but I didn't because I am scared
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  icon: {
-    color: '#4625FF'
-  }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    map: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    icon: {
+        color: '#4625FF'
+    }
 });
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
-  // I think this colorScheme thing can be deleted too, it is used to tell the navigation component
-  // if we are using dark or light mode, but as we are using material ui paper instead I think it doesn't matter.
-  // I didn't delete it tho...
-  const colorScheme = useColorScheme();
+    const isLoadingComplete = useCachedResources();
+    // I think this colorScheme thing can be deleted too, it is used to tell the navigation component
+    // if we are using dark or light mode, but as we are using material ui paper instead I think it doesn't matter.
+    // I didn't delete it tho...
+    const colorScheme = useColorScheme();
 
-  const [loaded] = useFonts({
-    ApfelGrotezk: require('./assets/fonts/ApfelGrotezk-Regular.ttf'),
-  });
+    const [loaded] = useFonts({
+        ApfelGrotezk: require('./assets/fonts/ApfelGrotezk-Regular.ttf'),
+    });
 
-  const _fontConfig = {
-    regular: {
-      fontFamily: 'ApfelGrotezk',
-      fontWeight: 'normal' as 'normal',
-    },
-    medium: {
-      fontFamily: 'ApfelGrotezk',
-      fontWeight: 'normal' as 'normal',
-    },
-    light: {
-      fontFamily: 'ApfelGrotezk',
-      fontWeight: 'normal' as 'normal',
-    },
-    thin: {
-      fontFamily: 'ApfelGrotezk',
-      fontWeight: 'normal' as 'normal',
-    },
-  };
+    const _fontConfig = {
+        regular: {
+            fontFamily: 'ApfelGrotezk',
+            fontWeight: 'normal' as 'normal',
+        },
+        medium: {
+            fontFamily: 'ApfelGrotezk',
+            fontWeight: 'normal' as 'normal',
+        },
+        light: {
+            fontFamily: 'ApfelGrotezk',
+            fontWeight: 'normal' as 'normal',
+        },
+        thin: {
+            fontFamily: 'ApfelGrotezk',
+            fontWeight: 'normal' as 'normal',
+        },
+    };
 
-  const fontConfig = {
-    ios: _fontConfig,
-    android: _fontConfig,
-    web: _fontConfig
-  }
+    const fontConfig = {
+        ios: _fontConfig,
+        android: _fontConfig,
+        web: _fontConfig
+    }
 
-  // React Native Paper Theme.
-  // To check all options see:
-  // (https://github.com/callstack/react-native-paper/blob/main/src/styles/DefaultTheme.tsx)
-  const reactNativePaperTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      primary: '#15006D',
-      accent: '#FFC300',
-      background: '#ffffff',
-      surface: '#FFF3E9',
-      text: '#383c53',
-      notification: '#F24726',
-      extra: '#8FD14F',
-      light: '#8FA1ff'
-    },
-    fonts: configureFonts(fontConfig),
-  };
+    // React Native Paper Theme.
+    // To check all options see:
+    // (https://github.com/callstack/react-native-paper/blob/main/src/styles/DefaultTheme.tsx)
+    const reactNativePaperTheme = {
+        ...DefaultTheme,
+        colors: {
+            ...DefaultTheme.colors,
+            primary: '#15006D',
+            accent: '#FFC300',
+            background: '#ffffff',
+            surface: '#FFF3E9',
+            text: '#383c53',
+            notification: '#F24726',
+            extra: '#8FD14F',
+            light: '#8FA1ff'
+        },
+        fonts: configureFonts(fontConfig),
+    };
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+    const [loggedIn, setLoggedIn] = React.useState(false);
 
-  if (!isLoadingComplete || !loaded) {
-    return null;
-  } else if (!loggedIn) {
-    return (
-        <PaperProvider theme={reactNativePaperTheme}>
-          <Landing/>
-        </PaperProvider>
-    )
-  } else {
-    return (
+    if (!isLoadingComplete || !loaded) {
+        return null;
+    } else {
+        return (
 
-      <SafeAreaProvider>
-        <ApolloProvider client={getApolloClientInstance()}>
-          <PaperProvider theme={reactNativePaperTheme}>
-            <Tabbar colorScheme={reactNativePaperTheme}/>
-            <Toast ref={(ref) => Toast.setRef(ref)} />
-          </PaperProvider>
-          <StatusBar/>
-        </ApolloProvider>
-      </SafeAreaProvider>
-    );
-  }
+            <SafeAreaProvider>
+                <ApolloProvider client={getApolloClientInstance()}>
+                    <PaperProvider theme={reactNativePaperTheme}>
+                        {loggedIn ?
+                            <>
+                                <Tabbar colorScheme={reactNativePaperTheme}/>
+                                <Toast ref={(ref) => Toast.setRef(ref)}/>
+                            </>
+                            :
+                            <Landing/>
+                        }
+                    </PaperProvider>
+                    <StatusBar/>
+                </ApolloProvider>
+            </SafeAreaProvider>
+        );
+    }
 }

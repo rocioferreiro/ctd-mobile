@@ -6,6 +6,8 @@ import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 import {validateEmail} from "../validations";
+import {useMutation} from "@apollo/client";
+import {LOGIN} from "../../apollo-graph/Mutations";
 
 type Props = {
     onCancel: () => void
@@ -13,6 +15,11 @@ type Props = {
 
 const Login = (props: Props) => {
     const {colors} = useTheme();
+    const [loginMutation] = useMutation(LOGIN, {
+        onCompleted: token => {
+            console.log(token.login);
+        }
+    });
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [animationFinished, setAnimationFinished] = useState<boolean>(false);
@@ -24,7 +31,11 @@ const Login = (props: Props) => {
             opacity: visible.value,
             zIndex: visible.value
         }
-    }, [])
+    }, []);
+
+    const login = () => {
+        loginMutation({variables: {loginUser: {mail: email, password: password}}}).catch(e => console.log(e));
+    }
 
     const styles = StyleSheet.create({
         root: {
@@ -154,10 +165,13 @@ const Login = (props: Props) => {
                     <Button style={styles.button}
                             mode={'contained'}
                             onPress={() => {
-                                if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) console.log('login')
+                                if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) {
+                                    console.log('login');
+                                    login();
+                                }
                             }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
-                        props.onCancel()
+                        props.onCancel();
                     }}>Cancel</Button>
                 </View>
             </View>
