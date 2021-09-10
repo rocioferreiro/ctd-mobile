@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
@@ -12,6 +12,7 @@ import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import { LogBox } from 'react-native';
 import Landing from "./components/Landing/Landing";
+import * as Linking from "expo-linking";
 LogBox.ignoreAllLogs();
 
 declare global {
@@ -96,6 +97,25 @@ export default function App() {
   };
 
   const [loggedIn, setLoggedIn] = React.useState(true);
+
+  const handleDeepLink = (event) => {
+    let data = Linking.parse(event.url);
+    console.log(data);
+  }
+
+  useEffect(() => {
+
+    async function getInitialUrl(){
+      const initialUrl = await Linking.getInitialURL();
+      if (initialUrl) Linking.parse(initialUrl);
+    }
+
+    Linking.addEventListener('url', handleDeepLink);
+
+    return () => {
+      Linking.removeEventListener('url', handleDeepLink);
+    };
+  }, [])
 
   if (!isLoadingComplete || !loaded) {
     return null;
