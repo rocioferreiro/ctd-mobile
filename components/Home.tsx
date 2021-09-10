@@ -1,8 +1,8 @@
 import React from "react";
-import {View, Text} from "./Themed";
+import {Text, View} from "./Themed";
 import Stepper from "./CreateChallengeForm/Stepper";
 import {Card, useTheme} from "react-native-paper";
-import {Dimensions, StyleSheet, Image} from "react-native";
+import {Dimensions, Image, StyleSheet} from "react-native";
 import {Button} from "react-native-elements";
 import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
 import Toast from 'react-native-toast-message';
@@ -11,6 +11,8 @@ import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeF
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
+import ViewPost from "./viewPost/ViewPost";
+import {Role} from "./Models/User";
 
 const Home = () => {
 
@@ -25,6 +27,7 @@ const Home = () => {
 
     const [create, setCreate] = React.useState(false)
     const [createPost, setCreatePost] = React.useState(false)
+    const [viewPost, setViewPost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
     const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
@@ -118,7 +121,7 @@ const Home = () => {
 
     return (
         <View style={{backgroundColor: colors.surface}}>
-            {(!create && !creationSuccess && !createPost) && <Card style={styles.homeCard}>
+            {(!create && !creationSuccess && !createPost && !viewPost) && <Card style={styles.homeCard}>
                 <Text> Home Screen </Text>
                 <View style={{width: '60%', marginTop: 10}}>
                     <Button raised={true}
@@ -135,9 +138,33 @@ const Home = () => {
                     />
                     </View>
 
+                    <View style={{ marginTop: 10,backgroundColor: colors.surface}}>
+                        <Button raised={true}
+                                title={'View a post'}
+                                onPress={() => setViewPost(true)}
+                                buttonStyle={{backgroundColor: colors.primary}}
+                        />
+                    </View>
+
                 </View>
 
             </Card>}
+
+            {viewPost &&<Card style={styles.creationCard}>
+                <Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
+                {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
+                {/*<Image source={require('../assets/images/connections.png')} resizeMode={'cover'}*/}
+                {/*       style={styles.background}/>*/}
+                <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
+                    <Button onPress={() => setViewPost(false)}
+                            icon={{name: 'chevron-back-outline', type: 'ionicon'}}
+                            buttonStyle={styles.button}
+                            titleStyle={{color: colors.primary}}
+                    />
+                </View>
+                <ViewPost post={{title: 'aaa', text: 'aaa', id:'aqwsd12ed', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: 'aa'}}/>
+            </Card>
+            }
 
 
             {createPost &&<Card style={styles.creationCard}>
