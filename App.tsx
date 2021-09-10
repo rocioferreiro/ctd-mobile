@@ -10,7 +10,7 @@ import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getToken, saveToken} from "./components/Storage";
+import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
 
 LogBox.ignoreAllLogs();
@@ -85,30 +85,35 @@ export default function App() {
     const initialLoginState = {
         isLoading: true,
         userToken: null,
+        userId: null
     };
     const loginReducer = (prevState, action) => {
         switch (action.type) {
             case 'RETRIEVE_TOKEN':
                 return {
                     ...prevState,
+                    userId: action.userId,
                     userToken: action.token,
                     isLoading: false,
                 };
             case 'LOGIN':
                 return {
                     ...prevState,
+                    userId: action.userId,
                     userToken: action.token,
                     isLoading: false,
                 };
             case 'LOGOUT':
                 return {
                     ...prevState,
+                    userId: null,
                     userToken: null,
                     isLoading: false,
                 };
             case 'REGISTER':
                 return {
                     ...prevState,
+                    userId: action.userId,
                     userToken: action.token,
                     isLoading: false,
                 };
@@ -116,11 +121,15 @@ export default function App() {
     };
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
     const authContext: Auth = React.useMemo(() => ({
-        signIn: async (userToken) => {
-            saveToken(userToken).catch(e => {
+        signIn: async (userInfo) => {
+            saveToken(userInfo.token).catch(e => {
                 console.log(e);
             });
-            dispatch({type: 'LOGIN', token: userToken});
+            saveUserId(userInfo.idUser).catch(e => {
+                console.log(e);
+            });
+            console.log(userInfo);
+            dispatch({type: 'LOGIN', token: userInfo.token, userId: userInfo.idUser});
         },
         signOut: async () => {
             deleteToken().catch(e => {
@@ -135,11 +144,11 @@ export default function App() {
     // This useEffect fetches the token from the storage so that the user doesn't have to log in every time
     useEffect(() => {
         setTimeout(async () => {
-            getToken().then(t => {
-                dispatch({type: 'RETRIEVE_TOKEN', token: t});
+            getTokenAndUserId().then(r => {
+                dispatch({type: 'RETRIEVE_TOKEN', token: r.token, userId: r.id});
             }).catch(e => {
                 console.log(e);
-                dispatch({type: 'RETRIEVE_TOKEN', token: null});
+                dispatch({type: 'RETRIEVE_TOKEN', token: null, userId: null});
             })
         }, 1000);
     }, []);
@@ -156,7 +165,7 @@ export default function App() {
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {loginState.userToken ?
+                            {(loginState.userToken && loginState.userId) ?
                                 <>
                                     <Tabbar colorScheme={reactNativePaperTheme}/>
                                     <Toast ref={(ref) => Toast.setRef(ref)}/>
