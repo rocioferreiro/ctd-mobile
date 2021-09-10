@@ -11,6 +11,7 @@ import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeF
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
+import {getUserId} from "./Storage";
 
 const Home = () => {
 
@@ -71,6 +72,10 @@ const Home = () => {
         }
     });
 
+    const getId = async () => {
+        return await getUserId();
+    }
+
     const parseAndSendChallenge = (challenge) => {
         const newChallengeDTOInput = {
             "title": challenge.title,
@@ -79,7 +84,7 @@ const Home = () => {
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
             "description": challenge.description + (challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : ''),
-            "owner": "meta-69v65rfc9s2j-f76fe488-cfb1-4179-aadd-e423b0aa1030",// TODO change to user id when users are implemented
+            "owner": getId(),
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
             "coordinates": {

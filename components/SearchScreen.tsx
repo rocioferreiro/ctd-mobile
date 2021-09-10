@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {View, Text} from "./Themed";
 import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
@@ -10,15 +10,20 @@ import ChallengePage from "./Challenge/ChallengePage";
 import {getApolloClientInstance} from "./apollo-graph/Client";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
+import {AuthContext} from "../App";
+import {getUserId} from "./Storage";
 
 
 const SearchScreen = () => {
-    const [selectedChallenge,setSelectedChallenge]= useState()
+    const [selectedChallenge,setSelectedChallenge]= useState();
+
+    const getId = async () => {
+        return await getUserId();
+    }
 
     const { colors } = useTheme();
-    const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER);
+    const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: getId()}});
     const [challengeList, setChallengeList] = useState<any>([]);
-
 
     useEffect(() => {
         if(data) {
