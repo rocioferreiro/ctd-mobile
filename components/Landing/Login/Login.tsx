@@ -17,7 +17,7 @@ type Props = {
 const Login = (props: Props) => {
     const {colors} = useTheme();
     const auth = useContext(AuthContext);
-    const [loginMutation] = useMutation(LOGIN, {
+    const [loginMutation, {data, loading, error}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
             auth.signIn(token.login).catch(e => {
@@ -169,6 +169,7 @@ const Login = (props: Props) => {
                 }}>
                     <Button style={styles.button}
                             mode={'contained'}
+                            loading={loading}
                             onPress={() => {
                                 if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) {
                                     login();
