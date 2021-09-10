@@ -5,11 +5,8 @@ import {Icon} from "react-native-elements";
 import Home from "../components/Home";
 import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
-import {ChallengeList} from "../components/ChallengeList/Challenge";
 import {colorShade} from "../components/Models/shadingColor";
-
-import ChallengePage from "../components/Challenge/ChallengePage";
-import CreatePost from "../components/CreatePost/CreatePost";
+import {Profile} from "../components/Profile/Profile";
 
 //array of icon views this array can be image or vector icon for tab  bar
 // array size can be 1 to maximum 5 !
@@ -33,7 +30,7 @@ const icons = [
 ];
 
 const components = [
-  <Home/>, <SearchScreen/>, <Map/>, <ChallengeList/>
+  <Home/>, <SearchScreen/>, <Map/>, <Profile/>
 ]
 type Props = {
   colorScheme
