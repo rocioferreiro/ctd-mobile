@@ -5,14 +5,15 @@ import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
 import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
-import {configureFonts, DefaultTheme, Provider as PaperProvider, Text} from 'react-native-paper';
+import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
+import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
 import * as Linking from "expo-linking";
+
 LogBox.ignoreAllLogs();
 
 declare global {
@@ -82,12 +83,12 @@ export default function App() {
         fonts: configureFonts(fontConfig),
     };
 
-  const [loggedIn, setLoggedIn] = React.useState(true);
+    const [loggedIn, setLoggedIn] = React.useState(true);
 
-  const handleDeepLink = (event) => {
-    let data = Linking.parse(event.url);
-    console.log(data);
-  }
+    const handleDeepLink = (event) => {
+        let data = Linking.parse(event.url);
+        console.log(data);
+    }
 
     const initialLoginState = {
         isLoading: true,
@@ -158,16 +159,16 @@ export default function App() {
             })
         }, 1000);
 
-      async function getInitialUrl(){
-        const initialUrl = await Linking.getInitialURL();
-        if (initialUrl) Linking.parse(initialUrl);
-      }
+        async function getInitialUrl() {
+            const initialUrl = await Linking.getInitialURL();
+            if (initialUrl) Linking.parse(initialUrl);
+        }
 
-      Linking.addEventListener('url', handleDeepLink);
+        Linking.addEventListener('url', handleDeepLink);
 
-      return () => {
-        Linking.removeEventListener('url', handleDeepLink);
-      };
+        return () => {
+            Linking.removeEventListener('url', handleDeepLink);
+        };
     }, []);
 
     if (!isLoadingComplete || !loaded || loginState.isLoading) {
