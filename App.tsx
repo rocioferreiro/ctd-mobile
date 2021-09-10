@@ -95,7 +95,7 @@ export default function App() {
     fonts: configureFonts(fontConfig),
   };
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
 
   if (!isLoadingComplete || !loaded) {
     return null;

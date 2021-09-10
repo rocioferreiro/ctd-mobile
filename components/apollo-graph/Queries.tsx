@@ -85,7 +85,7 @@ query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
 
 export const FIND_CHALLENGES_OF_USER = gql`
   query getCreatedChallengesByUser{
-    getCreatedChallengesByUser(userId: "meta-69y5fn6vr0qp-345b9e1b-0c5d-45bf-b9f9-b7b242b5ce80") {
+    getCreatedChallengesByUser(userId: "meta-9q9j89pudf3e-1555e811-da5d-4d8c-b6b2-ac888d3ef61c") {
        boost
        categories
        coordinates {

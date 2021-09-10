@@ -11,6 +11,8 @@ import {convertDateToString, CreateChallengeFormValues} from "./CreateChallengeF
 import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
+import * as Linking from 'expo-linking';
+import {share} from "./Share";
 
 const Home = () => {
 
@@ -133,6 +135,19 @@ const Home = () => {
                             onPress={() => setCreatePost(true)}
                             buttonStyle={{backgroundColor: colors.primary}}
                     />
+                    </View>
+
+                    <View style={{ marginTop: 10,backgroundColor: colors.surface}}>
+                        <Button raised={true}
+                                title={'Share'}
+                                onPress={() => {
+                                    let redirectUrl = Linking.createURL('challenge', {
+                                        queryParams: { id: '1' },
+                                    });
+                                    share(redirectUrl);
+                                }}
+                                buttonStyle={{backgroundColor: colors.primary}}
+                        />
                     </View>
 
                 </View>
