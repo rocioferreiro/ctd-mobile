@@ -117,7 +117,7 @@ const CreatePost = (props:Props) => {
 
                     }}
                           >
-                <PostTextInput></PostTextInput>
+                <PostTextInput formik={formik} ></PostTextInput>
                     </View>
                     <View style={{
                         display: "flex",

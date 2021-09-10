@@ -3,8 +3,10 @@ import { useTheme} from 'react-native-paper';
 import { Input} from "react-native-elements";
 import {Dimensions} from "react-native";
 
-const PostTextInput = () => {
-    const [text, setText] = React.useState('');
+type Props = {
+   formik:any
+}
+const PostTextInput = (props:Props) => {
     const { colors } = useTheme();
 
     return (
@@ -26,10 +28,13 @@ const PostTextInput = () => {
                 minHeight: Dimensions.get("window").height * 0.12, paddingTop: 20}}
 
             multiline={true}
-            value={text}
-            inputContainerStyle={{borderBottomWidth: 0}}
 
-            onChangeText={text => setText(text)}
+            inputContainerStyle={{borderBottomWidth: 0}}
+            value={props.formik.values.title}
+            onChangeText={title => {
+                props.formik.setFieldValue('title', title)
+            }}
+
         />
     );
 };
