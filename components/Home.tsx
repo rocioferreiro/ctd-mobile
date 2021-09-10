@@ -39,6 +39,11 @@ const Home = () => {
         },
         refetchQueries: []
     });
+    const [userId, setUserId] = React.useState('');
+
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+    }, [])
 
     const styles = StyleSheet.create({
         background: {
@@ -72,10 +77,6 @@ const Home = () => {
         }
     });
 
-    const getId = async () => {
-        return await getUserId();
-    }
-
     const parseAndSendChallenge = (challenge) => {
         const newChallengeDTOInput = {
             "title": challenge.title,
@@ -84,7 +85,7 @@ const Home = () => {
             "startInscription": convertDateToString(challenge.inscriptionsFrom),
             "endInscription": convertDateToString(challenge.inscriptionsTo),
             "description": challenge.description + (challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : ''),
-            "owner": getId(),
+            "owner": userId,
             "categories": challenge.ONUObjective,
             "objectives": challenge.challengeObjectives,
             "coordinates": {

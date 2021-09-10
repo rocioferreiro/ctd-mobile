@@ -1,47 +1,56 @@
-import React, {useContext, useEffect, useState} from "react";
-import {View, Text} from "./Themed";
+import React, {useEffect, useState} from "react";
+import {View} from "./Themed";
 import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
-import {useQuery} from "@apollo/client";
+import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView} from "react-native";
-import {color} from "react-native-elements/dist/helpers";
 import ChallengePage from "./Challenge/ChallengePage";
-import {getApolloClientInstance} from "./apollo-graph/Client";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
-import {AuthContext} from "../App";
 import {getUserId} from "./Storage";
 
 
 const SearchScreen = () => {
-    const [selectedChallenge,setSelectedChallenge]= useState();
+    const [selectedChallenge, setSelectedChallenge] = useState();
+    const [userId, setUserId] = useState('');
 
-    const getId = async () => {
-        return await getUserId();
-    }
-
-    const { colors } = useTheme();
-    const {data,error,loading} = useQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: getId()}});
+    const {colors} = useTheme();
+    const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
     const [challengeList, setChallengeList] = useState<any>([]);
 
     useEffect(() => {
-        if(data) {
+        getUserId().then(id => {
+            setUserId(id);
+            findChallengesOfUser();
+        });
+    }, []);
+
+    useEffect(() => {
+        if (data) {
             setChallengeList(data.getCreatedChallengesByUser)
         }
-    }, [data])
+    }, [data]);
 
-    if (loading) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
+    if (loading) return <View style={{
+        display: 'flex',
+        backgroundColor: colors.surface,
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%'
+    }}><ActivityIndicator size="large"/></View>;
     if (error) {
         console.log(error.message);
         return <LottieView
-          style={{ width: '95%',
-              height: 400,marginTop:Dimensions.get('window').height*0.07}}
-          source={require('../assets/lottie/network-lost.json')}
-          autoPlay
-          loop
-          speed={0.4}
-          resizeMode={'cover'}
+            style={{
+                width: '95%',
+                height: 400, marginTop: Dimensions.get('window').height * 0.07
+            }}
+            source={require('../assets/lottie/network-lost.json')}
+            autoPlay
+            loop
+            speed={0.4}
+            resizeMode={'cover'}
         />
     }
 
@@ -56,32 +65,36 @@ const SearchScreen = () => {
         }
     }
 
-  return (
-       <View>
-            {selectedChallenge ? <ChallengePage  setSelectedChallenge={setSelectedChallenge} challenge={ selectedChallenge} />:
-               <Card style={{
-                   width: Dimensions.get('window').width,
-                   height: '100%',
-                   backgroundColor: colors.surface
-               }}>
-                   <SearchBarComponent onChange={onChange}/>
-                   <Divider/>
-                   <ScrollView style={{marginBottom: Dimensions.get('screen').height*0.20, backgroundColor: 'rgba(0,0,0,0)', overflow: "visible"}}>
-                       {challengeList.map((challenge, i) =>
-                           <View key={i} style={{marginBottom: 5}}>
-                               <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
-                               <Divider/>
-                           </View>
-                       )
-                       }
-                   </ScrollView>
+    return (
+        <View>
+            {selectedChallenge ?
+                <ChallengePage setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+                <Card style={{
+                    width: Dimensions.get('window').width,
+                    height: '100%',
+                    backgroundColor: colors.surface
+                }}>
+                    <SearchBarComponent onChange={onChange}/>
+                    <Divider/>
+                    <ScrollView style={{
+                        marginBottom: Dimensions.get('screen').height * 0.20,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        overflow: "visible"
+                    }}>
+                        {challengeList.map((challenge, i) =>
+                            <View key={i} style={{marginBottom: 5}}>
+                                <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                                <Divider/>
+                            </View>
+                        )
+                        }
+                    </ScrollView>
 
-               </Card>
+                </Card>
+            }
+        </View>
 
-           }
-      </View>
-
-  )
+    )
 };
 
 
