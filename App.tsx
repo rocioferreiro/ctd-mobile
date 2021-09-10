@@ -93,14 +93,14 @@ export default function App() {
                 return {
                     ...prevState,
                     userId: action.userId,
-                    userToken: action.token,
+                    userToken: action.userToken,
                     isLoading: false,
                 };
             case 'LOGIN':
                 return {
                     ...prevState,
                     userId: action.userId,
-                    userToken: action.token,
+                    userToken: action.userToken,
                     isLoading: false,
                 };
             case 'LOGOUT':
@@ -114,7 +114,7 @@ export default function App() {
                 return {
                     ...prevState,
                     userId: action.userId,
-                    userToken: action.token,
+                    userToken: action.userToken,
                     isLoading: false,
                 };
         }
@@ -128,8 +128,7 @@ export default function App() {
             saveUserId(userInfo.idUser).catch(e => {
                 console.log(e);
             });
-            console.log(userInfo);
-            dispatch({type: 'LOGIN', token: userInfo.token, userId: userInfo.idUser});
+            dispatch({type: 'LOGIN', userToken: userInfo.token, userId: userInfo.idUser});
         },
         signOut: async () => {
             deleteToken().catch(e => {
@@ -145,10 +144,10 @@ export default function App() {
     useEffect(() => {
         setTimeout(async () => {
             getTokenAndUserId().then(r => {
-                dispatch({type: 'RETRIEVE_TOKEN', token: r.token, userId: r.id});
+                dispatch({type: 'RETRIEVE_TOKEN', userToken: r.token, userId: r.id});
             }).catch(e => {
                 console.log(e);
-                dispatch({type: 'RETRIEVE_TOKEN', token: null, userId: null});
+                dispatch({type: 'RETRIEVE_TOKEN', userToken: null, userId: null});
             })
         }, 1000);
     }, []);
