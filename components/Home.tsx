@@ -13,6 +13,7 @@ import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
 import ViewPost from "./viewPost/ViewPost";
 import {Role} from "./Models/User";
+import {baseProps} from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 
 const Home = () => {
 
@@ -123,7 +124,7 @@ const Home = () => {
         <View style={{backgroundColor: colors.surface}}>
             {(!create && !creationSuccess && !createPost && !viewPost) && <Card style={styles.homeCard}>
                 <Text> Home Screen </Text>
-                <View style={{width: '60%', marginTop: 10}}>
+                <View style={{width: '60%', marginTop: 10, backgroundColor: 'rgba(0,0,0,0)'}}>
                     <Button raised={true}
                             title={'Create a new Challenge!'}
                             onPress={() => setCreate(true)}
@@ -162,7 +163,7 @@ const Home = () => {
                             titleStyle={{color: colors.primary}}
                     />
                 </View>
-                <ViewPost post={{title: 'aaa', text: 'aaa', id:'aqwsd12ed', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: 'aa'}}/>
+                <ViewPost post={{title: 'First Challenge Completed!', text: 'Yesterday I went for my first challenge and I loved it!! I know im ready to do another one right away. Martina organized the experience just perfect!', id:'aqwsd12ed', image: 'aa', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: '2021-10-10'}}/>
             </Card>
             }
 
