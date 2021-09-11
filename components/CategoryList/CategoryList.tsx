@@ -30,7 +30,8 @@ const CategoryList = () => {
         },
         logo: {
             flex: 4,
-            maxWidth: '80%'
+            maxWidth: '100%',
+            resizeMode: "contain"
         },
         number: {
             fontSize: 35,
