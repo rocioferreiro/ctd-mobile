@@ -20,20 +20,23 @@ const CategoryList = () => {
             marginTop: 10,
             overflow: 'hidden'
         },
-        image: {
-
-        },
         sideNumberContainer: {
             flex: 2,
             display: 'flex',
-            justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 5
+            borderRadius: 5,
+            paddingTop: 10,
+            paddingBottom: 10
+        },
+        logo: {
+            flex: 4,
+            maxWidth: '80%'
         },
         number: {
             fontSize: 35,
             fontWeight: 'bold',
-            color: '#ffffff'
+            color: '#ffffff',
+            flex: 6
         },
         sideImageContainer: {
             backgroundColor: 'rgba(0,0,0,0)',
@@ -58,7 +61,7 @@ const CategoryList = () => {
                     <View style={styles.card} key={i}>
                         <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
                             <Text style={styles.number}>{i+1}</Text>
-                            {/*<Image style={styles.image} source={onuLogos[i].image}/>*/}
+                            <Image style={styles.logo} source={onuLogos[i].image}/>
                         </View>
                         <View style={styles.sideImageContainer}>
                             <View style={{
