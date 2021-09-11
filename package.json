@@ -71,7 +71,8 @@
     "react-native-webview": "11.2.3",
     "react-navigation-stack": "^2.10.4",
     "rnv-date-range-picker": "^1.2.6",
-    "watchman": "^1.0.0"
+    "watchman": "^1.0.0",
+    "expo-secure-store": "~10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

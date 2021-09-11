@@ -8,7 +8,6 @@ import {FIND_NEARBY_CHALLENGES, FIND_NEARBY_USERS} from "./apollo-graph/Queries"
 import {ActivityIndicator, Modal, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import * as Location from "expo-location";
-import {LocationAccuracy} from "expo-location";
 import ChallengePage from "./Challenge/ChallengePage";
 
 type MarkerInfo = {
