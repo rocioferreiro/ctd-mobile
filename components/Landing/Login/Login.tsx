@@ -9,6 +9,7 @@ import {validateEmail} from "../validations";
 import {useMutation} from "@apollo/client";
 import {LOGIN} from "../../apollo-graph/Mutations";
 import {AuthContext} from "../../../App";
+import Toast from "react-native-toast-message";
 
 type Props = {
     onCancel: () => void
@@ -21,8 +22,12 @@ const Login = (props: Props) => {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
             auth.signIn(token.login).catch(e => {
-                console.log(e);
+                toastOn('Error', 'Mail or Password is incorrect')
             });
+
+        },
+        onError: () => {
+            toastOn('Error', 'Mail or Password is incorrect')
         }
     });
     const [email, setEmail] = useState<string>('');
@@ -30,6 +35,15 @@ const Login = (props: Props) => {
     const [animationFinished, setAnimationFinished] = useState<boolean>(false);
     const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
+
+    function toastOn(message: string, description: string = '') {
+        Toast.show({
+            type: 'error',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
 
     const reanimatedStyle = useAnimatedStyle(() => {
         return {
@@ -138,7 +152,7 @@ const Login = (props: Props) => {
                        style={styles.logo}/>
                 {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                 <Input
-                    placeholder={"Email"}
+                    placeholder={"email"}
                     style={errorMarker.email ? [styles.input, {
                         borderWidth: 3,
                         borderColor: colors.error,
