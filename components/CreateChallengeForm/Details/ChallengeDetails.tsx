@@ -5,7 +5,7 @@ import OnuObjectiveChoice from "./onuObjectiveChoice";
 import {Icon, Input} from "react-native-elements";
 import {colorShade} from "../../Models/shadingColor";
 import {onuPictures} from './onuObjectiveInfo';
-import {ONUObjectives} from "../ONUObjectives";
+import {ONUObjectives} from "../../ONUObjectives";
 
 type Props = {
   setDisabled: (boolean) => void

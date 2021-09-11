@@ -12,6 +12,7 @@ import {CREATE_CHALLENGE} from "./apollo-graph/Mutations";
 import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
 import {getUserId} from "./Storage";
+import CategoryList from "./CategoryList/CategoryList";
 
 const Home = () => {
 
@@ -143,8 +144,9 @@ const Home = () => {
 
                 </View>
 
-            </Card>}
+                <CategoryList/>
 
+            </Card>}
 
             {createPost &&<Card style={styles.creationCard}>
                 {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
