@@ -181,7 +181,7 @@ const Home = () => {
                             titleStyle={{color: colors.primary}}
                     />
                 </View>
-                <ViewPost post={{title: 'First Challenge Completed!', text: 'Yesterday I went for my first challenge and I loved it!! I know im ready to do another one right away. Martina organized the experience just perfect!', id:'aqwsd12ed', image: 'aa', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: '2021-10-10'}}/>
+                <ViewPost open post={{title: 'First Challenge Completed!', text: 'Yesterday I went for my first challenge and I loved it!! I know im ready to do another one right away. Martina organized the experience just perfect!', id:'aqwsd12ed', image: 'aa', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: '2021-10-10'}}/>
             </Card>
             }
 
