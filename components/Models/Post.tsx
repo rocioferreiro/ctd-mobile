@@ -4,8 +4,9 @@ export type Post  = {
   text?: String,
   id?: String,
   owner: User,
-  image? : String,
+  image?: String,
   creationDate: String,
   title?: String,
-  upVotes?: number
+  upVotes?: number,
+  boosted?: boolean,
 }

@@ -28,6 +28,15 @@ const Home = () => {
         });
     }
 
+    function toastOnPostError() {
+        Toast.show({
+            type: 'error',
+            text1: 'Post Creation Error',
+            text2: 'Try again later',
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     const [create, setCreate] = React.useState(false)
     const [createPost, setCreatePost] = React.useState(false)
     const [viewPost, setViewPost] = React.useState(false)
@@ -172,7 +181,7 @@ const Home = () => {
                             titleStyle={{color: colors.primary}}
                     />
                 </View>
-                <ViewPost post={{title: 'First Challenge Completed!', text: 'Yesterday I went for my first challenge and I loved it!! I know im ready to do another one right away. Martina organized the experience just perfect!', id:'aqwsd12ed', image: 'aa', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: '2021-10-10'}}/>
+                <ViewPost open post={{title: 'First Challenge Completed!', text: 'Yesterday I went for my first challenge and I loved it!! I know im ready to do another one right away. Martina organized the experience just perfect!', id:'aqwsd12ed', image: 'aa', owner: {name: 'Ro', lastname: 'Fe', mail: 'r@r.com', role: Role.NORMAL}, upVotes: 3, creationDate: '2021-10-10'}}/>
             </Card>
             }
 
@@ -190,7 +199,7 @@ const Home = () => {
                             title="Cancel"
                     />
                 </View>
-                <CreatePost onPublish={setCreatePost} formik={formik}/>
+                <CreatePost toastOn={toastOnPostError} setCreatePost={setCreatePost} />
             </Card>
             }
             {create && <Card style={styles.creationCard}>
