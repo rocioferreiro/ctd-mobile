@@ -57,3 +57,23 @@ const obj16 = {image: require(`../assets/images/logos/16.png`)};
 const obj17 = {image: require(`../assets/images/logos/17.png`)};
 
 export const onuLogos = [obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9, obj10, obj11, obj12, obj13, obj14, obj15, obj16, obj17];
+
+const categoryBackground1 = {image: require(`../assets/images/category-backgrounds/1.jpg`)};
+const categoryBackground2 = {image: require(`../assets/images/category-backgrounds/2.jpg`)};
+const categoryBackground3 = {image: require(`../assets/images/category-backgrounds/3.jpg`)};
+const categoryBackground4 = {image: require(`../assets/images/category-backgrounds/4.jpg`)};
+const categoryBackground5 = {image: require(`../assets/images/category-backgrounds/5.jpg`)};
+const categoryBackground6 = {image: require(`../assets/images/category-backgrounds/6.jpg`)};
+const categoryBackground7 = {image: require(`../assets/images/category-backgrounds/7.jpg`)};
+const categoryBackground8 = {image: require(`../assets/images/category-backgrounds/8.jpg`)};
+const categoryBackground9 = {image: require(`../assets/images/category-backgrounds/9.jpg`)};
+const categoryBackground10 = {image: require(`../assets/images/category-backgrounds/10.jpg`)};
+const categoryBackground11 = {image: require(`../assets/images/category-backgrounds/11.jpg`)};
+const categoryBackground12 = {image: require(`../assets/images/category-backgrounds/12.jpg`)};
+const categoryBackground13 = {image: require(`../assets/images/category-backgrounds/13.jpg`)};
+const categoryBackground14 = {image: require(`../assets/images/category-backgrounds/14.jpg`)};
+const categoryBackground15 = {image: require(`../assets/images/category-backgrounds/15.jpg`)};
+const categoryBackground16 = {image: require(`../assets/images/category-backgrounds/16.jpg`)};
+const categoryBackground17 = {image: require(`../assets/images/category-backgrounds/17.jpg`)};
+
+export const categoryBackgrounds = [categoryBackground1, categoryBackground2, categoryBackground3, categoryBackground4, categoryBackground5, categoryBackground6, categoryBackground7, categoryBackground8, categoryBackground9, categoryBackground10, categoryBackground11, categoryBackground12, categoryBackground13, categoryBackground14, categoryBackground15, categoryBackground16, categoryBackground17];

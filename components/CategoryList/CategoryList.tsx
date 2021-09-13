@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text} from "../Themed";
-import {colors, onuLogos, ONUObjectives} from "../ONUObjectives";
+import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
 import {Card, useTheme} from "react-native-paper";
-import {Dimensions, Image, ScrollView, StyleSheet} from "react-native";
+import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 
 const CategoryList = () => {
 
@@ -65,11 +65,13 @@ const CategoryList = () => {
                             <Image style={styles.logo} source={onuLogos[i].image}/>
                         </View>
                         <View style={styles.sideImageContainer}>
-                            <View style={{
+                            <Image style={{
                                 ...StyleSheet.absoluteFillObject,
                                 backgroundColor: colors[i],
-                                opacity: 0.5
-                            }} />
+                                opacity: 0.5,
+                                width: '100%',
+                                height: '100%'
+                            }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
                             <Text style={styles.name}>{v}</Text>
                         </View>
                     </View>
