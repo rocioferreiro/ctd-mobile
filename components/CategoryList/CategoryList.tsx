@@ -18,15 +18,20 @@ const CategoryList = () => {
             height: Dimensions.get('window').height * 0.15,
             marginBottom: 10,
             marginTop: 10,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         sideNumberContainer: {
             flex: 2,
             display: 'flex',
             alignItems: 'center',
-            borderRadius: 5,
+            borderTopStartRadius: 15,
+            borderBottomStartRadius: 15,
+            borderTopEndRadius: 0,
+            borderBottomEndRadius: 0,
             paddingTop: 10,
-            paddingBottom: 10
+            paddingBottom: 10,
+            paddingHorizontal: 3,
         },
         logo: {
             flex: 4,
@@ -44,7 +49,10 @@ const CategoryList = () => {
             flex: 10,
             display: 'flex',
             justifyContent: 'flex-end',
-            borderRadius: 5,
+            borderTopStartRadius: 0,
+            borderBottomStartRadius: 0,
+            borderTopEndRadius: 15,
+            borderBottomEndRadius: 15,
             overflow: 'hidden'
         },
         name: {
