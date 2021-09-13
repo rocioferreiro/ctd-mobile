@@ -4,11 +4,16 @@ import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
+import {LanguagePicker} from "../Language/LanguagePicker";
+import {useTranslation} from "react-i18next";
 
 const Landing = () => {
     const { colors } = useTheme();
+
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
+    const {t, i18n} = useTranslation('login');
+    const [language, setLanguage] = React.useState(i18n.language);
 
     const styles = StyleSheet.create({
         background: {
@@ -63,9 +68,14 @@ const Landing = () => {
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>Register</Button>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}> {t('register')}</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login')}</Button>
+                <View>
+
+                </View>
+
             </View>
+
             }
         </View>
     )

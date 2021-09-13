@@ -1,0 +1,8 @@
+{
+  "login": {
+    "cancel":"Cancel",
+    "email-error": "Invalid Email Error",
+    "password": "Password"
+  }
+
+}

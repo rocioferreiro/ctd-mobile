@@ -1,0 +1,8 @@
+{
+  "login": {
+    "cancel":"Cancelar",
+    "email-error": "Dirección de e-mail invalida",
+    "password": "Contraseña"
+  }
+
+}
