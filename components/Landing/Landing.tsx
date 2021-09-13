@@ -70,14 +70,7 @@ const Landing = () => {
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
                 <Text style={styles.title}>Change Language</Text>
-                <Picker
-                    selectedValue={language}
-                    onValueChange={(itemValue, itemIndex) =>
-                       setLanguage(itemValue)
-                    }>
-                    <Picker.Item label="Español" value="es" />
-                    <Picker.Item label="English" value="en" />
-                </Picker>
+               <LanguagePicker i18n={i18n} setLanguage={setLanguage}></LanguagePicker>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}> {t('register')}</Button>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login')}</Button>
                 <View>

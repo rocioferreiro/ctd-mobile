@@ -1,6 +1,7 @@
 
 import {Picker} from '@react-native-picker/picker';
 import React, {useRef, useState} from "react";
+import {View} from "../Themed";
 
 
 interface Props {
@@ -18,8 +19,7 @@ export const LanguagePicker = (props:Props) => {
     }
 
     return (
-
-
+        <View style={{zIndex:1}}>
         <Picker
 
             selectedValue={selectedLanguage}
@@ -29,6 +29,7 @@ export const LanguagePicker = (props:Props) => {
             <Picker.Item label="Español" value="es" />
             <Picker.Item label="English" value="en" />
         </Picker>
+        </View>
     );
 };
 
