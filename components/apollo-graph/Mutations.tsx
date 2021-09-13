@@ -14,3 +14,12 @@ mutation createPost($newPost: PostDTOInput!){
   }
 }
 `;
+
+export const LOGIN = gql`
+mutation login($loginUser: LoginUserInput!){
+  login(loginUser:$loginUser){
+    idUser
+    token
+  }
+}
+`;

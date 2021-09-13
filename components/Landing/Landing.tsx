@@ -2,8 +2,8 @@ import React from 'react';
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
 import {Button, useTheme} from "react-native-paper";
-import Login from "../Login/Login";
-import Register from "../Register/Register";
+import Login from "./Login/Login";
+import Register from "./Register/Register";
 
 const Landing = () => {
     const { colors } = useTheme();
@@ -14,8 +14,9 @@ const Landing = () => {
         background: {
             width: Dimensions.get('screen').width,
             height: Dimensions.get('screen').height,
-            zIndex: -1,
+            zIndex: -2,
             position: "absolute",
+
         },
         root: {
             width: Dimensions.get('screen').width,
@@ -55,6 +56,7 @@ const Landing = () => {
     return (
         <View style={styles.root}>
             <Image source={require('../../assets/images/background/dots-background.png')} resizeMode={'cover'} style={styles.background}/>
+            <View style={[styles.background, {backgroundColor: 'rgb(50,50,70)', zIndex: -1, opacity: 0.4}]}/>
             {registerOpen && <Register onCancel={() => {setRegisterOpen(false)}}/>}
             {loginOpen && <Login onCancel={() => {setLoginOpen(false)}}/>}
             {(!loginOpen && !registerOpen) &&

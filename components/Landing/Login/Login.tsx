@@ -1,10 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from "../Themed";
+import React, {useContext, useEffect, useState} from 'react';
+import {Text, View} from "../../Themed";
 import {Dimensions, Image, StyleSheet} from "react-native";
 import {Input} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {validateEmail} from "../validations";
+import {useMutation} from "@apollo/client";
+import {LOGIN} from "../../apollo-graph/Mutations";
+import {AuthContext} from "../../../App";
+import Toast from "react-native-toast-message";
 
 type Props = {
     onCancel: () => void
@@ -12,17 +17,44 @@ type Props = {
 
 const Login = (props: Props) => {
     const {colors} = useTheme();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [animationFinished, setAnimationFinished] = useState(false);
+    const auth = useContext(AuthContext);
+    const [loginMutation, {data, loading, error}] = useMutation(LOGIN, {
+        onCompleted: token => {
+            // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
+            auth.signIn(token.login).catch(e => {
+                toastOn('Error', 'Mail or Password is incorrect')
+            });
+
+        },
+        onError: () => {
+            toastOn('Error', 'Mail or Password is incorrect')
+        }
+    });
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [animationFinished, setAnimationFinished] = useState<boolean>(false);
+    const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
+
+    function toastOn(message: string, description: string = '') {
+        Toast.show({
+            type: 'error',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
 
     const reanimatedStyle = useAnimatedStyle(() => {
         return {
             opacity: visible.value,
             zIndex: visible.value
         }
-    }, [])
+    }, []);
+
+    const login = () => {
+        loginMutation({variables: {loginUser: {mail: email, password: password}}}).catch(e => console.log(e));
+    }
 
     const styles = StyleSheet.create({
         root: {
@@ -62,7 +94,7 @@ const Login = (props: Props) => {
             borderColor: colors.light,
             fontWeight: 'bold',
             padding: 2,
-            minWidth: '40%'
+            minWidth: '40%',
         },
         cancelButton: {
             borderRadius: 20,
@@ -84,6 +116,15 @@ const Login = (props: Props) => {
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)',
             position: "absolute",
+        },
+        error: {
+            color: colors.error,
+            fontSize: 14,
+            marginLeft: 13,
+            marginRight: 13,
+            textAlign: 'center',
+            marginBottom: -25,
+            zIndex: 5,
         }
     });
 
@@ -95,7 +136,7 @@ const Login = (props: Props) => {
         <View style={styles.root}>
             <Animated.View style={[styles.animatedContainer, reanimatedStyle]}>
                 <LottieView
-                    source={require('../../assets/lottie/liquid-transition.json')}
+                    source={require('../../../assets/lottie/liquid-transition.json')}
                     autoPlay
                     loop={false}
                     speed={3}
@@ -106,15 +147,21 @@ const Login = (props: Props) => {
                 />
             </Animated.View>
             {animationFinished &&
-                <View style={styles.root}>
-                <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                {/*<Text style={styles.title}>Login</Text>*/}
+            <View style={styles.root}>
+                <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')}
+                       style={styles.logo}/>
+                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
                 <Input
-                    placeholder={"Email"}
-                    style={styles.input}
+                    placeholder={"email"}
+                    style={errorMarker.email ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
                     value={email}
                     onChangeText={t => {
                         setEmail(t);
+                        setErrorMarker({email: !validateEmail(t)});
                     }}
                     inputContainerStyle={{borderBottomWidth: 0}}
                 />
@@ -134,11 +181,16 @@ const Login = (props: Props) => {
                     display: "flex",
                     justifyContent: 'space-around'
                 }}>
-                    <Button style={styles.button} mode={'contained'} onPress={() => {
-                        console.log('login')
-                    }}>Login</Button>
+                    <Button style={styles.button}
+                            mode={'contained'}
+                            loading={loading}
+                            onPress={() => {
+                                if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) {
+                                    login();
+                                }
+                            }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
-                        props.onCancel()
+                        props.onCancel();
                     }}>Cancel</Button>
                 </View>
             </View>
