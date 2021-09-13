@@ -1,6 +1,6 @@
 import React from "react";
 import {Animated, Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
-import {ONUObjectives} from "../ONUObjectives";
+import {ONUObjectives} from "../../ONUObjectives";
 import {IconButton, useTheme} from "react-native-paper";
 import ImageCarousel from "./objectivesScroll";
 import {Icon} from "react-native-elements";
