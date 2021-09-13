@@ -99,7 +99,7 @@ export default function App() {
 
   if (!isLoadingComplete || !loaded) {
     return null;
-  } else if (!loggedIn) {
+  } else if (false) {
     return (
         <PaperProvider theme={reactNativePaperTheme}>
           <Landing/>

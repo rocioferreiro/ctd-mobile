@@ -56,8 +56,8 @@ const CreatePost = (props:Props) => {
     )
     const parseAndSendPost = (post) => {
         const newPostDTOInput = {
-            "title": post.title,
-            "owner": post.userid,
+            "title": "post title",
+            "owner": "meta-69y5fn6vr0qp-63692e90-2384-4e9d-ae48-26302c2fcd1d",
             "text": post.text,
             "boosted": false,
             "image": "asdasd",
@@ -65,25 +65,15 @@ const CreatePost = (props:Props) => {
         }
         console.log(newPostDTOInput)
         createPost({variables: {newPost: newPostDTOInput}}).catch(e => {
-            //toastOn();
+            props.toastOn();
         });
     }
-
-
-
-
 
 
     const handlePublish = () =>{
         onSubmitCreation()
 
     }
-
-    const onChange = (searchValue: string) => {
-
-        }
-
-
 
 
     return (
