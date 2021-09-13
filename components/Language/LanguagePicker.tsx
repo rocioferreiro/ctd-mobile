@@ -10,7 +10,7 @@ interface Props {
 
 export const LanguagePicker = (props:Props) => {
 
-    const [selectedLanguage, setSelectedLanguage] = React.useState(props.i18n.language);
+    const [selectedLanguage, setSelectedLanguage] =useState("en");
 
     function handleChange(itemValue) {
         setSelectedLanguage(itemValue)

@@ -6,6 +6,7 @@ import Login from "./Login/Login";
 import Register from "./Register/Register";
 import {LanguagePicker} from "../Language/LanguagePicker";
 import {useTranslation} from "react-i18next";
+import {Picker} from "@react-native-picker/picker";
 
 const Landing = () => {
     const { colors } = useTheme();
@@ -68,6 +69,15 @@ const Landing = () => {
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
+                <Text style={styles.title}>Change Language</Text>
+                <Picker
+                    selectedValue={language}
+                    onValueChange={(itemValue, itemIndex) =>
+                       setLanguage(itemValue)
+                    }>
+                    <Picker.Item label="Español" value="es" />
+                    <Picker.Item label="English" value="en" />
+                </Picker>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}> {t('register')}</Button>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login')}</Button>
                 <View>
