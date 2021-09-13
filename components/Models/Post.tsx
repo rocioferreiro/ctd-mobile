@@ -1,5 +1,3 @@
-
-
 export type Post  = {
     owner: String,
     text: String,

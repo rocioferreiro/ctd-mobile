@@ -14,6 +14,7 @@ import {convertDateToString, CreateChallengeFormValues, CreatePostFormValues} fr
 import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
 import {CREATE_CHALLENGE, CREATE_POST} from "../apollo-graph/Mutations";
+import {getUserId} from "../Storage";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -37,6 +38,12 @@ const CreatePost = (props:Props) => {
         refetchQueries: []
     });
 
+    const [userId, setUserId] = React.useState('');
+
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+    }, [])
+
     const initialValues: CreatePostFormValues = {
         "title": '',
         "owner": '',
@@ -56,8 +63,8 @@ const CreatePost = (props:Props) => {
     )
     const parseAndSendPost = (post) => {
         const newPostDTOInput = {
-            "title": "post title",
-            "owner": "meta-69y5fn6vr0qp-63692e90-2384-4e9d-ae48-26302c2fcd1d",
+            "title": post.title,
+            "owner": userId,
             "text": post.text,
             "boosted": false,
             "image": "asdasd",
