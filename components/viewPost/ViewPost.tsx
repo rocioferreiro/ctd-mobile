@@ -26,7 +26,7 @@ const ViewPost = (props:Props) => {
   }
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
-  const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: '50%', backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
+  const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
   const RightContent = props => <OptionsMenu
                                     customButton={myIcon}
                                     destructiveIndex={0}
