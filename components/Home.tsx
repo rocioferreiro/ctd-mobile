@@ -15,6 +15,7 @@ import ViewPost from "./viewPost/ViewPost";
 import {Role} from "./Models/User";
 import {baseProps} from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 import {getUserId} from "./Storage";
+import CategoryList from "./CategoryList/CategoryList";
 
 const Home = () => {
 
@@ -154,6 +155,8 @@ const Home = () => {
                     </View>
 
                 </View>
+
+                <CategoryList/>
 
             </Card>}
 
