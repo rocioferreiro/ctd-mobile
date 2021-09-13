@@ -6,6 +6,9 @@ import {Button, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 import {validateEmail, validatePassword} from "../validations";
+import {useMutation} from "@apollo/client";
+import {REGISTER} from "../../apollo-graph/Mutations";
+import Toast from "react-native-toast-message";
 
 type Props = {
     onCancel: () => void
@@ -28,12 +31,30 @@ const Register = (props: Props) => {
     });
     const visible = useSharedValue(3);
 
+    const toastOn = (message: string, description: string = '') => {
+        Toast.show({
+            type: 'error',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     const reanimatedStyle = useAnimatedStyle(() => {
         return {
             opacity: visible.value,
             zIndex: visible.value
         }
     }, [])
+
+    const [register] = useMutation(REGISTER, {
+        onCompleted: token => {
+            props.onCancel();
+        },
+        onError: (e) => {
+            toastOn('Error', 'Register failed')
+        }
+    });
 
     const styles = StyleSheet.create({
         root: {
@@ -120,6 +141,21 @@ const Register = (props: Props) => {
     useEffect(() => {
         visible.value = withTiming(0, {duration: 1000});
     }, [])
+
+    const onRegister = () => {
+        register({
+            variables: {
+                newUser: {
+                    name: firstName,
+                    lastname: lastName,
+                    email: email,
+                    biography: username,
+                    password: password,
+                    role: 'NORMAL'
+                }
+            }
+        }).catch(e => console.log(e));
+    }
 
     return (
         <View style={styles.root}>
@@ -234,7 +270,7 @@ const Register = (props: Props) => {
                     justifyContent: 'space-around'
                 }}>
                     <Button style={styles.button} mode={'contained'} onPress={() => {
-                        if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email) || (errorMarker.firstName) || (errorMarker.lastName) || (errorMarker.password) || (errorMarker.password))) console.log('Registered');
+                        if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email) || (errorMarker.firstName) || (errorMarker.lastName) || (errorMarker.password) || (errorMarker.password))) onRegister();
                     }}>Register</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel();

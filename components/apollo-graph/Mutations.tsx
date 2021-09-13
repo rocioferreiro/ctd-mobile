@@ -16,3 +16,11 @@ mutation login($loginUser: LoginUserInput!){
   }
 }
 `;
+
+export const REGISTER = gql`
+mutation register($newUser: InputUserInput!) {
+	saveUser(newUser: $newUser) {
+        id
+    }
+}
+`;
