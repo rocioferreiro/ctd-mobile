@@ -178,6 +178,7 @@ export default function App() {
                             {(loginState.userToken && loginState.userId) ?
                                 <>
                                     <Tabbar colorScheme={reactNativePaperTheme}/>
+                                    <Toast ref={(ref) => Toast.setRef(ref)}/>
 
                                 </>
                                 :

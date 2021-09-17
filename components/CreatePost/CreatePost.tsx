@@ -10,29 +10,77 @@ import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import ImageButton from "./ImageButton";
 import CancelButton from "./CancelButton";
 import PublishButton from "./PublishButton";
+import {convertDateToString, CreateChallengeFormValues, CreatePostFormValues} from "../CreateChallengeForm/Types";
+import {useFormik} from "formik";
+import {useMutation} from "@apollo/client";
+import {CREATE_CHALLENGE, CREATE_POST} from "../apollo-graph/Mutations";
+import {getUserId} from "../Storage";
 type Props = {
-
-    formik: any
-    onPublish: (boolean) => void,
+    setCreatePost:(Boolean)=>void
+    toastOn:()=>void
 }
 
 
 const CreatePost = (props:Props) => {
-    const {formik} = props;
     const { colors } = useTheme();
     const [image, setImage] = React.useState(null)
     const [ addImage, setAddImage] = React.useState(false)
+    const [creationSuccess, setCreationSuccess] = React.useState(false)
+    const [createPost, {loading}] = useMutation(CREATE_POST, {
+        onCompleted: result => {
+            setCreationSuccess(true);
+            props.setCreatePost(false);
+        },
+        onError: err => {
+            props.toastOn();
+            console.log(err);
+        },
+        refetchQueries: []
+    });
 
-    const handlePublish = () =>{
-        props.onPublish(false)
+    const [userId, setUserId] = React.useState('');
 
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+    }, [])
+
+    const initialValues: CreatePostFormValues = {
+        "title": '',
+        "owner": '',
+        "text": '',
+        "boosted": false,
+        "image": "asdasd",
+        "upvotes": 0
+    }
+    const onSubmitCreation = () => {
+        parseAndSendPost(formik.values);
+    }
+    const formik = useFormik(
+        {
+            initialValues: initialValues,
+            onSubmit: onSubmitCreation
+        }
+    )
+    const parseAndSendPost = (post) => {
+        const newPostDTOInput = {
+            "title": post.title,
+            "owner": userId,
+            "text": post.text,
+            "boosted": false,
+            "image": "asdasd",
+            "upvotes": 0
+        }
+        console.log(newPostDTOInput)
+        createPost({variables: {newPost: newPostDTOInput}}).catch(e => {
+            props.toastOn();
+        });
     }
 
-    const onChange = (searchValue: string) => {
 
-        }
+    const handlePublish = () =>{
+        onSubmitCreation()
 
-
+    }
 
 
     return (
@@ -66,7 +114,7 @@ const CreatePost = (props:Props) => {
 
                     }}
                           >
-                <PostTextInput></PostTextInput>
+                <PostTextInput formik={formik} ></PostTextInput>
                     </View>
                     <View style={{
                         display: "flex",

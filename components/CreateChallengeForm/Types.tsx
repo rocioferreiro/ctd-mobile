@@ -12,6 +12,15 @@ export type CreateChallengeFormValues = {
     ONUObjective: number[],
 }
 
+export type CreatePostFormValues = {
+    title: string,
+    owner: string,
+    text: string,
+    boosted: false,
+    image: string,
+    upvotes: number
+}
+
 export interface ChallengeObjective {
     name: string,
     points: number
