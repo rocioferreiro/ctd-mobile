@@ -83,7 +83,6 @@
     "rnv-date-range-picker": "^1.2.6",
     "watchman": "^1.0.0",
     "expo-media-library": "~12.0.2"
-
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

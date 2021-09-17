@@ -16,6 +16,8 @@ import {Role} from "./Models/User";
 import {baseProps} from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 import {getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
+import {LanguagePicker} from "./Language/LanguagePicker";
+import {useTranslation} from "react-i18next";
 
 const Home = () => {
 
@@ -42,6 +44,8 @@ const Home = () => {
     const [viewPost, setViewPost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
+    const {t, i18n} = useTranslation('login');
+    const [language, setLanguage] = React.useState(i18n.language);
     const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
         onCompleted: result => {
             setCreationSuccess(true);
@@ -138,6 +142,7 @@ const Home = () => {
 
     return (
         <View style={{backgroundColor: colors.surface}}>
+            <LanguagePicker i18n={i18n} setLanguage={setLanguage}></LanguagePicker>
             {(!create && !creationSuccess && !createPost && !viewPost) && <Card style={styles.homeCard}>
                 <Text> Home Screen </Text>
                 <View style={{width: '60%', marginTop: 10, backgroundColor: 'rgba(0,0,0,0)'}}>
