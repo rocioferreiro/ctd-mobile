@@ -82,7 +82,7 @@ const CreatePost = (props:Props) => {
 
 
     return (
-        <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1, backgroundColor: 'rgba(0,0,0,0)'}}>
+        <View style={{width:Dimensions.get("screen").width, height:Dimensions.get("window").height, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
             <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20, backgroundColor: 'rgba(0,0,0,0)'}}>
                 <View style={{
                     display: "flex",

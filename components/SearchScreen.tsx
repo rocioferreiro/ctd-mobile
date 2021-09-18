@@ -10,8 +10,18 @@ import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getUserId} from "./Storage";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import {Button} from "react-native-elements";
 import CategoryList from "./CategoryList/CategoryList";
+import {
+  Button,
+  Title,
+  Paragraph,
+} from 'react-native-paper';
+import {
+  Tabs,
+  TabScreen,
+  useTabIndex,
+  useTabNavigation,
+} from 'react-native-paper-tabs';
 
 const SearchScreen = () => {
     const [selectedChallenge, setSelectedChallenge] = useState();
@@ -128,22 +138,63 @@ const SearchScreen = () => {
 
                     <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> Challenges </Text>
 
-                    <TabView
-                      navigationState={{ index, routes }}
-                      renderScene={renderScene}
-                      onIndexChange={setIndex}
-                      initialLayout={{ width: layout.width }}
-                      renderTabBar={props => <TabBar layout={layout}
-                                                     style={{backgroundColor:colors.surface}}
-                                                     labelStyle={{color: colors.accent}}
-                                                     activeColor={colors.primary}
-                                                     tabStyle={{
-                                                         backgroundColor:'rgba(0,0,0,0)',
-                                                         borderBottomWidth:2,
-                                                         borderBottomColor:colors.accent,
-                                                     }}
-                                                     {...props} />}
-                    />
+                    {/*<TabView*/}
+                    {/*  navigationState={{ index, routes }}*/}
+                    {/*  renderScene={renderScene}*/}
+                    {/*  onIndexChange={setIndex}*/}
+                    {/*  initialLayout={{ width: layout.width }}*/}
+                    {/*  renderTabBar={props => <TabBar layout={layout}*/}
+                    {/*                                 style={{backgroundColor:colors.surface}}*/}
+                    {/*                                 labelStyle={{color: colors.accent}}*/}
+                    {/*                                 activeColor={colors.primary}*/}
+                    {/*                                 tabStyle={{*/}
+                    {/*                                     backgroundColor:'rgba(0,0,0,0)',*/}
+                    {/*                                     borderBottomWidth:2,*/}
+                    {/*                                     borderBottomColor:colors.accent,*/}
+                    {/*                                 }}*/}
+                    {/*                                 {...props} />}*/}
+                    {/*/>*/}
+
+                  <Tabs
+                    style={{ backgroundColor:colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1 }} // works the same as AppBar in react-native-paper
+                    theme={useTheme()}
+                  >
+                    <TabScreen label="For You" icon="compass">
+                      <View style={{ flex: 1, backgroundColor: colors.surface }} />
+                    </TabScreen>
+                    <TabScreen label="Search" icon="magnify">
+                      <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
+                        <SearchBarComponent onChange={onChange}/>
+                        <Divider/>
+                        <ScrollView style={{
+                          marginBottom: Dimensions.get('screen').height * 0.20,
+                          backgroundColor: 'rgba(0,0,0,0)',
+                          overflow: "visible"
+                        }}>
+                          {challengeList.map((challenge, i) =>
+                            <View key={i} style={{marginBottom: 5}}>
+                              <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                              <Divider/>
+                            </View>
+                          )
+                          }
+                        </ScrollView>
+                      </View>
+                    </TabScreen>
+                    <TabScreen label="Collections" icon="checkbox-multiple-blank-outline">
+                      <View style={{ display:'flex',
+                        justifyContent:'center',
+                        alignItems:'center',
+                        alignContent:'center',
+
+                        width:'100%',
+                        backgroundColor:colors.surface,
+                        marginBottom:50
+                      }} >
+                        <CategoryList/>
+                      </View>
+                    </TabScreen>
+                  </Tabs>
 
                 </Card>
             }
@@ -151,6 +202,5 @@ const SearchScreen = () => {
 
     )
 }
-
 
 export default SearchScreen;

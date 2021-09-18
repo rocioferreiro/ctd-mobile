@@ -17,14 +17,11 @@ const SearchBarComponent = (props: Props) => {
 
     return (
       <View>
-          <View style={{padding: 15, backgroundColor:colors.surface, zIndex:1}}/>
           <Searchbar
             placeholder="Search for Challenges"
             onChangeText={onChangeSearch}
             value={searchQuery}
             style={{width:    '100%'}}
-
-
           />
       </View>
 
