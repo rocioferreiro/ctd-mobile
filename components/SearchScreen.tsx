@@ -159,10 +159,10 @@ const SearchScreen = () => {
                     style={{ backgroundColor:colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1 }} // works the same as AppBar in react-native-paper
                     theme={useTheme()}
                   >
-                    <TabScreen label="For You" icon="compass">
+                    <TabScreen label="For You">
                       <View style={{ flex: 1, backgroundColor: colors.surface }} />
                     </TabScreen>
-                    <TabScreen label="Search" icon="magnify">
+                    <TabScreen label="Search">
                       <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                         <SearchBarComponent onChange={onChange}/>
                         <Divider/>
@@ -181,7 +181,7 @@ const SearchScreen = () => {
                         </ScrollView>
                       </View>
                     </TabScreen>
-                    <TabScreen label="Collections" icon="checkbox-multiple-blank-outline">
+                    <TabScreen label="Collections">
                       <View style={{ display:'flex',
                         justifyContent:'center',
                         alignItems:'center',
