@@ -1,19 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
-import {Button, Card, Colors, Divider, useTheme} from 'react-native-paper';
+import {Colors, useTheme} from 'react-native-paper';
 import {View,Text} from "../Themed";
-import {Dimensions, ScrollView, StyleSheet} from "react-native";
-import {Input} from "react-native-elements";
-import {colorShade} from "../Models/shadingColor";
+import {Dimensions, ScrollView} from "react-native";
 import PostTextInput from "./PostTextInput";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import ImageButton from "./ImageButton";
 import CancelButton from "./CancelButton";
 import PublishButton from "./PublishButton";
-import {convertDateToString, CreateChallengeFormValues, CreatePostFormValues} from "../CreateChallengeForm/Types";
+import {CreatePostFormValues} from "../CreateChallengeForm/Types";
 import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
-import {CREATE_CHALLENGE, CREATE_POST} from "../apollo-graph/Mutations";
+import {CREATE_POST} from "../apollo-graph/Mutations";
 import {getUserId} from "../Storage";
 type Props = {
     setCreatePost:(Boolean)=>void
@@ -26,8 +24,8 @@ const CreatePost = (props:Props) => {
     const [image, setImage] = React.useState(null)
     const [ addImage, setAddImage] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
-    const [createPost, {loading}] = useMutation(CREATE_POST, {
-        onCompleted: result => {
+    const [createPost] = useMutation(CREATE_POST, {
+        onCompleted: () => {
             setCreationSuccess(true);
             props.setCreatePost(false);
         },
@@ -71,7 +69,7 @@ const CreatePost = (props:Props) => {
             "upvotes": 0
         }
         console.log(newPostDTOInput)
-        createPost({variables: {newPost: newPostDTOInput}}).catch(e => {
+        createPost({variables: {newPost: newPostDTOInput}}).catch(() => {
             props.toastOn();
         });
     }
@@ -114,7 +112,7 @@ const CreatePost = (props:Props) => {
 
                     }}
                           >
-                <PostTextInput formik={formik} ></PostTextInput>
+                <PostTextInput formik={formik} />
                     </View>
                     <View style={{
                         display: "flex",
@@ -131,8 +129,8 @@ const CreatePost = (props:Props) => {
                                 padding: 10,
                                 backgroundColor: "rgba(0,0,0,0)"
                             }}>
-                          <CancelButton setAddImage={setAddImage}></CancelButton>
-                            <ImagePicker image={image} setImage={setImage}></ImagePicker>
+                          <CancelButton setAddImage={setAddImage}/>
+                            <ImagePicker image={image} setImage={setImage}/>
                             </View>
                                 :
                             <View style={{
@@ -150,7 +148,7 @@ const CreatePost = (props:Props) => {
                                 marginLeft: 5,
                                 marginTop: -5,
                             }}> Add Image</Text>
-                            <ImageButton setAddImage={setAddImage}></ImageButton>
+                            <ImageButton setAddImage={setAddImage}/>
                             </View>
                         }
 
@@ -164,7 +162,7 @@ const CreatePost = (props:Props) => {
                         backgroundColor: "rgba(0,0,0,0)",
                         borderRadius:10
                     }}>
-                        <PublishButton handlePublish={handlePublish} formik={formik}></PublishButton>
+                        <PublishButton handlePublish={handlePublish} formik={formik}/>
                     </View>
                 </ScrollView>
             </View>

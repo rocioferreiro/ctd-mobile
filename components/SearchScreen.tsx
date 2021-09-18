@@ -4,18 +4,21 @@ import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
 import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
-import {Dimensions, ScrollView} from "react-native";
+import {Dimensions, ScrollView, Text, StyleSheet, useWindowDimensions} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getUserId} from "./Storage";
-
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import {Button} from "react-native-elements";
+import CategoryList from "./CategoryList/CategoryList";
 
 const SearchScreen = () => {
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
-
+    const [index, setIndex] = useState(0);
     const {colors} = useTheme();
+    const layout = useWindowDimensions();
     const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
     const [challengeList, setChallengeList] = useState<any>([]);
 
@@ -31,6 +34,54 @@ const SearchScreen = () => {
             setChallengeList(data.getCreatedChallengesByUser)
         }
     }, [data]);
+
+    const [routes] = React.useState([
+        { key: 'first', title: 'For you' },
+        { key: 'second', title: 'Search' },
+        { key: 'third', title: 'Collections' },
+    ]);
+
+    const FirstRoute = () => (
+      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }} />
+    );
+    const SecondRoute = () => (
+      <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
+          <SearchBarComponent onChange={onChange}/>
+          <Divider/>
+          <ScrollView style={{
+              marginBottom: Dimensions.get('screen').height * 0.20,
+              backgroundColor: 'rgba(0,0,0,0)',
+              overflow: "visible"
+          }}>
+              {challengeList.map((challenge, i) =>
+                <View key={i} style={{marginBottom: 5}}>
+                    <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                    <Divider/>
+                </View>
+              )
+              }
+          </ScrollView>
+      </View>
+    );
+    const ThirdRoute = () => (
+      <View style={{ display:'flex',
+          justifyContent:'center',
+          alignItems:'center',
+          alignContent:'center',
+
+          width:'100%',
+          backgroundColor:'rgba(0,0,0,0)',
+          marginBottom:50
+      }} >
+          <CategoryList/>
+      </View>
+    );
+
+    const renderScene = SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+        third: ThirdRoute,
+    });
 
     if (loading) return <View style={{
         display: 'flex',
@@ -74,28 +125,32 @@ const SearchScreen = () => {
                     height: '100%',
                     backgroundColor: colors.surface
                 }}>
-                    <SearchBarComponent onChange={onChange}/>
-                    <Divider/>
-                    <ScrollView style={{
-                        marginBottom: Dimensions.get('screen').height * 0.20,
-                        backgroundColor: 'rgba(0,0,0,0)',
-                        overflow: "visible"
-                    }}>
-                        {challengeList.map((challenge, i) =>
-                            <View key={i} style={{marginBottom: 5}}>
-                                <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
-                                <Divider/>
-                            </View>
-                        )
-                        }
-                    </ScrollView>
+
+                    <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> Challenges </Text>
+
+                    <TabView
+                      navigationState={{ index, routes }}
+                      renderScene={renderScene}
+                      onIndexChange={setIndex}
+                      initialLayout={{ width: layout.width }}
+                      renderTabBar={props => <TabBar layout={layout}
+                                                     style={{backgroundColor:colors.surface}}
+                                                     labelStyle={{color: colors.accent}}
+                                                     activeColor={colors.primary}
+                                                     tabStyle={{
+                                                         backgroundColor:'rgba(0,0,0,0)',
+                                                         borderBottomWidth:2,
+                                                         borderBottomColor:colors.accent,
+                                                     }}
+                                                     {...props} />}
+                    />
 
                 </Card>
             }
         </View>
 
     )
-};
+}
 
 
 export default SearchScreen;

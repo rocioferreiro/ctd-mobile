@@ -64,7 +64,7 @@ const CategoryList = () => {
     });
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {Object.values(ONUObjectives).map((v, i) => {
                 return (
                     <View style={styles.card} key={i}>
