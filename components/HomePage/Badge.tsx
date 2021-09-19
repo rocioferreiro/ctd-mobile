@@ -1,12 +1,15 @@
 import * as React from 'react';
 import {Badge, useTheme} from 'react-native-paper';
 
+type Props = {
+  number: number,
+  color: string
+}
 
-const CTDBadge = () => {
-    const {colors} = useTheme();
+const CTDBadge = (props: Props) => {
     return (
-        <Badge  size={30}  style={{backgroundColor: colors.accent}}>
-            1
+        <Badge  size={30}  style={{backgroundColor: props.color, position: 'absolute', top: 0, left:15, zIndex: 2}}>
+          {props.number}
         </Badge>
     );
 }

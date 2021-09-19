@@ -1,22 +1,23 @@
 import React from "react";
 
 import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
-import {Badge, Button, useTheme} from "react-native-paper";
+import {Card, useTheme} from "react-native-paper";
+import {Button} from "react-native-elements";
 import {View, Text} from "../Themed";
 import * as Progress from 'react-native-progress';
-import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import CTDBadge from "./Badge";
 import PostFeed from "./PostFeed";
 import {LinearGradient} from "expo-linear-gradient";
-
-
+import CreatePost from "../CreatePost/CreatePost";
+import Toast from "react-native-toast-message";
+import {onuLogos} from "../ONUObjectives";
 
 const CTDHome = () => {
 
-
-
     const {colors} = useTheme();
     const categories=["1","2","3"]
+    const categoryColors=[colors.accent,"#707070","#c1c1c1"]
+    const [createPost, setCreatePost] = React.useState(false)
     const styles = StyleSheet.create({
         container: {
             display: 'flex',
@@ -25,6 +26,27 @@ const CTDHome = () => {
             backgroundColor: colors.surface,
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
+        },
+        creationCard: {
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height * 0.95,
+            marginTop: Dimensions.get('window').height * 0.03,
+            backgroundColor: colors.surface
+        },
+        button: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            marginBottom: 0,
+            paddingBottom: 0,
+            paddingLeft: 0,
+            marginLeft: -10
+        },
+        background: {
+            flex: 1,
+            justifyContent: "center",
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            position: "absolute",
+            zIndex: 0
         },
         title: {
             backgroundColor: 'rgba(0,0,0,0)',
@@ -35,24 +57,21 @@ const CTDHome = () => {
         },
         subtitle: {
             backgroundColor: 'rgba(0,0,0,0)',
-            fontSize: 30,
+            fontSize: 37,
             color: colors.accent,
             textAlign:'right',
             fontWeight: 'bold',
-            marginLeft:20,
+            marginHorizontal:20,
         },
         detailtitle: {
             backgroundColor: 'rgba(0,0,0,0)',
             color: '#ffffff',
             textAlign:'left',
-            fontSize: 10,
-            flex:1,
-            width:50,
-            padding:5
+            fontSize: 14
         },
         logo: {
-            height: 110,
-            width: 110,
+            height: 100,
+            width: 100,
         },
         othertitle: {
             backgroundColor: 'rgba(0,0,0,0)',
@@ -85,7 +104,7 @@ const CTDHome = () => {
         ods: {
             backgroundColor: 'rgba(0,0,0,0)',
             color: colors.primary,
-            fontSize: 7,
+            fontSize: 10,
             paddingBottom:4,
             width:70,
             textAlign:'center',
@@ -98,9 +117,14 @@ const CTDHome = () => {
         },
     });
 
-
-
-
+    function toastOnPostError() {
+        Toast.show({
+            type: 'error',
+            text1: 'Post Creation Error',
+            text2: 'Try again later',
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -118,7 +142,7 @@ const CTDHome = () => {
                         }}
                         style={styles.box}
                     >
-                    <View style={{justifyContent: "center", alignItems: "center", padding:10,backgroundColor:"rgba(0,0,0,0)"}}>
+                    <View style={{justifyContent: "center", alignItems: "center", padding:10, paddingTop: 30, backgroundColor:"rgba(0,0,0,0)"}}>
                     <View style={{width:"70%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:"rgba(0,0,0,0)"}}>
 
                     <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
@@ -129,16 +153,20 @@ const CTDHome = () => {
                     <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
 
                     <View style={{width:"80%",justifyContent: "center", alignItems: "center", padding:15, backgroundColor:colors.primary,borderRadius:90}}>
-                        <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.primary,alignItems:"center"}}>
-                        <Text style={styles.subtitle}>36500k</Text>
-                        <Text style={styles.detailtitle}> Global Sustainable Points</Text>
+                        <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.primary,alignItems:"center", justifyContent: 'space-between'}}>
+                            <Text style={styles.subtitle}>36500k </Text>
+                            <View style={{backgroundColor: 'rgba(0,0,0,0)', flex:1}}>
+                                <Text style={styles.detailtitle}> Global</Text>
+                                <Text style={styles.detailtitle}> Sustainable</Text>
+                                <Text style={styles.detailtitle}> Points</Text>
+                            </View>
                         </View>
                     </View>
 
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
-                            <Text style={styles.othertitle}> Your Experience</Text>
+                            <Text style={styles.othertitle}> Your Experience </Text>
                             <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.surface}}>
                             <Text style={styles.level}>Level 1</Text>
                             <Text style={styles.nextlevel}>Level 2</Text>
@@ -148,7 +176,7 @@ const CTDHome = () => {
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
-                            <Text style={styles.topSDGs}> Top SGDs</Text>
+                            <Text style={styles.topSDGs}> Top SGDs </Text>
                         </View>
                         <View style={{
                             display: 'flex',
@@ -161,13 +189,11 @@ const CTDHome = () => {
                             {categories.map((s, index) => {
                                 return <TouchableWithoutFeedback key={index}>
                                     <View  style={{backgroundColor: colors.surface}} >
-                                <CTDBadge></CTDBadge>
-
-                                            <Image
-                                                style={{width: 80, height: 80, borderRadius: 25, borderColor: colors.accent, borderWidth:10,  marginHorizontal: 20}}
-                                                source={onuPictures[parseInt(s)].image}/>
+                                        <CTDBadge color={categoryColors[index]} number={index+1} />
+                                        <Image style={{width: 80, height: 80, borderRadius: 40, borderColor: categoryColors[index], borderWidth:6,  marginHorizontal: 20}}
+                                                source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
                                         <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                                    <Text style={styles.ods}>2k Challenges Active</Text>
+                                            <Text style={styles.ods}>2k Challenges Active</Text>
                                         </View>
                                     </View>
 
@@ -177,14 +203,29 @@ const CTDHome = () => {
                         </View>
                     </View>
                     <View style={{backgroundColor: colors.surface, alignItems:"flex-end",marginTop:-20}}>
-                        <Button
-                            labelStyle={{fontSize: 25}} icon="plus">
-                        </Button>
+                        <Button onPress={() => setCreatePost(true)}
+                                icon={{name: 'add', type: 'ionicon'}}
+                                buttonStyle={styles.button}
+                        />
                     </View>
 
-                    <PostFeed></PostFeed>
+                    <PostFeed/>
+
                 </ScrollView>
             </View>
+
+            {createPost && <Card style={styles.creationCard}>
+                <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
+                    <Button onPress={() => setCreatePost(false)}
+                            icon={{name: 'chevron-back-outline', type: 'ionicon'}}
+                            buttonStyle={styles.button}
+                            titleStyle={{color: colors.primary}}
+                            title="Cancel"
+                    />
+                </View>
+                <CreatePost toastOn={toastOnPostError} setCreatePost={setCreatePost} />
+            </Card>
+            }
 
             </View>
     )

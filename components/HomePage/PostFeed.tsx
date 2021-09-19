@@ -27,12 +27,12 @@ const PostFeed = () => {
     }]
     const {colors} = useTheme();
     return (
-       <View>
+       <View style={{marginBottom: 70}}>
            <ScrollView>
                {posts.map((s, index) => {
                    return <TouchableWithoutFeedback key={index}>
                        <View  style={{backgroundColor: colors.surface}} >
-                       <ViewPost post={post[0]} open={open}></ViewPost>
+                       <ViewPost post={post[0]} open={open}/>
                        </View>
 
                    </TouchableWithoutFeedback>
