@@ -176,6 +176,11 @@ const CTDHome = () => {
                             })}
                         </View>
                     </View>
+                    <View style={{backgroundColor: colors.surface, alignItems:"flex-end"}}>
+                    <Button
+                              labelStyle={{fontSize: 25}} icon="plus">
+                    </Button>
+                    </View>
                     <PostFeed></PostFeed>
                 </ScrollView>
             </View>
