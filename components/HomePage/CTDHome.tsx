@@ -6,6 +6,7 @@ import {View, Text} from "../Themed";
 import * as Progress from 'react-native-progress';
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import CTDBadge from "./Badge";
+import PostFeed from "./PostFeed";
 
 
 
@@ -145,6 +146,7 @@ const CTDHome = () => {
                             })}
                         </View>
                     </View>
+                    <PostFeed></PostFeed>
                 </ScrollView>
             </View>
 
