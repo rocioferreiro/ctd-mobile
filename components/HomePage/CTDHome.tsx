@@ -72,6 +72,16 @@ const CTDHome = () => {
             flex:1,
             paddingBottom:4,
         },
+        ods: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            color: colors.primary,
+            fontSize: 7,
+            paddingBottom:4,
+            width:70,
+            textAlign:'center',
+            fontWeight: 'bold',
+
+        },
     });
 
 
@@ -125,8 +135,9 @@ const CTDHome = () => {
                                             <Image
                                                 style={{width: 80, height: 80, borderRadius: 25, borderColor: colors.accent, borderWidth:10,  marginHorizontal: 20}}
                                                 source={onuPictures[parseInt(s)].image}/>
-
-
+                                        <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                                    <Text style={styles.ods}>2k Challenges Active</Text>
+                                        </View>
                                     </View>
 
 
