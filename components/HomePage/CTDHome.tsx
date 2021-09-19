@@ -1,9 +1,10 @@
 import React from "react";
 
-import {Dimensions, Image, ScrollView, StyleSheet} from "react-native";
+import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {Button, useTheme} from "react-native-paper";
 import {View, Text} from "../Themed";
 import * as Progress from 'react-native-progress';
+import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 
 
 const CTDHome = () => {
@@ -11,6 +12,7 @@ const CTDHome = () => {
 
 
     const {colors} = useTheme();
+    const categories=["1","2","3"]
     const styles = StyleSheet.create({
         container: {
             display: 'flex',
@@ -104,6 +106,22 @@ const CTDHome = () => {
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
                             <Text style={styles.topSDGs}> Top SGDs</Text>
+                        </View>
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: "center",
+                            paddingHorizontal: 10,
+                            paddingTop: 10,
+                            backgroundColor: 'rgba(0,0,0,0)'
+                        }}>
+                            {categories.map((s, index) => {
+                                return <TouchableWithoutFeedback key={index}>
+                                    <Image
+                                        style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                                        source={onuPictures[parseInt(s)].image}/>
+                                </TouchableWithoutFeedback>
+                            })}
                         </View>
                     </View>
                 </ScrollView>
