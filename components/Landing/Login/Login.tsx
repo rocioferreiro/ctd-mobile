@@ -21,6 +21,7 @@ const Login = (props: Props) => {
     const [loginMutation, {loading}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
+            console.log(token.login)
             auth.signIn(token.login).catch(() => {
                 toastOn('Error', 'Mail or Password is incorrect')
             });
