@@ -47,6 +47,20 @@ const CTDHome = () => {
             fontWeight: 'bold',
             paddingBottom:10
         },
+        level: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            color: colors.backdrop,
+            fontSize: 12,
+            paddingBottom:4,
+        },
+        nextlevel: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            color: colors.backdrop,
+            fontSize: 12,
+            textAlign:'right',
+            flex:1,
+            paddingBottom:4,
+        },
     });
 
 
@@ -73,6 +87,10 @@ const CTDHome = () => {
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
                             <Text style={styles.othertitle}> Your Experience</Text>
+                            <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.surface}}>
+                            <Text style={styles.level}>Level 1</Text>
+                            <Text style={styles.nextlevel}>Level 2</Text>
+                            </View>
                         </View>
                     <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={350}   height={30}/>
                     </View>
