@@ -7,6 +7,7 @@ import * as Progress from 'react-native-progress';
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import CTDBadge from "./Badge";
 import PostFeed from "./PostFeed";
+import {LinearGradient} from "expo-linear-gradient";
 
 
 
@@ -83,6 +84,10 @@ const CTDHome = () => {
             fontWeight: 'bold',
 
         },
+        box: {
+            width: '100%',
+            height: 200,
+        },
     });
 
 
@@ -93,17 +98,32 @@ const CTDHome = () => {
         <View style={styles.container}>
             <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
                 <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center", width: '100%'}} style={{ flex: 1,backgroundColor:"rgba(0,0,0,0)"}}  >
-                    <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                    <View style={{width:"70%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                    <LinearGradient
+                        colors={[colors.primary,"rgba(0,0,0,0)"]}
+                        start={{
+                            x: 1,
+                            y: 0,
+                        }}
+                        end={{
+                            x: 1,
+                            y: 1,
+                        }}
+                        style={styles.box}
+                    >
+                    <View style={{justifyContent: "center", alignItems: "center", padding:10,backgroundColor:"rgba(0,0,0,0)"}}>
+                    <View style={{width:"70%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:"rgba(0,0,0,0)"}}>
 
                     <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                     <Text style={styles.title}>Connect the Dots</Text>
                         </View>
                     </View>
+                    </LinearGradient>
                     <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                     <View style={{width:"60%",justifyContent: "center", alignItems: "center", padding:15, backgroundColor:colors.primary,borderRadius:20}}>
+                        <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.primary}}>
                         <Text style={styles.subtitle}>36500k</Text>
                         <Text style={styles.detailtitle}> Global Sustainable Points</Text>
+                        </View>
                     </View>
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
