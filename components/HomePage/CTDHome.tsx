@@ -121,9 +121,12 @@ const CTDHome = () => {
                                 return <TouchableWithoutFeedback key={index}>
                                     <View  style={{backgroundColor: colors.surface}} >
                                 <CTDBadge></CTDBadge>
-                                    <Image
-                                        style={{width: 70, height: 70, borderRadius: 90, borderWidth:10, borderColor: colors.accent, marginHorizontal: 10}}
-                                        source={onuPictures[parseInt(s)].image}/>
+
+                                            <Image
+                                                style={{width: 80, height: 80, borderRadius: 25, borderColor: colors.accent, borderWidth:10,  marginHorizontal: 20}}
+                                                source={onuPictures[parseInt(s)].image}/>
+
+
                                     </View>
 
 
