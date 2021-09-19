@@ -3,6 +3,7 @@ import React from "react";
 import {Dimensions, Image, ScrollView, StyleSheet} from "react-native";
 import {Button, useTheme} from "react-native-paper";
 import {View, Text} from "../Themed";
+import * as Progress from 'react-native-progress';
 
 
 const CTDHome = () => {
@@ -61,6 +62,9 @@ const CTDHome = () => {
                         <Text style={styles.subtitle}>36500k</Text>
                         <Text style={styles.detailtitle}> Global Sustainable Points</Text>
                     </View>
+                    </View>
+                    <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                    <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={200}   height={40}/>
                     </View>
                 </ScrollView>
             </View>
