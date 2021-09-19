@@ -29,7 +29,7 @@ const AuthScreen = () => {
       if (result.type === 'success') {
         console.log(result)
         //TODO: send this info to back and create the real userId (not ready in back)
-        auth.signIn({idUser: result.user.id, token: result.accessToken}).catch(() => {
+        auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
           toastOn('Error', 'Authentication Failed')
         });
         return result.accessToken;
