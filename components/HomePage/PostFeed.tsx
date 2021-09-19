@@ -10,21 +10,21 @@ import ViewPost from "../viewPost/ViewPost";
 const PostFeed = () => {
     const posts =[1,2,3]
     const [open, setOpen] = React.useState(false)
-    const post ={
+    const post =[{
         text: "This is a post text",
         id: "434034",
         owner: {
             lastname: "Alvarez",
             mail: "al@gmail.com",
             name: "Pedro",
-            role: Role,
+            role: Role.NORMAL,
         },
         image: "asad",
         creationDate: "23/5/2021",
         title: "Post Title",
         upVotes:11,
         boosted: false
-    }
+    }]
     const {colors} = useTheme();
     return (
        <View>
