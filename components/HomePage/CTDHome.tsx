@@ -47,6 +47,13 @@ const CTDHome = () => {
             fontWeight: 'bold',
             paddingBottom:10
         },
+        topSDGs: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            fontSize: 19,
+            color: colors.primary,
+            fontWeight: 'bold',
+            paddingBottom:10
+        },
         level: {
             backgroundColor: 'rgba(0,0,0,0)',
             color: colors.backdrop,
@@ -93,6 +100,11 @@ const CTDHome = () => {
                             </View>
                         </View>
                     <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={350}   height={30}/>
+                    </View>
+                    <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                        <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
+                            <Text style={styles.topSDGs}> Top SGDs</Text>
+                        </View>
                     </View>
                 </ScrollView>
             </View>
