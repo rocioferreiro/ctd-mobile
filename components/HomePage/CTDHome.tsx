@@ -39,7 +39,14 @@ const CTDHome = () => {
         logo: {
             height: 110,
             width: 110,
-        }
+        },
+        othertitle: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            fontSize: 16,
+            color: colors.primary,
+            fontWeight: 'bold',
+            paddingBottom:10
+        },
     });
 
 
@@ -63,8 +70,11 @@ const CTDHome = () => {
                         <Text style={styles.detailtitle}> Global Sustainable Points</Text>
                     </View>
                     </View>
-                    <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                    <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={200}   height={40}/>
+                    <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
+                        <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
+                            <Text style={styles.othertitle}> Your Experience</Text>
+                        </View>
+                    <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={350}   height={30}/>
                     </View>
                 </ScrollView>
             </View>
