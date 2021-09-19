@@ -1,10 +1,12 @@
 import React from "react";
 
 import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
-import {Button, useTheme} from "react-native-paper";
+import {Badge, Button, useTheme} from "react-native-paper";
 import {View, Text} from "../Themed";
 import * as Progress from 'react-native-progress';
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
+import CTDBadge from "./Badge";
+
 
 
 const CTDHome = () => {
@@ -117,9 +119,14 @@ const CTDHome = () => {
                         }}>
                             {categories.map((s, index) => {
                                 return <TouchableWithoutFeedback key={index}>
+                                    <View  style={{backgroundColor: colors.surface}} >
+                                <CTDBadge></CTDBadge>
                                     <Image
-                                        style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                                        style={{width: 70, height: 70, borderRadius: 90, borderWidth:10, borderColor: colors.accent, marginHorizontal: 10}}
                                         source={onuPictures[parseInt(s)].image}/>
+                                    </View>
+
+
                                 </TouchableWithoutFeedback>
                             })}
                         </View>
