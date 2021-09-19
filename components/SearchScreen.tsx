@@ -31,6 +31,11 @@ const SearchScreen = () => {
     const layout = useWindowDimensions();
     const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
     const [challengeList, setChallengeList] = useState<any>([]);
+    const [routes] = React.useState([
+        { key: 'first', title: 'For you' },
+        { key: 'second', title: 'Search' },
+        { key: 'third', title: 'Collections' },
+    ]);
 
     useEffect(() => {
         getUserId().then(id => {
@@ -44,12 +49,6 @@ const SearchScreen = () => {
             setChallengeList(data.getCreatedChallengesByUser)
         }
     }, [data]);
-
-    const [routes] = React.useState([
-        { key: 'first', title: 'For you' },
-        { key: 'second', title: 'Search' },
-        { key: 'third', title: 'Collections' },
-    ]);
 
     const FirstRoute = () => (
       <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }} />
@@ -156,8 +155,7 @@ const SearchScreen = () => {
                     {/*/>*/}
 
                   <Tabs
-                    style={{ backgroundColor:colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1 }} // works the same as AppBar in react-native-paper
-                    theme={useTheme()}
+                    style={{ backgroundColor: colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1, width: Dimensions.get('window').width + 6 }} // works the same as AppBar in react-native-paper
                   >
                     <TabScreen label="For You">
                       <View style={{ flex: 1, backgroundColor: colors.surface }} />
