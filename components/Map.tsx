@@ -51,9 +51,10 @@ const Map = () => {
 
     const styles = StyleSheet.create({
         container: {
-            flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
+            height: Dimensions.get('window').height,
+            backgroundColor: colors.surface
         },
         containerStyle: {flex: 1},
         map: {

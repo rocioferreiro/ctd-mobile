@@ -12,6 +12,7 @@ import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
 import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
+import MyTabbar from "./navigation/NewTabBar";
 
 LogBox.ignoreAllLogs();
 
