@@ -20,10 +20,10 @@ type Props = {
 const Login = (props: Props) => {
     const {colors} = useTheme();
     const auth = useContext(AuthContext);
-    const [loginMutation, {data, loading, error}] = useMutation(LOGIN, {
+    const [loginMutation, {loading}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
-            auth.signIn(token.login).catch(e => {
+            auth.signIn(token.login).catch(() => {
                 toastOn('Error', 'Mail or Password is incorrect')
             });
 

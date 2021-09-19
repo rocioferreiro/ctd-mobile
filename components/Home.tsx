@@ -170,7 +170,7 @@ const Home = () => {
 
                 </View>
 
-                <CategoryList/>
+
 
             </Card>}
 
