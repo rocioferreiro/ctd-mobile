@@ -28,19 +28,25 @@ const CTDHome = () => {
         },
         title: {
             backgroundColor: 'rgba(0,0,0,0)',
-            fontSize: 20,
+            fontSize: 23,
             color: '#ffffff',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+
         },
         subtitle: {
             backgroundColor: 'rgba(0,0,0,0)',
-            fontSize: 30,
+            fontSize: 25,
             color: colors.accent,
             fontWeight: 'bold'
         },
         detailtitle: {
             backgroundColor: 'rgba(0,0,0,0)',
             color: '#ffffff',
+            textAlign:'right',
+            fontSize: 10,
+            flex:1,
+            width:50,
+            padding:5
         },
         logo: {
             height: 110,
@@ -119,12 +125,14 @@ const CTDHome = () => {
                     </View>
                     </LinearGradient>
                     <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                    <View style={{width:"60%",justifyContent: "center", alignItems: "center", padding:15, backgroundColor:colors.primary,borderRadius:20}}>
+                        <View style={{width:"90%",justifyContent: "center", alignItems: "center", backgroundColor:colors.primary,borderRadius:90}}>
+                    <View style={{width:"80%",justifyContent: "center", alignItems: "center", padding:15, backgroundColor:colors.primary,borderRadius:20}}>
                         <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.primary}}>
                         <Text style={styles.subtitle}>36500k</Text>
                         <Text style={styles.detailtitle}> Global Sustainable Points</Text>
                         </View>
                     </View>
+                        </View>
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
