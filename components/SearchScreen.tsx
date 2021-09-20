@@ -22,8 +22,11 @@ import {
   useTabIndex,
   useTabNavigation,
 } from 'react-native-paper-tabs';
+import {useTranslation} from "react-i18next";
 
 const SearchScreen = () => {
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
     const [index, setIndex] = useState(0);
@@ -32,9 +35,9 @@ const SearchScreen = () => {
     const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
     const [challengeList, setChallengeList] = useState<any>([]);
     const [routes] = React.useState([
-        { key: 'first', title: 'For you' },
-        { key: 'second', title: 'Search' },
-        { key: 'third', title: 'Collections' },
+        { key: 'first', title: t('search-screen.for-you') },
+        { key: 'second', title: t('search-screen.search') },
+        { key: 'third', title: t('search-screen.collections') },
     ]);
 
     useEffect(() => {
@@ -135,7 +138,7 @@ const SearchScreen = () => {
                     backgroundColor: colors.surface
                 }}>
 
-                    <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> Challenges </Text>
+                    <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}>{t('search-screen.challenges')} </Text>
 
                     {/*<TabView*/}
                     {/*  navigationState={{ index, routes }}*/}
@@ -179,7 +182,7 @@ const SearchScreen = () => {
                         </ScrollView>
                       </View>
                     </TabScreen>
-                    <TabScreen label="Collections">
+                    <TabScreen label={t('search-screen.collections')}>
                       <View style={{ display:'flex',
                         justifyContent:'center',
                         alignItems:'center',
