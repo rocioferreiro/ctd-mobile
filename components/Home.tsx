@@ -13,9 +13,7 @@ import {useMutation} from "@apollo/client";
 import CreatePost from "./CreatePost/CreatePost";
 import ViewPost from "./viewPost/ViewPost";
 import {Role} from "./Models/User";
-import {baseProps} from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 import {getUserId} from "./Storage";
-import CategoryList from "./CategoryList/CategoryList";
 
 const Home = () => {
 
@@ -186,7 +184,7 @@ const Home = () => {
             }
 
 
-            {createPost &&<Card style={styles.creationCard}>
+            {createPost && <Card style={styles.creationCard}>
                 {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
                 {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
                 <Image source={require('../assets/images/connections.png')} resizeMode={'cover'}

@@ -7,6 +7,7 @@ import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
 import {colorShade} from "../components/Models/shadingColor";
 import {Profile} from "../components/Profile/Profile";
+import CTDHome from "../components/HomePage/CTDHome";
 
 //array of icon views this array can be image or vector icon for tab  bar
 // array size can be 1 to maximum 5 !
@@ -30,7 +31,7 @@ const icons = [
 ];
 
 const components = [
-  <Home/>, <SearchScreen/>, <Map/>, <Profile/>
+  <CTDHome/>, <SearchScreen/>, <Map/>, <Profile/>
 ]
 type Props = {
   colorScheme
