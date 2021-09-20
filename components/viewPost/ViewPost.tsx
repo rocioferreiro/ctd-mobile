@@ -7,6 +7,7 @@ import {Text, View} from "../Themed";
 import { captureRef } from 'react-native-view-shot';
 import {PixelRatio} from "react-native";
 import * as MediaLibrary from 'expo-media-library';
+import {useTranslation} from "react-i18next";
 
 type Props = {
   post: Post,
@@ -24,13 +25,15 @@ const ViewPost = (props:Props) => {
     setLiked(!liked)
     isLiking? setLikes(likes+1) : setLikes(likes-1)
   }
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
   const RightContent = props => <OptionsMenu
                                     customButton={myIcon}
                                     destructiveIndex={0}
-                                    options={["Report", "Copy Link", "Disconnect", "Cancel"]}
+                                    options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
                                     actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
   return (

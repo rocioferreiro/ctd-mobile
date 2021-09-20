@@ -45,6 +45,12 @@
     "sustainable": "Sustainable",
     "global": "Global"
 
+  },
+  "view-post": {
+   "report":"Report",
+    "copy-link": "Copy Link",
+    "disconnect": "Disconnect",
+    "cancel": "Cancel"
   }
 
 

@@ -45,6 +45,13 @@
     "sustainable": "Globales",
     "global": "Puntos"
 
+  },
+  "view-post": {
+    "report":"Reportar",
+    "copy-link": "Copiar Enlace",
+    "disconnect": "Desconectar",
+    "cancel": "Cancelar"
   }
+
 
 }
