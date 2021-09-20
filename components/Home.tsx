@@ -44,7 +44,7 @@ const Home = () => {
     const [viewPost, setViewPost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
-    const {t, i18n} = useTranslation('login');
+    const {t, i18n} = useTranslation('homescreen');
     const [language, setLanguage] = React.useState(i18n.language);
     const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
         onCompleted: result => {
@@ -144,7 +144,7 @@ const Home = () => {
         <View style={{backgroundColor: colors.surface}}>
             <LanguagePicker i18n={i18n} setLanguage={setLanguage}></LanguagePicker>
             {(!create && !creationSuccess && !createPost && !viewPost) && <Card style={styles.homeCard}>
-                <Text> Home Screen </Text>
+                <Text>{t('homescreen.title')} </Text>
                 <View style={{width: '60%', marginTop: 10, backgroundColor: 'rgba(0,0,0,0)'}}>
                     <Button raised={true}
                             title={'Create a new Challenge!'}

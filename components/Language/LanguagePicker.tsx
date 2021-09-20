@@ -14,8 +14,8 @@ export const LanguagePicker = (props:Props) => {
     const [selectedLanguage, setSelectedLanguage] =useState("en");
 
     function handleChange(itemValue) {
-        setSelectedLanguage(itemValue)
-        props.setLanguage(itemValue)
+        console.log(props.i18n.language)
+        props.i18n.changeLanguage(itemValue)
     }
 
     return (
