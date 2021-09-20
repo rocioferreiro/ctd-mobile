@@ -2,8 +2,8 @@ import React from "react";
 import {Text, View} from "./Themed";
 import Stepper from "./CreateChallengeForm/Stepper";
 import {Card, useTheme} from "react-native-paper";
-import {Dimensions, Image, StyleSheet} from "react-native";
-import {Button} from "react-native-elements";
+import {Dimensions, StyleSheet} from "react-native";
+import {Button, Icon} from "react-native-elements";
 import ChallengeCreationSuccessful from "./CreateChallengeForm/ChallengeCreationSuccessful";
 import Toast from 'react-native-toast-message';
 import {useFormik} from "formik";
@@ -18,8 +18,18 @@ import {getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
 import {LanguagePicker} from "./Language/LanguagePicker";
 import {useTranslation} from "react-i18next";
+import OptionsMenu from "react-native-options-menu";
+import {Post} from "./Models/Post";
 
-const Home = () => {
+import { Image } from 'react-native-elements';
+
+type Props = {
+
+    open: boolean
+}
+const Home = (props: Props) => {
+
+
 
     function toastOn() {
         Toast.show({
@@ -148,11 +158,6 @@ const Home = () => {
 
 
                 <View style={{width: '60%', marginTop: 10, backgroundColor: 'rgba(0,0,0,0)'}}>
-                    <OptionsMenu
-                        customButton={myIcon}
-                        destructiveIndex={0}
-                        options={["Report", "Copy Link", "Disconnect", "Cancel"]}
-                        actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
                     <Button raised={true}
                             title={'Create a new Challenge!'}
