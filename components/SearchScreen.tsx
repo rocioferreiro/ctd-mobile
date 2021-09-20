@@ -53,47 +53,6 @@ const SearchScreen = () => {
         }
     }, [data]);
 
-    const FirstRoute = () => (
-      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }} />
-    );
-    const SecondRoute = () => (
-      <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
-          <SearchBarComponent onChange={onChange}/>
-          <Divider/>
-          <ScrollView style={{
-              marginBottom: Dimensions.get('screen').height * 0.20,
-              backgroundColor: 'rgba(0,0,0,0)',
-              overflow: "visible"
-          }}>
-              {challengeList.map((challenge, i) =>
-                <View key={i} style={{marginBottom: 5}}>
-                    <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
-                    <Divider/>
-                </View>
-              )
-              }
-          </ScrollView>
-      </View>
-    );
-    const ThirdRoute = () => (
-      <View style={{ display:'flex',
-          justifyContent:'center',
-          alignItems:'center',
-          alignContent:'center',
-
-          width:'100%',
-          backgroundColor:'rgba(0,0,0,0)',
-          marginBottom:50
-      }} >
-          <CategoryList/>
-      </View>
-    );
-
-    const renderScene = SceneMap({
-        first: FirstRoute,
-        second: SecondRoute,
-        third: ThirdRoute,
-    });
 
     if (loading) return <View style={{
         display: 'flex',
@@ -104,17 +63,20 @@ const SearchScreen = () => {
     }}><ActivityIndicator size="large"/></View>;
     if (error) {
         console.log(error.message);
-        return <LottieView
-            style={{
-                width: '95%',
-                height: 400, marginTop: Dimensions.get('window').height * 0.07
-            }}
-            source={require('../assets/lottie/network-lost.json')}
-            autoPlay
-            loop
-            speed={0.4}
-            resizeMode={'cover'}
+        return <View style={{backgroundColor: 'transparent', height: Dimensions.get('window').height, display: "flex", flexDirection: "row", justifyContent: "center"}}>
+        <LottieView
+          style={{
+            width: '95%',
+            height: 400, marginTop: Dimensions.get('window').height * 0.07, backgroundColor: 'transparent'
+          }}
+          source={require('../assets/lottie/network-lost.json')}
+          autoPlay
+          loop
+          speed={0.4}
+          resizeMode={'contain'}
         />
+      </View>
+
     }
 
     const onChange = (searchValue: string) => {

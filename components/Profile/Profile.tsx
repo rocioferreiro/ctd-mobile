@@ -78,7 +78,8 @@ export function Profile() {
     primaryText: {
       fontSize: 24,
       fontWeight: "bold",
-      color: colors.primary
+      color: colors.primary,
+      marginRight: 15
     },
     secondaryText: {
       fontSize: 12,
@@ -235,17 +236,17 @@ export function Profile() {
               style={styles.profileBackground}
           /><View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
-        <View style={{backgroundColor: 'transparent'}}>
+        <View style={{backgroundColor: 'transparent', marginRight: 25}}>
           <Text style={styles.primaryText}>Nombre Apellido</Text>
           <Text style={styles.secondaryText}>@username</Text>
           <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
-          <OptionsMenu
-              customButton={myIcon}
-              destructiveIndex={0}
-              options={["English", "Español", "Cancel"]}
-              actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
+
         </View>
         </View>
+        <OptionsMenu
+          customButton={myIcon}
+          options={["English", "Español", "Cancel"]}
+          actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View

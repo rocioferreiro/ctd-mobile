@@ -19,13 +19,14 @@ const ViewPost = (props:Props) => {
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upVotes)
+  const {t, i18n} = useTranslation();
 
   const likePost = (isLiking: boolean)  => {
     //TODO implement like post
     setLiked(!liked)
     isLiking? setLikes(likes+1) : setLikes(likes-1)
   }
-  const {t, i18n} = useTranslation();
+
   const [language, setLanguage] = React.useState(i18n.language);
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
