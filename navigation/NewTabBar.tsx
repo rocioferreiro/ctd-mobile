@@ -78,7 +78,7 @@ const MyTabbar = () => {
   return (
     <View style={{backgroundColor: colors.surface}}>
       {activeTab}
-      <View style={{paddingVertical: 12 }}/>
+      <View style={{paddingVertical: 30 }}/>
       <Tabbar
         style={{zIndex: 5}}
         tabs={tabs}

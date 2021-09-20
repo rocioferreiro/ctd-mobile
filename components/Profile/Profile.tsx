@@ -215,8 +215,11 @@ export function Profile() {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-          <Image source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'}
-                 style={styles.profileBackground}/>
+          <Image
+              source={require('../../assets/images/profile-background.jpg')}
+              resizeMode={'cover'}
+              style={styles.profileBackground}
+          />
           <View style={styles.userInfoContainer}>
               <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
                             style={styles.profileImage}/>
@@ -269,8 +272,9 @@ export function Profile() {
                   <Button
 
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                     > About
+                      onPress={() => {
+                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                  > About
                   </Button>
               </View>
           </View>
@@ -324,8 +328,8 @@ export function Profile() {
           <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
           <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
               <IconButton onPress={() => setViewPost(false)}
-                      icon={'chevron-left'}
-                      style={styles.button}
+                          icon={'chevron-left'}
+                          style={styles.button}
               />
           </View>
           <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
