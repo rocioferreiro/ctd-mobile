@@ -3,7 +3,7 @@ import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {Button, useTheme} from "react-native-paper";
+import {Button, Divider, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery} from "@apollo/client";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
@@ -23,12 +23,6 @@ export function Profile() {
       findPostsOfUser();
     });
   }, []);
-
-  //TODO DELETE LATER
-  useEffect(() => {
-    console.log(postData);
-    console.log(userId);
-  }, [postData]);
 
   const styles = StyleSheet.create({
     container: {
@@ -228,16 +222,6 @@ export function Profile() {
             </Button>
           </View>
         </View>
-        <View style={styles.logout}>
-          <Button
-            uppercase={false}
-            mode={'outlined'}
-            style={{width: '30%'}}
-            onPress={() => {auth.signOut().catch(e => console.log(e))}}
-          >
-            Logout
-          </Button>
-        </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.primaryText}>Active Challenges</Text>
           <ScrollView horizontal={true}>
@@ -257,7 +241,7 @@ export function Profile() {
             </ScrollView>
         </View>
         }
-        <View style={{...styles.sectionContainer, marginBottom: 100}}>
+        <View style={{...styles.sectionContainer}}>
           <Text style={styles.primaryText}>Finished Challenges</Text>
           <ScrollView horizontal={true}>
             {getFinishedChallenge()}
@@ -265,6 +249,16 @@ export function Profile() {
             {getFinishedChallenge()}
             {getFinishedChallenge()}
           </ScrollView>
+        </View>
+        <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+          <Button
+            uppercase={false}
+            mode={'outlined'}
+            style={{width: '30%'}}
+            onPress={() => {auth.signOut().catch(e => console.log(e))}}
+          >
+            Logout
+          </Button>
         </View>
       </ScrollView>
     </View>
