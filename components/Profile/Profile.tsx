@@ -9,6 +9,7 @@ import {useLazyQuery} from "@apollo/client";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {AuthContext} from "../../App";
+import PostThumbnail from "./PostThumbnail";
 
 export function Profile() {
   const {colors} = useTheme();
@@ -145,34 +146,6 @@ export function Profile() {
     </View>
   }
 
-  const getPost = () => {
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
-      <ImageBackground style={{height: 180, width: 150}}
-                       imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                       source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
-        <View style={styles.imageTextContainer}>
-          <Text style={styles.whiteText}>Nature beauty</Text>
-        </View>
-      </ImageBackground>
-      <View style={{
-        ...styles.footer,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 20,
-        paddingRight: 20
-      }}>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-          <Icon style={{marginRight: 4}} name={'favorite-outline'} color={colors.background}/>
-          <Text style={styles.whiteText}>12k</Text>
-        </View>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-          <Icon style={{marginRight: 4}} type={'feather'} name={'message-circle'} color={colors.background}/>
-          <Text style={styles.whiteText}>134</Text>
-        </View>
-      </View>
-    </View>
-  }
-
   const getFinishedChallenge = () => {
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
@@ -278,10 +251,9 @@ export function Profile() {
         <View style={styles.sectionContainer}>
             <Text style={styles.primaryText}>Posts</Text>
             <ScrollView horizontal={true}>
-              {getPost()}
-              {getPost()}
-              {getPost()}
-              {getPost()}
+              <PostThumbnail/>
+              <PostThumbnail/>
+              <PostThumbnail/>
             </ScrollView>
         </View>
         }
