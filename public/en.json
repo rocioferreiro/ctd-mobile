@@ -99,6 +99,16 @@
     "objetive": "Objetive",
     "current-objetives": "Current Objetives",
     "choose-sustainable-objetives":"Choose Sustainable Objetives"
+  },
+  "challenge-extra-info":{
+    "upload-image": "Upload Image",
+    "to": "To",
+    "From": "From",
+    "select-valid-date": "Select a valid date",
+    "at-least-week": "Inscriptions should be open for at least a week",
+    "inscriptions-open": "Inscriptions Open",
+    "when-will-challenge": "When will the Challenge take place?",
+
   }
 
 

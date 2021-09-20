@@ -101,6 +101,16 @@
     "objetive": "Objetivo",
     "current-objetives": "Objetivos Actuales",
     "choose-sustainable-objetives":"Elige Objetivos Sustentables"
+  },
+  "challenge-extra-info":{
+    "upload-image": "Subir Imagen",
+    "to": "Desde",
+    "From": "Hasta",
+    "select-valid-date": "Selecciona una fecha valida",
+    "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
+    "inscriptions-open": "Inscripciones Abiertas",
+    "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
+
   }
 
 
