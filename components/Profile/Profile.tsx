@@ -1,15 +1,13 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
-import React, {useContext} from "react";
+import React from "react";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
-import {Button, Icon} from "react-native-elements";
-import {useTheme} from "react-native-paper";
-import {AuthContext} from "../../App";
+import {Icon} from "react-native-elements";
+import {Button, useTheme} from "react-native-paper";
 import { Avatar, ProgressBar } from 'react-native-paper';
 
 export function Profile() {
   const {colors} = useTheme();
-  const auth = useContext(AuthContext);
 
   const styles = StyleSheet.create({
     container: {
@@ -116,7 +114,7 @@ export function Profile() {
         </View>
       </ImageBackground>
       <View style={styles.footer}>
-        <Text style={styles.whiteText}>400 Points</Text>
+        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>400</Text> Points</Text>
       </View>
     </View>
   }
@@ -208,11 +206,14 @@ export function Profile() {
           <Text style={styles.secondaryText}>Challenges</Text>
         </View>
         <View style={{backgroundColor: 'transparent'}}>
-          <Button raised={true}
-                  title={'About'}
+          <Button
+                  mode={'contained'}
                   onPress={() => {}}
-                  buttonStyle={{backgroundColor: colors.primary, borderRadius: 20}}
-          />
+                  style={{backgroundColor: colors.primary, borderRadius: 20}}
+                  uppercase={false}
+          >
+            About
+          </Button>
         </View>
       </View>
       <View style={styles.sectionContainer}>
