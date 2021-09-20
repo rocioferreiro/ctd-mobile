@@ -1,14 +1,21 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
-import React from "react";
+import React, {useEffect} from "react";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import { Avatar, ProgressBar } from 'react-native-paper';
 import {onuLogos} from "../ONUObjectives";
+import {useLazyQuery} from "@apollo/client";
+import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {getUserId} from "../Storage";
 
 export function Profile() {
   const {colors} = useTheme();
+
+  const [getUsers, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
+  const [getPosts, {data: postsData}] = useLazyQuery(FIND_POSTS_BY_OWNER);
 
   const styles = StyleSheet.create({
     container: {
@@ -109,35 +116,44 @@ export function Profile() {
     }
   });
 
-  const getActiveChallenge = () => {
+  useEffect(() => {
+    getUserId().then(id => {
+      getUsers({variables: {userId: id}});
+      getChallenges({variables: {userId: id}});
+      getPosts({variables: {ownerId: id}});
+    });
+  }, []);
+
+  const getActiveChallenge = (challenge) => {
+      if (!challenge) return null;
       return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
         <View style={styles.imageTextContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Create compost</Text>
-          <Text style={styles.whiteText}>dd/mm/yyyy</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
+          <Text style={styles.whiteText}>{challenge.endEvent}</Text>
         </View>
       </ImageBackground>
       <View style={styles.footer}>
-        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>400</Text> Points</Text>
+        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </View>
   }
 
-  const getPost = () => {
+  const getPost = (post) => {
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
         <View style={styles.imageTextContainer}>
-          <Text style={styles.whiteText}>Nature beauty</Text>
+          <Text style={styles.whiteText}>{post.title}</Text>
         </View>
       </ImageBackground>
       <View style={{...styles.footer, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20}}>
         <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
           <Icon style={{marginRight: 4}} name={'favorite-outline'} color={colors.background}/>
-          <Text style={styles.whiteText}>12k</Text>
+          <Text style={styles.whiteText}>{post.upvotes}</Text>
         </View>
         <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
           <Icon style={{marginRight: 4}} type={'feather'} name={'message-circle'} color={colors.background}/>
@@ -147,14 +163,15 @@ export function Profile() {
     </View>
   }
 
-  const getFinishedChallenge = () => {
+  const getFinishedChallenge = (challenge) => {
+    if (!challenge) return null;
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
         <View style={styles.imageTextContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Plant trees</Text>
-          <Text style={styles.whiteText}>dd/mm/yyyy</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
+          <Text style={styles.whiteText}>{challenge.endEvent}</Text>
         </View>
       </ImageBackground>
       <View style={{...styles.footer, flexDirection: 'row', alignItems: 'center'}}>
@@ -171,8 +188,8 @@ export function Profile() {
       <View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent'}}>
-          <Text style={styles.primaryText}>Nombre Apellido</Text>
-          <Text style={styles.secondaryText}>@username</Text>
+          <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
+          <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
         </View>
       </View>
       <View style={{backgroundColor: 'transparent', padding: 30}}>
@@ -220,28 +237,23 @@ export function Profile() {
       <View style={styles.sectionContainer}>
         <Text style={styles.primaryText}>Active Challenges</Text>
         <ScrollView horizontal={true}>
-          {getActiveChallenge()}
-          {getActiveChallenge()}
-          {getActiveChallenge()}
-          {getActiveChallenge()}
+          {challengesData?.getCreatedChallengesByUser?.map(challenge => {
+            if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+          })}
         </ScrollView>
       </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.primaryText}>Posts</Text>
           <ScrollView horizontal={true}>
-            {getPost()}
-            {getPost()}
-            {getPost()}
-            {getPost()}
+            {postsData?.findPostByOwner?.map(post => getPost(post))}
           </ScrollView>
         </View>
         <View style={{...styles.sectionContainer, marginBottom: 100}}>
           <Text style={styles.primaryText}>Finished Challenges</Text>
           <ScrollView horizontal={true}>
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
+            {challengesData?.getCreatedChallengesByUser?.map(challenge => {
+              if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+            })}
           </ScrollView>
         </View>
       </ScrollView>
