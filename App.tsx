@@ -11,9 +11,16 @@ import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
 import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
+import {I18nextProvider} from "react-i18next";
+import i18next from "i18next";
+import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 
 
+
+i18next.init({
+    interpolation: { escapeValue: false },  // React already does escaping
+});
 LogBox.ignoreAllLogs();
 
 declare global {
@@ -156,16 +163,19 @@ export default function App() {
     if (!isLoadingComplete || !loaded || loginState.isLoading) {
         return (
             <SafeAreaProvider>
+                <I18nextProvider i18n={i18next}>
                 <View/>
+                </I18nextProvider>
             </SafeAreaProvider>
         );
     } else {
         return (
             <SafeAreaProvider>
+                <I18nextProvider i18n={i18next}>
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {(loginState.userToken && loginState.userId) ?
+                            {(true) ?
                               <NewTabBar/>
                                 :
                               <Landing/>
@@ -175,6 +185,7 @@ export default function App() {
                     </PaperProvider>
                     <StatusBar/>
                 </ApolloProvider>
+                </I18nextProvider>
             </SafeAreaProvider>
         );
     }

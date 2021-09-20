@@ -1,4 +1,10 @@
-const obj1 = {image: require(`../../../assets/images/objetive1.png`), title: "No Poverty", description: "Economic growth must be inclusive to provide sustainable jobs and promote equality."}
+import {useTranslation} from "react-i18next";
+import * as React from "react";
+
+// const {t, i18n} = useTranslation();
+// const [language, setLanguage] = React.useState(i18n.language);
+
+const obj1 = {image: require(`../../../assets/images/objetive1.png`), title: 'onu-objetive-info.no-poverty', description: "Economic growth must be inclusive to provide sustainable jobs and promote equality."}
 const obj2 = {image: require(`../../../assets/images/objetive2.png`), title: "Zero Hunger", description: "The food and agriculture sector offers key solutions for development, and is central for hunger and poverty eradication."}
 const obj3 = {image: require(`../../../assets/images/objetive3.png`), title: "Good Health and Well-being" , description: "Ensuring healthy lives and promoting the well-being for all at all ages is essential to sustainable development."}
 const obj4 = {image: require(`../../../assets/images/objetive4.png`), title: "Quality Education", description: "Obtaining a quality education is the foundation to improving people’s lives and sustainable development."}

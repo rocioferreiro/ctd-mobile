@@ -14,6 +14,7 @@ import CreatePost from "./CreatePost/CreatePost";
 import ViewPost from "./viewPost/ViewPost";
 import {Role} from "./Models/User";
 import {getUserId} from "./Storage";
+import {useTranslation} from "react-i18next";
 
 const Home = () => {
 
@@ -40,6 +41,9 @@ const Home = () => {
     const [viewPost, setViewPost] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {colors} = useTheme();
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
+    const [changeLanguage, setChangeLanguage] = React.useState(false)
     const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
         onCompleted: result => {
             setCreationSuccess(true);
@@ -137,7 +141,9 @@ const Home = () => {
     return (
         <View style={{backgroundColor: colors.surface}}>
             {(!create && !creationSuccess && !createPost && !viewPost) && <Card style={styles.homeCard}>
-                <Text> Home Screen </Text>
+                <Text>{t('title.ctd')} </Text>
+
+
                 <View style={{width: '60%', marginTop: 10, backgroundColor: 'rgba(0,0,0,0)'}}>
                     <Button raised={true}
                             title={'Create a new Challenge!'}

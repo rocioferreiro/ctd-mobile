@@ -10,6 +10,8 @@ import {useMutation} from "@apollo/client";
 import {LOGIN} from "../../apollo-graph/Mutations";
 import {AuthContext} from "../../../App";
 import Toast from "react-native-toast-message";
+import {useTranslation} from "react-i18next";
+
 
 type Props = {
     onCancel: () => void
@@ -36,6 +38,8 @@ const Login = (props: Props) => {
     const [animationFinished, setAnimationFinished] = useState<boolean>(false);
     const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
+    const {t, i18n} = useTranslation('login');
+    const [language, setLanguage] = React.useState(i18n.language);
 
     function toastOn(message: string, description: string = '') {
         Toast.show({
@@ -151,9 +155,9 @@ const Login = (props: Props) => {
             <View style={styles.root}>
                 <Image resizeMode={"contain"} source={require('../../../assets/images/ctd-logo.png')}
                        style={styles.logo}/>
-                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
+                {errorMarker.email && <Text style={styles.error}> {t('login.email-error')} </Text>}
                 <Input
-                    placeholder={"email"}
+                    placeholder={t('login.email')}
                     style={errorMarker.email ? [styles.input, {
                         borderWidth: 3,
                         borderColor: colors.error,
@@ -167,7 +171,7 @@ const Login = (props: Props) => {
                     inputContainerStyle={{borderBottomWidth: 0}}
                 />
                 <Input
-                    placeholder={"Password"}
+                    placeholder={t('login.password')}
                     style={styles.input}
                     value={password}
                     onChangeText={t => {
@@ -192,7 +196,7 @@ const Login = (props: Props) => {
                             }}>Login</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel();
-                    }}>Cancel</Button>
+                    }}>{t('login.cancel')}</Button>
                 </View>
             </View>
             }

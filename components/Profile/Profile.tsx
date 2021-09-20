@@ -1,7 +1,7 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {Dimensions,Image,  ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
@@ -9,6 +9,9 @@ import {useLazyQuery} from "@apollo/client";
 import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {AuthContext} from "../../App";
+import {useTranslation} from "react-i18next";
+import OptionsMenu from "react-native-options-menu";
+import { Image as ImageElement } from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
@@ -75,7 +78,8 @@ export function Profile() {
     primaryText: {
       fontSize: 24,
       fontWeight: "bold",
-      color: colors.primary
+      color: colors.primary,
+      marginRight: 15
     },
     secondaryText: {
       fontSize: 12,
@@ -178,11 +182,14 @@ export function Profile() {
     },
   });
 
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
   const getActiveChallenge = () => {
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
+
         <View style={styles.imageTextContainer}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Create compost</Text>
           <Text style={styles.whiteText}>dd/mm/yyyy</Text>
@@ -211,6 +218,14 @@ export function Profile() {
     </View>
   }
 
+  const myIcon =<ImageElement style={{height:50, width:50}} source = {require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
+  />
+  function handleChange(itemValue) {
+    i18n.changeLanguage(itemValue)
+    setLanguage(itemValue)
+    console.log(i18n.language)
+  }
+
   return (
     <View style={styles.container}>
       {!viewPost &&
@@ -219,20 +234,25 @@ export function Profile() {
               source={require('../../assets/images/profile-background.jpg')}
               resizeMode={'cover'}
               style={styles.profileBackground}
-          />
-          <View style={styles.userInfoContainer}>
-              <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
-                            style={styles.profileImage}/>
-              <View style={{backgroundColor: 'transparent'}}>
-                  <Text style={styles.primaryText}>Nombre Apellido</Text>
-                  <Text style={styles.secondaryText}>@username</Text>
-              </View>
+          /><View style={styles.userInfoContainer}>
+        <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
+        <View style={{backgroundColor: 'transparent', marginRight: 25}}>
+          <Text style={styles.primaryText}>Nombre Apellido</Text>
+          <Text style={styles.secondaryText}>@username</Text>
+          <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
+
+        </View>
+        </View>
+        <OptionsMenu
+          customButton={myIcon}
+          options={["English", "Español", "Cancel"]}
+          actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-                  <Text style={styles.secondaryText}>Level 4</Text>
-                  <Text style={styles.secondaryText}>Level 5</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
+          <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
                   <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
@@ -258,15 +278,15 @@ export function Profile() {
           <View style={styles.detailsContainer}>
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>46K</Text>
-                  <Text style={styles.secondaryText}>Followers</Text>
-              </View>
-              <View style={styles.detail}>
-                  <Text style={styles.primaryText}>45</Text>
-                  <Text style={styles.secondaryText}>Posts</Text>
+                  <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.primaryText}>45</Text>
+          <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>17</Text>
-                  <Text style={styles.secondaryText}>Challenges</Text>
+                  <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
                   <Button
@@ -274,12 +294,12 @@ export function Profile() {
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
                       onPress={() => {
                       }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                  > About
+                  > {t('profile.about')}
                   </Button>
               </View>
           </View>
           <View style={styles.sectionContainer}>
-              <Text style={styles.primaryText}>Active Challenges</Text>
+              <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {getActiveChallenge()}
                 {getActiveChallenge()}
@@ -289,7 +309,7 @@ export function Profile() {
           </View>
         {postsOfUser &&
         <View style={styles.sectionContainer}>
-            <Text style={styles.primaryText}>Posts</Text>
+            <Text style={styles.primaryText}>{t('profile.posts')}</Text>
             <ScrollView horizontal={true}>
               {postsOfUser.findPostByOwner.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
@@ -301,7 +321,7 @@ export function Profile() {
         </View>
         }
           <View style={{...styles.sectionContainer}}>
-              <Text style={styles.primaryText}>Finished Challenges</Text>
+              <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {getFinishedChallenge()}
                 {getFinishedChallenge()}
@@ -318,7 +338,7 @@ export function Profile() {
                     auth.signOut().catch(e => console.log(e))
                   }}
               >
-                  Logout
+                {t('profile.logout')}
               </Button>
           </View>
       </ScrollView>

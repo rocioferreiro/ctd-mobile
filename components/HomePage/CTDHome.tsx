@@ -11,9 +11,11 @@ import {LinearGradient} from "expo-linear-gradient";
 import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
+import {useTranslation} from "react-i18next";
 
 const CTDHome = () => {
-
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
     const {colors} = useTheme();
     const categories=["1","2","3"]
     const categoryColors=[colors.accent,"#707070","#c1c1c1"]
@@ -120,8 +122,8 @@ const CTDHome = () => {
     function toastOnPostError() {
         Toast.show({
             type: 'error',
-            text1: 'Post Creation Error',
-            text2: 'Try again later',
+            text1: t('home.create-post-error'),
+            text2: t('home.create-post-error-subtitle'),
             topOffset: Dimensions.get("window").height * 0.05,
         });
     }
@@ -156,9 +158,9 @@ const CTDHome = () => {
                         <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.primary,alignItems:"center", justifyContent: 'space-between'}}>
                             <Text style={styles.subtitle}>36500k </Text>
                             <View style={{backgroundColor: 'rgba(0,0,0,0)', flex:1}}>
-                                <Text style={styles.detailtitle}> Global</Text>
-                                <Text style={styles.detailtitle}> Sustainable</Text>
-                                <Text style={styles.detailtitle}> Points</Text>
+                                <Text style={styles.detailtitle}> {t('home.global')}</Text>
+                                <Text style={styles.detailtitle}>  {t('home.sustainable')}</Text>
+                                <Text style={styles.detailtitle}> {t('home.points')}</Text>
                             </View>
                         </View>
                     </View>
@@ -166,17 +168,17 @@ const CTDHome = () => {
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
-                            <Text style={styles.othertitle}> Your Experience </Text>
+                            <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
                             <View style={{flexDirection:'row', flexWrap:'wrap',backgroundColor:colors.surface}}>
-                            <Text style={styles.level}>Level 1</Text>
-                            <Text style={styles.nextlevel}>Level 2</Text>
+                            <Text style={styles.level}> {t('home.level')} 1</Text>
+                            <Text style={styles.nextlevel}>{t('home.level')} 2</Text>
                             </View>
                         </View>
                     <Progress.Bar   style={{borderRadius:20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3} width={350}   height={30}/>
                     </View>
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
-                            <Text style={styles.topSDGs}> Top SGDs </Text>
+                            <Text style={styles.topSDGs}>{t('home.top')}</Text>
                         </View>
                         <View style={{
                             display: 'flex',
@@ -193,7 +195,7 @@ const CTDHome = () => {
                                         <Image style={{width: 80, height: 80, borderRadius: 40, borderColor: categoryColors[index], borderWidth:6,  marginHorizontal: 20}}
                                                 source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
                                         <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
-                                            <Text style={styles.ods}>2k Challenges Active</Text>
+                                            <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
                                         </View>
                                     </View>
 
@@ -220,7 +222,7 @@ const CTDHome = () => {
                             icon={{name: 'chevron-back-outline', type: 'ionicon'}}
                             buttonStyle={styles.button}
                             titleStyle={{color: colors.primary}}
-                            title="Cancel"
+                            title={t('home.cancel')}
                     />
                 </View>
                 <CreatePost toastOn={toastOnPostError} setCreatePost={setCreatePost} />

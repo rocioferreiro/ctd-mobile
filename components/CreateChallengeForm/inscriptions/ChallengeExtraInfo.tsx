@@ -5,6 +5,7 @@ import ImagePicker from "./ImagePicker";
 import DatePicker from "./DatePicker";
 import {Dimensions, StyleSheet, Text} from "react-native";
 import {Icon, Input} from "react-native-elements";
+import {useTranslation} from "react-i18next";
 
 type Props = {
   formik: any
@@ -12,6 +13,8 @@ type Props = {
 }
 
 const ChallengeExtraInfo = (props: Props) => {
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
   const {colors} = useTheme()
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
@@ -108,15 +111,15 @@ const ChallengeExtraInfo = (props: Props) => {
     <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
       <View style={styles.card}>
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-          <Text style={styles.title}>When will your challenge be?</Text>
+          <Text style={styles.title}>{t('challenge-extra-info.when-will-challenge')}</Text>
 
-          <Text style={styles.label}>Inscriptions open</Text>
-          <Text style={{color: errorIns ? colors.error : colors.primary, marginLeft: 5, marginBottom: 10}}> At least a week </Text>
+          <Text style={styles.label}>{t('challenge-extra-info.inscriptions-open')}</Text>
+          <Text style={{color: errorIns ? colors.error : colors.primary, marginLeft: 5, marginBottom: 10}}>{t('challenge-extra-info.at-least-week')}</Text>
 
           <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'row'}}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column', justifyContent:"space-evenly", marginLeft: 30,}}>
-              <Text style={{color: colors.primary, marginTop:-20}}> From</Text>
-              <Text style={{color: colors.primary}}> To</Text>
+              <Text style={{color: colors.primary, marginTop:-20}}>{t('challenge-extra-info.from')}</Text>
+              <Text style={{color: colors.primary}}> {t('challenge-extra-info.to')}</Text>
             </View>
 
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
@@ -142,13 +145,13 @@ const ChallengeExtraInfo = (props: Props) => {
 
           </View>
 
-          <Text style={styles.label}>Challenge is active</Text>
-          {errorCh && <Text style={{color: colors.error, marginLeft: 5, marginBottom: 10}}> Select a valid Date </Text>}
+          <Text style={styles.label}>{t('challenge-extra-info.challenge-active')}</Text>
+          {errorCh && <Text style={{color: colors.error, marginLeft: 5, marginBottom: 10}}> {t('challenge-extra-info.select-valid-date')} </Text>}
 
           <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'row'}}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column', justifyContent:"space-evenly", marginLeft: 30,}}>
-              <Text style={{color: colors.primary, marginTop:-20}}> From</Text>
-              <Text style={{color: colors.primary}}> To</Text>
+              <Text style={{color: colors.primary, marginTop:-20}}> {t('challenge-extra-info.from')}</Text>
+              <Text style={{color: colors.primary}}> {t('challenge-extra-info.to')}</Text>
             </View>
 
             <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', flexDirection:'column'}}>
@@ -176,7 +179,7 @@ const ChallengeExtraInfo = (props: Props) => {
           </View>
         </View>
 
-        <Text style={styles.label}>Upload Image</Text>
+        <Text style={styles.label}>{t('challenge-extra-info.upload-image')}</Text>
         <ImagePicker image={image} setImage={setImage}/>
       </View>
 

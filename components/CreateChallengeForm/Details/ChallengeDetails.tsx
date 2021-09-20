@@ -6,6 +6,7 @@ import {Icon, Input} from "react-native-elements";
 import {colorShade} from "../../Models/shadingColor";
 import {onuPictures} from './onuObjectiveInfo';
 import {ONUObjectives} from "../../ONUObjectives";
+import {useTranslation} from "react-i18next";
 
 type Props = {
   setDisabled: (boolean) => void
@@ -13,6 +14,8 @@ type Props = {
 }
 
 const ChallengeDetails = (props: Props) => {
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
   const { colors } = useTheme();
   const {formik} = props;
   const [keyboardShown, setKeyboardShown] = React.useState(false);
@@ -176,10 +179,10 @@ const ChallengeDetails = (props: Props) => {
                                         setOpen={setOpenChoices}/> :
 
                     <View>
-                        <Text style={styles.title}>Create a new Challenge!</Text>
+                        <Text style={styles.title}>{t('challenge-details.create-new-challenge')}</Text>
 
                         <Input
-                          placeholder={"Challenge Title"}
+                          placeholder={t('challenge-details.challenge-title')}
                           style={[styles.input, errorMarker.title ? {borderColor: colors.error, borderWidth:1} : {}]}
                           value={formik.values.title}
                           onChangeText={title => {
@@ -191,7 +194,7 @@ const ChallengeDetails = (props: Props) => {
                         />
 
                         <Input
-                            placeholder={"Challenge Description"}
+                            placeholder={t('challenge-details.challenge-description')}
                             style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {}, {minHeight: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
                             value={formik.values.description}
                             onChangeText={(desc) => {
@@ -203,7 +206,7 @@ const ChallengeDetails = (props: Props) => {
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
 
-                        <Text style={styles.label}> Sustainable objectives </Text>
+                        <Text style={styles.label}> {t('challenge-details.sustainable-objetives')} </Text>
                         {onuObjectives.length > 0 ?
                             <View style={{display: 'flex', flexDirection: 'column'}}>
                                 <View style={{
@@ -229,11 +232,11 @@ const ChallengeDetails = (props: Props) => {
                                     padding: 15
                                 }}>
                                     <Button style={styles.editOptionsButton} mode={'contained'}
-                                            onPress={() => setOpenChoices(true)}> Edit objectives </Button>
+                                            onPress={() => setOpenChoices(true)}> {t('challenge-details.edit-objetives')}</Button>
                                 </View>
                             </View> :
                               <View>
-                                  <Text style={{width: '100%', marginLeft: 10, color: colors.primary, paddingTop: 10}}> Select at least one Objective! </Text>
+                                  <Text style={{width: '100%', marginLeft: 10, color: colors.primary, paddingTop: 10}}>{t('challenge-details.select-at-least')} </Text>
                                   <View style={{
                                       display: "flex",
                                       justifyContent: 'center',
@@ -242,16 +245,16 @@ const ChallengeDetails = (props: Props) => {
                                       padding: 15
                                   }}>
                                       <Button style={styles.optionsButton} mode={'contained'}
-                                              onPress={() => setOpenChoices(true)}> Choose objectives </Button>
+                                              onPress={() => setOpenChoices(true)}>{t('challenge-details.choose-objetives')} </Button>
                                   </View>
                               </View>
                         }
-                        <Text style={styles.label}> Challenge Goals </Text>
+                        <Text style={styles.label}>{t('challenge-details.challenge-goals')}</Text>
                         <View>
                             <View style={styles.goalAdder}>
 
                                 <Input
-                                    placeholder={"Goal..."}
+                                    placeholder={t('challenge-details.goal-placeholder')}
                                     style={[styles.inputWithIcon, {position: "absolute", bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.3 : 0}]}
                                     value={goal}
                                     onChangeText={t => {setGoal(t);}}
@@ -276,7 +279,7 @@ const ChallengeDetails = (props: Props) => {
                                     }
                                 />
                             </View>
-                            {errorMarker.goals && <Text style={[styles.label, {color: colors.error, display: "flex", flexDirection: "row", justifyContent: "center"}]}> You need to set at least one goal </Text>}
+                            {errorMarker.goals && <Text style={[styles.label, {color: colors.error, display: "flex", flexDirection: "row", justifyContent: "center"}]}>{t('challenge-details.goal-at-least')} </Text>}
                             {goals.map((t, index) =>
                                 <List.Item key={index} style={styles.listItem}
                                            title={t.name}

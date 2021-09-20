@@ -27,7 +27,7 @@ export function getApolloClientInstance(): ApolloClient<object> {
   })
   return new ApolloClient<object>({
     link: new HttpLink({
-      uri: uri,
+      uri: 'http://192.168.0.240:8080/graphql',
       headers: {},
       useGETForQueries: true
     }),

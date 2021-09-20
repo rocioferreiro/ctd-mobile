@@ -5,11 +5,14 @@ import {Button, Divider, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import AuthScreen from "./GoogleOAuth";
+import {useTranslation} from "react-i18next";
 
 const Landing = () => {
     const { colors } = useTheme();
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
+    const {t, i18n} = useTranslation('login');
+    const [language, setLanguage] = React.useState(i18n.language);
 
     const styles = StyleSheet.create({
         background: {

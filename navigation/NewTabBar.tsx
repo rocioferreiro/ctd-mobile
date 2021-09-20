@@ -11,11 +11,14 @@ import Toast from "react-native-toast-message";
 import {colorShade} from "../components/Models/shadingColor";
 import CTDHome from "../components/HomePage/CTDHome";
 import PostCreationSuccessful from "../components/CreatePost/PostCreationSuccessful";
+import {useTranslation} from "react-i18next";
 
 
 const MyTabbar = () => {
   const {colors} = useTheme();
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
 
   function toastOn() {
     Toast.show({
@@ -28,13 +31,13 @@ const MyTabbar = () => {
 
   const tabs = [
     {
-      name: 'Home',
+      name:t('new-tabbar.home'),
       activeIcon: <Icon name="home" color='#fff' size={25} />,
       inactiveIcon: <Icon name="home" color="#4d4d4d" size={25} />,
       component: <CTDHome/>
     },
     {
-      name: 'Search',
+      name: t('new-tabbar.search'),
       activeIcon: <Icon name={'search-outline'}
                         type={'ionicon'} color='#fff' size={25} />,
       inactiveIcon: <Icon name={'search-outline'}
@@ -42,19 +45,19 @@ const MyTabbar = () => {
       component: <SearchScreen/>
     },
     {
-      name: 'New Post',
+      name: t('new-tabbar.new-post'),
       activeIcon: <Icon name="camera" color="#fff" size={25} />,
       inactiveIcon: <Icon name="camera" color="#4d4d4d" size={25} />,
       component: createPost? <CreatePost setCreatePost={setCreatePost} toastOn={toastOn} /> : <PostCreationSuccessful close={() => {}}/>
     },
     {
-      name: 'Map',
+      name: t('new-tabbar.map'),
       activeIcon: <Icon name="map" color="#fff" size={25} />,
       inactiveIcon: <Icon name="map" color="#4d4d4d" size={25} />,
       component: <Map/>
     },
     {
-      name: 'Profile',
+      name: t('new-tabbar.profile'),
       activeIcon: <Icon name={'person-outline'}
                         type={'ionicon'} color="#fff" size={25} />,
       inactiveIcon: <Icon name={'person-outline'}
