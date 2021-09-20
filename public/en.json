@@ -81,6 +81,24 @@
     "challenge-description": "Challenge Description",
     "view": "View",
     "share": "Share"
+  },
+  "challenge-details":{
+    "goal-at-least": "You need at least one Goal",
+    "goal-placeholder": "Goal..",
+    "challenge-goals": "Challenge Goals",
+    "choose-objetives": "Choose Objetives",
+    "select-at-least": "Select at least one objetive",
+    "edit-objetives": "Edit Objetives",
+    "sustainable-objetives": "Sustainable Objetives",
+    "challenge-description": "Challenge Description",
+    "challenge-title": "Challenge Title",
+    "create-new-challenge": "Create a new Challenge!"
+
+  },
+  "onu-objective-choice": {
+    "objetive": "Objetive",
+    "current-objetives": "Current Objetives",
+    "choose-sustainable-objetives":"Choose Sustainable Objetives"
   }
 
 

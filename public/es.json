@@ -83,6 +83,24 @@
     "challenge-description": "Descripcion de Desafío",
     "view": "Ver más",
     "share": "Compartir"
+  },
+  "challenge-details":{
+    "goal-at-least": "Necesitas al menos un objetivo",
+    "goal-placeholder": "Objetivo..",
+    "challenge-goals": "Objetivos del Desafío",
+    "choose-objetives": "Elige Objetivos",
+    "select-at-least": "Elige al menos un objetivo",
+    "edit-objetives": "Edita Objetivos",
+    "sustainable-objetives": "Objetivos Sustentables",
+    "challenge-description": "Descripción de Desafío",
+    "challenge-title": "Título de Desafio",
+    "create-new-challenge": "Crea un nuevo Desafío!"
+
+  },
+  "onu-objective-choice": {
+    "objetive": "Objetivo",
+    "current-objetives": "Objetivos Actuales",
+    "choose-sustainable-objetives":"Elige Objetivos Sustentables"
   }
 
 
