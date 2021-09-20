@@ -124,3 +124,24 @@ export const FIND_POSTS_OF_USER = gql`
   }
 }
 `;
+
+export const FIND_POST_BY_ID = gql`
+query findPostById($id: String!){
+  findPostById(id: $id){
+    boosted
+    creationDate
+    id
+    image
+    owner {
+      mail
+      id
+      name
+      lastname
+      role
+    }
+    text
+    title
+    upvotes
+  }
+}
+`;

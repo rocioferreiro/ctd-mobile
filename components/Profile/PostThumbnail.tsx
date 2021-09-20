@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View} from "../Themed";
-import {ImageBackground, StyleSheet} from "react-native";
+import {ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity} from "react-native";
 import {IconButton, useTheme} from "react-native-paper";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST, LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
@@ -10,6 +10,7 @@ type Props = {
   title: string,
   upvotes: string,
   onError: (error) => void,
+  onPressed: (postId) => void,
   postId: string
 }
 
@@ -64,7 +65,9 @@ const PostThumbnail = (props: Props) => {
   });
 
   return (
-    <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    <TouchableOpacity onPress={() => {
+      props.onPressed(props.postId);
+    }} style={{backgroundColor: 'transparent', marginRight: 20}}>
     <ImageBackground style={{height: 180, width: 150}}
                      imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                      source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
@@ -82,8 +85,8 @@ const PostThumbnail = (props: Props) => {
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <IconButton
           onPress={() => {
-            if (liked) unlikePost({variables: {userId: userId, postId: props.postId}}).then((r) => console.log(r))
-            else likePost({variables: {userId: userId, postId: props.postId}}).then((r) => console.log(r))
+            if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
+            else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
           }}
           icon={liked ? 'heart' : 'heart-outline'}
           color={colors.background}
@@ -95,7 +98,7 @@ const PostThumbnail = (props: Props) => {
         <Text style={styles.whiteText}>0</Text>
       </View>
     </View>
-  </View>);
+  </TouchableOpacity>);
 }
 
 export default PostThumbnail;
