@@ -29,3 +29,15 @@ mutation register($newUser: InputUserInput!) {
     }
 }
 `;
+
+export const LIKE_POST = gql`
+mutation likePost($userId: String!, $postId: String!){
+  likePost(userId: $userId, postId: $postId)
+}
+`;
+
+export const UNLIKE_POST = gql`
+mutation unlikePost($userId: String!, $postId: String!){
+  unlikePost(userId: $userId, postId: $postId)
+}
+`;

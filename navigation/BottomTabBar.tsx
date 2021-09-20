@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import AwesomeTabbar from './AnimatedTabbar';
 import {Icon} from "react-native-elements";
-import Home from "../components/Home";
 import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
 import {colorShade} from "../components/Models/shadingColor";
@@ -65,7 +64,7 @@ const Tabbar = (props: Props) => {
 
   useEffect(()=>{
     changeView(1)
-  }, [])
+  }, [props])
 
   return (
     <View style={styles.container}>

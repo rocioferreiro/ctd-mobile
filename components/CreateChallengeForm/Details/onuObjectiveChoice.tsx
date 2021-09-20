@@ -5,6 +5,7 @@ import {IconButton, useTheme} from "react-native-paper";
 import ImageCarousel from "./objectivesScroll";
 import {Icon} from "react-native-elements";
 import {onuPictures} from "./onuObjectiveInfo";
+import {useTranslation} from "react-i18next";
 
 type Props = {
   selected: any[],
@@ -14,6 +15,8 @@ type Props = {
 }
 
 const OnuObjectiveChoice  = (props: Props) => {
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
   const { colors } = useTheme();
   const [currentIndex, setCurrentIndex] = React.useState(1)
   const objectiveSize = Dimensions.get('window').width / 5;
@@ -132,10 +135,10 @@ const OnuObjectiveChoice  = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose the sustainable objectives </Text>
+      <Text style={styles.title}>{t('onu-objetive-choice.choose-sustainable-objetives')} </Text>
 
       <View style={{height: Dimensions.get('window').height * 0.12}}>
-        <Text style={styles.label}> Current Objectives </Text>
+        <Text style={styles.label}> {t('onu-objetive-choice.current-objetives')} </Text>
         {props.selected.length > 0 ?
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
             {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
@@ -169,7 +172,7 @@ const OnuObjectiveChoice  = (props: Props) => {
         />
       </View>
       <View style={styles.onuContainer}>
-        <Text style={styles.label}>Objective {currentIndex+1}:</Text>
+        <Text style={styles.label}> {t('onu-objetive-choice.objetive')}{currentIndex+1}:</Text>
         <Text style={styles.label}>{onuPictures[currentIndex].title}</Text>
         <Text style={styles.text}>{onuPictures[currentIndex].description}</Text>
         <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>

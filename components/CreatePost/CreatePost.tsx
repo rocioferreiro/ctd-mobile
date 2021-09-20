@@ -13,6 +13,7 @@ import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST} from "../apollo-graph/Mutations";
 import {getUserId} from "../Storage";
+import {useTranslation} from "react-i18next";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -24,6 +25,8 @@ const CreatePost = (props:Props) => {
     const [image, setImage] = React.useState(null)
     const [ addImage, setAddImage] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
     const [createPost] = useMutation(CREATE_POST, {
         onCompleted: () => {
             setCreationSuccess(true);
@@ -98,7 +101,7 @@ const CreatePost = (props:Props) => {
             color: colors.primary,
             marginLeft: 5,
             marginTop: -20,
-        }}>Create Post</Text>
+        }}>{t('create-post.create-post')}</Text>
                 </View>
                 <ScrollView>
                     <View style={{
@@ -129,7 +132,7 @@ const CreatePost = (props:Props) => {
                                 padding: 10,
                                 backgroundColor: "rgba(0,0,0,0)"
                             }}>
-                          <CancelButton setAddImage={setAddImage}/>
+                          <CancelButton  setAddImage={setAddImage}/>
                             <ImagePicker image={image} setImage={setImage}/>
                             </View>
                                 :
@@ -147,7 +150,7 @@ const CreatePost = (props:Props) => {
                                 color:Colors.blue400,
                                 marginLeft: 5,
                                 marginTop: -5,
-                            }}> Add Image</Text>
+                            }}> {t('create-post.add-image')}</Text>
                             <ImageButton setAddImage={setAddImage}/>
                             </View>
                         }

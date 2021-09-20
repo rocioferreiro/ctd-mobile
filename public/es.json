@@ -1,0 +1,117 @@
+
+{
+  "title":{
+    "ctd":  "bienvenido a ctd"
+  },
+  "profile": {
+    "level": "Nivel",
+    "logout": "Cerrar Sesión",
+    "finished-challenges": "Desafíos Finalizados",
+    "posts": "Publicaciones",
+    "active-challenges": "Desafíos Activos",
+    "about": "Más",
+    "challenges": "Desafíos",
+    "followers": "Seguidores"
+  },
+  "create-post": {
+    "create-post": "Crear Publicación",
+    "add-image": "Agrega Imagen"
+
+  },
+  "publish-button": {
+    "publish": "Publicar"
+  },
+  "cancel-button": {
+    "cancel": "Cancelar"
+  },
+  "post-text-input": {
+    "title-placeholder": "Tú Título Aquí..",
+    "body-placeholder": "Tú Publicación Aquí.."
+  },
+  "new-tabbar": {
+    "profile": "Perfíl",
+    "map": "Mapa",
+    "new-post": "Publicar",
+    "search": "Buscar",
+    "home": "Inicio"
+  },
+  "home": {
+    "cancel": "Cancelar",
+    "challenges-active": "Desafíos Activos",
+    "top": "Top ODS",
+    "level": "Nivel",
+    "your-experience": "Tú Experiencia",
+    "points": "ODS",
+    "sustainable": "Globales",
+    "global": "Puntos"
+
+  },
+  "view-post": {
+    "report":"Reportar",
+    "copy-link": "Copiar Enlace",
+    "disconnect": "Desconectar",
+    "cancel": "Cancelar"
+  },
+  "search-screen": {
+    "for-you": "Para Ti",
+    "search": "Buscar",
+    "collections": "Colecciones"
+  },
+  "challenge-page": {
+    "challenge-location": "Ubicación del Desafío",
+    "sustainable-objetives": "Objetivos Sustentables",
+    "challenge-objetives": "Objetivos del Desafío",
+    "inscriptions-end": "Fin de Inscripciones",
+    "inscriptions-start": "Comienzo de Inscripciones",
+    "end-event": "Finalización del Evento",
+    "release-date": "Comienzo del Evento",
+    "challenge-description": "Descripción del Desafío"
+
+  },
+  "challenge-card":{
+    "join": "Únete",
+    "view": "Ver más",
+    "challenge-description": "Descripcion de Desafío"
+
+
+  },
+  "join-button": {
+    "join-this-challenge": "Únete a este Desafío",
+    "now": "Ahora"
+  },
+  "challenge-card-mini": {
+    "challenge-description": "Descripcion de Desafío",
+    "view": "Ver más",
+    "share": "Compartir"
+  },
+  "challenge-details":{
+    "goal-at-least": "Necesitas al menos un objetivo",
+    "goal-placeholder": "Objetivo..",
+    "challenge-goals": "Objetivos del Desafío",
+    "choose-objetives": "Elige Objetivos",
+    "select-at-least": "Elige al menos un objetivo",
+    "edit-objetives": "Edita Objetivos",
+    "sustainable-objetives": "Objetivos Sustentables",
+    "challenge-description": "Descripción de Desafío",
+    "challenge-title": "Título de Desafio",
+    "create-new-challenge": "Crea un nuevo Desafío!"
+
+  },
+  "onu-objective-choice": {
+    "objetive": "Objetivo",
+    "current-objetives": "Objetivos Actuales",
+    "choose-sustainable-objetives":"Elige Objetivos Sustentables"
+  },
+  "challenge-extra-info":{
+    "upload-image": "Subir Imagen",
+    "to": "Desde",
+    "From": "Hasta",
+    "select-valid-date": "Selecciona una fecha valida",
+    "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
+    "inscriptions-open": "Inscripciones Abiertas",
+    "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
+
+  }
+
+
+}
