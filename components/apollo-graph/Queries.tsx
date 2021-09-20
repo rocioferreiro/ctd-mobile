@@ -111,3 +111,16 @@ export const FIND_CHALLENGES_OF_USER = gql`
   }
   
 `;
+
+export const FIND_POSTS_OF_USER = gql`
+  query findPostByOwner($ownerId: String!){
+    findPostByOwner(ownerId: $ownerId){
+      id
+      creationDate
+      image
+      text
+      title
+      upvotes
+  }
+}
+`;
