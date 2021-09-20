@@ -3,6 +3,10 @@
   "title":{
     "ctd":  "bienvenido a ctd"
   },
+  "login": {
+    "password":"Contraseña",
+    "email": "Mail"
+  },
   "profile": {
     "level": "Nivel",
     "logout": "Cerrar Sesión",
@@ -11,7 +15,7 @@
     "active-challenges": "Desafíos Activos",
     "about": "Más",
     "challenges": "Desafíos",
-    "followers": "Seguidores"
+    "followers": "Conexiones"
   },
   "create-post": {
     "create-post": "Crear Publicación",
@@ -110,7 +114,6 @@
     "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
     "inscriptions-open": "Inscripciones Abiertas",
     "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
-
   }
 
 

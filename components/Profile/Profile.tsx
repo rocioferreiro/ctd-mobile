@@ -216,7 +216,8 @@ export function Profile() {
     </View>
   }
 
-  const getFinishedChallenge = () => {
+  const getFinishedChallenge = (challenge) => {
+    if(!challenge) return null;
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
@@ -295,7 +296,7 @@ export function Profile() {
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
         </View>
         <View style={styles.detail}>
-          <Text style={styles.primaryText}>45</Text>
+          <Text style={styles.primaryText}>{postsOfUser? postsOfUser.findPostByOwner.length : 0}</Text>
           <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
@@ -345,7 +346,7 @@ export function Profile() {
               <Button
                   uppercase={false}
                   mode={'outlined'}
-                  style={{width: '30%'}}
+                  style={{width: '40%'}}
                   onPress={() => {
                     auth.signOut().catch(e => console.log(e))
                   }}
