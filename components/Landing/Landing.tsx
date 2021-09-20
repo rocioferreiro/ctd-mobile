@@ -1,9 +1,10 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
-import {Button, useTheme} from "react-native-paper";
+import {Button, Divider, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
+import AuthScreen from "./GoogleOAuth";
 
 const Landing = () => {
     const { colors } = useTheme();
@@ -63,8 +64,18 @@ const Landing = () => {
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
+                <Divider/>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>Register</Button>
+                <Divider/>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
+                <Divider/>
+                <View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
+                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> OR </Text>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
+                </View>
+                <Divider/>
+                <AuthScreen/>
             </View>
             }
         </View>
