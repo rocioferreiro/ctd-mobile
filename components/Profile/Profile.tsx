@@ -24,6 +24,10 @@ export function Profile() {
     });
   }, []);
 
+  const onError = (error) => {
+    console.log(error);
+  }
+
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.surface,
@@ -236,7 +240,7 @@ export function Profile() {
             <Text style={styles.primaryText}>Posts</Text>
             <ScrollView horizontal={true}>
               {postData.findPostByOwner.map((post, i) => {
-                return <PostThumbnail upvotes={post.upvotes} title={post.title} key={i}/>
+                return <PostThumbnail postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
         </View>

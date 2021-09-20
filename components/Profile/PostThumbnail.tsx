@@ -2,15 +2,39 @@ import React from 'react';
 import {Text, View} from "../Themed";
 import {ImageBackground, StyleSheet} from "react-native";
 import {IconButton, useTheme} from "react-native-paper";
+import {useMutation} from "@apollo/client";
+import {CREATE_POST, LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
+import {getUserId} from "../Storage";
 
 type Props = {
-  key: number,
   title: string,
-  upvotes: string
+  upvotes: string,
+  onError: (error) => void,
+  postId: string
 }
 
 const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
+  const userId = getUserId();
+  const [liked, setLiked] = React.useState(false);
+  const [likePost] = useMutation(LIKE_POST, {
+    onCompleted: () => {
+      setLiked(true);
+    },
+    onError: err => {
+      props.onError(err);
+    },
+    refetchQueries: []
+  });
+  const [unlikePost] = useMutation(UNLIKE_POST, {
+    onCompleted: () => {
+      setLiked(false);
+    },
+    onError: err => {
+      props.onError(err);
+    },
+    refetchQueries: []
+  });
 
   const styles = StyleSheet.create({
     imageTextContainer: {
@@ -40,7 +64,7 @@ const PostThumbnail = (props: Props) => {
   });
 
   return (
-    <View style={{backgroundColor: 'transparent', marginRight: 20}} key={props.key}>
+    <View style={{backgroundColor: 'transparent', marginRight: 20}}>
     <ImageBackground style={{height: 180, width: 150}}
                      imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                      source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
@@ -56,8 +80,15 @@ const PostThumbnail = (props: Props) => {
       paddingRight: 20
     }}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-        <IconButton onPress={() => {console.log('pressed')}} icon={'heart-outline'} color={colors.background}/>
-        <Text style={styles.whiteText}>{props.upvotes}</Text>
+        <IconButton
+          onPress={() => {
+            if (liked) unlikePost({variables: {userId: userId, postId: props.postId}}).then((r) => console.log(r))
+            else likePost({variables: {userId: userId, postId: props.postId}}).then((r) => console.log(r))
+          }}
+          icon={liked ? 'heart' : 'heart-outline'}
+          color={colors.background}
+        />
+        <Text style={styles.whiteText}>{props.upvotes + liked}</Text>
       </View>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <IconButton icon={'chat-outline'} color={colors.background}/>
