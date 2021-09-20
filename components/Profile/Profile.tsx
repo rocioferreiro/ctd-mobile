@@ -115,7 +115,6 @@ export function Profile() {
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
-  const [changeLanguage, setChangeLanguage] = React.useState(false)
   const getActiveChallenge = () => {
       return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
@@ -174,7 +173,11 @@ export function Profile() {
 
   const myIcon =<ImageElement style={{height:50, width:50}} source = {require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
-
+  function handleChange(itemValue) {
+    i18n.changeLanguage(itemValue)
+    setLanguage(itemValue)
+    console.log(i18n.language)
+  }
 
   return (
     <View style={styles.container}>
@@ -190,14 +193,14 @@ export function Profile() {
               customButton={myIcon}
               destructiveIndex={0}
               options={["English", "Español", "Cancel"]}
-              actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
+              actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
         </View>
         </View>
       </View>
       <View style={{backgroundColor: 'transparent', padding: 30}}>
         <View style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-          <Text style={styles.secondaryText}>Level 4</Text>
-          <Text style={styles.secondaryText}>Level 5</Text>
+          <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
+          <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
         </View>
         <View style={{backgroundColor: 'transparent'}}>
           <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}} />

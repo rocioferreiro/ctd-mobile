@@ -2,5 +2,8 @@
 {
   "title":{
     "ctd":  "bienvenido a ctd"
+  },
+  "profile": {
+    "level": "Nivel"
   }
 }
