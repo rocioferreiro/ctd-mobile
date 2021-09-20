@@ -1,19 +1,60 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Dimensions,Image,  ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {Button, useTheme} from "react-native-paper";
-import { Avatar, ProgressBar } from 'react-native-paper';
-import {onuLogos} from "../ONUObjectives";
+import {Button, Card, IconButton, useTheme} from "react-native-paper";
+import {Avatar, ProgressBar} from 'react-native-paper';
+import {useLazyQuery} from "@apollo/client";
+import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
+import {getUserId} from "../Storage";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
 import { Image as ImageElement } from 'react-native-elements';
+import PostThumbnail from "./PostThumbnail";
+import Toast from "react-native-toast-message";
+import ViewPost from "../viewPost/ViewPost";
+import {onuLogos} from "../ONUObjectives";
 
 export function Profile() {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
+  const [userId, setUserId] = useState('');
+  const [viewPost, setViewPost] = useState(false);
+  const [viewPostId, setViewPostId] = useState();
+  const [findPostsOfUser, {
+    data: postsOfUser
+  }] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {ownerId: userId}});
+  const [findPostById, {
+    data: postData
+  }] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
+
+  useEffect(() => {
+    getUserId().then(id => {
+      setUserId(id);
+      findPostsOfUser();
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!viewPost) return;
+    findPostById();
+  }, [viewPost])
+
+  function toastError() {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: 'Try again later',
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
+  }
+
+  const onError = (error) => {
+    console.log(error);
+    toastError();
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -110,13 +151,40 @@ export function Profile() {
       right: 0,
       bottom: 0,
       justifyContent: 'flex-end'
-    }
+    },
+    logout: {
+      width: Dimensions.get('window').width,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent'
+    },
+    button: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      marginBottom: 0,
+      paddingBottom: 0,
+      paddingLeft: 0,
+      marginTop: 25
+    },
+    creationCard: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height * 0.95,
+      marginTop: Dimensions.get('window').height * 0.03,
+      backgroundColor: colors.surface
+    },
+    background: {
+      flex: 1,
+      justifyContent: "center",
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+      position: "absolute",
+      zIndex: 0
+    },
   });
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
   const getActiveChallenge = () => {
-      return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -128,28 +196,6 @@ export function Profile() {
       </ImageBackground>
       <View style={styles.footer}>
         <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>400</Text> Points</Text>
-      </View>
-    </View>
-  }
-
-  const getPost = () => {
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
-      <ImageBackground style={{height: 180, width: 150}}
-                       imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                       source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
-        <View style={styles.imageTextContainer}>
-          <Text style={styles.whiteText}>Nature beauty</Text>
-        </View>
-      </ImageBackground>
-      <View style={{...styles.footer, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20}}>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-          <Icon style={{marginRight: 4}} name={'favorite-outline'} color={colors.background}/>
-          <Text style={styles.whiteText}>12k</Text>
-        </View>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-          <Icon style={{marginRight: 4}} type={'feather'} name={'message-circle'} color={colors.background}/>
-          <Text style={styles.whiteText}>134</Text>
-        </View>
       </View>
     </View>
   }
@@ -181,9 +227,13 @@ export function Profile() {
 
   return (
     <View style={styles.container}>
+      {!viewPost &&
       <ScrollView>
-      <Image source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'} style={styles.profileBackground}/>
-      <View style={styles.userInfoContainer}>
+          <Image
+              source={require('../../assets/images/profile-background.jpg')}
+              resizeMode={'cover'}
+              style={styles.profileBackground}
+          /><View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent'}}>
           <Text style={styles.primaryText}>Nombre Apellido</Text>
@@ -196,84 +246,114 @@ export function Profile() {
               actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
         </View>
         </View>
-      </View>
-      <View style={{backgroundColor: 'transparent', padding: 30}}>
-        <View style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-          <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
+          </View>
+          <View style={{backgroundColor: 'transparent', padding: 30}}>
+              <View
+                  style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
+                  <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
           <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
-        </View>
-        <View style={{backgroundColor: 'transparent'}}>
-          <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}} />
-        </View>
-        <View style={styles.objectivesContainer}>
-          <View>
-            <Avatar.Image size={50} source={onuLogos[0].image} style={styles.profileImage}/>
-            <Text style={[styles.secondaryText, styles.forODS]}>Fin de la pobreza</Text>
+              </View>
+              <View style={{backgroundColor: 'transparent'}}>
+                  <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
+              </View>
+              <View style={styles.objectivesContainer}>
+                  <View>
+                      <Avatar.Image size={50} source={onuLogos[0].image}
+                                    style={styles.profileImage}/>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Fin de la pobreza</Text>
+                  </View>
+                  <View>
+                      <Avatar.Image size={50} source={onuLogos[1].image}
+                                    style={styles.profileImage}/>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Hambre cero</Text>
+                  </View>
+                  <View>
+                      <Avatar.Image size={50} source={onuLogos[13].image}
+                                    style={styles.profileImage}/>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Vida submarina</Text>
+                  </View>
+              </View>
           </View>
-          <View>
-            <Avatar.Image size={50} source={onuLogos[1].image} style={styles.profileImage}/>
-            <Text style={[styles.secondaryText, styles.forODS]}>Hambre cero</Text>
-          </View>
-          <View>
-            <Avatar.Image size={50} source={onuLogos[13].image} style={styles.profileImage}/>
-            <Text style={[styles.secondaryText, styles.forODS]}>Vida submarina</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.detailsContainer}>
-        <View style={styles.detail}>
-          <Text style={styles.primaryText}>46K</Text>
-          <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
+          <View style={styles.detailsContainer}>
+              <View style={styles.detail}>
+                  <Text style={styles.primaryText}>46K</Text>
+                  <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
         </View>
         <View style={styles.detail}>
           <Text style={styles.primaryText}>45</Text>
           <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.primaryText}>17</Text>
-          <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
-        </View>
-        <View style={{backgroundColor: 'transparent'}}>
-          <Button style={{backgroundColor: colors.accent, borderRadius: 20}}
-                  onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-          > {t('profile.about')} </Button>
-        </View>
-      </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
-        <ScrollView horizontal={true}>
-          {getActiveChallenge()}
-          {getActiveChallenge()}
-          {getActiveChallenge()}
-          {getActiveChallenge()}
-        </ScrollView>
-      </View>
+              </View>
+              <View style={styles.detail}>
+                  <Text style={styles.primaryText}>17</Text>
+                  <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
+              </View>
+              <View style={{backgroundColor: 'transparent'}}>
+                  <Button
+
+                      style={{backgroundColor: colors.accent, borderRadius: 20}}
+                      onPress={() => {
+                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                  > {t('profile.about')}
+                  </Button>
+              </View>
+          </View>
+          <View style={styles.sectionContainer}>
+              <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
+              <ScrollView horizontal={true}>
+                {getActiveChallenge()}
+                {getActiveChallenge()}
+                {getActiveChallenge()}
+                {getActiveChallenge()}
+              </ScrollView>
+          </View>
+        {postsOfUser &&
         <View style={styles.sectionContainer}>
-          <Text style={styles.primaryText}>{t('profile.posts')}</Text>
-          <ScrollView horizontal={true}>
-            {getPost()}
-            {getPost()}
-            {getPost()}
-            {getPost()}
-          </ScrollView>
+            <Text style={styles.primaryText}>{t('profile.posts')}</Text>
+            <ScrollView horizontal={true}>
+              {postsOfUser.findPostByOwner.map((post, i) => {
+                return <PostThumbnail onPressed={(postId) => {
+                  setViewPostId(postId);
+                  setViewPost(true);
+                }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
+              })}
+            </ScrollView>
         </View>
-        <View style={{...styles.sectionContainer, marginBottom: 100}}>
-          <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
-          <ScrollView horizontal={true}>
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
-            {getFinishedChallenge()}
-          </ScrollView>
-        </View>
-        <View style={{backgroundColor: 'transparent', marginBottom: 100}}>
-
-
-          <Button style={{backgroundColor: colors.accent}}
-                  onPress={() => {auth.signOut().catch(e => console.log(e))}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-          > {t('profile.logout')} </Button>
-        </View>
+        }
+          <View style={{...styles.sectionContainer}}>
+              <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
+              <ScrollView horizontal={true}>
+                {getFinishedChallenge()}
+                {getFinishedChallenge()}
+                {getFinishedChallenge()}
+                {getFinishedChallenge()}
+              </ScrollView>
+          </View>
+          <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+              <Button
+                  uppercase={false}
+                  mode={'outlined'}
+                  style={{width: '30%'}}
+                  onPress={() => {
+                    auth.signOut().catch(e => console.log(e))
+                  }}
+              >
+                {t('profile.logout')}
+              </Button>
+          </View>
       </ScrollView>
+      }
+      {viewPost && postData &&
+      <Card style={styles.creationCard}>
+          <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
+          <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
+              <IconButton onPress={() => setViewPost(false)}
+                          icon={'chevron-left'}
+                          style={styles.button}
+              />
+          </View>
+          <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
+      </Card>
+      }
     </View>
   );
 }
