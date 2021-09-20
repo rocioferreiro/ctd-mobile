@@ -223,24 +223,24 @@ export function Profile() {
       <View style={styles.detailsContainer}>
         <View style={styles.detail}>
           <Text style={styles.primaryText}>46K</Text>
-          <Text style={styles.secondaryText}>Followers</Text>
+          <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
         </View>
         <View style={styles.detail}>
           <Text style={styles.primaryText}>45</Text>
-          <Text style={styles.secondaryText}>Posts</Text>
+          <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
         </View>
         <View style={styles.detail}>
           <Text style={styles.primaryText}>17</Text>
-          <Text style={styles.secondaryText}>Challenges</Text>
+          <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
         </View>
         <View style={{backgroundColor: 'transparent'}}>
           <Button style={{backgroundColor: colors.accent, borderRadius: 20}}
                   onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-          > About </Button>
+          > {t('profile.about')} </Button>
         </View>
       </View>
       <View style={styles.sectionContainer}>
-        <Text style={styles.primaryText}>Active Challenges</Text>
+        <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
         <ScrollView horizontal={true}>
           {getActiveChallenge()}
           {getActiveChallenge()}
@@ -249,7 +249,7 @@ export function Profile() {
         </ScrollView>
       </View>
         <View style={styles.sectionContainer}>
-          <Text style={styles.primaryText}>Posts</Text>
+          <Text style={styles.primaryText}>{t('profile.posts')}</Text>
           <ScrollView horizontal={true}>
             {getPost()}
             {getPost()}
@@ -258,7 +258,7 @@ export function Profile() {
           </ScrollView>
         </View>
         <View style={{...styles.sectionContainer, marginBottom: 100}}>
-          <Text style={styles.primaryText}>Finished Challenges</Text>
+          <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
           <ScrollView horizontal={true}>
             {getFinishedChallenge()}
             {getFinishedChallenge()}
@@ -271,7 +271,7 @@ export function Profile() {
 
           <Button style={{backgroundColor: colors.accent}}
                   onPress={() => {auth.signOut().catch(e => console.log(e))}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-          > Logout </Button>
+          > {t('profile.logout')} </Button>
         </View>
       </ScrollView>
     </View>

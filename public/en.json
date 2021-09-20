@@ -3,6 +3,18 @@
     "ctd": "welcome to ctd"
   },
   "profile": {
-    "level": "Level"
+    "level": "Level",
+    "logout": "Logout",
+    "finished-challenges": "Finished Challenges",
+    "posts": "Posts",
+    "active-challenges": "Active Challenges",
+    "about": "About",
+    "challenges": "Challenges",
+    "followers": "Followers"
+
+
+
+
+
   }
 }

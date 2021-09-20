@@ -4,6 +4,13 @@
     "ctd":  "bienvenido a ctd"
   },
   "profile": {
-    "level": "Nivel"
+    "level": "Nivel",
+    "logout": "Cerrar Sesión",
+    "finished-challenges": "Desafíos Finalizados",
+    "posts": "Publicaciones",
+    "active-challenges": "Desafíos Activos",
+    "about": "Más",
+    "challenges": "Desafíos",
+    "followers": "Seguidores"
   }
 }
