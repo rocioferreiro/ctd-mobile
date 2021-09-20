@@ -1,13 +1,12 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
-import {Dimensions,Image,  ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery} from "@apollo/client";
 import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
@@ -16,6 +15,8 @@ import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
+import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {getUserId} from "../Storage";
 
 export function Profile() {
   const {colors} = useTheme();
@@ -55,6 +56,10 @@ export function Profile() {
     console.log(error);
     toastError();
   }
+
+  const [getUsers, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
+  const [getPosts, {data: postsData}] = useLazyQuery(FIND_POSTS_BY_OWNER);
 
   const styles = StyleSheet.create({
     container: {
@@ -184,31 +189,42 @@ export function Profile() {
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
-  const getActiveChallenge = () => {
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+
+  useEffect(() => {
+    getUserId().then(id => {
+      getUsers({variables: {userId: id}});
+      getChallenges({variables: {userId: id}});
+      getPosts({variables: {ownerId: id}});
+    });
+  }, []);
+
+  const getActiveChallenge = (challenge) => {
+      if (!challenge) return null;
+      return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
 
         <View style={styles.imageTextContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Create compost</Text>
-          <Text style={styles.whiteText}>dd/mm/yyyy</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
+          <Text style={styles.whiteText}>{challenge.endEvent}</Text>
         </View>
       </ImageBackground>
       <View style={styles.footer}>
-        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>400</Text> Points</Text>
+        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </View>
   }
 
-  const getFinishedChallenge = () => {
+  const getFinishedChallenge = (challenge) => {
+    if(!challenge) return null;
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
         <View style={styles.imageTextContainer}>
-          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Plant trees</Text>
-          <Text style={styles.whiteText}>dd/mm/yyyy</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
+          <Text style={styles.whiteText}>{challenge.endEvent}</Text>
         </View>
       </ImageBackground>
       <View style={{...styles.footer, flexDirection: 'row', alignItems: 'center'}}>
@@ -237,10 +253,9 @@ export function Profile() {
           /><View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-          <Text style={styles.primaryText}>Nombre Apellido</Text>
-          <Text style={styles.secondaryText}>@username</Text>
+          <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
+          <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
           <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
-
         </View>
         </View>
         <OptionsMenu
@@ -281,7 +296,7 @@ export function Profile() {
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
         </View>
         <View style={styles.detail}>
-          <Text style={styles.primaryText}>45</Text>
+          <Text style={styles.primaryText}>{postsOfUser? postsOfUser.findPostByOwner.length : 0}</Text>
           <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
@@ -301,10 +316,9 @@ export function Profile() {
           <View style={styles.sectionContainer}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {getActiveChallenge()}
-                {getActiveChallenge()}
-                {getActiveChallenge()}
-                {getActiveChallenge()}
+                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
+            if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                })}
               </ScrollView>
           </View>
         {postsOfUser &&
@@ -323,17 +337,16 @@ export function Profile() {
           <View style={{...styles.sectionContainer}}>
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {getFinishedChallenge()}
-                {getFinishedChallenge()}
-                {getFinishedChallenge()}
-                {getFinishedChallenge()}
+                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
+              if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                })}
               </ScrollView>
           </View>
           <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
               <Button
                   uppercase={false}
                   mode={'outlined'}
-                  style={{width: '30%'}}
+                  style={{width: '40%'}}
                   onPress={() => {
                     auth.signOut().catch(e => console.log(e))
                   }}

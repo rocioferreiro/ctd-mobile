@@ -20,6 +20,7 @@ type Props = {
 const Login = (props: Props) => {
     const {colors} = useTheme();
     const auth = useContext(AuthContext);
+    const {t, i18n} = useTranslation('login');
     const [loginMutation, {loading}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
@@ -38,7 +39,6 @@ const Login = (props: Props) => {
     const [animationFinished, setAnimationFinished] = useState<boolean>(false);
     const [errorMarker, setErrorMarker] = useState({email: false});
     const visible = useSharedValue(3);
-    const {t, i18n} = useTranslation('login');
     const [language, setLanguage] = React.useState(i18n.language);
 
     function toastOn(message: string, description: string = '') {

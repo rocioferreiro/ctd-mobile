@@ -2,6 +2,10 @@
   "title":{
     "ctd": "welcome to ctd"
   },
+  "login": {
+    "password":"Password",
+    "email": "Email"
+  },
   "profile": {
     "level": "Level",
     "logout": "Logout",
@@ -10,7 +14,7 @@
     "active-challenges": "Active Challenges",
     "about": "About",
     "challenges": "Challenges",
-    "followers": "Followers"
+    "followers": "Connections"
   },
   "create-post": {
     "create-post": " Create Post",

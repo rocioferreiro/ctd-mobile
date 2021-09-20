@@ -16,8 +16,6 @@ import i18next from "i18next";
 import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 
-
-
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
 });
@@ -175,7 +173,7 @@ export default function App() {
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {(true) ?
+                            {(loginState.userToken && loginState.userId) ?
                               <NewTabBar/>
                                 :
                               <Landing/>

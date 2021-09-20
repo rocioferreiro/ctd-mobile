@@ -30,7 +30,7 @@ const icons = [
 ];
 
 const components = [
-  <CTDHome/>, <SearchScreen/>, <Map/>, <Profile/>
+  <Home/>, <SearchScreen/>, <Map/>, <Profile/>
 ]
 type Props = {
   colorScheme
