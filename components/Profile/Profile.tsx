@@ -215,7 +215,7 @@ export function Profile() {
         </View>
         <View style={{backgroundColor: 'transparent'}}>
           <Button style={{backgroundColor: colors.accent, borderRadius: 20}}
-                  onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sains'}}
+                  onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
           > About </Button>
         </View>
       </View>
