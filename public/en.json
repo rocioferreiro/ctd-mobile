@@ -51,7 +51,30 @@
     "copy-link": "Copy Link",
     "disconnect": "Disconnect",
     "cancel": "Cancel"
-  }
+  },
+  "search-screen": {
+    "for-you": "For You",
+    "search": "Search",
+    "collections": "Collections"
+  },
+  "challenge-page": {
+    "challenge-location": "Challenge location",
+    "sustainable-objetives": "Sustainable Objetives",
+    "challenge-objetives": "Challenge Objetives",
+    "inscriptions-end": "Inscriptions end",
+    "inscriptions-start": "Inscriptions Start",
+    "end-event": "End Event",
+    "release-date": "Release date",
+    "challenge-description": "Challenge Description"
+
+  },
+  "challenge-card":{
+    "join": "Join",
+    "view": "View",
+    "challenge-description": "Challenge Description"
+
+
+}
 
 
 }

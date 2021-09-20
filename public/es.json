@@ -51,6 +51,29 @@
     "copy-link": "Copiar Enlace",
     "disconnect": "Desconectar",
     "cancel": "Cancelar"
+  },
+  "search-screen": {
+    "for-you": "Para Ti",
+    "search": "Buscar",
+    "collections": "Colecciones"
+  },
+  "challenge-page": {
+    "challenge-location": "Ubicación del Desafío",
+    "sustainable-objetives": "Objetivos Sustentables",
+    "challenge-objetives": "Objetivos del Desafío",
+    "inscriptions-end": "Fin de Inscripciones",
+    "inscriptions-start": "Comienzo de Inscripciones",
+    "end-event": "Finalización del Evento",
+    "release-date": "Comienzo del Evento",
+    "challenge-description": "Descripción del Desafío"
+
+  },
+  "challenge-card":{
+    "join": "Únete",
+    "view": "Ver más",
+    "challenge-description": "Descripcion de Desafío"
+
+
   }
 
 

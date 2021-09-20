@@ -17,6 +17,7 @@ import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import ChallengeONUObjetives from "./ChallengeONUObjectives";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
+import {useTranslation} from "react-i18next";
 
 
 const mockedChallenges = [
@@ -43,6 +44,8 @@ interface Props {
 }
 
 const ChallengePage = (props:Props) => {
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
     const [onuObjectives, setOnuObjectives] = React.useState([]);
     const [openChoices, setOpenChoices] = React.useState(false);
     const { colors } = useTheme();
@@ -115,7 +118,7 @@ const ChallengePage = (props:Props) => {
     <View style={{flex:1,width:Dimensions.get("screen").width, height:Dimensions.get("window").height * 0.1,backgroundColor:colors.surface}}>
         <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20,backgroundColor:colors.surface}}>
         <Button icon="keyboard-backspace" onPress={()=>props.setSelectedChallenge(null)}>
-           Back
+            {t('challenge-page.back')}
         </Button>
         </View>
              <ScrollView  contentContainerStyle={{ flexGrow:1, justifyContent: "center", width: '100%'}} style={{ flex: 1,backgroundColor:"rgba(0,0,0,0)"}}  >
@@ -132,27 +135,27 @@ const ChallengePage = (props:Props) => {
                  <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
               <View style={{width:"90%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             marginTop: 5,fontWeight:"bold"}}> Challenge Description:  {props.challenge.description}</Title>
+                             marginTop: 5,fontWeight:"bold"}}>  {t('challenge-page.challenge-description')}:  {props.challenge.description}</Title>
 
               </View>
                  </View>
                  <View style={{justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                  <View style={{width:"90%",justifyContent: "center", alignItems: "center",padding:15,marginRight:20,marginLeft:20, backgroundColor:colors.primary,borderRadius:10}}>
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>Release Date:   {props.challenge.startEvent}</Title>
+                             marginTop: 5}}>{t('challenge-page.release-date')}:   {props.challenge.startEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.accent,
-                             marginTop: 5,fontWeight:"bold"}}>End Event:   {props.challenge.endEvent}</Title>
+                             marginTop: 5,fontWeight:"bold"}}>{t('challenge-page.end-event')}:   {props.challenge.endEvent}</Title>
                          <Title style={{ fontSize: 20, color: colors.background,
-                             marginTop: 5}}>Inscriptions start:   {props.challenge.startInscription}</Title>
+                             marginTop: 5}}>{t('challenge-page.inscriptions-start')}:   {props.challenge.startInscription}</Title>
                          <Title style={{ fontSize: 20, color: colors.accent,
-                             marginTop: 5,fontWeight:"bold"}}>Inscriptions end:   {props.challenge.endInscription}</Title>
+                             marginTop: 5,fontWeight:"bold"}}>{t('challenge-page.inscriptions-end')}:   {props.challenge.endInscription}</Title>
                  </View>
                  </View>
 
                  <View style={{width:"100%",justifyContent: "center", padding:15,marginLeft:4, backgroundColor:colors.surface}}>
                      <Button icon="check-bold" style={{backgroundColor:"rgba(0,0,0,0)"}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             padding:10}}>Challenge Objectives</Title>
+                             padding:10}}>{t('challenge-page.challenge-objetives')}</Title>
                      </Button>
                      {props.challenge.objectives.map((objective, i) =>
                          <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
@@ -170,7 +173,7 @@ const ChallengePage = (props:Props) => {
 
                      <Button icon="information" style={{backgroundColor:"rgba(0,0,0,0)"}}>
                          <Title style={{ fontSize: 20, color: colors.primary,
-                             padding:10}}>Sustainable Objectives</Title>
+                             padding:10}}>{t('challenge-page.sustainable-objetives')}</Title>
                      </Button>
 
                    <View style={{
@@ -196,7 +199,7 @@ const ChallengePage = (props:Props) => {
 
 
                      <Title style={{ fontSize: 20, color: colors.primary,
-                         marginTop: 5,fontWeight:"bold"}}>Challenge Location</Title>
+                         marginTop: 5,fontWeight:"bold"}}>{t('challenge-page.challenge-location')}</Title>
                      {/*<Title style={{ fontSize: 15, color: colors.primary,*/}
                      {/*    marginTop: 5}}>This a is short description of the challenge location</Title>*/}
 
