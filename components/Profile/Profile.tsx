@@ -251,9 +251,9 @@ export function Profile() {
         <View style={styles.sectionContainer}>
             <Text style={styles.primaryText}>Posts</Text>
             <ScrollView horizontal={true}>
-              <PostThumbnail/>
-              <PostThumbnail/>
-              <PostThumbnail/>
+              {postData.findPostByOwner.map((post, i) => {
+                return <PostThumbnail upvotes={post.upvotes} title={post.title} key={i}/>
+              })}
             </ScrollView>
         </View>
         }

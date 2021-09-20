@@ -4,7 +4,13 @@ import {ImageBackground, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {useTheme} from "react-native-paper";
 
-const PostThumbnail = () => {
+type Props = {
+  key: number,
+  title: string,
+  upvotes: string
+}
+
+const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
 
   const styles = StyleSheet.create({
@@ -35,12 +41,12 @@ const PostThumbnail = () => {
   });
 
   return (
-    <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    <View style={{backgroundColor: 'transparent', marginRight: 20}} key={props.key}>
     <ImageBackground style={{height: 180, width: 150}}
                      imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                      source={require('../../assets/images/post.jpg')} resizeMode={'cover'}>
       <View style={styles.imageTextContainer}>
-        <Text style={styles.whiteText}>Nature beauty</Text>
+        <Text style={styles.whiteText}>{props.title}</Text>
       </View>
     </ImageBackground>
     <View style={{
@@ -52,11 +58,11 @@ const PostThumbnail = () => {
     }}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <Icon style={{marginRight: 4}} name={'favorite-outline'} color={colors.background}/>
-        <Text style={styles.whiteText}>12k</Text>
+        <Text style={styles.whiteText}>{props.upvotes}</Text>
       </View>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <Icon style={{marginRight: 4}} type={'feather'} name={'message-circle'} color={colors.background}/>
-        <Text style={styles.whiteText}>134</Text>
+        <Text style={styles.whiteText}>0</Text>
       </View>
     </View>
   </View>);
