@@ -15,6 +15,8 @@ import {View} from "./components/Themed";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
 import './i18n';
+import NewTabBar from "./navigation/NewTabBar";
+
 
 
 i18next.init({
@@ -161,7 +163,6 @@ export default function App() {
 
     if (!isLoadingComplete || !loaded || loginState.isLoading) {
         return (
-
             <SafeAreaProvider>
                 <I18nextProvider i18n={i18next}>
                 <View/>
@@ -175,19 +176,12 @@ export default function App() {
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {(true) ?
-                                <>
-                                    <Tabbar colorScheme={reactNativePaperTheme}/>
-                                    <Toast ref={(ref) => Toast.setRef(ref)}/>
-
-                                </>
+                            {(loginState.userToken && loginState.userId) ?
+                              <NewTabBar/>
                                 :
-                                  <>
-                                      <Landing/>
-                                      <Toast ref={(ref) => Toast.setRef(ref)}/>
-                                  </>
-
+                              <Landing/>
                             }
+                            <Toast ref={(ref) => Toast.setRef(ref)}/>
                         </AuthContext.Provider>
                     </PaperProvider>
                     <StatusBar/>

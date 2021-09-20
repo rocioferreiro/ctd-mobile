@@ -1,16 +1,14 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Image} from "react-native";
 import {Text, View} from "../Themed";
-import {Button, useTheme} from "react-native-paper";
+import {Button, Divider, useTheme} from "react-native-paper";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
-import {LanguagePicker} from "../Language/LanguagePicker";
+import AuthScreen from "./GoogleOAuth";
 import {useTranslation} from "react-i18next";
-import {Picker} from "@react-native-picker/picker";
 
 const Landing = () => {
     const { colors } = useTheme();
-
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
     const {t, i18n} = useTranslation('login');
@@ -69,16 +67,19 @@ const Landing = () => {
             <View style={styles.content}>
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Text style={styles.title}>Change Language</Text>
-               <LanguagePicker i18n={i18n} setLanguage={setLanguage}></LanguagePicker>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}> {t('register')}</Button>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login')}</Button>
-                <View>
-
+                <Divider/>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>Register</Button>
+                <Divider/>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
+                <Divider/>
+                <View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
+                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> OR </Text>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
                 </View>
-
+                <Divider/>
+                <AuthScreen/>
             </View>
-
             }
         </View>
     )
