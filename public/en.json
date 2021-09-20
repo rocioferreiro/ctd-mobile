@@ -11,10 +11,21 @@
     "about": "About",
     "challenges": "Challenges",
     "followers": "Followers"
+  },
+  "create-post": {
+    "create-post": " Create Post",
+    "add-image": "Add Image"
 
-
-
-
-
+  },
+  "publish-button": {
+    "publish": "Publish"
+  },
+  "cancel-button": {
+    "cancel": "Cancel"
+  },
+  "post-text-input": {
+    "title-placeholder": "Your Post Title..",
+    "body-placeholder": "Your Post Here.."
   }
+
 }

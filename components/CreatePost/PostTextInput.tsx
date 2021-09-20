@@ -3,18 +3,21 @@ import { useTheme} from 'react-native-paper';
 import { Input} from "react-native-elements";
 import {Dimensions} from "react-native";
 import {View} from "../Themed";
+import {useTranslation} from "react-i18next";
 
 type Props = {
    formik:any
 }
 const PostTextInput = (props:Props) => {
     const { colors } = useTheme();
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
 
     return (
       <View style={{width: '100%', backgroundColor: 'rgba(0,0,0,0)'}}>
         <Input
           placeholderTextColor={colors.primary}
-          placeholder={"Your post title"}
+          placeholder={t('post-text-input.title-placeholder')}
           style={{color:colors.primary,borderColor: colors.primary, borderWidth:1,marginTop: 5,
             width: '100%',
             backgroundColor: colors.surface,
@@ -34,7 +37,7 @@ const PostTextInput = (props:Props) => {
         />
         <Input
           placeholderTextColor={colors.primary}
-          placeholder={"Your post here..."}
+          placeholder={t('post-text-input.body-placeholder')}
           style={{color:colors.primary,borderColor: colors.primary, borderWidth:1,marginTop: 5,
             width: '100%',
             backgroundColor: colors.surface,

@@ -12,5 +12,20 @@
     "about": "Más",
     "challenges": "Desafíos",
     "followers": "Seguidores"
+  },
+  "create-post": {
+    "create-post": "Crear Publicación",
+    "add-image": "Agrega Imagen"
+
+  },
+  "publish-button": {
+    "publish": "Publicar"
+  },
+  "cancel-button": {
+    "cancel": "Cancelar"
+  },
+  "post-text-input": {
+    "title-placeholder": "Tu Título Aquí..",
+    "body-placeholder": "Tu Publicación Aquí.."
   }
 }
