@@ -14,7 +14,7 @@ export function Profile() {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
-  const [findPostsOfUser, {data: postData, error: postError, loading: postLoading}] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {userId: userId}});
+  const [findPostsOfUser, {data: postData, error: postError, loading: postLoading}] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {ownerId: userId}});
 
   useEffect(() => {
     getUserId().then(id => {
@@ -25,7 +25,8 @@ export function Profile() {
 
   //TODO DELETE LATER
   useEffect(() => {
-    console.log(postData)
+    console.log(postData);
+    console.log(userId);
   }, [postData]);
 
   const styles = StyleSheet.create({

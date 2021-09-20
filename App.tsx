@@ -10,7 +10,7 @@ import {useFonts} from 'expo-font';
 import Tabbar from "./navigation/BottomTabBar";
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
+import {deleteToken, getToken, getTokenAndUserId, getUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
 
 
@@ -165,7 +165,7 @@ export default function App() {
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {(true) ?
+                            {(loginState.userToken && loginState.userId) ?
                                 <>
                                     <Tabbar colorScheme={reactNativePaperTheme}/>
                                     <Toast ref={(ref) => Toast.setRef(ref)}/>
