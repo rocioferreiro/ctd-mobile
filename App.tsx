@@ -12,7 +12,8 @@ import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
 import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
-import MyTabbar from "./navigation/NewTabBar";
+import NewTabBar from "./navigation/NewTabBar";
+
 
 LogBox.ignoreAllLogs();
 
@@ -166,18 +167,11 @@ export default function App() {
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
                             {(loginState.userToken && loginState.userId) ?
-                                <>
-                                    <Tabbar colorScheme={reactNativePaperTheme}/>
-                                    <Toast ref={(ref) => Toast.setRef(ref)}/>
-
-                                </>
+                              <NewTabBar/>
                                 :
-                                  <>
-                                      <Landing/>
-                                      <Toast ref={(ref) => Toast.setRef(ref)}/>
-                                  </>
-
+                              <Landing/>
                             }
+                            <Toast ref={(ref) => Toast.setRef(ref)}/>
                         </AuthContext.Provider>
                     </PaperProvider>
                     <StatusBar/>
