@@ -176,7 +176,7 @@ export default function App() {
                 <ApolloProvider client={getApolloClientInstance()}>
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
-                            {(loginState.userToken && loginState.userId) ?
+                            {(true) ?
                               <NewTabBar/>
                                 :
                               <Landing/>

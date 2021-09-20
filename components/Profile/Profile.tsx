@@ -1,12 +1,15 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
 import React, {useContext} from "react";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {Dimensions,Image,  ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import { Avatar, ProgressBar } from 'react-native-paper';
 import {onuLogos} from "../ONUObjectives";
 import {AuthContext} from "../../App";
+import {useTranslation} from "react-i18next";
+import OptionsMenu from "react-native-options-menu";
+import { Image as ImageElement } from 'react-native-elements';
 
 export function Profile() {
   const {colors} = useTheme();
@@ -110,11 +113,15 @@ export function Profile() {
     }
   });
 
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
+  const [changeLanguage, setChangeLanguage] = React.useState(false)
   const getActiveChallenge = () => {
       return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
+
         <View style={styles.imageTextContainer}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>Create compost</Text>
           <Text style={styles.whiteText}>dd/mm/yyyy</Text>
@@ -165,6 +172,10 @@ export function Profile() {
     </View>
   }
 
+  const myIcon =<ImageElement style={{height:50, width:50}} source = {require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
+  />
+
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -174,6 +185,13 @@ export function Profile() {
         <View style={{backgroundColor: 'transparent'}}>
           <Text style={styles.primaryText}>Nombre Apellido</Text>
           <Text style={styles.secondaryText}>@username</Text>
+          <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
+          <OptionsMenu
+              customButton={myIcon}
+              destructiveIndex={0}
+              options={["English", "Español", "Cancel"]}
+              actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
+        </View>
         </View>
       </View>
       <View style={{backgroundColor: 'transparent', padding: 30}}>
@@ -246,6 +264,8 @@ export function Profile() {
           </ScrollView>
         </View>
         <View style={{backgroundColor: 'transparent', marginBottom: 100}}>
+
+
           <Button style={{backgroundColor: colors.accent}}
                   onPress={() => {auth.signOut().catch(e => console.log(e))}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
           > Logout </Button>
