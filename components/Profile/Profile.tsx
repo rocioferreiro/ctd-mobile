@@ -3,7 +3,7 @@ import {View, Text} from "../Themed";
 import React from "react";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
-import {Button, useTheme, Button} from "react-native-paper";
+import {Button, useTheme} from "react-native-paper";
 import { Avatar, ProgressBar } from 'react-native-paper';
 import {onuLogos} from "../ONUObjectives";
 
