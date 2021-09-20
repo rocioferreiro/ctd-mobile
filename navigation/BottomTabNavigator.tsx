@@ -15,11 +15,14 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import Map from "../components/Map";
 import {Profile} from "../components/Profile/Profile";
+import {useTranslation} from "react-i18next";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+    const {t, i18n} = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language);
 
   return (
     <BottomTab.Navigator

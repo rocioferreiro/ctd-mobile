@@ -26,6 +26,26 @@
   "post-text-input": {
     "title-placeholder": "Your Post Title..",
     "body-placeholder": "Your Post Here.."
+  },
+  "new-tabbar": {
+    "profile": "Profile",
+    "map": "Map",
+    "new-post": "New Post",
+    "search": "Search",
+    "home": "home"
+  },
+
+  "home": {
+    "cancel": "Cancel",
+    "challenges-active": "Active Challenges",
+    "top": "Top SGDs",
+    "level": "Level",
+    "your-experience": "Your Experience",
+    "points": "Points",
+    "sustainable": "Sustainable",
+    "global": "Global"
+
   }
+
 
 }

@@ -25,7 +25,26 @@
     "cancel": "Cancelar"
   },
   "post-text-input": {
-    "title-placeholder": "Tu Título Aquí..",
-    "body-placeholder": "Tu Publicación Aquí.."
+    "title-placeholder": "Tú Título Aquí..",
+    "body-placeholder": "Tú Publicación Aquí.."
+  },
+  "new-tabbar": {
+    "profile": "Perfíl",
+    "map": "Mapa",
+    "new-post": "Publica",
+    "search": "Buscar",
+    "home": "Inicio"
+  },
+  "home": {
+    "cancel": "Cancelar",
+    "challenges-active": "Desafíos Activos",
+    "top": "Top ODS",
+    "level": "Nivel",
+    "your-experience": "Tú Experiencia",
+    "points": "ODS",
+    "sustainable": "Globales",
+    "global": "Puntos"
+
   }
+
 }
