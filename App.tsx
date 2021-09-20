@@ -5,13 +5,13 @@ import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
 import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
-import {configureFonts, DefaultTheme, Provider as PaperProvider, Text} from 'react-native-paper';
+import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
-import Tabbar from "./navigation/BottomTabBar";
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getToken, getTokenAndUserId, getUserId, saveToken, saveUserId} from "./components/Storage";
+import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
+import NewTabBar from "./navigation/NewTabBar";
 
 
 LogBox.ignoreAllLogs();
@@ -166,18 +166,11 @@ export default function App() {
                     <PaperProvider theme={reactNativePaperTheme}>
                         <AuthContext.Provider value={authContext}>
                             {(loginState.userToken && loginState.userId) ?
-                                <>
-                                    <Tabbar colorScheme={reactNativePaperTheme}/>
-                                    <Toast ref={(ref) => Toast.setRef(ref)}/>
-
-                                </>
+                              <NewTabBar/>
                                 :
-                                  <>
-                                      <Landing/>
-                                      <Toast ref={(ref) => Toast.setRef(ref)}/>
-                                  </>
-
+                              <Landing/>
                             }
+                            <Toast ref={(ref) => Toast.setRef(ref)}/>
                         </AuthContext.Provider>
                     </PaperProvider>
                     <StatusBar/>

@@ -12,7 +12,7 @@ import {AuthContext} from "../../App";
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
-import {Role} from "../Models/User";
+import {onuLogos} from "../ONUObjectives";
 
 export function Profile() {
   const {colors} = useTheme();
@@ -58,7 +58,6 @@ export function Profile() {
       backgroundColor: colors.surface,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
-      flex: 1,
     },
     profileBackground: {
       width: '100%',
@@ -66,8 +65,8 @@ export function Profile() {
     },
     profileImage: {
       marginTop: -38,
-      marginLeft: 30,
-      marginRight: 15
+      alignSelf: "center",
+      marginHorizontal: 20
     },
     userInfoContainer: {
       backgroundColor: 'transparent',
@@ -80,7 +79,13 @@ export function Profile() {
     },
     secondaryText: {
       fontSize: 12,
-      color: colors.primary
+      color: colors.primary,
+    },
+    forODS: {
+      marginTop: 10,
+      width: 60,
+      textAlign: 'center',
+      alignSelf: "center",
     },
     whiteText: {
       fontSize: 12,
@@ -90,16 +95,15 @@ export function Profile() {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
+      justifyContent: 'space-around',
       height: 150,
       marginTop: 16,
       paddingTop: 30,
-      borderRadius: 8
+      borderRadius: 15
     },
     objective: {
       alignItems: 'center',
       justifyContent: 'center',
-      maxWidth: 75,
     },
     detailsContainer: {
       backgroundColor: 'transparent',
@@ -227,24 +231,24 @@ export function Profile() {
                   <Text style={styles.secondaryText}>Level 4</Text>
                   <Text style={styles.secondaryText}>Level 5</Text>
               </View>
-              <View>
+              <View style={{backgroundColor: 'transparent'}}>
                   <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
               </View>
               <View style={styles.objectivesContainer}>
                   <View>
-                      <Avatar.Image size={50} source={require('../../assets/images/objetive1.png')}
+                      <Avatar.Image size={50} source={onuLogos[0].image}
                                     style={styles.profileImage}/>
-                      <Text style={styles.secondaryText}>Fin de la pobreza</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Fin de la pobreza</Text>
                   </View>
                   <View>
-                      <Avatar.Image size={50} source={require('../../assets/images/objetive2.png')}
+                      <Avatar.Image size={50} source={onuLogos[1].image}
                                     style={styles.profileImage}/>
-                      <Text style={styles.secondaryText}>Hambre cero</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Hambre cero</Text>
                   </View>
                   <View>
-                      <Avatar.Image size={50} source={require('../../assets/images/objetive14.png')}
+                      <Avatar.Image size={50} source={onuLogos[13].image}
                                     style={styles.profileImage}/>
-                      <Text style={styles.secondaryText}>Vida submarina</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Vida submarina</Text>
                   </View>
               </View>
           </View>
@@ -263,13 +267,10 @@ export function Profile() {
               </View>
               <View style={{backgroundColor: 'transparent'}}>
                   <Button
-                      mode={'contained'}
-                      onPress={() => {
-                      }}
-                      style={{backgroundColor: colors.primary, borderRadius: 20}}
-                      uppercase={false}
-                  >
-                      About
+
+                      style={{backgroundColor: colors.accent, borderRadius: 20}}
+                      onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                     > About
                   </Button>
               </View>
           </View>
