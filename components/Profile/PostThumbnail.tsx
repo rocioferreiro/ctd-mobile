@@ -1,8 +1,7 @@
 import React from 'react';
 import {Text, View} from "../Themed";
 import {ImageBackground, StyleSheet} from "react-native";
-import {Icon} from "react-native-elements";
-import {useTheme} from "react-native-paper";
+import {IconButton, useTheme} from "react-native-paper";
 
 type Props = {
   key: number,
@@ -57,11 +56,11 @@ const PostThumbnail = (props: Props) => {
       paddingRight: 20
     }}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-        <Icon style={{marginRight: 4}} name={'favorite-outline'} color={colors.background}/>
+        <IconButton onPress={() => {console.log('pressed')}} icon={'heart-outline'} color={colors.background}/>
         <Text style={styles.whiteText}>{props.upvotes}</Text>
       </View>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-        <Icon style={{marginRight: 4}} type={'feather'} name={'message-circle'} color={colors.background}/>
+        <IconButton icon={'chat-outline'} color={colors.background}/>
         <Text style={styles.whiteText}>0</Text>
       </View>
     </View>
