@@ -7,19 +7,25 @@ import {View} from "../Themed";
 interface Props {
     i18n: any
     setLanguage:(string)=>void
+    setChangeLanguage:(boolean)=>void
 }
 
 export const LanguagePicker = (props:Props) => {
 
-    const [selectedLanguage, setSelectedLanguage] =useState("en");
+    const [selectedLanguage, setSelectedLanguage] =React.useState(props.i18n.language);
+
 
     function handleChange(itemValue) {
-        console.log(props.i18n.language)
+        setSelectedLanguage(itemValue)
+
         props.i18n.changeLanguage(itemValue)
+        props.setChangeLanguage(false)
+        console.log(props.i18n.language)
     }
 
     return (
         <View style={{zIndex:1}}>
+
         <Picker
 
             selectedValue={selectedLanguage}
