@@ -74,6 +74,15 @@
     "challenge-description": "Descripcion de Desafío"
 
 
+  },
+  "join-button": {
+    "join-this-challenge": "Únete a este Desafío",
+    "now": "Ahora"
+  },
+  "challenge-card-mini": {
+    "challenge-description": "Descripcion de Desafío",
+    "view": "Ver más",
+    "share": "Compartir"
   }
 
 

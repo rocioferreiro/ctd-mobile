@@ -72,9 +72,16 @@
     "join": "Join",
     "view": "View",
     "challenge-description": "Challenge Description"
-
-
-}
+},
+  "join-button": {
+    "join-this-challenge": "Join This Challenge",
+    "now": "Now"
+  },
+  "challenge-card-mini": {
+    "challenge-description": "Challenge Description",
+    "view": "View",
+    "share": "Share"
+  }
 
 
 }
