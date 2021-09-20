@@ -1,21 +1,22 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
-import React from "react";
+import React, {useContext} from "react";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, useTheme} from "react-native-paper";
 import { Avatar, ProgressBar } from 'react-native-paper';
 import {onuLogos} from "../ONUObjectives";
+import {AuthContext} from "../../App";
 
 export function Profile() {
   const {colors} = useTheme();
+  const auth = useContext(AuthContext);
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.surface,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
-      flex: 1,
     },
     profileBackground: {
       width: '100%',
@@ -243,6 +244,11 @@ export function Profile() {
             {getFinishedChallenge()}
             {getFinishedChallenge()}
           </ScrollView>
+        </View>
+        <View style={{backgroundColor: 'transparent', marginBottom: 100}}>
+          <Button style={{backgroundColor: colors.accent}}
+                  onPress={() => {auth.signOut().catch(e => console.log(e))}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+          > Logout </Button>
         </View>
       </ScrollView>
     </View>
