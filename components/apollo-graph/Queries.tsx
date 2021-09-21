@@ -156,3 +156,31 @@ query findPostById($id: String!){
   }
 }
 `;
+
+export const FIND_CHALLENGES_BY_CATEGORY = gql`
+  query getChallengeByFilter($category: Int!){
+    getChallengeByFilter($filter:{category:$category},$pageNumber: Int!, $pageSize: Int!) {
+       boost
+       categories
+       coordinates {
+        longitude
+        latitude
+      }
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives {
+        points
+        name
+      }
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
+    }
+  }
+`;
