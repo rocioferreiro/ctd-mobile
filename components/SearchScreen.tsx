@@ -122,10 +122,10 @@ const SearchScreen = () => {
                   <Tabs
                     style={{ backgroundColor: colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1, width: Dimensions.get('window').width + 6 }} // works the same as AppBar in react-native-paper
                   >
-                    <TabScreen label="For You">
+                    <TabScreen label={t('search-screen.for-you')}>
                       <View style={{ flex: 1, backgroundColor: colors.surface }} />
                     </TabScreen>
-                    <TabScreen label="Search">
+                    <TabScreen label={t('search-screen.search')}>
                       <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                         <SearchBarComponent onChange={onChange}/>
                         <Divider/>

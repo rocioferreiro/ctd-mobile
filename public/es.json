@@ -57,9 +57,10 @@
     "cancel": "Cancelar"
   },
   "search-screen": {
-    "for-you": "Para Ti",
+    "for-you": "Para Tí",
     "search": "Buscar",
-    "collections": "Colecciones"
+    "collections": "Colecciones",
+    "challenges": "Desafíos"
   },
   "challenge-page": {
     "challenge-location": "Ubicación del Desafío",
@@ -114,6 +115,9 @@
     "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
     "inscriptions-open": "Inscripciones Abiertas",
     "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
+  },
+  "search-bar": {
+    "placeholder":"Buscar Desafíos.."
   }
 
 

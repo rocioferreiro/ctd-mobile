@@ -59,7 +59,8 @@
   "search-screen": {
     "for-you": "For You",
     "search": "Search",
-    "collections": "Collections"
+    "collections": "Collections",
+    "challenges": "Challenges"
   },
   "challenge-page": {
     "challenge-location": "Challenge location",
@@ -113,6 +114,9 @@
     "inscriptions-open": "Inscriptions Open",
     "when-will-challenge": "When will the Challenge take place?",
 
+  },
+  "search-bar": {
+    "placeholder":"Search for Challenges.."
   }
 
 
