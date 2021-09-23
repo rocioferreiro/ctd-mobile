@@ -158,9 +158,11 @@ query findPostById($id: String!){
 `;
 
 export const FIND_CHALLENGES_BY_CATEGORY = gql`
-  query getChallengeByFilter($category: Int!){
-    getChallengeByFilter($filter:{category:$category},$pageNumber: Int!, $pageSize: Int!) {
-       boost
+query getChallengeByFilter($filter: ChallengeFilterDTOInput!, $pageNumber: Int!, $pageSize: Int!) {
+    getChallengeByFilter(filter: $filter, pageNumber: $pageNumber, pageSize: $pageSize) {
+           actualPage
+           challenges: {
+               boost
        categories
        coordinates {
         longitude
@@ -182,5 +184,8 @@ export const FIND_CHALLENGES_BY_CATEGORY = gql`
        title
        upVotes
     }
-  }
+           }
+     }
+}
+  
 `;
