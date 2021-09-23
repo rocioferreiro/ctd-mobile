@@ -1,11 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text} from "../Themed";
 import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
-import {Card, useTheme} from "react-native-paper";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {Card, Divider, useTheme} from "react-native-paper";
+import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import SearchBarComponent from "../SearchBar/SearchBarComponent";
+import ChallengeCard from "../ChallengeCard/ChallengeCard";
+import {TabScreen} from "react-native-paper-tabs";
+import {useLazyQuery} from "@apollo/client";
+import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
+import {getUserId} from "../Storage";
 
 const CategoryList = () => {
 
+
+    const [challengeList, setChallengeList] = useState<any>([]);
+    const [selectedSDG, setSelectedSDG] = useState(-1);
+    const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {variables: {filter:selectedSDG}});
+
+    /*useEffect(() => {
+        getUserId().then(id => {
+            setUserId(id);
+            findChallengesByCategory();
+        });
+    }, []);
+
+    useEffect(() => {
+        if (data) {
+            setChallengeList(data.getCreatedChallengesByUser)
+        }
+    }, [data]);*/
+
+    const onChange = (searchValue: string) => {
+        if (!searchValue || searchValue === "") setChallengeList(data.getCreatedChallengesByUser);
+        else {
+            const filteredChallenges = data.getCreatedChallengesByUser.filter(challenge =>
+                challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
+            );
+            console.log(filteredChallenges)
+            setChallengeList(filteredChallenges);
+        }
+    }
     const styles = StyleSheet.create({
         container: {
           backgroundColor: 'rgba(0,0,0,0)'
@@ -63,29 +97,58 @@ const CategoryList = () => {
         },
     });
 
+    function handleSelectSDG(i: number) {
+        setSelectedSDG(i)
+
+    }
+
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            {Object.values(ONUObjectives).map((v, i) => {
-                return (
-                    <View style={styles.card} key={i}>
-                        <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
-                            <Text style={styles.number}>{i+1}</Text>
-                            <Image style={styles.logo} source={onuLogos[i].image}/>
-                        </View>
-                        <View style={styles.sideImageContainer}>
-                            <Image style={{
-                                ...StyleSheet.absoluteFillObject,
-                                backgroundColor: colors[i],
-                                opacity: 0.5,
-                                width: '100%',
-                                height: '100%'
-                            }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
-                            <Text style={styles.name}>{v}</Text>
-                        </View>
-                    </View>
-                )
-            })}
-        </ScrollView>
+        <View>
+            {selectedSDG < 0 ?
+                <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                    {Object.values(ONUObjectives).map((v, i) => {
+                        return (
+                            <TouchableOpacity onPress={() => handleSelectSDG(i)}>
+                                <View style={styles.card} key={i}>
+                                    <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
+                                        <Text style={styles.number}>{i + 1}</Text>
+                                        <Image style={styles.logo} source={onuLogos[i].image}/>
+                                    </View>
+                                    <View style={styles.sideImageContainer}>
+                                        <Image style={{
+                                            ...StyleSheet.absoluteFillObject,
+                                            backgroundColor: colors[i],
+                                            opacity: 0.5,
+                                            width: '100%',
+                                            height: '100%'
+                                        }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
+                                        <Text style={styles.name}>{v}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    })
+                    }
+                </ScrollView> :
+                <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
+                    <SearchBarComponent onChange={onChange}/>
+                    <Divider/>
+                    <ScrollView style={{
+                        marginBottom: Dimensions.get('screen').height * 0.20,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        overflow: "visible"
+                    }}>
+                        {challengeList.map((challenge, i) =>
+                            <View key={i} style={{marginBottom: 5}}>
+                                <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                                <Divider/>
+                            </View>
+                        )
+                        }
+                    </ScrollView>
+                </View>
+            }
+            </View>
     );
 }
 export default CategoryList;
