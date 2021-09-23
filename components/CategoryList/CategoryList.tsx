@@ -15,6 +15,7 @@ const CategoryList = () => {
 
     const [challengeList, setChallengeList] = useState<any>([]);
     const [selectedSDG, setSelectedSDG] = useState(-1);
+    const [selectedChallenge, setSelectedChallenge] = useState();
     const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {variables: {filter:selectedSDG}});
 
     /*useEffect(() => {
