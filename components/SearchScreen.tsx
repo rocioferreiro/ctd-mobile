@@ -100,24 +100,7 @@ const SearchScreen = () => {
                     backgroundColor: colors.surface
                 }}>
 
-                    <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}>{t('search-screen.challenges')} </Text>
-
-                    {/*<TabView*/}
-                    {/*  navigationState={{ index, routes }}*/}
-                    {/*  renderScene={renderScene}*/}
-                    {/*  onIndexChange={setIndex}*/}
-                    {/*  initialLayout={{ width: layout.width }}*/}
-                    {/*  renderTabBar={props => <TabBar layout={layout}*/}
-                    {/*                                 style={{backgroundColor:colors.surface}}*/}
-                    {/*                                 labelStyle={{color: colors.accent}}*/}
-                    {/*                                 activeColor={colors.primary}*/}
-                    {/*                                 tabStyle={{*/}
-                    {/*                                     backgroundColor:'rgba(0,0,0,0)',*/}
-                    {/*                                     borderBottomWidth:2,*/}
-                    {/*                                     borderBottomColor:colors.accent,*/}
-                    {/*                                 }}*/}
-                    {/*                                 {...props} />}*/}
-                    {/*/>*/}
+                    <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> {t('search-screen.challenges')} </Text>
 
                   <Tabs
                     style={{ backgroundColor: colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1, width: Dimensions.get('window').width + 6 }} // works the same as AppBar in react-native-paper

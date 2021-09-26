@@ -1,14 +1,16 @@
 import React from 'react';
 import {View, Text} from "../Themed";
 import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
-import {Card, useTheme} from "react-native-paper";
 import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 
 const CategoryList = () => {
 
+    const onuInfo = onuPictures()
+
     const styles = StyleSheet.create({
         container: {
-          backgroundColor: 'rgba(0,0,0,0)'
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         card: {
             display: 'flex',
@@ -45,7 +47,6 @@ const CategoryList = () => {
             flex: 6
         },
         sideImageContainer: {
-            backgroundColor: 'rgba(0,0,0,0)',
             flex: 10,
             display: 'flex',
             justifyContent: 'flex-end',
@@ -65,14 +66,14 @@ const CategoryList = () => {
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            {Object.values(ONUObjectives).map((v, i) => {
+            {onuInfo.map((v, i) => {
                 return (
                     <View style={styles.card} key={i}>
                         <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
                             <Text style={styles.number}>{i+1}</Text>
                             <Image style={styles.logo} source={onuLogos[i].image}/>
                         </View>
-                        <View style={styles.sideImageContainer}>
+                        <View style={[styles.sideImageContainer, {backgroundColor: colors[i]}]}>
                             <Image style={{
                                 ...StyleSheet.absoluteFillObject,
                                 backgroundColor: colors[i],
@@ -80,11 +81,12 @@ const CategoryList = () => {
                                 width: '100%',
                                 height: '100%'
                             }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
-                            <Text style={styles.name}>{v}</Text>
+                            <Text style={styles.name}>{v.title}</Text>
                         </View>
                     </View>
                 )
             })}
+            <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
         </ScrollView>
     );
 }

@@ -130,6 +130,42 @@
   },
   "search-bar": {
     "placeholder":"Search for Challenges.."
+  },
+  "onu-objective-info": {
+    "no-poverty": "No poverty",
+    "no-poverty-description": "Economic growth must be inclusive to provide sustainable jobs and promote equality.",
+    "zero-hunger": "Zero Hunger",
+    "zero-hunger-description": "The food and agriculture sector offers key solutions for development, and is central for hunger and poverty eradication.",
+    "good-health": "Good Health and Well-being",
+    "good-health=description": "Ensuring healthy lives and promoting the well-being for all at all ages is essential to sustainable development.",
+    "quality-education": "Quality Education",
+    "quality-education-description": "Obtaining a quality education is the foundation to improving people’s lives and sustainable development.",
+    "gender": "Gender Equality",
+    "gender-description": "Gender equality is not only a fundamental human right, but a necessary foundation for a peaceful, prosperous and sustainable world.",
+    "clean-water": "Clean Water and Sanitation",
+    "clean-water-description": "Clean, accessible water for all is an essential part of the world we want to live in.",
+    "energy": "Affordable and Clean Energy",
+    "energy-description": "Energy is central to nearly every major challenge and opportunity.",
+    "work": "Decent Work and Economic Growth",
+    "work-description": "Sustainable economic growth will require societies to create the conditions that allow people to have quality jobs.",
+    "industry": "Industry, Innovation, and Infrastructure",
+    "industry-description": "Investments in infrastructure are crucial to achieving sustainable development.",
+    "inequalities": "Reduced Inequalities",
+    "inequalities-description": "To reduce inequalities, policies should be universal in principle, paying attention to the needs of disadvantaged and marginalized populations.",
+    "cities": "Sustainable Cities and Communities",
+    "cities-description": "There needs to be a future in which cities provide opportunities for all, with access to basic services, energy, housing, transportation and more.",
+    "consumption": "Responsible Consumption and Production",
+    "consumption-description": "Sustainable management y efficient use of natural resources.",
+    "climate": "Climate Action",
+    "climate-description": "Climate change is a global challenge that affects everyone, everywhere.",
+    "life-water": "Life Below Water",
+    "life-water-description": "Careful management of this essential global resource is a key feature of a sustainable future.",
+    "life-land": "Life on Land",
+    "life-land-description": "Sustainably manage forests, combat desertification, halt and reverse land degradation, halt biodiversity loss.",
+    "peace": "Peace, Justice and Strong Institutions",
+    "peace-description": "Access to justice for all, and building effective, accountable institutions at all levels.",
+    "partner":  "Partnerships",
+    "partner-description": "Revitalize the global partnership for sustainable development."
   }
 
 
