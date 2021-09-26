@@ -14,20 +14,23 @@ const CategoryList = () => {
 
 
     const [challengeList, setChallengeList] = useState<any>([]);
-    const [selectedSDG, setSelectedSDG] = useState(-1);
+    const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
     const [selectedChallenge, setSelectedChallenge] = useState();
-    const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {variables: {filter:selectedSDG}});
+    const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY);
 
 
-    useEffect(() => {
+   /* useEffect(() => {
         if (selectedSDG>0) {
-            findChallengesByCategory( {variables:{filter:selectedSDG}})
+            findChallengesByCategory( {variables: {category: selectedSDG}})
         }
-    }, []);
+    }, []);*/
 
     useEffect(() => {
         if (data) {
-            setChallengeList(data.getCreatedChallengesByUser)
+            console.log(selectedSDG)
+            setChallengeList(data.getChallengeByFilter.challenges)
+            console.log(data)
+            console.log("challenges should be above")
         }
     }, [data]);
 
@@ -99,17 +102,19 @@ const CategoryList = () => {
     });
 
     function handleSelectSDG(i: number) {
+        findChallengesByCategory( {variables:{category:i}})
         setSelectedSDG(i)
+
 
     }
 
     return (
         <View>
-            {selectedSDG < 0 ?
+            {selectedSDG <0 ?
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     {Object.values(ONUObjectives).map((v, i) => {
                         return (
-                            <TouchableOpacity onPress={() => handleSelectSDG(i)}>
+                            <TouchableOpacity onPress={() => handleSelectSDG(i+1)}>
                                 <View style={styles.card} key={i}>
                                     <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
                                         <Text style={styles.number}>{i + 1}</Text>
