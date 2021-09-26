@@ -20,7 +20,7 @@ type Props = {
 const Login = (props: Props) => {
     const {colors} = useTheme();
     const auth = useContext(AuthContext);
-    const {t, i18n} = useTranslation('login');
+    const {t, i18n} = useTranslation();
     const [loginMutation, {loading}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
@@ -193,7 +193,7 @@ const Login = (props: Props) => {
                                 if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email))) {
                                     login();
                                 }
-                            }}>Login</Button>
+                            }}>{t('login.done')}</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel();
                     }}>{t('login.cancel')}</Button>

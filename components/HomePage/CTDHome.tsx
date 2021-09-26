@@ -159,7 +159,7 @@ const CTDHome = () => {
                             <Text style={styles.subtitle}>36500k </Text>
                             <View style={{backgroundColor: 'rgba(0,0,0,0)', flex:1}}>
                                 <Text style={styles.detailtitle}> {t('home.global')}</Text>
-                                <Text style={styles.detailtitle}>  {t('home.sustainable')}</Text>
+                                <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
                                 <Text style={styles.detailtitle}> {t('home.points')}</Text>
                             </View>
                         </View>

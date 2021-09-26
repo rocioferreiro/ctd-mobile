@@ -14,8 +14,8 @@ type Props = {
 }
 
 const ChallengeDetails = (props: Props) => {
-    const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
+  const {t, i18n} = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language);
   const { colors } = useTheme();
   const {formik} = props;
   const [keyboardShown, setKeyboardShown] = React.useState(false);
