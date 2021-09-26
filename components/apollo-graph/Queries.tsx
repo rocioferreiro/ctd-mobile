@@ -192,3 +192,9 @@ query getChallengeByFilter($filter: ChallengeFilterDTOInput!, $pageNumber: Int!,
      
 
 `;
+
+export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
+query myPendingConnectionsNumber($userId: String!) {
+  getMyPendingConnectionsNumber(userId: $userId)
+}
+`;
