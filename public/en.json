@@ -1,10 +1,23 @@
 {
   "title":{
-    "ctd": "welcome to ctd"
+    "ctd": "welcome to ctd",
+    "or": "OR"
   },
   "login": {
     "password":"Password",
-    "email": "Email"
+    "email": "Email",
+    "cancel": "Cancel",
+    "done": "Login"
+  },
+  "register": {
+    "error":"Error",
+    "errorDescription": "Registration Failed",
+    "cancel": "Cancel",
+    "name": "First Name",
+    "lastname": "Last Name",
+    "emailError": "Invalid email address",
+    "passwordError": "min. 8 digits, an upper case letter and a number",
+    "done": "Register"
   },
   "profile": {
     "level": "Level",
@@ -112,7 +125,7 @@
     "select-valid-date": "Select a valid date",
     "at-least-week": "Inscriptions should be open for at least a week",
     "inscriptions-open": "Inscriptions Open",
-    "when-will-challenge": "When will the Challenge take place?",
+    "when-will-challenge": "When will the Challenge take place?"
 
   },
   "search-bar": {
