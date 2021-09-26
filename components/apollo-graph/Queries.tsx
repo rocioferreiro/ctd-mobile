@@ -161,30 +161,34 @@ export const FIND_CHALLENGES_BY_CATEGORY = gql`
 query getChallengeByFilter($filter: ChallengeFilterDTOInput!, $pageNumber: Int!, $pageSize: Int!) {
     getChallengeByFilter(filter: $filter, pageNumber: $pageNumber, pageSize: $pageSize) {
            actualPage
-           challenges: 
-               boost
-       categories
-       coordinates {
-        longitude
-        latitude
-      }
-       description
-       downVotes
-       endEvent
-       endInscription
-       id
-       locationGeohash
-       objectives {
-        points
-        name
-      }
-       owner
-       startEvent
-       startInscription
-       title
-       upVotes
+           challenges{
+            categories
+            boost
+            description
+            endEvent
+            startEvent
+            endInscription 
+            startInscription 
+            id
+            title
+            owner
+            upVotes
+            downVotes
+            coordinates{
+              longitude
+              latitude
             }
+            objectives{
+              points 
+              name
+              
+            }
+          }
+            size
+            totalElements
+            totalPages
            }
+}
      
 
 `;

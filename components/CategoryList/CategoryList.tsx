@@ -18,18 +18,18 @@ const CategoryList = () => {
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {variables: {filter:selectedSDG}});
 
-    /*useEffect(() => {
-        getUserId().then(id => {
-            setUserId(id);
-            findChallengesByCategory();
-        });
+
+    useEffect(() => {
+        if (selectedSDG>0) {
+            findChallengesByCategory( {variables:{filter:selectedSDG}})
+        }
     }, []);
 
     useEffect(() => {
         if (data) {
             setChallengeList(data.getCreatedChallengesByUser)
         }
-    }, [data]);*/
+    }, [data]);
 
     const onChange = (searchValue: string) => {
         if (!searchValue || searchValue === "") setChallengeList(data.getCreatedChallengesByUser);
