@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Tabbar from "@mindinventory/react-native-tab-bar-interaction";
 import {Icon} from "react-native-elements";
 import SearchScreen from "../components/SearchScreen";
@@ -12,13 +12,18 @@ import {colorShade} from "../components/Models/shadingColor";
 import CTDHome from "../components/HomePage/CTDHome";
 import PostCreationSuccessful from "../components/CreatePost/PostCreationSuccessful";
 import {useTranslation} from "react-i18next";
-
+import {useLazyQuery} from "@apollo/client";
+import {PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Queries";
+import {getUserId} from "../components/Storage";
+import PersonIcon from "./PersonIcon";
 
 const MyTabbar = () => {
   const {colors} = useTheme();
+  const [userId, setUserId] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
+  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {ownerId: userId}});
 
   function toastOn() {
     Toast.show({
@@ -58,15 +63,20 @@ const MyTabbar = () => {
     },
     {
       name: t('new-tabbar.profile'),
-      activeIcon: <Icon name={'person-outline'}
-                        type={'ionicon'} color="#fff" size={25} />,
-      inactiveIcon: <Icon name={'person-outline'}
-                          type={'ionicon'} color="#4d4d4d" size={25} />,
+      activeIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber} backgroundColor={'#fff'}/>,
+      inactiveIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber} backgroundColor={'#4d4d4d'}/>,
       component: <Profile/>
     },
 
   ];
-  const [activeTab, setActiveTab] = React.useState(tabs[0].component)
+  const [activeTab, setActiveTab] = React.useState(tabs[0].component);
+
+  useEffect(() => {
+    getUserId().then(id => {
+      setUserId(id);
+      getConnectionRequestsNumber();
+    });
+  }, []);
 
   useEffect(() => {
     if(!createPost) {
@@ -74,9 +84,6 @@ const MyTabbar = () => {
       setCreatePost(true)
     }
   }, [createPost])
-
-
-
 
   return (
     <View style={{backgroundColor: colors.surface}}>
@@ -93,7 +100,6 @@ const MyTabbar = () => {
         onTabChange={a => setActiveTab(a.component)}
       />
     </View>
-
   );
 }
 
