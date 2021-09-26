@@ -86,9 +86,8 @@ const MyTabbar = () => {
   }, [createPost])
 
   return (
-    <View style={{backgroundColor: colors.surface}}>
+    <View style={{backgroundColor: colors.surface, height: Dimensions.get('screen').height - 45}}>
       {activeTab}
-      <View style={{paddingVertical: 15 }}/>
       <Tabbar
         style={{zIndex: 5}}
         tabs={tabs}
