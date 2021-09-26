@@ -156,3 +156,9 @@ query findPostById($id: String!){
   }
 }
 `;
+
+export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
+query myPendingConnectionsNumber($userId: String!) {
+  getMyPendingConnectionsNumber(userId: $userId)
+}
+`;
