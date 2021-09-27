@@ -1,15 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
 import {useLazyQuery} from "@apollo/client";
 import {GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
+import {getUserId} from "../Storage";
 
 
 const ConnectionsFeed = () => {
     const {colors} = useTheme();
 
     const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+
+    useEffect(() => {
+        getUserId().then(id => {
+            getPendingConnections({variables: {userId: id}})
+        });
+    }, []);
 
     const styles = StyleSheet.create({
         container: {
@@ -44,13 +51,13 @@ const ConnectionsFeed = () => {
         },
     })
 
-    const renderConnection = () => {
-        return [0,1,2,3,4,5,6].map(connection => <View style={{...styles.connectionContainer}} key={connection}>
+    const renderConnection = (connection) => {
+        return <View style={{...styles.connectionContainer}} key={connection}>
             <View style={styles.userInfoContainer}>
                 <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={{marginRight: 15}}/>
                 <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-                    <Text style={styles.primaryText}>Carlos Hernandez</Text>
-                    <Text style={styles.secondaryText}>@carloshernandez</Text>
+                    <Text style={styles.primaryText}>{connection.followUser.name} {connection.followUser.lastname}</Text>
+                    <Text style={styles.secondaryText}>{connection.followUser.mail}</Text>
                     <View style={{flexDirection: "row", marginTop: 15}}>
                         <Button style={{backgroundColor: colors.accent, borderRadius: 20, marginRight: 15}}
                             onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
@@ -61,17 +68,17 @@ const ConnectionsFeed = () => {
                     </View>
                 </View>
             </View>
-        </View>)
+        </View>
     }
 
     return (
         <View style={styles.container}>
             <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.primaryText}>Connect request</Text>
-                <Text style={{...styles.primaryText, color: colors.accent}}>6</Text>
+                <Text style={{...styles.primaryText, color: colors.accent}}>{pendingConnectionsData?.getMyPendingConnection.length || ""}</Text>
             </View>
             <ScrollView style={{marginTop: 30}}>
-                {renderConnection()}
+                {pendingConnectionsData?.getMyPendingConnection.map(connection => renderConnection(connection))}
             </ScrollView>
         </View>
     )

@@ -235,6 +235,13 @@ query getPostByConnections($userId: String!) {
 
 export const GET_PENDING_CONNECTIONS = gql`
 query getPendingConnections($userId: String!) {
-  getMyPendingConnection(userId: $userId)
+  getMyPendingConnection(userId: $userId) {
+    followUser {
+        id
+        name
+        lastname
+        mail
+    }
+  }
 }
 `;
