@@ -19,15 +19,13 @@ const ViewPost = (props:Props) => {
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upVotes)
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   const likePost = (isLiking: boolean)  => {
     //TODO implement like post
     setLiked(!liked)
     isLiking? setLikes(likes+1) : setLikes(likes-1)
   }
-
-  const [language, setLanguage] = React.useState(i18n.language);
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
@@ -56,8 +54,8 @@ const ViewPost = (props:Props) => {
         <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={liked ? 'heart' : 'heart-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => likePost(!liked)}/>
           <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
-          <Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>
-          <Text style={{color: colors.primary}}> 1 </Text>
+          {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
+          {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
         </View>
         <View style={{marginRight:15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {}}/>
