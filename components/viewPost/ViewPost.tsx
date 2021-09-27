@@ -1,13 +1,12 @@
-import {Avatar, Button, Card, Colors, Paragraph, Title, useTheme} from "react-native-paper";
+import {Avatar, Card, IconButton, Paragraph, useTheme} from "react-native-paper";
 import OptionsMenu from "react-native-options-menu";
-import React, {useRef} from "react";
+import React, {useState} from "react";
 import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
-import { captureRef } from 'react-native-view-shot';
-import {PixelRatio} from "react-native";
-import * as MediaLibrary from 'expo-media-library';
+import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
+import {Profile} from "../Profile/Profile";
 
 type Props = {
   post: Post,
@@ -20,6 +19,18 @@ const ViewPost = (props:Props) => {
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upVotes)
   const {t, i18n} = useTranslation();
+  const [viewProfile, setViewProfile] = useState(false);
+
+  const styles = StyleSheet.create({
+    button: {
+      position: 'absolute',
+      zIndex: 2,
+      top: 0,
+      left: 0,
+      padding: 0,
+      margin: 0
+    }
+  })
 
   const likePost = (isLiking: boolean)  => {
     //TODO implement like post
@@ -39,11 +50,15 @@ const ViewPost = (props:Props) => {
 
   return (
     <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
-      <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
-                  title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{post.owner.mail}</Text>}
-                  subtitle={post.creationDate}
-                  left={LeftContent}
-                  right={RightContent}/>
+      <TouchableOpacity onPress={() => {
+        setViewProfile(true)
+      }} style={{backgroundColor: 'transparent', marginRight: 20}}>
+        <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
+                    title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{post.owner.mail}</Text>}
+                    subtitle={post.creationDate}
+                    left={LeftContent}
+                    right={RightContent}/>
+      </TouchableOpacity>
       <Card.Content style={{marginHorizontal: 7, marginBottom: 10}}>
         <Text style={{
           fontSize: 20, color: colors.primary,
@@ -63,6 +78,19 @@ const ViewPost = (props:Props) => {
           <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {}}/>
         </View>
       </Card.Actions>
+      <Modal animationType="fade"
+             presentationStyle={"fullScreen"}
+             visible={viewProfile}
+             onRequestClose={() => {
+               setViewProfile(!viewProfile);
+             }}>
+        <IconButton onPress={() => setViewProfile(false)}
+                    icon={'chevron-left'}
+                    style={styles.button}
+                    size={40}
+        />
+        <Profile otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>
+      </Modal>
     </Card>
 
   )

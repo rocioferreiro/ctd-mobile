@@ -18,7 +18,11 @@ import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 
-export function Profile() {
+interface Props {
+  otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
+}
+
+export function Profile(props: Props) {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
@@ -26,17 +30,25 @@ export function Profile() {
   const [viewPostId, setViewPostId] = useState();
   const [findPostsOfUser, {
     data: postsOfUser
-  }] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {ownerId: userId}});
+  }] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {
     data: postData
   }] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
 
   useEffect(() => {
-    getUserId().then(id => {
-      setUserId(id);
-      findPostsOfUser();
-    });
-  }, []);
+    if (props.otherUserId) {
+      setUserId(props.otherUserId);
+    }
+    else {
+      getUserId().then(id => {
+        setUserId(id);
+      });
+    }
+  }, [props.otherUserId]);
+
+  useEffect(() => {
+    if (userId) findPostsOfUser({variables: {ownerId: userId}});
+  }, [userId])
 
   useEffect(() => {
     if (!viewPost) return;
@@ -342,18 +354,18 @@ export function Profile() {
                 })}
               </ScrollView>
           </View>
-          <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
-              <Button
-                  uppercase={false}
-                  mode={'outlined'}
-                  style={{width: '40%'}}
-                  onPress={() => {
-                    auth.signOut().catch(e => console.log(e))
-                  }}
-              >
-                {t('profile.logout')}
-              </Button>
-          </View>
+        { !props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+          <Button
+              uppercase={false}
+              mode={'outlined'}
+              style={{width: '40%'}}
+              onPress={() => {
+                auth.signOut().catch(e => console.log(e))
+              }}
+          >
+            {t('profile.logout')}
+          </Button>
+        </View>}
       </ScrollView>
       }
       {viewPost && postData &&
@@ -371,3 +383,4 @@ export function Profile() {
     </View>
   );
 }
+
