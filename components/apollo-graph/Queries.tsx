@@ -61,6 +61,7 @@ query newFindUserById($targetUserId: String!, $currentUserId: String!){
         mail
         role
         lastname
+        favouriteODS
         address {
           coordinates {
             latitude
@@ -233,8 +234,20 @@ query getPostByConnections($userId: String!) {
 }
 `;
 
+export const GET_CONNECTIONS = gql`
+query getConnections($userId: String!) {
+  getAllMyConnections(userId: $userId)
+}
+`;
+
 export const GET_PENDING_CONNECTIONS = gql`
 query getPendingConnections($userId: String!) {
+  getMyPendingConnection(userId: $userId)
+}
+`;
+
+export const NEW_GET_PENDING_CONNECTIONS = gql`
+query newGetPendingConnections($userId: String!) {
   getMyPendingConnection(userId: $userId) {
     followUser {
         id

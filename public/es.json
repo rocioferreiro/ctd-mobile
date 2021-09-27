@@ -28,7 +28,10 @@
     "active-challenges": "Desafíos Activos",
     "about": "Más",
     "challenges": "Desafíos",
-    "followers": "Conexiones"
+    "followers": "Conexiones",
+    "connect": "Conectar",
+    "connected": "Conectado",
+    "pending": "Pendiente"
   },
   "create-post": {
     "create-post": "Crear Publicación",
