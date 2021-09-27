@@ -52,6 +52,26 @@ query findUserById($userId: String!){
 }
 `;
 
+export const NEW_FIND_USER_BY_ID = gql`
+query newFindUserById($targetUserId: String!, $currentUserId: String!){
+  findUserById(targetUserId: $targetUserId, currentUserId: $currentUserId){
+    user {
+        name
+        id
+        mail
+        role
+        lastname
+        address {
+          coordinates {
+            latitude
+            longitude
+          }
+        }
+    } 
+  }
+}
+`;
+
 export const GET_SCORE = gql`
 query getScore($newChallenge: ChallengeDTOInput!){
     getSuggestedScore(challengeDTO: $newChallenge)
@@ -195,5 +215,20 @@ query getChallengeByFilter($category: Int!) {
 export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
 query myPendingConnectionsNumber($userId: String!) {
   getMyPendingConnectionsNumber(userId: $userId)
+}
+`;
+
+export const GET_POST_BY_CONNECTIONS = gql`
+query getPostByConnections($userId: String!) {
+  getPostByConnections(userId: $userId) {
+    id
+    boosted
+    creationDate
+    image
+    owner
+    text
+    title
+    upvotes
+  }
 }
 `;
