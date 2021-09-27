@@ -15,7 +15,6 @@ import {useLazyQuery} from "@apollo/client";
 import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
-import ChallengeONUObjetives from "./ChallengeONUObjectives";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 

@@ -60,6 +60,7 @@ query newFindUserById($targetUserId: String!, $currentUserId: String!){
         id
         mail
         role
+        level
         lastname
         favouriteODS
         address {
