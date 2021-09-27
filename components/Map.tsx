@@ -133,15 +133,21 @@ const Map = () => {
     if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
     if (userError) {
         console.log(userError.message);
-        return <LottieView
-          style={{ width: '95%',
-              height: 400,marginTop:Dimensions.get('window').height*0.07}}
-          source={require('../assets/lottie/network-lost.json')}
-          autoPlay
-          loop
-          speed={0.4}
-          resizeMode={'cover'}
-        />
+        return <View style={{width: Dimensions.get('window').width,
+                            height: Dimensions.get('window').height,
+                            display: "flex",
+                            justifyContent: "center",
+                            flexDirection: "row" }}>
+            <LottieView
+              style={{ width: '93%',
+                  height: 400,marginTop:Dimensions.get('window').height*0.07}}
+              source={require('../assets/lottie/network-lost.json')}
+              autoPlay
+              loop
+              speed={0.4}
+              resizeMode={'cover'}
+            />
+        </View>
     }
     if (challengeError) {
         console.log(challengeError.message);

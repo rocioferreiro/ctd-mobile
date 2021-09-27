@@ -16,7 +16,7 @@ type Props = {
 
 const OnuObjectiveChoice  = (props: Props) => {
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
+  const onuInfo = onuPictures();
   const { colors } = useTheme();
   const [currentIndex, setCurrentIndex] = React.useState(1)
   const objectiveSize = Dimensions.get('window').width / 5;
@@ -156,7 +156,7 @@ const OnuObjectiveChoice  = (props: Props) => {
         }
       </View>
 
-      <ImageCarousel data={onuPictures} setCurrentIndex={setCurrentIndex}/>
+      <ImageCarousel data={onuInfo} setCurrentIndex={setCurrentIndex}/>
       <View style={styles.plusContainer}>
         <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
           onPress={() => {

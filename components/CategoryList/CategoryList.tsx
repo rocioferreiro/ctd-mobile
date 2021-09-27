@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text} from "../Themed";
 import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
+import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet,TouchableOpacity} from "react-native";
+import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {Card, Divider, useTheme} from "react-native-paper";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 import SearchBarComponent from "../SearchBar/SearchBarComponent";
 import ChallengeCard from "../ChallengeCard/ChallengeCard";
 import {TabScreen} from "react-native-paper-tabs";
@@ -19,16 +20,12 @@ interface Props {
 const CategoryList = ( props:Props) => {
 
 
+    const onuInfo = onuPictures()
+
     const [challengeList, setChallengeList] = useState<any>([]);
     const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
     const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY);
 
-
-   /* useEffect(() => {
-        if (selectedSDG>0) {
-            findChallengesByCategory( {variables: {category: selectedSDG}})
-        }
-    }, []);*/
 
     useEffect(() => {
         if (data) {
@@ -122,7 +119,7 @@ const CategoryList = ( props:Props) => {
 
                 {selectedSDG <0 ?
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                    {Object.values(ONUObjectives).map((v, i) => {
+                    {onuInfo.map((v, i) =>{
                         return (
                             <TouchableOpacity onPress={() => handleSelectSDG(i+1)}>
                                 <View style={styles.card} key={i}>
@@ -130,7 +127,7 @@ const CategoryList = ( props:Props) => {
                                         <Text style={styles.number}>{i + 1}</Text>
                                         <Image style={styles.logo} source={onuLogos[i].image}/>
                                     </View>
-                                    <View style={styles.sideImageContainer}>
+                                    <View style={[styles.sideImageContainer, {backgroundColor: colors[i]}]}>
                                         <Image style={{
                                             ...StyleSheet.absoluteFillObject,
                                             backgroundColor: colors[i],
@@ -145,6 +142,7 @@ const CategoryList = ( props:Props) => {
                         )
                     })
                     }
+                    <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
                 </ScrollView> :
                 <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                     <SearchBarComponent onChange={onChange}/>
@@ -161,6 +159,7 @@ const CategoryList = ( props:Props) => {
                             </View>
                         )
                         }
+                        <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
                     </ScrollView>
                 </View>
 
