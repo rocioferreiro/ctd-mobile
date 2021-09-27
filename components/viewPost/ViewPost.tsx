@@ -1,15 +1,16 @@
 import {Avatar, Card, IconButton, Paragraph, useTheme} from "react-native-paper";
 import OptionsMenu from "react-native-options-menu";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
 import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
+import {useLazyQuery} from "@apollo/client";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {Profile} from "../Profile/Profile";
 
 type Props = {
   post: Post,
@@ -21,9 +22,12 @@ const ViewPost = (props:Props) => {
   const userId = getUserId();
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
-  const [likes, setLikes] = React.useState(post.upVotes)
+  const [likes, setLikes] = React.useState(post.upvotes)
+  const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
   const [viewProfile, setViewProfile] = useState(false);
+
+  const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
 
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
@@ -64,8 +68,22 @@ const ViewPost = (props:Props) => {
 
   const [language, setLanguage] = React.useState(i18n.language);
 
+  useEffect(() => {
+    if (ownerData) {
+      setOwner(ownerData.findUserById.user);
+    }
+  }, [ownerData])
+
+  useEffect(() => {
+    if (post.owner) {
+      getUserId().then(id => {
+        getOwnerData({variables: {targetUserId: post.owner, currentUserId: id}});
+      })
+    }
+  }, [post])
+
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
-  const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
+  const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={owner && (owner.name[0] + owner.lastname[0])} {...props}/>
   const RightContent = props => <OptionsMenu
     customButton={myIcon}
     destructiveIndex={0}
@@ -78,7 +96,7 @@ const ViewPost = (props:Props) => {
         setViewProfile(true)
       }} style={{backgroundColor: 'transparent', marginRight: 20}}>
         <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
-                    title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{post.owner.mail}</Text>}
+                    title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{owner && owner.mail}</Text>}
                     subtitle={post.creationDate}
                     left={LeftContent}
                     right={RightContent}/>

@@ -183,6 +183,21 @@ query myPendingConnectionsNumber($userId: String!) {
 }
 `;
 
+export const GET_POST_BY_CONNECTIONS = gql`
+query getPostByConnections($userId: String!) {
+  getPostByConnections(userId: $userId) {
+    id
+    boosted
+    creationDate
+    image
+    owner
+    text
+    title
+    upvotes
+  }
+}
+`;
+
 export const GET_CONNECTIONS = gql`
 query getConnections($userId: String!) {
   getAllMyConnections(userId: $userId)

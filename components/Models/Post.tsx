@@ -7,6 +7,6 @@ export type Post  = {
   image?: String,
   creationDate: String,
   title?: String,
-  upVotes?: number,
+  upvotes?: number,
   boosted?: boolean,
 }
