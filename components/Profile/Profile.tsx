@@ -18,25 +18,40 @@ import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 
-export function Profile() {
+interface Props {
+  otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
+}
+
+export function Profile(props: Props) {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
-  const [findPostsOfUser, {
-    data: postsOfUser
-  }] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {ownerId: userId}});
-  const [findPostById, {
-    data: postData
-  }] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
+
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
+  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
+  const [getUser, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
 
   useEffect(() => {
-    getUserId().then(id => {
-      setUserId(id);
-      findPostsOfUser();
-    });
-  }, []);
+    if (props.otherUserId) {
+      setUserId(props.otherUserId);
+    }
+    else {
+      getUserId().then(id => {
+        setUserId(id);
+      });
+    }
+  }, [props.otherUserId]);
+
+  useEffect(() => {
+    if (userId) {
+      findPostsOfUser({variables: {ownerId: userId}});
+      getUser({variables: {userId: userId}});
+      getChallenges({variables: {userId: userId}});
+    }
+  }, [userId])
 
   useEffect(() => {
     if (!viewPost) return;
@@ -56,10 +71,6 @@ export function Profile() {
     console.log(error);
     toastError();
   }
-
-  const [getUsers, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
-  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
-  const [getPosts, {data: postsData}] = useLazyQuery(FIND_POSTS_BY_OWNER);
 
   const styles = StyleSheet.create({
     container: {
@@ -189,14 +200,6 @@ export function Profile() {
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
-
-  useEffect(() => {
-    getUserId().then(id => {
-      getUsers({variables: {userId: id}});
-      getChallenges({variables: {userId: id}});
-      getPosts({variables: {ownerId: id}});
-    });
-  }, []);
 
   const getActiveChallenge = (challenge) => {
       if (!challenge) return null;
@@ -342,18 +345,18 @@ export function Profile() {
                 })}
               </ScrollView>
           </View>
-          <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
-              <Button
-                  uppercase={false}
-                  mode={'outlined'}
-                  style={{width: '40%'}}
-                  onPress={() => {
-                    auth.signOut().catch(e => console.log(e))
-                  }}
-              >
-                {t('profile.logout')}
-              </Button>
-          </View>
+        { !props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+          <Button
+              uppercase={false}
+              mode={'outlined'}
+              style={{width: '40%'}}
+              onPress={() => {
+                auth.signOut().catch(e => console.log(e))
+              }}
+          >
+            {t('profile.logout')}
+          </Button>
+        </View>}
       </ScrollView>
       }
       {viewPost && postData &&
@@ -371,3 +374,4 @@ export function Profile() {
     </View>
   );
 }
+
