@@ -1,15 +1,17 @@
-import {Avatar, Card, Paragraph, useTheme} from "react-native-paper";
+import {Avatar, Card, IconButton, Paragraph, useTheme} from "react-native-paper";
 import OptionsMenu from "react-native-options-menu";
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
+import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {Profile} from "../Profile/Profile";
 
 type Props = {
   post: Post,
@@ -24,6 +26,7 @@ const ViewPost = (props:Props) => {
   const [likes, setLikes] = React.useState(post.upvotes)
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
+  const [viewProfile, setViewProfile] = useState(false);
 
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
 
@@ -41,6 +44,17 @@ const ViewPost = (props:Props) => {
     },
     refetchQueries: []
   });
+
+  const styles = StyleSheet.create({
+    button: {
+      position: 'absolute',
+      zIndex: 2,
+      top: 0,
+      left: 0,
+      padding: 0,
+      margin: 0
+    }
+  })
 
   const likePost = (isLiking: boolean)  => {
     if (isLiking) {
@@ -79,11 +93,15 @@ const ViewPost = (props:Props) => {
 
   return (
     <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
-      <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
-                  title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{owner && owner.mail}</Text>}
-                  subtitle={post.creationDate}
-                  left={LeftContent}
-                  right={RightContent}/>
+      <TouchableOpacity onPress={() => {
+        setViewProfile(true)
+      }} style={{backgroundColor: 'transparent', marginRight: 20}}>
+        <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
+                    title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{owner && owner.mail}</Text>}
+                    subtitle={post.creationDate}
+                    left={LeftContent}
+                    right={RightContent}/>
+      </TouchableOpacity>
       <Card.Content style={{marginHorizontal: 7, marginBottom: 10}}>
         <Text style={{
           fontSize: 20, color: colors.primary,
@@ -103,6 +121,19 @@ const ViewPost = (props:Props) => {
           <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {}}/>
         </View>
       </Card.Actions>
+      <Modal animationType="fade"
+             presentationStyle={"fullScreen"}
+             visible={viewProfile}
+             onRequestClose={() => {
+               setViewProfile(!viewProfile);
+             }}>
+        <IconButton onPress={() => setViewProfile(false)}
+                    icon={'chevron-left'}
+                    style={styles.button}
+                    size={40}
+        />
+        <Profile otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>
+      </Modal>
     </Card>
 
   )
