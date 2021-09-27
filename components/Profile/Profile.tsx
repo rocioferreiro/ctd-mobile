@@ -334,8 +334,8 @@ export function Profile(props: Props) {
           /><View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-          <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
-          <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
+          <Text style={styles.primaryText}>{userData?.findUserById?.user?.name} {userData?.findUserById?.user?.lastname}</Text>
+          <Text style={styles.secondaryText}>@{userData?.findUserById?.user?.username}</Text>
           <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
         </View>
         </View>

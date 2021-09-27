@@ -11,8 +11,6 @@ import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {useLazyQuery} from "@apollo/client";
-import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {Profile} from "../Profile/Profile";
 
 type Props = {
