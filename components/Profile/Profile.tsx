@@ -372,7 +372,7 @@ export function Profile(props: Props) {
               options={["English", "Español", "Cancel"]}
               actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
             <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-              <Icon type={'feather'} name={'git-branch'}/>
+              <Icon type={'feather'} name={'user-plus'}/>
             </TouchableWithoutFeedback>
           </View>
         </View>
