@@ -264,7 +264,7 @@ export function Profile(props: Props) {
                   <View style={{backgroundColor: 'transparent', marginRight: 25}}>
                       <Text
                           style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
-                      <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
+                      <Text style={styles.secondaryText}>{userData?.findUserById?.email}</Text>
                       <View style={{backgroundColor: 'transparent', alignItems: "flex-end", flex: 1, marginTop: -20}}>
                       </View>
                   </View>

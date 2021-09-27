@@ -54,6 +54,7 @@ const Register = (props: Props) => {
             props.onCancel();
         },
         onError: (e) => {
+            console.log(e)
             toastOn(t('register.error'), t('register.errorDescription'))
         }
     });
@@ -150,10 +151,21 @@ const Register = (props: Props) => {
                 newUser: {
                     name: firstName,
                     lastname: lastName,
-                    email: email,
+                    mail: email,
                     biography: username,
                     password: password,
-                    role: 'NORMAL'
+                    role: 'NORMAL',
+                    address: {
+                        country: "",
+                        locality: "",
+                        province: "",
+                        street: "",
+                        number: "",
+                        coordinates: {
+                            latitude: 0,
+                            longitude: 0
+                        },
+                    }
                 }
             }
         }).catch(e => console.log(e));
