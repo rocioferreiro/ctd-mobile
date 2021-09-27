@@ -61,6 +61,7 @@ query newFindUserById($targetUserId: String!, $currentUserId: String!){
         mail
         role
         lastname
+        favouriteODS
         address {
           coordinates {
             latitude

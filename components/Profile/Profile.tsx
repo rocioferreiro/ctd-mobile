@@ -23,7 +23,7 @@ import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
-import {CONNECT} from "../apollo-graph/Mutations";
+import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -49,14 +49,19 @@ export function Profile(props: Props) {
   const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
-
-
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
   const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
 
-
-
-  const [connect] = useMutation(CONNECT);
+  const [connect] = useMutation(CONNECT, {
+    onCompleted: () => {
+      setConnectionStatus(ConnectionStatus.pending);
+    }
+  });
+  const [disconnect] = useMutation(DISCONNECT, {
+    onCompleted: () => {
+      setConnectionStatus(ConnectionStatus.connect);
+    }
+  });
 
   useEffect(() => {
     if (props.otherUserId) {
@@ -243,7 +248,24 @@ export function Profile(props: Props) {
   const [language, setLanguage] = React.useState(i18n.language);
 
   const onConnect = () => {
-    connect({variables: {targetUser: userData.findUserById.user, followingUser: loggedInUserData.findUserById.user}}).catch(e => console.log(e));
+    switch (connectionStatus) {
+      case ConnectionStatus.connect:
+        const target = userData.findUserById.user;
+        const following = loggedInUserData.findUserById.user;
+        const targetUser = {id: target.id, mail: target.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude}}, favouriteODS: target.favouriteODS};
+        const followingUser = {id: following.id, mail: following.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude}}, favouriteODS: following.favouriteODS};
+
+        const variables = {variables: {targetUser: targetUser, followingUser: followingUser}}
+        connect(variables).catch(e => console.log(e));
+        break;
+      case ConnectionStatus.pending:
+      case ConnectionStatus.connected:
+        disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+        break;
+    }
+
   }
 
   const getConnectButtonLabel = () => {
