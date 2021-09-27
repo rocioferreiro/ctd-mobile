@@ -1,7 +1,15 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback
+} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
@@ -10,8 +18,7 @@ import {
   FIND_POST_BY_ID,
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
-  GET_PENDING_CONNECTIONS,
-  NEW_FIND_USER_BY_ID
+  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
@@ -25,6 +32,7 @@ import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
+import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -44,6 +52,7 @@ export function Profile(props: Props) {
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
+  const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
@@ -51,7 +60,7 @@ export function Profile(props: Props) {
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
@@ -99,7 +108,7 @@ export function Profile(props: Props) {
     if (connectionsData && pendingConnectionsData && props.otherUserId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
         setConnectionStatus(ConnectionStatus.connected);
-      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection === props.otherUserId))
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.otherUserId))
         setConnectionStatus(ConnectionStatus.pending);
       else setConnectionStatus(ConnectionStatus.connect);
     }
@@ -349,12 +358,12 @@ export function Profile(props: Props) {
             style={styles.connectButton}
             onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold',fontSize:11, fontFamily: 'sans'}}
         > {getConnectButtonLabel()}
-        </Button2>}
-          <Image
-              source={require('../../assets/images/profile-background.jpg')}
-              resizeMode={'cover'}
-              style={styles.profileBackground}
-          />
+        </Button2>}<Image
+            source={require('../../assets/images/profile-background.jpg')}
+            resizeMode={'cover'}
+            style={styles.profileBackground}
+        />
+
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                   <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
@@ -366,13 +375,17 @@ export function Profile(props: Props) {
                       </View>
                   </View>
               </View>
-              <OptionsMenu
+              <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+            <OptionsMenu
                   customButton={myIcon}
                   options={["English", "Español", "Cancel"]}
                   actions={[() => handleChange("en"), () => handleChange("es"), () => {
                   }]}
-              />
+              /><TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+              <Icon type={'feather'} name={'user-plus'}/>
+            </TouchableWithoutFeedback>
           </View>
+        </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
@@ -477,6 +490,19 @@ export function Profile(props: Props) {
           <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
       </Card>
       }
+      <Modal animationType="fade"
+             presentationStyle={"fullScreen"}
+             visible={viewConnectionsFeed}
+             onRequestClose={() => {
+               setViewConnectionsFeed(!viewConnectionsFeed);
+             }}>
+        <View style={{backgroundColor: colors.surface,}}>
+          <IconButton onPress={() => setViewConnectionsFeed(false)}
+                      icon={'chevron-left'}
+          />
+        </View>
+        <ConnectionsFeed/>
+      </Modal>
     </View>
   );
 }

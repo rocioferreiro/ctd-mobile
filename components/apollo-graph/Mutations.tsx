@@ -53,3 +53,15 @@ mutation disconnect($targetUserId: String!, $followingUserId: String!){
   disconnect(targetUserId: $targetUserId, followingUserId: $followingUserId)
 }
 `;
+
+export const ACCEPT_CONNECTION = gql`
+mutation acceptConnection($myUserID: String!, $otherUserID: String!){
+  acceptConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+}
+`;
+
+export const REJECT_CONNECTION = gql`
+mutation rejectConnection($myUserID: String!, $otherUserID: String!){
+  rejectConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+}
+`;
