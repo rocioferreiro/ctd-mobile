@@ -135,7 +135,7 @@ const CategoryList = ( props:Props) => {
                                             width: '100%',
                                             height: '100%'
                                         }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
-                                        <Text style={styles.name}>{v}</Text>
+                                        <Text style={styles.name}>{v.title}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
