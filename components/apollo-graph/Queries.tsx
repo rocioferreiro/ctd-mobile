@@ -159,7 +159,7 @@ query findPostById($id: String!){
 
 export const FIND_CHALLENGES_BY_CATEGORY = gql`
 query getChallengeByFilter($category: Int!) {
-    getChallengeByFilter(filter:{ category: [$category]}, pageSize:4,pageNumber:1) {
+    getChallengeByFilter(filter:{ category: [$category]}, pageSize:10,pageNumber:1) {
            actualPage
            challenges{
             categories
