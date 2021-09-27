@@ -54,13 +54,13 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
 
-  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {fetchPolicy: 'cache-and-network'});
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
   const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
@@ -82,8 +82,7 @@ export function Profile(props: Props) {
         getConnections({variables: {userId: id}});
         getPendingConnections({variables: {userId: id}});
       });
-    }
-    else {
+    } else {
       getUserId().then(id => {
         setUserId(id);
         setLoggedInUserId(id);
@@ -262,9 +261,9 @@ export function Profile(props: Props) {
       zIndex: 2,
       backgroundColor: colors.accent,
       borderRadius: 20,
-      marginTop:50,
-      height:33,
-      width:"40%"
+      marginTop: 50,
+      height: 33,
+      width: "40%"
     }
   });
 
@@ -276,10 +275,22 @@ export function Profile(props: Props) {
       case ConnectionStatus.connect:
         const target = userData.findUserById.user;
         const following = loggedInUserData.findUserById.user;
-        const targetUser = {id: target.id, mail: target.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude}}, favouriteODS: target.favouriteODS};
-        const followingUser = {id: following.id, mail: following.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude}}, favouriteODS: following.favouriteODS};
+        const targetUser = {
+          id: target.id, mail: target.mail, address: {
+            coordinates: {
+              latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude
+            }
+          }, favouriteODS: target.favouriteODS
+        };
+        const followingUser = {
+          id: following.id, mail: following.mail, address: {
+            coordinates: {
+              latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude
+            }
+          }, favouriteODS: following.favouriteODS
+        };
 
         const variables = {variables: {targetUser: targetUser, followingUser: followingUser}}
         connect(variables).catch(e => console.log(e));
@@ -355,18 +366,20 @@ export function Profile(props: Props) {
       {!viewPost &&
       <ScrollView>
         {props.otherUserId && <Button2 icon="plus"
-            style={styles.connectButton}
-            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold',fontSize:11, fontFamily: 'sans'}}
+                                       style={styles.connectButton}
+                                       onPress={() => onConnect()} color={colors.background}
+                                       labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
         > {getConnectButtonLabel()}
         </Button2>}<Image
-            source={require('../../assets/images/profile-background.jpg')}
-            resizeMode={'cover'}
-            style={styles.profileBackground}
-        />
+          source={require('../../assets/images/profile-background.jpg')}
+          resizeMode={'cover'}
+          style={styles.profileBackground}
+      />
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
+                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
+                                style={styles.profileImage}/>
                   <View style={{backgroundColor: 'transparent', marginRight: 25}}>
                       <Text
                           style={styles.primaryText}>{userData?.findUserById?.user?.name} {userData?.findUserById?.user?.lastname}</Text>
@@ -376,16 +389,19 @@ export function Profile(props: Props) {
                   </View>
               </View>
               <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-            <OptionsMenu
-                  customButton={myIcon}
-                  options={["English", "Español", "Cancel"]}
-                  actions={[() => handleChange("en"), () => handleChange("es"), () => {
-                  }]}
-              /><TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-              <Icon type={'feather'} name={'user-plus'}/>
-            </TouchableWithoutFeedback>
+                  <OptionsMenu
+                      customButton={myIcon}
+                      options={["English", "Español", "Cancel"]}
+                      actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                      }]}
+                  />
+                {
+                  (!props.otherUserId) && <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                      <Icon type={'feather'} name={'user-plus'}/>
+                  </TouchableWithoutFeedback>
+                }
+              </View>
           </View>
-        </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
@@ -427,12 +443,12 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                <Button
-                    style={{backgroundColor: colors.accent, borderRadius: 20}}
-                    onPress={() => {
-                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                > {t('profile.about')}
-                </Button>
+                  <Button
+                      style={{backgroundColor: colors.accent, borderRadius: 20}}
+                      onPress={() => {
+                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                  > {t('profile.about')}
+                  </Button>
               </View>
           </View>
           <View style={styles.sectionContainer}>
