@@ -28,12 +28,11 @@ export function Profile(props: Props) {
   const [userId, setUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
-  const [findPostsOfUser, {
-    data: postsOfUser
-  }] = useLazyQuery(FIND_POSTS_OF_USER);
-  const [findPostById, {
-    data: postData
-  }] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
+
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
+  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
+  const [getUser, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
 
   useEffect(() => {
     if (props.otherUserId) {
@@ -47,7 +46,11 @@ export function Profile(props: Props) {
   }, [props.otherUserId]);
 
   useEffect(() => {
-    if (userId) findPostsOfUser({variables: {ownerId: userId}});
+    if (userId) {
+      findPostsOfUser({variables: {ownerId: userId}});
+      getUser({variables: {userId: userId}});
+      getChallenges({variables: {userId: userId}});
+    }
   }, [userId])
 
   useEffect(() => {
@@ -68,10 +71,6 @@ export function Profile(props: Props) {
     console.log(error);
     toastError();
   }
-
-  const [getUsers, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
-  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
-  const [getPosts, {data: postsData}] = useLazyQuery(FIND_POSTS_BY_OWNER);
 
   const styles = StyleSheet.create({
     container: {
@@ -201,14 +200,6 @@ export function Profile(props: Props) {
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
-
-  useEffect(() => {
-    getUserId().then(id => {
-      getUsers({variables: {userId: id}});
-      getChallenges({variables: {userId: id}});
-      getPosts({variables: {ownerId: id}});
-    });
-  }, []);
 
   const getActiveChallenge = (challenge) => {
       if (!challenge) return null;
