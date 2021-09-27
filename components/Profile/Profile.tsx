@@ -123,6 +123,7 @@ export function Profile(props: Props) {
       backgroundColor: colors.surface,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+      position: 'relative'
     },
     profileBackground: {
       width: '100%',
@@ -242,6 +243,14 @@ export function Profile(props: Props) {
       position: "absolute",
       zIndex: 0
     },
+    connectButton: {
+      position: "absolute",
+      top: 10,
+      right: 10,
+      zIndex: 2,
+      backgroundColor: colors.accent,
+      borderRadius: 20,
+    }
   });
 
   const {t, i18n} = useTranslation();
@@ -327,6 +336,11 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
+        {props.otherUserId && <Button
+            style={styles.connectButton}
+            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+        > {getConnectButtonLabel()}
+        </Button>}
           <Image
               source={require('../../assets/images/profile-background.jpg')}
               resizeMode={'cover'}
@@ -391,11 +405,6 @@ export function Profile(props: Props) {
                     }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
                 > {t('profile.about')}
                 </Button>
-                {props.otherUserId && <Button
-                    style={{backgroundColor: colors.primary, borderRadius: 20, marginTop: 10}}
-                    onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                > {getConnectButtonLabel()}
-                </Button>}
               </View>
           </View>
           <View style={styles.sectionContainer}>
