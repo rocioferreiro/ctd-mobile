@@ -9,6 +9,7 @@ import {validateEmail, validatePassword} from "../validations";
 import {useMutation} from "@apollo/client";
 import {REGISTER} from "../../apollo-graph/Mutations";
 import Toast from "react-native-toast-message";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     onCancel: () => void
@@ -16,6 +17,7 @@ type Props = {
 
 const Register = (props: Props) => {
     const {colors} = useTheme();
+    const {t, i18n} = useTranslation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
@@ -52,7 +54,7 @@ const Register = (props: Props) => {
             props.onCancel();
         },
         onError: (e) => {
-            toastOn('Error', 'Register failed')
+            toastOn(t('register.error'), t('register.errorDescription'))
         }
     });
 
@@ -179,7 +181,7 @@ const Register = (props: Props) => {
                     <View style={styles.nameInputContainer}>
                         {errorMarker.firstName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
-                            placeholder={"First Name"}
+                            placeholder={t('register.name')}
                             style={errorMarker.firstName ? [styles.input, {
                                 borderWidth: 3,
                                 borderColor: colors.error,
@@ -197,7 +199,7 @@ const Register = (props: Props) => {
                     <View style={styles.nameInputContainer}>
                         {errorMarker.lastName && <Text style={styles.error}> min. 2 characters </Text>}
                         <Input
-                            placeholder={"Last Name"}
+                            placeholder={t('register.lastname')}
                             style={errorMarker.lastName ? [styles.input, {
                                 borderWidth: 3,
                                 borderColor: colors.error,
@@ -213,25 +215,25 @@ const Register = (props: Props) => {
                         />
                     </View>
                 </View>
-                {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
+                {/*{errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}*/}
+                {/*<Input*/}
+                {/*    placeholder={"Username"}*/}
+                {/*    style={errorMarker.username ? [styles.input, {*/}
+                {/*        borderWidth: 3,*/}
+                {/*        borderColor: colors.error,*/}
+                {/*        borderStyle: 'solid'*/}
+                {/*    }] : styles.input}*/}
+                {/*    value={username}*/}
+                {/*    maxLength={20}*/}
+                {/*    onChangeText={t => {*/}
+                {/*        setUsername(t);*/}
+                {/*        setErrorMarker({...errorMarker, username: !(username.length >= 1)});*/}
+                {/*    }}*/}
+                {/*    inputContainerStyle={{borderBottomWidth: 0}}*/}
+                {/*/>*/}
+                {errorMarker.email && <Text style={styles.error}> {t('register.emailError')} </Text>}
                 <Input
-                    placeholder={"Username"}
-                    style={errorMarker.username ? [styles.input, {
-                        borderWidth: 3,
-                        borderColor: colors.error,
-                        borderStyle: 'solid'
-                    }] : styles.input}
-                    value={username}
-                    maxLength={20}
-                    onChangeText={t => {
-                        setUsername(t);
-                        setErrorMarker({...errorMarker, username: !(username.length >= 1)});
-                    }}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                />
-                {errorMarker.email && <Text style={styles.error}> Invalid email adddress </Text>}
-                <Input
-                    placeholder={"E-mail"}
+                    placeholder={t('login.email')}
                     style={errorMarker.email ? [styles.input, {
                         borderWidth: 3,
                         borderColor: colors.error,
@@ -245,10 +247,9 @@ const Register = (props: Props) => {
                     inputContainerStyle={{borderBottomWidth: 0}}
                 />
                 {errorMarker.password &&
-                <Text style={styles.error} numberOfLines={1} ellipsizeMode={'tail'}> min. 8 digits, an upper case letter
-                    and a number </Text>}
+                <Text style={styles.error} numberOfLines={1} ellipsizeMode={'tail'}> {t('register.passwordError')} </Text>}
                 <Input
-                    placeholder={"Password"}
+                    placeholder={t('login.password')}
                     style={errorMarker.password ? [styles.input, {
                         borderWidth: 3,
                         borderColor: colors.error,
@@ -271,10 +272,10 @@ const Register = (props: Props) => {
                 }}>
                     <Button style={styles.button} mode={'contained'} onPress={() => {
                         if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email) || (errorMarker.firstName) || (errorMarker.lastName) || (errorMarker.password) || (errorMarker.password))) onRegister();
-                    }}>Register</Button>
+                    }}>{t('register.done')}</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {
                         props.onCancel();
-                    }}>Cancel</Button>
+                    }}>{t('register.cancel')}</Button>
                 </View>
             </View>
             }

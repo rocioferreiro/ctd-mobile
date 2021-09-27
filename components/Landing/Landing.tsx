@@ -11,7 +11,7 @@ const Landing = () => {
     const { colors } = useTheme();
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
-    const {t, i18n} = useTranslation('login');
+    const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
 
     const styles = StyleSheet.create({
@@ -68,13 +68,13 @@ const Landing = () => {
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
                 <Divider/>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>Register</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setRegisterOpen(true)}}>{t('register.done')}</Button>
                 <Divider/>
-                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>Login</Button>
+                <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login.done')}</Button>
                 <Divider/>
                 <View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>
                     <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
-                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> OR </Text>
+                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>
                     <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
                 </View>
                 <Divider/>

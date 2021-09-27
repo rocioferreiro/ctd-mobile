@@ -1,11 +1,24 @@
 
 {
   "title":{
-    "ctd":  "bienvenido a ctd"
+    "ctd":  "bienvenido a ctd",
+    "or": "O"
   },
   "login": {
     "password":"Contraseña",
-    "email": "Mail"
+    "email": "Mail",
+    "cancel": "Cancelar",
+    "done": "Iniciar Sesión"
+  },
+  "register": {
+    "error":"Error",
+    "errorDescription": "La creación del usuario falló",
+    "cancel": "Cancelar",
+    "name": "Nommbre",
+    "lastname": "Apellido",
+    "emailError": "Mail inválido",
+    "passwordError": "min. 8 caracteres, con una mayúscula y un número",
+    "done": "Registrarse"
   },
   "profile": {
     "level": "Nivel",
@@ -57,9 +70,10 @@
     "cancel": "Cancelar"
   },
   "search-screen": {
-    "for-you": "Para Ti",
+    "for-you": "Para Tí",
     "search": "Buscar",
-    "collections": "Colecciones"
+    "collections": "Colecciones",
+    "challenges": "Desafíos"
   },
   "challenge-page": {
     "challenge-location": "Ubicación del Desafío",
@@ -114,6 +128,45 @@
     "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
     "inscriptions-open": "Inscripciones Abiertas",
     "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
+  },
+  "search-bar": {
+    "placeholder":"Buscar Desafíos.."
+  },
+  "onu-objective-info": {
+    "no-poverty": "Fin de la Pobreza",
+    "no-poverty-description": "Tiene el fin de garantizar que personas de todo el mundo tengan acceso a servicios esenciales y a protección social.",
+    "zero-hunger": "Hambre Cero",
+    "zero-hunger-description": "Poner fin al hambre y asegurar el acceso de todas las personas a una alimentación sana, nutritiva y suficiente.",
+    "good-health": "Salud y Bienestar",
+    "good-health=description": "Garantizar una vida sana y promover el bienestar en todas las edades es esencial para el desarrollo sostenible.",
+    "quality-education": "Educación de Calidad",
+    "quality-education-description": "La educación permite la movilidad socioeconómica ascendente y es clave para salir de la pobreza.",
+    "gender": "Igualdad de Género",
+    "gender-description": "La igualdad de género no solo es un derecho humano fundamental, sino que es uno de los fundamentos esenciales para construir un mundo próspero y sostenible.",
+    "clean-water": "Agua Limpia y Saneamiento",
+    "clean-water-description": "La disponibilidad y el acceso a los servicios de agua, saneamiento e higiene es una parte fundamental para el mundo que queremos construir.",
+    "energy": "Energía Asequible y No Contaminante",
+    "energy-description": "Busca garantizar el acceso universal a servicios energéticos asequibles, fiables y modernos.",
+    "work": "Trabajo Decente y Crecimiento Económico",
+    "work-description": "Un crecimiento económico inclusivo y sostenido puede impulsar el progreso, crear empleos decentes y mejorar los estándares de vida.",
+    "industry": "Industria, Innovación, e Infraestructura",
+    "industry-description": "La industrialización inclusiva y sostenible puede dar rienda suelta a las fuerzas económicas dinámicas.",
+    "inequalities": "Reducciòn de las Desgualdades",
+    "inequalities-description": "Reducir las desigualdades y garantizar que nadie se queda atrás forma parte integral de nuestros objetivos.",
+    "cities": "Ciudades y Comunidades Sostenibles",
+    "cities-description": "Busca asegurar el acceso de todas las personas a viviendas y servicios básicos adecuados, seguros y asequibles y mejorar los barrios marginales.",
+    "consumption": "Producción y Consumo Responsables",
+    "consumption-description": "Busca lograr la gestión sostenible y el uso eficiente de los recursos naturales",
+    "climate": "Acción por el Clima",
+    "climate-description": "El cambio climático está afectando a todos los países de todos los continentes.",
+    "life-water": "Vida Submarina",
+    "life-water-description": "Una gestión cuidadosa de este recurso mundial esencial es una característica clave de un futuro sostenible.",
+    "life-land": "Vida de Ecosistemas Terrestres",
+    "life-land-description": "Afronta la necesidad de abordar las amenazas a las que se enfrentan las especies silvestres y los ecosistemas.",
+    "peace": "Paz, Justicia e Instituciones Sólidas",
+    "peace-description": "Nos entrentamos con los conflictos, la inseguridad, las instituciones débiles y el acceso limitado a la justicia.",
+    "partner":  "Alianzas para Lograr los Objetivos",
+    "partner-description": "Los ODS solo se pueden conseguir con asociaciones mundiales sólidas y cooperación."
   }
 
 
