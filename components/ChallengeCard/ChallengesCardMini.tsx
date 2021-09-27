@@ -45,7 +45,7 @@ const ChallengeCardMini = (props: Props) => {
                     marginTop: 5}}>{props.challenge.title}</Title>
                 <Paragraph style={{ color: colors.background,fontSize:15,marginBottom:5}}>{t('challenge-card-mini.challenge-description')}</Paragraph>
             </Card.Content>
-            <Card.Cover source={require('../../assets/images/compost.jpg')}/>
+            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
                 <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}>
                     <Title style={{ fontSize: 15, color: colors.primary,

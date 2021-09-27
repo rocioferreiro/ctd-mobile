@@ -125,7 +125,7 @@ const ChallengePage = (props:Props) => {
 
                      <ImageBackground
                         style={{width:"100%", height:300, display:"flex", justifyContent: "center", alignItems: "center"}}
-                         source={require('../../assets/images/compost.jpg')}
+                         source={{uri: 'https://picsum.photos/700'}}
                      >
                        <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}} label={data.findUserById.name[0] + data.findUserById.lastname[0]}/>
                        <Text style={styles.title}> {props.challenge.title}</Text>

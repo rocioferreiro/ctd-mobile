@@ -45,7 +45,7 @@ const ChallengeCard = (props: Props) => {
                 }}>{props.challenge.title}</Title>
                 <Paragraph style={{color: colors.primary, fontSize: 15, marginBottom: 5}}>{t('challenge-card.challenge-description')}</Paragraph>
             </Card.Content>
-            <Card.Cover source={require('../../assets/images/compost.jpg')}/>
+            <Card.Cover source={{uri: 'https://picsum.photos/700'}}/>
             <Card.Actions>
                 <Button style={{
                     backgroundColor: '#c1c1c1',
