@@ -215,22 +215,22 @@ const Register = (props: Props) => {
                         />
                     </View>
                 </View>
-                {/*{errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}*/}
-                {/*<Input*/}
-                {/*    placeholder={"Username"}*/}
-                {/*    style={errorMarker.username ? [styles.input, {*/}
-                {/*        borderWidth: 3,*/}
-                {/*        borderColor: colors.error,*/}
-                {/*        borderStyle: 'solid'*/}
-                {/*    }] : styles.input}*/}
-                {/*    value={username}*/}
-                {/*    maxLength={20}*/}
-                {/*    onChangeText={t => {*/}
-                {/*        setUsername(t);*/}
-                {/*        setErrorMarker({...errorMarker, username: !(username.length >= 1)});*/}
-                {/*    }}*/}
-                {/*    inputContainerStyle={{borderBottomWidth: 0}}*/}
-                {/*/>*/}
+                {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
+                <Input
+                    placeholder={"Username"}
+                    style={errorMarker.username ? [styles.input, {
+                        borderWidth: 3,
+                        borderColor: colors.error,
+                        borderStyle: 'solid'
+                    }] : styles.input}
+                    value={username}
+                    maxLength={20}
+                    onChangeText={t => {
+                        setUsername(t);
+                        setErrorMarker({...errorMarker, username: !(username.length >= 1)});
+                    }}
+                    inputContainerStyle={{borderBottomWidth: 0}}
+                />
                 {errorMarker.email && <Text style={styles.error}> {t('register.emailError')} </Text>}
                 <Input
                     placeholder={t('login.email')}

@@ -1,38 +1,33 @@
 import * as React from 'react';
 import { useTheme} from 'react-native-paper';
-import {Text, View} from "../Themed";
+import {View} from "../Themed";
 import {ScrollView} from "react-native-gesture-handler";
-import {Address, Gender, Role, User} from "../Models/User";
-import {Image, TouchableWithoutFeedback} from "react-native";
+import {TouchableWithoutFeedback} from "react-native";
 import ViewPost from "../viewPost/ViewPost";
+import {useLazyQuery} from "@apollo/client";
+import {GET_POST_BY_CONNECTIONS} from "../apollo-graph/Queries";
+import {useEffect} from "react";
+import {getUserId} from "../Storage";
 
 
 const PostFeed = () => {
-    const posts =[1,2,3]
     const [open, setOpen] = React.useState(false)
-    const post =[{
-        text: "This is a post text",
-        id: "434034",
-        owner: {
-            lastname: "Alvarez",
-            mail: "al@gmail.com",
-            name: "Pedro",
-            role: Role.NORMAL,
-        },
-        image: "asad",
-        creationDate: "23/5/2021",
-        title: "Post Title",
-        upVotes:11,
-        boosted: false
-    }]
+    const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS);
     const {colors} = useTheme();
+
+    useEffect(() => {
+        getUserId().then(id => {
+            getPostsByConnections({variables: {userId: id}});
+        });
+    }, []);
+
     return (
        <View style={{marginBottom: 70}}>
            <ScrollView>
-               {posts.map((s, index) => {
+               {postsByConnectionsData?.getPostByConnections.map((post, index) => {
                    return <TouchableWithoutFeedback key={index}>
                        <View  style={{backgroundColor: colors.surface}} >
-                       <ViewPost post={post[0]} open={open}/>
+                       <ViewPost post={post} open={open}/>
                        </View>
 
                    </TouchableWithoutFeedback>
