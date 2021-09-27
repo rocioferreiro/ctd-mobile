@@ -29,7 +29,7 @@
     "challenges": "Challenges",
     "followers": "Connections",
     "connect": "Connect",
-    "disconnect": "Disconnect",
+    "connected": "Connected",
     "pending": "Pending"
   },
   "create-post": {

@@ -5,8 +5,14 @@ import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
-import {useLazyQuery} from "@apollo/client";
-import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
+import {useLazyQuery, useMutation} from "@apollo/client";
+import {
+  FIND_POST_BY_ID,
+  FIND_POSTS_OF_USER,
+  GET_CONNECTIONS,
+  GET_PENDING_CONNECTIONS,
+  NEW_FIND_USER_BY_ID
+} from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
@@ -15,8 +21,15 @@ import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
-import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
+import {CONNECT} from "../apollo-graph/Mutations";
+
+enum ConnectionStatus {
+  connect = "Connect",
+  pending = "Pending",
+  connected = "Connected"
+}
 
 interface Props {
   otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
@@ -26,37 +39,65 @@ export function Profile(props: Props) {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
+  const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
+  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
+
+
+  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+
+
+
+  const [connect] = useMutation(CONNECT);
 
   useEffect(() => {
     if (props.otherUserId) {
       setUserId(props.otherUserId);
+      getUserId().then(id => {
+        setLoggedInUserId(id);
+        getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
+        getConnections({variables: {userId: id}});
+        getPendingConnections({variables: {userId: id}});
+      });
     }
     else {
       getUserId().then(id => {
         setUserId(id);
+        setLoggedInUserId(id);
       });
     }
   }, [props.otherUserId]);
 
   useEffect(() => {
-    if (userId) {
+    if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
-      getUser({variables: {userId: userId}});
+      getUser({variables: {targetUserId: userId, currentUserId: loggedInUserId}});
       getChallenges({variables: {userId: userId}});
     }
-  }, [userId])
+  }, [userId, loggedInUserId])
 
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
   }, [viewPost])
+
+  useEffect(() => {
+    if (connectionsData && pendingConnectionsData && props.otherUserId) {
+      if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
+        setConnectionStatus(ConnectionStatus.connected);
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection === props.otherUserId))
+        setConnectionStatus(ConnectionStatus.pending);
+      else setConnectionStatus(ConnectionStatus.connect);
+    }
+  }, [connectionsData, pendingConnectionsData, props.otherUserId]);
 
   function toastError() {
     Toast.show({
@@ -201,6 +242,21 @@ export function Profile(props: Props) {
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
 
+  const onConnect = () => {
+    connect({variables: {targetUser: userData.findUserById.user, followingUser: loggedInUserData.findUserById.user}}).catch(e => console.log(e));
+  }
+
+  const getConnectButtonLabel = () => {
+    switch (connectionStatus) {
+      case ConnectionStatus.connect:
+        return t('profile.connect');
+      case ConnectionStatus.pending:
+        return t('profile.pending');
+      case ConnectionStatus.connected:
+        return t('profile.connected');
+    }
+  }
+
   const getActiveChallenge = (challenge) => {
       if (!challenge) return null;
       return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
@@ -315,9 +371,8 @@ export function Profile(props: Props) {
                 </Button>
                 {props.otherUserId && <Button
                     style={{backgroundColor: colors.primary, borderRadius: 20, marginTop: 10}}
-                    onPress={() => {
-                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                > {t('profile.connect')}
+                    onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                > {getConnectButtonLabel()}
                 </Button>}
               </View>
           </View>
