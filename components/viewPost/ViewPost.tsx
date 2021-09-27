@@ -5,9 +5,11 @@ import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
 import {useTranslation} from "react-i18next";
+import {getUserId} from "../Storage";
+import {useMutation} from "@apollo/client";
+import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
 
 type Props = {
   post: Post,
@@ -16,17 +18,39 @@ type Props = {
 
 const ViewPost = (props:Props) => {
   const { colors } = useTheme();
+  const userId = getUserId();
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upvotes)
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
+
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
 
+  const [like] = useMutation(LIKE_POST, {
+    onCompleted: () => {
+    },
+    onError: err => {
+    },
+    refetchQueries: []
+  });
+  const [unlike] = useMutation(UNLIKE_POST, {
+    onCompleted: () => {
+    },
+    onError: err => {
+    },
+    refetchQueries: []
+  });
+
   const likePost = (isLiking: boolean)  => {
-    //TODO implement like post
+    if (isLiking) {
+      setLikes(likes + 1)
+      like({variables: {userId: userId, postId: post.id}})
+    } else {
+      setLikes(likes - 1)
+      unlike({variables: {userId: userId, postId: post.id}})
+    }
     setLiked(!liked)
-    isLiking? setLikes(likes+1) : setLikes(likes-1)
   }
 
   const [language, setLanguage] = React.useState(i18n.language);
@@ -48,10 +72,10 @@ const ViewPost = (props:Props) => {
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={owner && (owner.name[0] + owner.lastname[0])} {...props}/>
   const RightContent = props => <OptionsMenu
-                                    customButton={myIcon}
-                                    destructiveIndex={0}
-                                    options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
-                                    actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
+    customButton={myIcon}
+    destructiveIndex={0}
+    options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
+    actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
   return (
     <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
@@ -67,7 +91,7 @@ const ViewPost = (props:Props) => {
         }}>{props.post.title}</Text>
         <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{ post.text }</Paragraph>
       </Card.Content>
-      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={{uri: 'https://picsum.photos/700'}}/>}
+      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={require('../../assets/images/post.jpg')}/>}
       <Card.Actions style={{width: '100%', display:'flex', justifyContent:'space-between', marginVertical: 10}}>
         <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={liked ? 'heart' : 'heart-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => likePost(!liked)}/>
