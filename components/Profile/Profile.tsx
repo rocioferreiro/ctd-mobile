@@ -5,8 +5,6 @@ import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
-import {useLazyQuery} from "@apollo/client";
-import {FIND_POST_BY_ID, FIND_POSTS_OF_USER, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
   FIND_POST_BY_ID,
@@ -23,7 +21,6 @@ import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
-import {FIND_CHALLENGES_OF_USER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
@@ -50,7 +47,6 @@ export function Profile(props: Props) {
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
