@@ -5,7 +5,7 @@ import SearchScreen from "../components/SearchScreen";
 import Map from "../components/Map";
 import {Profile} from "../components/Profile/Profile";
 import {useTheme} from "react-native-paper";
-import {Dimensions, View} from "react-native";
+import {Dimensions, Platform, View} from "react-native";
 import CreatePost from "../components/CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {colorShade} from "../components/Models/shadingColor";
@@ -22,7 +22,6 @@ const MyTabbar = () => {
   const [userId, setUserId] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
   const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {ownerId: userId}});
 
   function toastOn() {
@@ -86,9 +85,8 @@ const MyTabbar = () => {
   }, [createPost])
 
   return (
-    <View style={{backgroundColor: colors.surface}}>
+    <View style={{backgroundColor: colors.surface, height: (Platform.OS === 'ios') ? Dimensions.get('screen').height + 25 : Dimensions.get('screen').height- 45}}>
       {activeTab}
-      <View style={{paddingVertical: 15 }}/>
       <Tabbar
         style={{zIndex: 5}}
         tabs={tabs}

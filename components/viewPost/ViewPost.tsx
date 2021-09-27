@@ -114,8 +114,8 @@ const ViewPost = (props:Props) => {
         <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={liked ? 'heart' : 'heart-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => likePost(!liked)}/>
           <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
-          <Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>
-          <Text style={{color: colors.primary}}> 1 </Text>
+          {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
+          {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
         </View>
         <View style={{marginRight:15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {}}/>
