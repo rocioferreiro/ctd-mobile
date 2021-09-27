@@ -18,8 +18,7 @@ import {
   FIND_POST_BY_ID,
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
-  GET_PENDING_CONNECTIONS,
-  NEW_FIND_USER_BY_ID
+  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
@@ -61,7 +60,7 @@ export function Profile(props: Props) {
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
@@ -109,7 +108,7 @@ export function Profile(props: Props) {
     if (connectionsData && pendingConnectionsData && props.otherUserId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
         setConnectionStatus(ConnectionStatus.connected);
-      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection === props.otherUserId))
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.otherUserId))
         setConnectionStatus(ConnectionStatus.pending);
       else setConnectionStatus(ConnectionStatus.connect);
     }
