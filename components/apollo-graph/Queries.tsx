@@ -180,7 +180,7 @@ query findPostById($id: String!){
 
 export const FIND_CHALLENGES_BY_CATEGORY = gql`
 query getChallengeByFilter($category: Int!) {
-    getChallengeByFilter(filter:{ category: [$category]}, pageSize:10,pageNumber:1) {
+    getChallengeByFilter(filter:{ category: [$category]}, pageSize:10,pageNumber:0) {
            actualPage
            challenges{
             categories
@@ -210,7 +210,6 @@ query getChallengeByFilter($category: Int!) {
             totalPages
            }
 }
-
 `;
 
 export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
