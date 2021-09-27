@@ -6,6 +6,9 @@ import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
 import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
+import {getUserId} from "../Storage";
+import {useMutation} from "@apollo/client";
+import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import {Profile} from "../Profile/Profile";
 
 type Props = {
@@ -15,11 +18,27 @@ type Props = {
 
 const ViewPost = (props:Props) => {
   const { colors } = useTheme();
+  const userId = getUserId();
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upVotes)
   const {t, i18n} = useTranslation();
   const [viewProfile, setViewProfile] = useState(false);
+
+  const [like] = useMutation(LIKE_POST, {
+    onCompleted: () => {
+    },
+    onError: err => {
+    },
+    refetchQueries: []
+  });
+  const [unlike] = useMutation(UNLIKE_POST, {
+    onCompleted: () => {
+    },
+    onError: err => {
+    },
+    refetchQueries: []
+  });
 
   const styles = StyleSheet.create({
     button: {
@@ -33,9 +52,14 @@ const ViewPost = (props:Props) => {
   })
 
   const likePost = (isLiking: boolean)  => {
-    //TODO implement like post
+    if (isLiking) {
+      setLikes(likes + 1)
+      like({variables: {userId: userId, postId: post.id}})
+    } else {
+      setLikes(likes - 1)
+      unlike({variables: {userId: userId, postId: post.id}})
+    }
     setLiked(!liked)
-    isLiking? setLikes(likes+1) : setLikes(likes-1)
   }
 
   const [language, setLanguage] = React.useState(i18n.language);
@@ -43,10 +67,10 @@ const ViewPost = (props:Props) => {
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={post.owner.name[0] + post.owner.lastname[0] } {...props}/>
   const RightContent = props => <OptionsMenu
-                                    customButton={myIcon}
-                                    destructiveIndex={0}
-                                    options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
-                                    actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
+    customButton={myIcon}
+    destructiveIndex={0}
+    options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
+    actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
   return (
     <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
