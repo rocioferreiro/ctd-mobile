@@ -5,8 +5,14 @@ import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
-import {useLazyQuery} from "@apollo/client";
-import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
+import {useLazyQuery, useMutation} from "@apollo/client";
+import {
+  FIND_POST_BY_ID,
+  FIND_POSTS_OF_USER,
+  GET_CONNECTIONS,
+  GET_PENDING_CONNECTIONS,
+  NEW_FIND_USER_BY_ID
+} from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
@@ -15,8 +21,16 @@ import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
-import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
+import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
+import {Button as Button2} from "react-native-paper"
+
+enum ConnectionStatus {
+  connect = "Connect",
+  pending = "Pending",
+  connected = "Connected"
+}
 
 interface Props {
   otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
@@ -26,37 +40,70 @@ export function Profile(props: Props) {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
+  const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
+  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
+  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+
+  const [connect] = useMutation(CONNECT, {
+    onCompleted: () => {
+      setConnectionStatus(ConnectionStatus.pending);
+    }
+  });
+  const [disconnect] = useMutation(DISCONNECT, {
+    onCompleted: () => {
+      setConnectionStatus(ConnectionStatus.connect);
+    }
+  });
 
   useEffect(() => {
     if (props.otherUserId) {
       setUserId(props.otherUserId);
+      getUserId().then(id => {
+        setLoggedInUserId(id);
+        getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
+        getConnections({variables: {userId: id}});
+        getPendingConnections({variables: {userId: id}});
+      });
     }
     else {
       getUserId().then(id => {
         setUserId(id);
+        setLoggedInUserId(id);
       });
     }
   }, [props.otherUserId]);
 
   useEffect(() => {
-    if (userId) {
+    if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
-      getUser({variables: {userId: userId}});
+      getUser({variables: {targetUserId: userId, currentUserId: loggedInUserId}});
       getChallenges({variables: {userId: userId}});
     }
-  }, [userId])
+  }, [userId, loggedInUserId])
 
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
   }, [viewPost])
+
+  useEffect(() => {
+    if (connectionsData && pendingConnectionsData && props.otherUserId) {
+      if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
+        setConnectionStatus(ConnectionStatus.connected);
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection === props.otherUserId))
+        setConnectionStatus(ConnectionStatus.pending);
+      else setConnectionStatus(ConnectionStatus.connect);
+    }
+  }, [connectionsData, pendingConnectionsData, props.otherUserId]);
 
   function toastError() {
     Toast.show({
@@ -77,6 +124,7 @@ export function Profile(props: Props) {
       backgroundColor: colors.surface,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+      position: 'relative'
     },
     profileBackground: {
       width: '100%',
@@ -196,10 +244,53 @@ export function Profile(props: Props) {
       position: "absolute",
       zIndex: 0
     },
+    connectButton: {
+      position: "absolute",
+      top: 10,
+      right: 10,
+      zIndex: 2,
+      backgroundColor: colors.accent,
+      borderRadius: 20,
+      marginTop:50,
+      height:33,
+      width:"40%"
+    }
   });
 
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
+
+  const onConnect = () => {
+    switch (connectionStatus) {
+      case ConnectionStatus.connect:
+        const target = userData.findUserById.user;
+        const following = loggedInUserData.findUserById.user;
+        const targetUser = {id: target.id, mail: target.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude}}, favouriteODS: target.favouriteODS};
+        const followingUser = {id: following.id, mail: following.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude}}, favouriteODS: following.favouriteODS};
+
+        const variables = {variables: {targetUser: targetUser, followingUser: followingUser}}
+        connect(variables).catch(e => console.log(e));
+        break;
+      case ConnectionStatus.pending:
+      case ConnectionStatus.connected:
+        disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+        break;
+    }
+
+  }
+
+  const getConnectButtonLabel = () => {
+    switch (connectionStatus) {
+      case ConnectionStatus.connect:
+        return t('profile.connect');
+      case ConnectionStatus.pending:
+        return t('profile.pending');
+      case ConnectionStatus.connected:
+        return t('profile.connected');
+    }
+  }
 
   const getActiveChallenge = (challenge) => {
       if (!challenge) return null;
@@ -249,6 +340,11 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
+        {props.otherUserId && <Button2 icon="plus"
+            style={styles.connectButton}
+            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold',fontSize:11, fontFamily: 'sans'}}
+        > {getConnectButtonLabel()}
+        </Button2>}
           <Image
               source={require('../../assets/images/profile-background.jpg')}
               resizeMode={'cover'}
@@ -256,8 +352,8 @@ export function Profile(props: Props) {
           /><View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-          <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
-          <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
+          <Text style={styles.primaryText}>{userData?.findUserById?.user?.name} {userData?.findUserById?.user?.lastname}</Text>
+          <Text style={styles.secondaryText}>@{userData?.findUserById?.user?.username}</Text>
           <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
         </View>
         </View>
@@ -307,13 +403,12 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  <Button
-
-                      style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => {
-                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                  > {t('profile.about')}
-                  </Button>
+                <Button
+                    style={{backgroundColor: colors.accent, borderRadius: 20}}
+                    onPress={() => {
+                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                > {t('profile.about')}
+                </Button>
               </View>
           </View>
           <View style={styles.sectionContainer}>
