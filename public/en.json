@@ -27,7 +27,10 @@
     "active-challenges": "Active Challenges",
     "about": "About",
     "challenges": "Challenges",
-    "followers": "Connections"
+    "followers": "Connections",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "pending": "Pending"
   },
   "create-post": {
     "create-post": " Create Post",

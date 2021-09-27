@@ -316,13 +316,18 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  <Button
-
-                      style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => {
-                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                  > {t('profile.about')}
-                  </Button>
+                <Button
+                    style={{backgroundColor: colors.accent, borderRadius: 20}}
+                    onPress={() => {
+                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                > {t('profile.about')}
+                </Button>
+                {props.otherUserId && <Button
+                    style={{backgroundColor: colors.primary, borderRadius: 20, marginTop: 10}}
+                    onPress={() => {
+                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                > {t('profile.connect')}
+                </Button>}
               </View>
           </View>
           <View style={styles.sectionContainer}>
