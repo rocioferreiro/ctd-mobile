@@ -11,6 +11,8 @@ import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
+import {useLazyQuery} from "@apollo/client";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {Profile} from "../Profile/Profile";
 
 type Props = {
@@ -109,7 +111,7 @@ const ViewPost = (props:Props) => {
         }}>{props.post.title}</Text>
         <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{ post.text }</Paragraph>
       </Card.Content>
-      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={{uri: 'https://picsum.photos/700'}}/>}
+      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={require('../../assets/images/post.jpg')}/>}
       <Card.Actions style={{width: '100%', display:'flex', justifyContent:'space-between', marginVertical: 10}}>
         <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
           <Icon name={liked ? 'heart' : 'heart-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => likePost(!liked)}/>
