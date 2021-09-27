@@ -1,22 +1,48 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
-import {useLazyQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
+import {ACCEPT_CONNECTION, REJECT_CONNECTION} from "../apollo-graph/Mutations";
 
 
 const ConnectionsFeed = () => {
     const {colors} = useTheme();
+    const [userId, setUserId] = useState<string>();
+    const [pendingConnections, setPendingConnections] = useState<any>();
+    const [lastConnectionAnswered, setLastConnectionAnswered] = useState<string>();
 
     const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
 
+    const [acceptConnection] = useMutation(ACCEPT_CONNECTION, {
+        onCompleted: () => {
+            const filteredConnections = pendingConnections.filter(connection => connection.followUser.id !== lastConnectionAnswered);
+            setPendingConnections(filteredConnections);
+            setLastConnectionAnswered(null);
+        }
+    });
+    const [rejectConnection] = useMutation(REJECT_CONNECTION, {
+        onCompleted: () => {
+            const filteredConnections = pendingConnections.filter(connection => connection.followUser.id !== lastConnectionAnswered);
+            setPendingConnections(filteredConnections);
+            setLastConnectionAnswered(null);
+        }
+    });
+
     useEffect(() => {
         getUserId().then(id => {
+            setUserId(id);
             getPendingConnections({variables: {userId: id}})
         });
     }, []);
+
+    useEffect(() => {
+        if (pendingConnectionsData) {
+            setPendingConnections(pendingConnectionsData?.getMyPendingConnection);
+        }
+    }, [pendingConnectionsData]);
 
     const styles = StyleSheet.create({
         container: {
@@ -51,6 +77,13 @@ const ConnectionsFeed = () => {
         },
     })
 
+    const onAction = (connectionUserId, accept: boolean) => {
+        setLastConnectionAnswered(connectionUserId);
+        const variables = {otherUserID: userId, myUserID: connectionUserId};
+        if (accept) acceptConnection({variables}).catch(e => console.log(e));
+        else rejectConnection({variables}).catch(e => console.log(e));
+    }
+
     const renderConnection = (connection) => {
         return <View style={{...styles.connectionContainer}} key={connection}>
             <View style={styles.userInfoContainer}>
@@ -60,10 +93,10 @@ const ConnectionsFeed = () => {
                     <Text style={styles.secondaryText}>{connection.followUser.mail}</Text>
                     <View style={{flexDirection: "row", marginTop: 15}}>
                         <Button style={{backgroundColor: colors.accent, borderRadius: 20, marginRight: 15}}
-                            onPress={() => {}} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                            onPress={() => onAction(connection.followUser.id, true)} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
                         >Confirm</Button>
                         <Button style={{borderColor: colors.accent, borderWidth: 2, borderRadius: 20}}
-                                onPress={() => {}} color={colors.accent} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                                onPress={() => onAction(connection.followUser.id, false)} color={colors.accent} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
                         >Delete</Button>
                     </View>
                 </View>
@@ -75,10 +108,10 @@ const ConnectionsFeed = () => {
         <View style={styles.container}>
             <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.primaryText}>Connect request</Text>
-                <Text style={{...styles.primaryText, color: colors.accent}}>{pendingConnectionsData?.getMyPendingConnection.length || ""}</Text>
+                <Text style={{...styles.primaryText, color: colors.accent}}>{pendingConnections?.length || ""}</Text>
             </View>
             <ScrollView style={{marginTop: 30}}>
-                {pendingConnectionsData?.getMyPendingConnection.map(connection => renderConnection(connection))}
+                {pendingConnections?.map(connection => renderConnection(connection))}
             </ScrollView>
         </View>
     )
