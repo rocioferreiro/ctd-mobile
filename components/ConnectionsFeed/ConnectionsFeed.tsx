@@ -3,14 +3,14 @@ import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
 import {useLazyQuery} from "@apollo/client";
-import {GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
+import {NEW_GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 
 
 const ConnectionsFeed = () => {
     const {colors} = useTheme();
 
-    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
+    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
 
     useEffect(() => {
         getUserId().then(id => {
