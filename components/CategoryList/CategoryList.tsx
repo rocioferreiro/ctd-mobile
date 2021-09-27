@@ -1,54 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, Text} from "../Themed";
 import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet,TouchableOpacity} from "react-native";
+import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
-import {Card, Divider, useTheme} from "react-native-paper";
-import SearchBarComponent from "../SearchBar/SearchBarComponent";
-import ChallengeCard from "../ChallengeCard/ChallengeCard";
-import {TabScreen} from "react-native-paper-tabs";
-import {useLazyQuery} from "@apollo/client";
-import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
-import ChallengePage from "../Challenge/ChallengePage";
 
-interface Props {
-    setSelectedChallenge: (Challenge) => void;
-}
-
-
-const CategoryList = ( props:Props) => {
-
+const CategoryList = () => {
 
     const onuInfo = onuPictures()
 
-    const [challengeList, setChallengeList] = useState<any>([]);
-    const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
-    const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY);
-
-
-    useEffect(() => {
-        if (data) {
-            console.log(selectedSDG)
-            setChallengeList(data.getChallengeByFilter.challenges)
-            console.log(data)
-            console.log("challenges should be above")
-        }
-    }, [data]);
-
-    const onChange = (searchValue: string) => {
-        if (!searchValue || searchValue === "") setChallengeList(data.getChallengeByFilter.challenges);
-        else {
-            const filteredChallenges = data.getChallengeByFilter.challenges.filter(challenge =>
-                challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
-            );
-            console.log(filteredChallenges)
-            setChallengeList(filteredChallenges);
-        }
-    }
     const styles = StyleSheet.create({
         container: {
-          backgroundColor: 'rgba(0,0,0,0)'
+            backgroundColor: 'rgba(0,0,0,0)'
         },
         card: {
             display: 'flex',
@@ -85,7 +47,6 @@ const CategoryList = ( props:Props) => {
             flex: 6
         },
         sideImageContainer: {
-            backgroundColor: 'rgba(0,0,0,0)',
             flex: 10,
             display: 'flex',
             justifyContent: 'flex-end',
@@ -103,69 +64,30 @@ const CategoryList = ( props:Props) => {
         },
     });
 
-    function handleSelectSDG(i: number) {
-        findChallengesByCategory( {variables:{category:i}})
-        setSelectedSDG(i)
-
-
-    }
-
-
-
     return (
-
-
-                <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
-
-                {selectedSDG <0 ?
-                <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                    {onuInfo.map((v, i) =>{
-                        return (
-                            <TouchableOpacity onPress={() => handleSelectSDG(i+1)}>
-                                <View style={styles.card} key={i}>
-                                    <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
-                                        <Text style={styles.number}>{i + 1}</Text>
-                                        <Image style={styles.logo} source={onuLogos[i].image}/>
-                                    </View>
-                                    <View style={[styles.sideImageContainer, {backgroundColor: colors[i]}]}>
-                                        <Image style={{
-                                            ...StyleSheet.absoluteFillObject,
-                                            backgroundColor: colors[i],
-                                            opacity: 0.5,
-                                            width: '100%',
-                                            height: '100%'
-                                        }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
-                                        <Text style={styles.name}>{v}</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        )
-                    })
-                    }
-                    <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
-                </ScrollView> :
-                <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
-                    <SearchBarComponent onChange={onChange}/>
-                    <Divider/>
-                    <ScrollView style={{
-                        marginBottom: Dimensions.get('screen').height * 0.20,
-                        backgroundColor: 'rgba(0,0,0,0)',
-                        overflow: "visible"
-                    }}>
-                        {challengeList.map((challenge, i) =>
-                            <View key={i} style={{marginBottom: 5}}>
-                                <ChallengeCard setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
-                                <Divider/>
-                            </View>
-                        )
-                        }
-                        <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
-                    </ScrollView>
-                </View>
-
-                }
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+            {onuInfo.map((v, i) => {
+                return (
+                    <View style={styles.card} key={i}>
+                        <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
+                            <Text style={styles.number}>{i+1}</Text>
+                            <Image style={styles.logo} source={onuLogos[i].image}/>
+                        </View>
+                        <View style={[styles.sideImageContainer, {backgroundColor: colors[i]}]}>
+                            <Image style={{
+                                ...StyleSheet.absoluteFillObject,
+                                backgroundColor: colors[i],
+                                opacity: 0.5,
+                                width: '100%',
+                                height: '100%'
+                            }} source={categoryBackgrounds[i].image} resizeMode={'cover'}/>
+                            <Text style={styles.name}>{v.title}</Text>
+                        </View>
                     </View>
-
+                )
+            })}
+            <View style={{padding: Dimensions.get("window").height*0.05, backgroundColor: 'transparent'}}/>
+        </ScrollView>
     );
 }
 export default CategoryList;
