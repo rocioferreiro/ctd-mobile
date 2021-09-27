@@ -10,12 +10,12 @@ import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
-import { Image as ImageElement } from 'react-native-elements';
+import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
-import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {FIND_CHALLENGES_OF_USER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 
 interface Props {
@@ -37,8 +37,7 @@ export function Profile(props: Props) {
   useEffect(() => {
     if (props.otherUserId) {
       setUserId(props.otherUserId);
-    }
-    else {
+    } else {
       getUserId().then(id => {
         setUserId(id);
       });
@@ -89,7 +88,9 @@ export function Profile(props: Props) {
     },
     userInfoContainer: {
       backgroundColor: 'transparent',
-      flexDirection: 'row'
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 5
     },
     primaryText: {
       fontSize: 24,
@@ -202,8 +203,8 @@ export function Profile(props: Props) {
   const [language, setLanguage] = React.useState(i18n.language);
 
   const getActiveChallenge = (challenge) => {
-      if (!challenge) return null;
-      return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    if (!challenge) return null;
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -214,13 +215,14 @@ export function Profile(props: Props) {
         </View>
       </ImageBackground>
       <View style={styles.footer}>
-        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
+        <Text style={styles.whiteText}><Text
+          style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </View>
   }
 
   const getFinishedChallenge = (challenge) => {
-    if(!challenge) return null;
+    if (!challenge) return null;
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
@@ -237,8 +239,10 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const myIcon =<ImageElement style={{height:50, width:50}} source = {require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
+  const myIcon = <ImageElement style={{height: 50, width: 50}}
+                               source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
+
   function handleChange(itemValue) {
     i18n.changeLanguage(itemValue)
     setLanguage(itemValue)
@@ -253,24 +257,30 @@ export function Profile(props: Props) {
               source={require('../../assets/images/profile-background.jpg')}
               resizeMode={'cover'}
               style={styles.profileBackground}
-          /><View style={styles.userInfoContainer}>
-        <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
-        <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-          <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
-          <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
-          <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
-        </View>
-        </View>
-        <OptionsMenu
-          customButton={myIcon}
-          options={["English", "Español", "Cancel"]}
-          actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
+          />
+          <View style={styles.userInfoContainer}>
+              <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
+                  <View style={{backgroundColor: 'transparent', marginRight: 25}}>
+                      <Text
+                          style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
+                      <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
+                      <View style={{backgroundColor: 'transparent', alignItems: "flex-end", flex: 1, marginTop: -20}}>
+                      </View>
+                  </View>
+              </View>
+              <OptionsMenu
+                  customButton={myIcon}
+                  options={["English", "Español", "Cancel"]}
+                  actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                  }]}
+              />
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-                  <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
-          <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} 4</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
                   <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
@@ -297,10 +307,10 @@ export function Profile(props: Props) {
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>46K</Text>
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.primaryText}>{postsOfUser? postsOfUser.findPostByOwner.length : 0}</Text>
-          <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
+              </View>
+              <View style={styles.detail}>
+                  <Text style={styles.primaryText}>{postsOfUser ? postsOfUser.findPostByOwner.length : 0}</Text>
+                  <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>17</Text>
@@ -320,7 +330,7 @@ export function Profile(props: Props) {
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-            if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
                 })}
               </ScrollView>
           </View>
@@ -341,21 +351,21 @@ export function Profile(props: Props) {
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-              if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
                 })}
               </ScrollView>
           </View>
-        { !props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
-          <Button
-              uppercase={false}
-              mode={'outlined'}
-              style={{width: '40%'}}
-              onPress={() => {
-                auth.signOut().catch(e => console.log(e))
-              }}
-          >
-            {t('profile.logout')}
-          </Button>
+        {!props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+            <Button
+                uppercase={false}
+                mode={'outlined'}
+                style={{width: '40%'}}
+                onPress={() => {
+                  auth.signOut().catch(e => console.log(e))
+                }}
+            >
+              {t('profile.logout')}
+            </Button>
         </View>}
       </ScrollView>
       }
