@@ -1,7 +1,15 @@
 import "react-apollo"
 import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet} from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback
+} from "react-native";
 import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
@@ -17,6 +25,7 @@ import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER, FIND_POSTS_BY_OWNER, FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
+import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 
 export function Profile() {
   const {colors} = useTheme();
@@ -24,6 +33,7 @@ export function Profile() {
   const [userId, setUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
   const [viewPostId, setViewPostId] = useState();
+  const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [findPostsOfUser, {
     data: postsOfUser
   }] = useLazyQuery(FIND_POSTS_OF_USER, {variables: {ownerId: userId}});
@@ -246,23 +256,29 @@ export function Profile() {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-          <Image
-              source={require('../../assets/images/profile-background.jpg')}
-              resizeMode={'cover'}
-              style={styles.profileBackground}
-          /><View style={styles.userInfoContainer}>
+        <Image
+            source={require('../../assets/images/profile-background.jpg')}
+            resizeMode={'cover'}
+            style={styles.profileBackground}
+        />
+        <View style={styles.userInfoContainer}>
         <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
         <View style={{backgroundColor: 'transparent', marginRight: 25}}>
           <Text style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
           <Text style={styles.secondaryText}>@{userData?.findUserById?.username}</Text>
           <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
-        </View>
-        </View>
-        <OptionsMenu
-          customButton={myIcon}
-          options={["English", "Español", "Cancel"]}
-          actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
           </View>
+        </View>
+          <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+            <OptionsMenu
+              customButton={myIcon}
+              options={["English", "Español", "Cancel"]}
+              actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
+            <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+              <Icon type={'feather'} name={'git-branch'}/>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
@@ -368,6 +384,19 @@ export function Profile() {
           <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
       </Card>
       }
+      <Modal animationType="fade"
+             presentationStyle={"fullScreen"}
+             visible={viewConnectionsFeed}
+             onRequestClose={() => {
+               setViewConnectionsFeed(!viewConnectionsFeed);
+             }}>
+        <View style={{backgroundColor: colors.surface,}}>
+          <IconButton onPress={() => setViewConnectionsFeed(false)}
+                      icon={'chevron-left'}
+          />
+        </View>
+        <ConnectionsFeed/>
+      </Modal>
     </View>
   );
 }
