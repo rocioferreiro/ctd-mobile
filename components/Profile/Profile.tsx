@@ -24,6 +24,7 @@ import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
+import {Button as Button2} from "react-native-paper"
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -250,6 +251,9 @@ export function Profile(props: Props) {
       zIndex: 2,
       backgroundColor: colors.accent,
       borderRadius: 20,
+      marginTop:50,
+      height:33,
+      width:"40%"
     }
   });
 
@@ -336,11 +340,11 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-        {props.otherUserId && <Button
+        {props.otherUserId && <Button2 icon="plus"
             style={styles.connectButton}
-            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold',fontSize:11, fontFamily: 'sans'}}
         > {getConnectButtonLabel()}
-        </Button>}
+        </Button2>}
           <Image
               source={require('../../assets/images/profile-background.jpg')}
               resizeMode={'cover'}
