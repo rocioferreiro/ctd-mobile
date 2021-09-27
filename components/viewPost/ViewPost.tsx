@@ -18,7 +18,7 @@ const ViewPost = (props:Props) => {
   const { colors } = useTheme();
   const [liked, setLiked] = React.useState(false)
   const {post} = props;
-  const [likes, setLikes] = React.useState(post.upVotes)
+  const [likes, setLikes] = React.useState(post.upvotes)
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
