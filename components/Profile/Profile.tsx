@@ -6,7 +6,7 @@ import {Icon} from "react-native-elements";
 import {Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery} from "@apollo/client";
-import {FIND_POST_BY_ID, FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
+import {FIND_POST_BY_ID, FIND_POSTS_OF_USER, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
@@ -31,7 +31,7 @@ export function Profile(props: Props) {
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(FIND_USER_BY_ID);
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function Profile(props: Props) {
   useEffect(() => {
     if (userId) {
       findPostsOfUser({variables: {ownerId: userId}});
-      getUser({variables: {userId: userId}});
+      getUser({variables: {currentUserId: userId, targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
     }
   }, [userId])
@@ -263,8 +263,8 @@ export function Profile(props: Props) {
                   <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
                   <View style={{backgroundColor: 'transparent', marginRight: 25}}>
                       <Text
-                          style={styles.primaryText}>{userData?.findUserById?.name} {userData?.findUserById?.lastname}</Text>
-                      <Text style={styles.secondaryText}>{userData?.findUserById?.email}</Text>
+                          style={styles.primaryText}>{userData?.findUserById?.user.name} {userData?.findUserById?.user.lastname}</Text>
+                      <Text style={styles.secondaryText}>{userData?.findUserById?.user.mail}</Text>
                       <View style={{backgroundColor: 'transparent', alignItems: "flex-end", flex: 1, marginTop: -20}}>
                       </View>
                   </View>
