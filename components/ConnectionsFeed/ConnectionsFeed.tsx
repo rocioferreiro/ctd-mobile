@@ -2,10 +2,14 @@ import React from "react";
 import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
+import {useLazyQuery} from "@apollo/client";
+import {GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
 
 
 const ConnectionsFeed = () => {
     const {colors} = useTheme();
+
+    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(GET_PENDING_CONNECTIONS);
 
     const styles = StyleSheet.create({
         container: {

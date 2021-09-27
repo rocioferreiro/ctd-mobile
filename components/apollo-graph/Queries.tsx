@@ -162,3 +162,9 @@ query myPendingConnectionsNumber($userId: String!) {
   getMyPendingConnectionsNumber(userId: $userId)
 }
 `;
+
+export const GET_PENDING_CONNECTIONS = gql`
+query getPendingConnections($userId: String!) {
+  getMyPendingConnection(userId: $userId)
+}
+`;
