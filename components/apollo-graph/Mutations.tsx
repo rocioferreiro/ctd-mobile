@@ -41,3 +41,15 @@ mutation unlikePost($userId: String!, $postId: String!){
   unlikePost(userId: $userId, postId: $postId)
 }
 `;
+
+export const CONNECT = gql`
+mutation connect($targetUser: UserInput!, $followingUser: UserInput!){
+  connect(targetUser: $targetUser, followingUser: $followingUser)
+}
+`;
+
+export const DISCONNECT = gql`
+mutation disconnect($targetUserId: String!, $followingUserId: String!){
+  disconnect(targetUserId: $targetUserId, followingUserId: $followingUserId)
+}
+`;

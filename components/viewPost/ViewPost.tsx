@@ -6,11 +6,11 @@ import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
 import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
+import {useLazyQuery} from "@apollo/client";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {useLazyQuery} from "@apollo/client";
-import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {Profile} from "../Profile/Profile";
 
 type Props = {
