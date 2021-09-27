@@ -137,7 +137,7 @@ const SearchScreen = () => {
                         backgroundColor:colors.surface,
                         marginBottom:50
                       }} >
-                        <CategoryList setSelectedChallenge={setSelectedChallenge}/>
+                        <CategoryList/>
                       </View>
                     </TabScreen>
                   </Tabs>
