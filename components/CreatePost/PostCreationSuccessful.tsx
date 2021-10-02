@@ -4,11 +4,7 @@ import {Button, Card, useTheme} from "react-native-paper";
 import {Dimensions, StyleSheet} from "react-native";
 import LottieView from 'lottie-react-native';
 
-type Props = {
-    close: () => void
-}
-
-const PostCreationSuccessful = (props: Props) => {
+const PostCreationSuccessful = () => {
     const { colors } = useTheme();
 
     const styles = StyleSheet.create({
