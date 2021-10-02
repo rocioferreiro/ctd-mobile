@@ -16,8 +16,7 @@ import i18next from "i18next";
 import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 import {NavigationContainer} from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from "./components/Home";
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 i18next.init({
   interpolation: {escapeValue: false},  // React already does escaping
