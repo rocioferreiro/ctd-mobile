@@ -11,6 +11,7 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
+import ConfirmationModal from "../Challenge/ConfirmationModal";
 
 const CTDHome = () => {
     const {t, i18n} = useTranslation();
@@ -117,6 +118,7 @@ const CTDHome = () => {
             height: 200,
         },
     });
+    const [open, setOpen] = React.useState(false);
 
     function toastOnPostError() {
         Toast.show({
@@ -165,6 +167,20 @@ const CTDHome = () => {
                     </View>
 
                     </View>
+
+                    <View>
+                        <ConfirmationModal
+                          open={open}
+                          cancelText={'cancel'}
+                          acceptText={'unsubscribe'}
+                          onClose={() => {setOpen(false)}}
+                          onAccept={() => {console.log('accept')}}
+                          onCancel={() => {console.log('cancel'); setOpen(false)}}
+                          text={'do you accept this modal?'}
+                        />
+                        <Button onPress={() => {setOpen(true)}}>open modal</Button>
+                    </View>
+
                     <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
                         <View style={{width:"100%",justifyContent: "center", alignItems: "flex-start", backgroundColor:colors.surface}}>
                             <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
