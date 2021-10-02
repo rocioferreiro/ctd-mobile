@@ -7,14 +7,13 @@ import {NEW_GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
 import {getUserId} from "../Storage";
 import {ACCEPT_CONNECTION, REJECT_CONNECTION} from "../apollo-graph/Mutations";
 
-
 const ConnectionsFeed = () => {
     const {colors} = useTheme();
     const [userId, setUserId] = useState<string>();
     const [pendingConnections, setPendingConnections] = useState<any>();
     const [lastConnectionAnswered, setLastConnectionAnswered] = useState<string>();
 
-    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
+    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
 
     const [acceptConnection] = useMutation(ACCEPT_CONNECTION, {
         onCompleted: () => {

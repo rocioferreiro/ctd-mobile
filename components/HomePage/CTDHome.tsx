@@ -1,5 +1,4 @@
 import React from "react";
-
 import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {Card, useTheme} from "react-native-paper";
 import {Button} from "react-native-elements";

@@ -23,7 +23,7 @@ import {
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
-import { Image as ImageElement } from 'react-native-elements';
+import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
@@ -54,13 +54,13 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
 
-  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER);
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {fetchPolicy: 'cache-and-network'});
   const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
   const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS);
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
@@ -82,8 +82,7 @@ export function Profile(props: Props) {
         getConnections({variables: {userId: id}});
         getPendingConnections({variables: {userId: id}});
       });
-    }
-    else {
+    } else {
       getUserId().then(id => {
         setUserId(id);
         setLoggedInUserId(id);
@@ -146,7 +145,9 @@ export function Profile(props: Props) {
     },
     userInfoContainer: {
       backgroundColor: 'transparent',
-      flexDirection: 'row'
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 5
     },
     primaryText: {
       fontSize: 24,
@@ -260,9 +261,9 @@ export function Profile(props: Props) {
       zIndex: 2,
       backgroundColor: colors.accent,
       borderRadius: 20,
-      marginTop:50,
-      height:33,
-      width:"40%"
+      marginTop: 50,
+      height: 33,
+      width: "40%"
     }
   });
 
@@ -274,10 +275,22 @@ export function Profile(props: Props) {
       case ConnectionStatus.connect:
         const target = userData.findUserById.user;
         const following = loggedInUserData.findUserById.user;
-        const targetUser = {id: target.id, mail: target.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude}}, favouriteODS: target.favouriteODS};
-        const followingUser = {id: following.id, mail: following.mail, address: {coordinates: {latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude}}, favouriteODS: following.favouriteODS};
+        const targetUser = {
+          id: target.id, mail: target.mail, address: {
+            coordinates: {
+              latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude
+            }
+          }, favouriteODS: target.favouriteODS
+        };
+        const followingUser = {
+          id: following.id, mail: following.mail, address: {
+            coordinates: {
+              latitude: target.address.coordinates.latitude,
+              longitude: target.address.coordinates.latitude
+            }
+          }, favouriteODS: following.favouriteODS
+        };
 
         const variables = {variables: {targetUser: targetUser, followingUser: followingUser}}
         connect(variables).catch(e => console.log(e));
@@ -302,8 +315,8 @@ export function Profile(props: Props) {
   }
 
   const getActiveChallenge = (challenge) => {
-      if (!challenge) return null;
-      return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    if (!challenge) return null;
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -314,13 +327,14 @@ export function Profile(props: Props) {
         </View>
       </ImageBackground>
       <View style={styles.footer}>
-        <Text style={styles.whiteText}><Text style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
+        <Text style={styles.whiteText}><Text
+          style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </View>
   }
 
   const getFinishedChallenge = (challenge) => {
-    if(!challenge) return null;
+    if (!challenge) return null;
     return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
@@ -337,8 +351,10 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const myIcon =<ImageElement style={{height:50, width:50}} source = {require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
+  const myIcon = <ImageElement style={{height: 50, width: 50}}
+                               source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
+
   function handleChange(itemValue) {
     i18n.changeLanguage(itemValue)
     setLanguage(itemValue)
@@ -350,37 +366,47 @@ export function Profile(props: Props) {
       {!viewPost &&
       <ScrollView>
         {props.otherUserId && <Button2 icon="plus"
-            style={styles.connectButton}
-            onPress={() => onConnect()} color={colors.background} labelStyle={{fontWeight: 'bold',fontSize:11, fontFamily: 'sans'}}
+                                       style={styles.connectButton}
+                                       onPress={() => onConnect()} color={colors.background}
+                                       labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
         > {getConnectButtonLabel()}
         </Button2>}<Image
-            source={require('../../assets/images/profile-background.jpg')}
-            resizeMode={'cover'}
-            style={styles.profileBackground}
-        />
-        <View style={styles.userInfoContainer}>
-        <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={styles.profileImage}/>
-        <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-          <Text style={styles.primaryText}>{userData?.findUserById?.user?.name} {userData?.findUserById?.user?.lastname}</Text>
-          <Text style={styles.secondaryText}>@{userData?.findUserById?.user?.username}</Text>
-          <View style={{backgroundColor: 'transparent',alignItems:"flex-end",flex:1,marginTop:-20}}>
+          source={require('../../assets/images/profile-background.jpg')}
+          resizeMode={'cover'}
+          style={styles.profileBackground}
+      />
+
+          <View style={styles.userInfoContainer}>
+              <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
+                                style={styles.profileImage}/>
+                  <View style={{backgroundColor: 'transparent', marginRight: 25}}>
+                      <Text
+                          style={styles.primaryText}>{userData?.findUserById?.user?.name} {userData?.findUserById?.user?.lastname}</Text>
+                      <Text style={styles.secondaryText}>{userData?.findUserById?.user?.mail}</Text>
+                      <View style={{backgroundColor: 'transparent', alignItems: "flex-end", flex: 1, marginTop: -20}}>
+                      </View>
+                  </View>
+              </View>
+              <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+                  <OptionsMenu
+                      customButton={myIcon}
+                      options={["English", "Español", "Cancel"]}
+                      actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                      }]}
+                  />
+                {
+                  (!props.otherUserId) && <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                      <Icon type={'feather'} name={'user-plus'}/>
+                  </TouchableWithoutFeedback>
+                }
+              </View>
           </View>
-        </View>
-          <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-            <OptionsMenu
-              customButton={myIcon}
-              options={["English", "Español", "Cancel"]}
-              actions={[()=>handleChange("en"), ()=>handleChange("es"),()=>{}]}/>
-            <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-              <Icon type={'feather'} name={'user-plus'}/>
-            </TouchableWithoutFeedback>
-          </View>
-        </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-                  <Text style={styles.secondaryText}>{t('profile.level')}  4</Text>
-          <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} 4</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
                   <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
@@ -407,29 +433,29 @@ export function Profile(props: Props) {
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>46K</Text>
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.primaryText}>{postsOfUser? postsOfUser.findPostByOwner.length : 0}</Text>
-          <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
+              </View>
+              <View style={styles.detail}>
+                  <Text style={styles.primaryText}>{postsOfUser ? postsOfUser.findPostByOwner.length : 0}</Text>
+                  <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
                   <Text style={styles.primaryText}>17</Text>
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                <Button
-                    style={{backgroundColor: colors.accent, borderRadius: 20}}
-                    onPress={() => {
-                    }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
-                > {t('profile.about')}
-                </Button>
+                  <Button
+                      style={{backgroundColor: colors.accent, borderRadius: 20}}
+                      onPress={() => {
+                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                  > {t('profile.about')}
+                  </Button>
               </View>
           </View>
           <View style={styles.sectionContainer}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-            if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
                 })}
               </ScrollView>
           </View>
@@ -450,21 +476,21 @@ export function Profile(props: Props) {
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-              if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
                 })}
               </ScrollView>
           </View>
-        { !props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
-          <Button
-              uppercase={false}
-              mode={'outlined'}
-              style={{width: '40%'}}
-              onPress={() => {
-                auth.signOut().catch(e => console.log(e))
-              }}
-          >
-            {t('profile.logout')}
-          </Button>
+        {!props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+            <Button
+                uppercase={false}
+                mode={'outlined'}
+                style={{width: '40%'}}
+                onPress={() => {
+                  auth.signOut().catch(e => console.log(e))
+                }}
+            >
+              {t('profile.logout')}
+            </Button>
         </View>}
       </ScrollView>
       }

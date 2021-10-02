@@ -12,7 +12,7 @@ import {getUserId} from "../Storage";
 
 const PostFeed = () => {
     const [open, setOpen] = React.useState(false)
-    const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS);
+    const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
     const {colors} = useTheme();
 
     useEffect(() => {

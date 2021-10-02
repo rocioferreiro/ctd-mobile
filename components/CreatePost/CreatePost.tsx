@@ -14,6 +14,7 @@ import {useMutation} from "@apollo/client";
 import {CREATE_POST} from "../apollo-graph/Mutations";
 import {getUserId} from "../Storage";
 import {useTranslation} from "react-i18next";
+import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -36,7 +37,7 @@ const CreatePost = (props:Props) => {
             props.toastOn();
             console.log(err);
         },
-        refetchQueries: []
+        refetchQueries: ["FIND_POSTS_OF_USER"]
     });
 
     const [userId, setUserId] = React.useState('');
