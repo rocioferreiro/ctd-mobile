@@ -415,17 +415,17 @@ export function Profile(props: Props) {
                   <View>
                       <Avatar.Image size={50} source={onuLogos[0].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>Fin de la pobreza</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>End Poverty</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[1].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>Hambre cero</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>0 Hunger</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[13].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>Vida submarina</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>Submarine Life</Text>
                   </View>
               </View>
           </View>
