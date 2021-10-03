@@ -45,8 +45,6 @@ interface Props {
 
 const ChallengePage = (props:Props) => {
     const {t, i18n} = useTranslation();
-    const [userId, setUserId] = useState('');
-    const [loggedInUserId, setLoggedInUserId] = useState('');
     const [language, setLanguage] = React.useState(i18n.language);
     const [onuObjectives, setOnuObjectives] = React.useState([]);
     const [openChoices, setOpenChoices] = React.useState(false);
