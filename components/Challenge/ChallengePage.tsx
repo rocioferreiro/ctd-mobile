@@ -12,11 +12,12 @@ import {View,Text} from "../Themed";
 import { StyleSheet } from 'react-native';
 import {Challenge} from "../Models/Challenge";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {FIND_USER_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
+import {getUserId} from "../Storage";
 
 
 const mockedChallenges = [
@@ -44,6 +45,8 @@ interface Props {
 
 const ChallengePage = (props:Props) => {
     const {t, i18n} = useTranslation();
+    const [userId, setUserId] = useState('');
+    const [loggedInUserId, setLoggedInUserId] = useState('');
     const [language, setLanguage] = React.useState(i18n.language);
     const [onuObjectives, setOnuObjectives] = React.useState([]);
     const [openChoices, setOpenChoices] = React.useState(false);
@@ -54,11 +57,32 @@ const ChallengePage = (props:Props) => {
       else return ''
     }
     const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {variables:{userId: getOwner()}})
+    const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
 
     useEffect(() => {
       console.log(props.challenge)
-      if(props.challenge) getUser()
+      if(props.challenge) {
+          getUser()
+          getLoggedInUser()
+      }
     }, [props.challenge])
+
+    /*useEffect(() => {
+        if (props.otherUserId) {
+            setUserId(props.otherUserId);
+            getUserId().then(id => {
+                setLoggedInUserId(id);
+                getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
+
+            });
+        } else {
+            getUserId().then(id => {
+                setUserId(id);
+                setLoggedInUserId(id);
+            });
+        }
+    }, [props.otherUserId]);
+    */
 
     const styles = StyleSheet.create({
         title: {
