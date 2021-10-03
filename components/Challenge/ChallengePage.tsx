@@ -18,6 +18,7 @@ import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getUserId} from "../Storage";
+import ViewParticipantsButton from "./ViewParticipantsButton";
 
 
 const mockedChallenges = [
@@ -188,7 +189,11 @@ const ChallengePage = (props:Props) => {
                  </View>
 
                  <View style={{width:"100%",justifyContent: "center",padding:10, backgroundColor:colors.surface}}>
+                      { data.findUserById.mail!= loggedInUserData.loggedInUser.mail &&
                      <JoinButton/>
+                      }:{
+                     <ViewParticipantsButton/>}
+
                  </View>
                  <View style={{width:"100%",justifyContent: "center", padding:15, backgroundColor:colors.surface}}>
 

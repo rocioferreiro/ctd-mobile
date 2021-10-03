@@ -170,7 +170,13 @@
     "peace-description": "Nos entrentamos con los conflictos, la inseguridad, las instituciones débiles y el acceso limitado a la justicia.",
     "partner":  "Alianzas para Lograr los Objetivos",
     "partner-description": "Los ODS solo se pueden conseguir con asociaciones mundiales sólidas y cooperación."
+  },
+
+  "view-participants-button": {
+    "view": "Ver",
+    "participants": "Participantes"
   }
+
 
 
 }
