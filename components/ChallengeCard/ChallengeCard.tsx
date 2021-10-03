@@ -85,7 +85,7 @@ const ChallengeCard = (props: Props) => {
           setViewProfile(true);
         }} style={{backgroundColor: 'transparent', marginRight: 20}}>
         <Card.Title title={data.findUserById.user.name + ' ' + data.findUserById.user.lastname}
-                    subtitle={'Level ' + data.findUserById.user.level} left={LeftContent}/>
+                    subtitle={t('challenge-card.level') + ' ' + data.findUserById.user.level} left={LeftContent}/>
         </TouchableOpacity>
         <Card.Content>
           <Title style={{

@@ -89,12 +89,12 @@
     "end-event": "End Event",
     "release-date": "Release date",
     "challenge-description": "Challenge Description"
-
   },
   "challenge-card":{
     "join": "Join",
     "view": "View",
-    "challenge-description": "Challenge Description"
+    "challenge-description": "Challenge Description",
+    "level": "Level"
 },
   "join-button": {
     "join-this-challenge": "Join This Challenge",

@@ -89,14 +89,12 @@
     "end-event": "Finalización del Evento",
     "release-date": "Comienzo del Evento",
     "challenge-description": "Descripción del Desafío"
-
   },
-  "challenge-card":{
+  "challenge-card": {
     "join": "Únete",
     "view": "Ver más",
-    "challenge-description": "Descripcion de Desafío"
-
-
+    "challenge-description": "Descripcion de Desafío",
+    "level": "Nivel"
   },
   "join-button": {
     "join-this-challenge": "Únete a este Desafío",
@@ -118,7 +116,6 @@
     "challenge-description": "Descripción de Desafío",
     "challenge-title": "Título de Desafio",
     "create-new-challenge": "Crea un nuevo Desafío!"
-
   },
   "onu-objective-choice": {
     "objetive": "Objetivo",
