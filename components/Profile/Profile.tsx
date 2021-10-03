@@ -113,7 +113,12 @@ export function Profile(props: Props) {
   });
   const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
     variables: {ownerId: userId},
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
   });
 
   const [connect] = useMutation(CONNECT, {
@@ -529,7 +534,7 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {postsOfUser &&
@@ -544,7 +549,7 @@ export function Profile(props: Props) {
               })}
             </ScrollView>
           {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) &&
-          <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
+          <NoResults text={t('profile.no-challenges')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
           }
         </View>
         }

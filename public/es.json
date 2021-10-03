@@ -34,7 +34,8 @@
     "connected": "Conectado",
     "pending": "Pendiente",
     "no-challenges": "Únete a un desafío para comenzar!",
-    "no-posts": "Todavía no has creado ninguna publicación"
+    "no-posts": "Todavía no has creado ninguna publicación",
+    "no-results": "Nada para mostrar"
   },
   "create-post": {
     "create-post": "Crear Publicación",

@@ -23,7 +23,7 @@ const NoResults = (props: Props) => {
       padding: 10
     }}>
       <Icon size={30} color={colors.light} name={'compass-outline'} type={'ionicon'}/>
-      <View>
+      <View style={{backgroundColor: 'transparent'}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', color: colors.light}}>{props.text}</Text>
         <Text style={{fontSize: 13, color: colors.light}}>{props.subtext}</Text>
       </View>
