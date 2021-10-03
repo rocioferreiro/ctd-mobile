@@ -258,3 +258,36 @@ query newGetPendingConnections($userId: String!) {
   }
 }
 `;
+
+export const GET_CHALLENGES_BY_FILTER = gql`
+query getChallengeByFilter($title: String!) {
+    getChallengeByFilter(filter:{ title: $title}, pageSize:10, pageNumber:1) {
+           actualPage
+           challenges{
+            categories
+            boost
+            description
+            endEvent
+            startEvent
+            endInscription 
+            startInscription 
+            id
+            title
+            owner
+            upVotes
+            downVotes
+            coordinates{
+              longitude
+              latitude
+            }
+            objectives{
+              points 
+              name
+            }
+          }
+            size
+            totalElements
+            totalPages
+           }
+}
+`;
