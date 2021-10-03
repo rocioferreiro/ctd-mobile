@@ -20,8 +20,8 @@ type Props = {
 
 const ViewPost = (props:Props) => {
   const { colors } = useTheme();
-  const userId = getUserId();
-  const [liked, setLiked] = React.useState(false)
+  const [userId, setUserId] = React.useState('');
+  const [liked, setLiked] = React.useState(false);
   const {post} = props;
   const [likes, setLikes] = React.useState(post.upvotes)
   const [owner, setOwner] = React.useState<any>()
@@ -59,10 +59,10 @@ const ViewPost = (props:Props) => {
   const likePost = (isLiking: boolean)  => {
     if (isLiking) {
       setLikes(likes + 1)
-      like({variables: {userId: userId, postId: post.id}})
+      like({variables: {userId: userId, postId: post.id}});
     } else {
       setLikes(likes - 1)
-      unlike({variables: {userId: userId, postId: post.id}})
+      unlike({variables: {userId: userId, postId: post.id}});
     }
     setLiked(!liked)
   }
@@ -73,12 +73,14 @@ const ViewPost = (props:Props) => {
     if (ownerData) {
       setOwner(ownerData.findUserById.user);
     }
-  }, [ownerData])
+  }, [ownerData]);
 
   useEffect(() => {
     if (post.owner) {
       getUserId().then(id => {
         getOwnerData({variables: {targetUserId: post.owner, currentUserId: id}});
+        setUserId(id);
+        if (post.owner.id == id) setLiked(true);
       })
     }
   }, [post])
@@ -112,7 +114,7 @@ const ViewPost = (props:Props) => {
       {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={require('../../assets/images/post.jpg')}/>}
       <Card.Actions style={{width: '100%', display:'flex', justifyContent:'space-between', marginVertical: 10}}>
         <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
-          <Icon name={liked ? 'heart' : 'heart-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => likePost(!liked)}/>
+          <IconButton disabled={props.post.owner.id == userId} icon={liked ? 'heart' : 'heart-outline'} onPress={() => likePost(!liked)}/>
           <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
           {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
           {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
@@ -135,7 +137,6 @@ const ViewPost = (props:Props) => {
         <Profile otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>
       </Modal>
     </Card>
-
   )
 };
 

@@ -16,26 +16,26 @@ type Props = {
 
 const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
-  const userId = getUserId();
+  // const userId = getUserId(); this made no sense, it's a promise
   const [liked, setLiked] = React.useState(false);
-  const [likePost] = useMutation(LIKE_POST, {
-    onCompleted: () => {
-      setLiked(true);
-    },
-    onError: err => {
-      props.onError(err);
-    },
-    refetchQueries: []
-  });
-  const [unlikePost] = useMutation(UNLIKE_POST, {
-    onCompleted: () => {
-      setLiked(false);
-    },
-    onError: err => {
-      props.onError(err);
-    },
-    refetchQueries: []
-  });
+  // const [likePost] = useMutation(LIKE_POST, {
+  //   onCompleted: () => {
+  //     setLiked(true);
+  //   },
+  //   onError: err => {
+  //     props.onError(err);
+  //   },
+  //   refetchQueries: []
+  // });
+  // const [unlikePost] = useMutation(UNLIKE_POST, {
+  //   onCompleted: () => {
+  //     setLiked(false);
+  //   },
+  //   onError: err => {
+  //     props.onError(err);
+  //   },
+  //   refetchQueries: []
+  // });
 
   const styles = StyleSheet.create({
     imageTextContainer: {
@@ -84,10 +84,10 @@ const PostThumbnail = (props: Props) => {
     }}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <IconButton
-          onPress={() => {
-            if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
-            else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
-          }}
+          // onPress={() => {
+          //   if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
+          //   else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
+          // }}
           icon={liked ? 'heart' : 'heart-outline'}
           color={colors.background}
         />

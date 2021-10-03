@@ -207,7 +207,7 @@ export function Profile(props: Props) {
     sectionContainer: {
       backgroundColor: 'transparent',
       paddingLeft: 30,
-      paddingRight: 30,
+      paddingRight: 30
     },
     image: {
       height: 180,
