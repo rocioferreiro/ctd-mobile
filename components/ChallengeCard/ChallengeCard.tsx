@@ -71,7 +71,6 @@ const ChallengeCard = (props: Props) => {
     label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]} {...props}/>
 
   useEffect(() => {
-    console.log(props.challenge)
     if (props.challenge) getUser()
   }, [props.challenge]);
 

@@ -4,23 +4,15 @@ import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
 import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
-import {Dimensions, ScrollView, Text, StyleSheet, useWindowDimensions} from "react-native";
+import {Dimensions, ScrollView, Text, useWindowDimensions} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getToken, getUserId} from "./Storage";
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import CategoryList from "./CategoryList/CategoryList";
-import {
-  Button,
-  Title,
-  Paragraph,
-} from 'react-native-paper';
 import {
   Tabs,
   TabScreen,
-  useTabIndex,
-  useTabNavigation,
 } from 'react-native-paper-tabs';
 import {useTranslation} from "react-i18next";
 
@@ -92,7 +84,6 @@ const SearchScreen = () => {
             const filteredChallenges = data.getCreatedChallengesByUser.filter(challenge =>
                 challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
             );
-            console.log(filteredChallenges)
             setChallengeList(filteredChallenges);
         }
     }
@@ -100,7 +91,6 @@ const SearchScreen = () => {
     return (
         <View>
             {selectedChallenge ?
-
                 <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                 <Card style={{
                     width: Dimensions.get('window').width,
@@ -130,8 +120,7 @@ const SearchScreen = () => {
                               <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                               <Divider/>
                             </View>
-                          )
-                          }
+                          )}
                         </ScrollView>
                       </View>
                     </TabScreen>
@@ -140,7 +129,6 @@ const SearchScreen = () => {
                         justifyContent:'center',
                         alignItems:'center',
                         alignContent:'center',
-
                         width:'100%',
                         backgroundColor:colors.surface,
                         marginBottom:50

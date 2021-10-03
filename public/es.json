@@ -88,7 +88,8 @@
     "inscriptions-start": "Comienzo de Inscripciones",
     "end-event": "Finalización del Evento",
     "release-date": "Comienzo del Evento",
-    "challenge-description": "Descripción del Desafío"
+    "challenge-description": "Descripción del Desafío",
+    "back": "Volver"
   },
   "challenge-card": {
     "join": "Únete",

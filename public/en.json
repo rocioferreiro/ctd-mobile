@@ -88,7 +88,8 @@
     "inscriptions-start": "Inscriptions Start",
     "end-event": "End Event",
     "release-date": "Release date",
-    "challenge-description": "Challenge Description"
+    "challenge-description": "Challenge Description",
+    "back": "Go back"
   },
   "challenge-card":{
     "join": "Join",
