@@ -33,6 +33,7 @@ import {getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
+import NoResults from "./NoResults";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -197,7 +198,6 @@ export function Profile(props: Props) {
     },
     sectionContainer: {
       backgroundColor: 'transparent',
-      paddingTop: 30,
       paddingLeft: 30,
       paddingRight: 30,
     },
@@ -451,25 +451,31 @@ export function Profile(props: Props) {
                   </Button>
               </View>
           </View>
-          <View style={styles.sectionContainer}>
+          <View style={{...styles.sectionContainer, paddingTop: 30}}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map(challenge => {
                   if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
                 })}
               </ScrollView>
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-challenges')}/>
+            }
           </View>
         {postsOfUser &&
         <View style={styles.sectionContainer}>
             <Text style={styles.primaryText}>{t('profile.posts')}</Text>
             <ScrollView horizontal={true}>
-              {postsOfUser.findPostByOwner.map((post, i) => {
+              {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
                   setViewPostId(postId);
                   setViewPost(true);
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) &&
+          <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-posts')}/>
+          }
         </View>
         }
           <View style={{...styles.sectionContainer}}>
@@ -479,8 +485,12 @@ export function Profile(props: Props) {
                   if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
                 })}
               </ScrollView>
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-challenges')}/>
+            }
           </View>
-        {!props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+        {!props.otherUserId &&
+        <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button
                 uppercase={false}
                 mode={'outlined'}

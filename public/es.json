@@ -1,4 +1,3 @@
-
 {
   "title":{
     "ctd":  "bienvenido a ctd",
@@ -33,12 +32,13 @@
     "followers": "Conexiones",
     "connect": "Conectar",
     "connected": "Conectado",
-    "pending": "Pendiente"
+    "pending": "Pendiente",
+    "no-challenges": "Únete a un desafío para comenzar!",
+    "no-posts": "Todavía no has creado ninguna publicación"
   },
   "create-post": {
     "create-post": "Crear Publicación",
     "add-image": "Agrega Imagen"
-
   },
   "publish-button": {
     "publish": "Publicar"
@@ -66,7 +66,6 @@
     "points": "ODS",
     "sustainable": "Globales",
     "global": "Puntos"
-
   },
   "view-post": {
     "report":"Reportar",
@@ -170,6 +169,4 @@
     "partner":  "Alianzas para Lograr los Objetivos",
     "partner-description": "Los ODS solo se pueden conseguir con asociaciones mundiales sólidas y cooperación."
   }
-
-
 }

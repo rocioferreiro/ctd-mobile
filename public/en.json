@@ -32,12 +32,13 @@
     "followers": "Connections",
     "connect": "Connect",
     "connected": "Connected",
-    "pending": "Pending"
+    "pending": "Pending",
+    "no-challenges": "Go join some challenges now!",
+    "no-posts": "You have created no posts yet"
   },
   "create-post": {
     "create-post": " Create Post",
     "add-image": "Add Image"
-
   },
   "publish-button": {
     "publish": "Publish"
@@ -56,7 +57,6 @@
     "search": "Search",
     "home": "home"
   },
-
   "home": {
     "cancel": "Cancel",
     "challenges-active": "Active Challenges",
@@ -66,7 +66,6 @@
     "points": "Points",
     "sustainable": "Sustainable",
     "global": "Global"
-
   },
   "view-post": {
    "report":"Report",
@@ -116,7 +115,6 @@
     "challenge-description": "Challenge Description",
     "challenge-title": "Challenge Title",
     "create-new-challenge": "Create a new Challenge!"
-
   },
   "onu-objective-choice": {
     "objetive": "Objetive",
@@ -131,7 +129,6 @@
     "at-least-week": "Inscriptions should be open for at least a week",
     "inscriptions-open": "Inscriptions Open",
     "when-will-challenge": "When will the Challenge take place?"
-
   },
   "search-bar": {
     "placeholder":"Search for Challenges.."
@@ -172,6 +169,4 @@
     "partner":  "Partnerships",
     "partner-description": "Revitalize the global partnership for sustainable development."
   }
-
-
 }
