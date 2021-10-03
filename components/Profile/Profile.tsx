@@ -436,17 +436,17 @@ export function Profile(props: Props) {
                   <View>
                       <Avatar.Image size={50} source={onuLogos[0].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>End Poverty</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.no-poverty')}</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[1].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>0 Hunger</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.zero-hunger')}</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[13].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>Submarine Life</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.life-water')}</Text>
                   </View>
               </View>
           </View>
