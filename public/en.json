@@ -11,7 +11,9 @@
   },
   "register": {
     "error":"Error",
+    "success": "Success",
     "errorDescription": "Registration Failed",
+    "successDescription": "Registration Successful",
     "cancel": "Cancel",
     "name": "First Name",
     "lastname": "Last Name",

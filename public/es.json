@@ -12,7 +12,9 @@
   },
   "register": {
     "error":"Error",
+    "success": "Éxito",
     "errorDescription": "La creación del usuario falló",
+    "successDescription": "La creación del usuario fue exitosa",
     "cancel": "Cancelar",
     "name": "Nommbre",
     "lastname": "Apellido",
