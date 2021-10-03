@@ -34,7 +34,7 @@ query findNearbyUsers($latitude: Float!, $longitude: Float!) {
 }
 `;
 
-export const FIND_USER_BY_ID = gql`
+/*export const FIND_USER_BY_ID = gql`
 query findUserById($userId: String!){
   findUserById(id: $userId){
     name
@@ -50,7 +50,7 @@ query findUserById($userId: String!){
     }
   }
 }
-`;
+`;*/
 
 export const NEW_FIND_USER_BY_ID = gql`
 query newFindUserById($targetUserId: String!, $currentUserId: String!){

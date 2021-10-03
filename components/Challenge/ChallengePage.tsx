@@ -12,7 +12,7 @@ import {View,Text} from "../Themed";
 import { StyleSheet } from 'react-native';
 import {Challenge} from "../Models/Challenge";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import { NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
@@ -40,10 +40,12 @@ const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 interface Props {
     challenge: Challenge
     setSelectedChallenge:(Challenge)=>void
+    currentUserId:string
 
 }
 
 const ChallengePage = (props:Props) => {
+    const onuInfo=onuPictures()
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
     const [onuObjectives, setOnuObjectives] = React.useState([]);
@@ -58,8 +60,8 @@ const ChallengePage = (props:Props) => {
     React.useEffect(() => {
       getToken().then(t => setToken(t))
     }, [])
-    const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {
-      variables:{userId: getOwner()},
+    const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+      variables:{targetUserId: getOwner(), currentUserId:props.currentUserId},
       context: {
         headers: {'Authorization': "Bearer " + token}
       }
@@ -136,9 +138,9 @@ const ChallengePage = (props:Props) => {
                         style={{width:"100%", height:300, display:"flex", justifyContent: "center", alignItems: "center"}}
                          source={require('../../assets/images/compost.jpg')}
                      >
-                       <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}} label={data.findUserById.name[0] + data.findUserById.lastname[0]}/>
+                       <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}} label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]}/>
                        <Text style={styles.title}> {props.challenge.title}</Text>
-                       <Text style={{color: colors.background}}> {data.findUserById.mail} </Text>
+                       <Text style={{color: colors.background}}> {data.findUserById.user.mail} </Text>
 
                      </ImageBackground>
                  <View style={{width:"100%",justifyContent: "center", alignItems: "center", padding:10, backgroundColor:colors.surface}}>
@@ -197,7 +199,7 @@ const ChallengePage = (props:Props) => {
                        return <TouchableWithoutFeedback key={index}>
                          <Image
                            style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
-                           source={onuPictures[parseInt(s)].image}/>
+                           source={onuInfo[parseInt(s)].image}/>
                        </TouchableWithoutFeedback>
                      })}
                    </View>

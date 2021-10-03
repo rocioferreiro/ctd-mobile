@@ -100,7 +100,8 @@ const SearchScreen = () => {
     return (
         <View>
             {selectedChallenge ?
-                <ChallengePage setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+
+                <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                 <Card style={{
                     width: Dimensions.get('window').width,
                     height: '100%',
