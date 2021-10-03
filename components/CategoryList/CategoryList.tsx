@@ -138,9 +138,11 @@ const CategoryList = (props: Props) => {
           <View style={{padding: Dimensions.get("window").height * 0.05, backgroundColor: 'transparent'}}/>
         </ScrollView> :
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-          <View style={{backgroundColor: 'transparent', width: Dimensions.get('window').width}}>
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', width: Dimensions.get('screen').width}}>
             <IconButton icon={'chevron-left'} onPress={() => {setSelectedSDG(-1)}}/>
-            <SearchBarComponent onChange={onChange}/>
+            <View style={{width: '100%'}}>
+              <SearchBarComponent onChange={onChange}/>
+            </View>
           </View>
           <Divider/>
           <ScrollView style={{
