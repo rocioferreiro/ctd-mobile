@@ -7,7 +7,6 @@ type Props = {
   open: boolean,
   onClose: () => void,
   onAccept: () => void,
-  onCancel: () => void,
   text: string,
   cancelText: string,
   acceptText: string,
@@ -24,10 +23,11 @@ const ConfirmationModal = (props: Props) => {
       minHeight: 100,
       maxHeight: Dimensions.get('screen').height * 0.3,
       backgroundColor: colors.surface,
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      borderRadius: 10
     },
-    text: {justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: colors.surface},
-    buttons: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, backgroundColor: colors.surface},
+    text: {justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: 'transparent'},
+    buttons: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10, backgroundColor: 'transparent'},
     cancel: {},
     accept: {backgroundColor: colors.error}
   });
@@ -41,10 +41,10 @@ const ConfirmationModal = (props: Props) => {
       >
         <View style={props.style ? {...styles.modal, ...props.style} : styles.modal}>
           <View style={styles.text}>
-            <Text>{props.text}</Text>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>{props.text}</Text>
           </View>
           <View style={styles.buttons}>
-            <Button style={styles.cancel} onPress={props.onCancel}>{props.cancelText}</Button>
+            <Button style={styles.cancel} onPress={props.onClose}>{props.cancelText}</Button>
             <Button mode={'contained'} style={props.acceptStyle ? {...styles.accept, ...props.acceptStyle} : styles.accept} onPress={props.onAccept}>{props.acceptText}</Button>
           </View>
         </View>
