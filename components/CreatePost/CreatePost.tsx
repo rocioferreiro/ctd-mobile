@@ -28,10 +28,28 @@ const CreatePost = (props:Props) => {
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
+    const initialValues: CreatePostFormValues = {
+        "title": '',
+        "owner": '',
+        "text": '',
+        "boosted": false,
+        "image": "asdasd",
+        "upvotes": 0
+    }
+    const onSubmitCreation = () => {
+        parseAndSendPost(formik.values);
+    }
+    const formik = useFormik(
+      {
+          initialValues: initialValues,
+          onSubmit: onSubmitCreation
+      }
+    )
     const [createPost] = useMutation(CREATE_POST, {
         onCompleted: () => {
             setCreationSuccess(true);
             props.setCreatePost(false);
+            formik.handleReset(() => {});
         },
         onError: err => {
             props.toastOn();
@@ -45,24 +63,6 @@ const CreatePost = (props:Props) => {
     React.useEffect(() => {
         getUserId().then(id => setUserId(id));
     }, [])
-
-    const initialValues: CreatePostFormValues = {
-        "title": '',
-        "owner": '',
-        "text": '',
-        "boosted": false,
-        "image": "asdasd",
-        "upvotes": 0
-    }
-    const onSubmitCreation = () => {
-        parseAndSendPost(formik.values);
-    }
-    const formik = useFormik(
-        {
-            initialValues: initialValues,
-            onSubmit: onSubmitCreation
-        }
-    )
     const parseAndSendPost = (post) => {
         const newPostDTOInput = {
             "title": post.title,
@@ -78,12 +78,9 @@ const CreatePost = (props:Props) => {
         });
     }
 
-
     const handlePublish = () =>{
         onSubmitCreation()
-
     }
-
 
     return (
         <View style={{width:Dimensions.get("screen").width, height:Dimensions.get("window").height, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
