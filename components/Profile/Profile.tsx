@@ -5,7 +5,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Modal,
+  Modal, Platform,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback
@@ -124,11 +124,21 @@ export function Profile(props: Props) {
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.pending);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
   const [disconnect] = useMutation(DISCONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.connect);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
 
@@ -450,32 +460,32 @@ export function Profile(props: Props) {
                       </View>
                   </View>
               </View>
-              <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-                  <OptionsMenu
-                      customButton={myIcon}
-                      options={["English", "Español", "Cancel"]}
-                      actions={[() => handleChange("en"), () => handleChange("es"), () => {
-                      }]}
-                  />
-                {
-                  (!props.otherUserId) &&
-                  <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-                      <>
-                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
-                        <Badge size={20} style={{
-                          backgroundColor: colors.accent,
-                          position: 'absolute',
-                          bottom: 10,
-                          left: -2,
-                          zIndex: 2
-                        }}>
-                          {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
-                        </Badge>}
-                          <Icon type={'feather'} name={'user-plus'}/>
-                      </>
-                  </TouchableWithoutFeedback>
-                }
-              </View>
+            {(!props.otherUserId) &&
+            <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+                <OptionsMenu
+                    customButton={myIcon}
+                    options={["English", "Español", "Cancel"]}
+                    actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                    }]}
+                />
+                <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                      {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
+                      <Badge size={20} style={{
+                        backgroundColor: colors.accent,
+                        position: 'absolute',
+                        bottom: 10,
+                        left: -2,
+                        zIndex: 2
+                      }}>
+                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
+                      </Badge>}
+                        <Icon type={'feather'} name={'user-plus'}/>
+                    </View>
+                </TouchableWithoutFeedback>
+
+            </View>
+            }
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
@@ -598,8 +608,8 @@ export function Profile(props: Props) {
                setViewConnectionsFeed(!viewConnectionsFeed);
                getConnectionRequestsNumber();
              }}>
-        <View style={{backgroundColor: colors.surface,}}>
-          <IconButton onPress={() => setViewConnectionsFeed(false)}
+        <View style={{backgroundColor: colors.surface}}>
+          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => setViewConnectionsFeed(false)}
                       icon={'chevron-left'}
           />
         </View>

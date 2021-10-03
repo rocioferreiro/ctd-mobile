@@ -117,7 +117,7 @@ const ChallengePage = (props: Props) => {
 
   return ((data?.findUserById) ?
     <View style={{
-      width: Dimensions.get("screen").width,
+      width: Dimensions.get("window").width,
       height: Dimensions.get('window').height,
       backgroundColor: colors.surface
     }}>
