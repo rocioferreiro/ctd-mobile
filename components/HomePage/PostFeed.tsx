@@ -7,12 +7,23 @@ import ViewPost from "../viewPost/ViewPost";
 import {useLazyQuery} from "@apollo/client";
 import {GET_POST_BY_CONNECTIONS} from "../apollo-graph/Queries";
 import {useEffect} from "react";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 
 
 const PostFeed = () => {
   const [open, setOpen] = React.useState(false)
-  const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
+  const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+      getToken().then(t => setToken(t))
+    }, [])
+    const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {
+      fetchPolicy: 'cache-and-network',
+      context: {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }
+    });
   const {colors} = useTheme();
 
   useEffect(() => {

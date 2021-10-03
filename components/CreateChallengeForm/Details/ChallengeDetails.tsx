@@ -15,7 +15,6 @@ type Props = {
 
 const ChallengeDetails = (props: Props) => {
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
   const { colors } = useTheme();
   const {formik} = props;
   const [keyboardShown, setKeyboardShown] = React.useState(false);
@@ -26,7 +25,7 @@ const ChallengeDetails = (props: Props) => {
   const [openChoices, setOpenChoices] = React.useState(false);
   const [errorMarker, setErrorMarker] = React.useState({title: false, description: false, goals: false, onu: false})
 
-    const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
         title: {
             fontSize: 30,
             fontWeight: 'bold',

@@ -29,7 +29,7 @@ import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
@@ -54,14 +54,63 @@ export function Profile(props: Props) {
   const [viewPostId, setViewPostId] = useState();
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
 
-  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {fetchPolicy: 'cache-and-network'});
-  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
-  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
-  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
-  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {
+    variables: {id: viewPostId},
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
   const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
     variables: {ownerId: userId},
     fetchPolicy: 'cache-and-network'

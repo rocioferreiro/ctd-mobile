@@ -4,12 +4,22 @@ import React from "react";
 import {FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getApolloClientInstance} from "../apollo-graph/Client";
 import { ApolloProvider,useQuery} from '@apollo/client';
+import {getToken} from "../Storage";
 
 
 const UserList = () => {
     const client= getApolloClientInstance()
 
-    const {data,error,loading} = useQuery(FIND_USER_BY_ID);
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+        getToken().then(t => setToken(t))
+    }, [])
+
+    const {data,error,loading} = useQuery(FIND_USER_BY_ID, {
+        context: {
+            headers: {'Authorization' : 'Bearer ' + token}
+        }
+    });
 
     if (loading) return <Text>Loading...</Text>;
     if (error) {

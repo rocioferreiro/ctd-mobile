@@ -4,11 +4,10 @@ import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity} from "react-nativ
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_USER_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
-import LottieView from "lottie-react-native";
-import {getUserId} from "../Storage";
 import {Profile} from "../Profile/Profile";
+import {getToken, getUserId} from "../Storage";
 
 interface Props {
   challenge: any;
@@ -17,7 +16,6 @@ interface Props {
 
 const ChallengeCard = (props: Props) => {
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
   const {colors} = useTheme();
   const styles = StyleSheet.create({
     joinButton: {
@@ -54,10 +52,19 @@ const ChallengeCard = (props: Props) => {
     if (props.challenge) return props.challenge.owner
     else return ''
   };
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     variables: {
       currentUserId: getOwner(),
       targetUserId: getOwner()
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
   const LeftContent = props => <Avatar.Text

@@ -4,7 +4,7 @@ import {ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity} from 
 import {IconButton, useTheme} from "react-native-paper";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST, LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 
 type Props = {
   title: string,
@@ -18,6 +18,10 @@ const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
   // const userId = getUserId(); this made no sense, it's a promise
   const [liked, setLiked] = React.useState(false);
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
   // const [likePost] = useMutation(LIKE_POST, {
   //   onCompleted: () => {
   //     setLiked(true);
@@ -25,7 +29,12 @@ const PostThumbnail = (props: Props) => {
   //   onError: err => {
   //     props.onError(err);
   //   },
-  //   refetchQueries: []
+  //   refetchQueries: [],
+  //   context: {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   }
   // });
   // const [unlikePost] = useMutation(UNLIKE_POST, {
   //   onCompleted: () => {
@@ -34,7 +43,12 @@ const PostThumbnail = (props: Props) => {
   //   onError: err => {
   //     props.onError(err);
   //   },
-  //   refetchQueries: []
+  //   refetchQueries: [],
+  //   context: {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   }
   // });
 
   const styles = StyleSheet.create({

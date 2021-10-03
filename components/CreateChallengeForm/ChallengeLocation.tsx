@@ -15,7 +15,6 @@ const ChallengeLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
     const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 

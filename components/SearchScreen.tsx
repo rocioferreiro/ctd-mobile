@@ -8,7 +8,7 @@ import {Dimensions, ScrollView, Text, StyleSheet, useWindowDimensions} from "rea
 import ChallengePage from "./Challenge/ChallengePage";
 import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
-import {getUserId} from "./Storage";
+import {getToken, getUserId} from "./Storage";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import CategoryList from "./CategoryList/CategoryList";
 import {
@@ -32,7 +32,14 @@ const SearchScreen = () => {
     const [index, setIndex] = useState(0);
     const {colors} = useTheme();
     const layout = useWindowDimensions();
-    const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+        getToken().then(t => setToken(t))
+    }, [])
+    const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+        variables: {userId: userId},
+        context: {headers: {"Authorization": 'Bearer ' + token}}
+    });
     const [challengeList, setChallengeList] = useState<any>([]);
     const [routes] = React.useState([
         { key: 'first', title: t('search-screen.for-you') },

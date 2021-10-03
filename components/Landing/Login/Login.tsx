@@ -11,6 +11,9 @@ import {LOGIN} from "../../apollo-graph/Mutations";
 import {AuthContext} from "../../../App";
 import Toast from "react-native-toast-message";
 import {useTranslation} from "react-i18next";
+import {getApolloClientInstance} from "../../apollo-graph/Client";
+import {getToken} from "../../Storage";
+import {setContext} from "@apollo/client/link/context";
 
 
 type Props = {
@@ -21,11 +24,22 @@ const Login = (props: Props) => {
     const {colors} = useTheme();
     const auth = useContext(AuthContext);
     const {t, i18n} = useTranslation();
-    const [loginMutation, {loading}] = useMutation(LOGIN, {
+    const [loginMutation, {loading, client}] = useMutation(LOGIN, {
         onCompleted: token => {
             // La query devuelve el token adentro de un field que se llama 'login', don't ask me why no lo devuelve asi nomas
             console.log(token.login)
-            auth.signIn(token.login).catch(() => {
+            auth.signIn(token.login).then(() => {
+                client.setLink(setContext(async (_, { headers }) => {
+                    const token = await getToken();
+
+                    return {
+                        headers: {
+                            ...headers,
+                            authorization: token ? `Bearer ${token}` : "",
+                        }
+                    }
+                }))
+            }).catch(() => {
                 toastOn('Error', 'Mail or Password is incorrect')
             });
 

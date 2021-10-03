@@ -4,7 +4,7 @@ import {
   useTheme,
   Title,
   Avatar,
-    Button,
+  Button,
   ActivityIndicator
 } from 'react-native-paper';
 import {Dimensions, Image, ImageBackground, ScrollView, TouchableWithoutFeedback} from "react-native";
@@ -17,6 +17,7 @@ import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
+import {getToken, getUserId} from "../Storage";
 
 
 const mockedChallenges = [
@@ -53,7 +54,16 @@ const ChallengePage = (props:Props) => {
       if(props.challenge) return props.challenge.owner
       else return ''
     }
-    const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {variables:{userId: getOwner()}})
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+      getToken().then(t => setToken(t))
+    }, [])
+    const [getUser, {data, loading, error}] = useLazyQuery(FIND_USER_BY_ID, {
+      variables:{userId: getOwner()},
+      context: {
+        headers: {'Authorization': "Bearer " + token}
+      }
+    })
 
     useEffect(() => {
       console.log(props.challenge)

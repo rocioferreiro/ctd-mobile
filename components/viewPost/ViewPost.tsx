@@ -8,7 +8,7 @@ import {Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import {Profile} from "../Profile/Profile";
@@ -28,21 +28,35 @@ const ViewPost = (props:Props) => {
   const {t, i18n} = useTranslation();
   const [viewProfile, setViewProfile] = useState(false);
 
-  const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
+
+  const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {'Authorization' : 'Bearer ' + token}
+    }});
 
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
     },
     onError: err => {
     },
-    refetchQueries: []
+    refetchQueries: [],
+    context: {
+      headers: {'Authorization' : 'Bearer ' + token}
+    }
   });
   const [unlike] = useMutation(UNLIKE_POST, {
     onCompleted: () => {
     },
     onError: err => {
     },
-    refetchQueries: []
+    refetchQueries: [],
+    context: {
+      headers: {'Authorization' : 'Bearer ' + token}
+    }
   });
 
   const styles = StyleSheet.create({
