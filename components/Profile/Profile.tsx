@@ -11,14 +11,14 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import {Icon} from "react-native-elements";
-import {Button, Card, IconButton, useTheme} from "react-native-paper";
+import {Badge, Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
   FIND_POST_BY_ID,
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
-  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS
+  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
@@ -62,6 +62,10 @@ export function Profile(props: Props) {
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
   const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
   const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
+  const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
+    variables: {ownerId: userId},
+    fetchPolicy: 'cache-and-network'
+  });
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
@@ -73,6 +77,10 @@ export function Profile(props: Props) {
       setConnectionStatus(ConnectionStatus.connect);
     }
   });
+
+  useEffect(() => {
+    if (!props.otherUserId) getConnectionRequestsNumber();
+  }, []);
 
   useEffect(() => {
     if (props.otherUserId) {
@@ -97,12 +105,12 @@ export function Profile(props: Props) {
       getUser({variables: {targetUserId: userId, currentUserId: loggedInUserId}});
       getChallenges({variables: {userId: userId}});
     }
-  }, [userId, loggedInUserId])
+  }, [userId, loggedInUserId]);
 
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
-  }, [viewPost])
+  }, [viewPost]);
 
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.otherUserId) {
@@ -396,8 +404,21 @@ export function Profile(props: Props) {
                       }]}
                   />
                 {
-                  (!props.otherUserId) && <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-                      <Icon type={'feather'} name={'user-plus'}/>
+                  (!props.otherUserId) &&
+                  <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                      <>
+                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
+                        <Badge size={20} style={{
+                          backgroundColor: colors.accent,
+                          position: 'absolute',
+                          bottom: 10,
+                          left: -2,
+                          zIndex: 2
+                        }}>
+                          {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
+                        </Badge>}
+                          <Icon type={'feather'} name={'user-plus'}/>
+                      </>
                   </TouchableWithoutFeedback>
                 }
               </View>
@@ -459,7 +480,7 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-challenges')}/>
+            <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {postsOfUser &&
@@ -474,7 +495,7 @@ export function Profile(props: Props) {
               })}
             </ScrollView>
           {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) &&
-          <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-posts')}/>
+          <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
           }
         </View>
         }
@@ -486,7 +507,7 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={'Nothing to show'} subtext={props.otherUserId? '' : t('profile.no-challenges')}/>
+            <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {!props.otherUserId &&
@@ -521,6 +542,7 @@ export function Profile(props: Props) {
              visible={viewConnectionsFeed}
              onRequestClose={() => {
                setViewConnectionsFeed(!viewConnectionsFeed);
+               getConnectionRequestsNumber();
              }}>
         <View style={{backgroundColor: colors.surface,}}>
           <IconButton onPress={() => setViewConnectionsFeed(false)}
