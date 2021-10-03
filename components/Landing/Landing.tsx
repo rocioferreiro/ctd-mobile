@@ -37,7 +37,7 @@ const Landing = () => {
         content: {
             display: "flex",
             width: Dimensions.get('screen').width,
-            height: '35%',
+            height: '45%',
             justifyContent: 'space-between',
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)'
