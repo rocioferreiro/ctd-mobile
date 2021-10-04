@@ -70,7 +70,8 @@ mutation rejectConnection($myUserID: String!, $otherUserID: String!){
 addUserToChallenge(idUser: String!, idChallenge: Long!): String!*/
 
 export const JOIN_CHALLENGE = gql`
-mutation connect($targetUser: UserInput!, $followingUser: UserInput!){
-  connect(targetUser: $targetUser, followingUser: $followingUser)
+ mutation JoinChallenge($idUser:String!,$idChallenge:Long!){
+  addUserToChallenge(idUser: $idUser,idChallenge:$idChallenge)
 }
+
 `;
