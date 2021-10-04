@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MapView, {LatLng, Marker} from "react-native-maps";
+import Toast from "react-native-toast-message";
 import {
     useTheme,
     Title,
@@ -20,12 +21,13 @@ import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
 import ViewParticipantsButton from "./ViewParticipantsButton";
 import {CREATE_POST, JOIN_CHALLENGE} from "../apollo-graph/Mutations";
+import UnJoinButton from "./UnJoinButton";
 
 interface Props {
     challenge: Challenge
     setSelectedChallenge: (Challenge) => void
     currentUserId: string
-    toastOn:()=>void
+
 }
 
 const ChallengePage = (props: Props) => {
@@ -64,11 +66,11 @@ const ChallengePage = (props: Props) => {
     const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
         onCompleted: () => {
             setIsJoined(true);
-            //props.toastOn()
+            toastOn()
 
         },
         onError: err => {
-            //props.toastOn();
+            toastOnError();
 
         },
         refetchQueries: ["FIND_POSTS_OF_USER"],
@@ -81,7 +83,25 @@ const ChallengePage = (props: Props) => {
 
     function handleJoin(){
         joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
-            //props.toastOn();
+           toastOn();
+        });
+    }
+
+    function toastOn() {
+        Toast.show({
+            type: 'success',
+            text1: 'You Joined this Challenge',
+            text2: 'Good Luck!',
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
+    function toastOnError() {
+        Toast.show({
+            type: 'error',
+            text1: 'Join Challenge Error',
+            text2: 'Try Again Later',
+            topOffset: Dimensions.get("window").height * 0.05,
         });
     }
     const styles = StyleSheet.create({
@@ -244,8 +264,11 @@ const ChallengePage = (props: Props) => {
                     </View>
 
                     <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-                        {props.currentUserId!==props.challenge.owner &&
+                        {props.currentUserId!==props.challenge.owner && !isJoined &&
                         <JoinButton handleJoin={()=>handleJoin()}/>
+                        }
+                        {props.currentUserId!==props.challenge.owner && isJoined &&
+                        <UnJoinButton handleUnJoin={()=>console.log("unjoin")}/>
                         }
                         {props.currentUserId===props.challenge.owner &&
                        <ViewParticipantsButton/>
