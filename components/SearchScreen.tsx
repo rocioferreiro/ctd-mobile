@@ -6,7 +6,7 @@ import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView, Text, useWindowDimensions} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
-import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
+import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getToken, getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
@@ -18,19 +18,20 @@ import {useTranslation} from "react-i18next";
 
 const SearchScreen = () => {
     const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
-    const [index, setIndex] = useState(0);
     const {colors} = useTheme();
-    const layout = useWindowDimensions();
     const [token,setToken] = React.useState('')
     React.useEffect(() => {
         getToken().then(t => setToken(t))
     }, [])
-    const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
-        variables: {userId: userId},
-        context: {headers: {"Authorization": 'Bearer ' + token}}
+    const [findChallenges, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        },
+        variables: {title: ''}
     });
     const [challengeList, setChallengeList] = useState<any>([]);
     const [routes] = React.useState([
@@ -42,13 +43,13 @@ const SearchScreen = () => {
     useEffect(() => {
         getUserId().then(id => {
             setUserId(id);
-            findChallengesOfUser();
+            findChallenges();
         });
     }, []);
 
     useEffect(() => {
         if (data) {
-            setChallengeList(data.getCreatedChallengesByUser)
+            setChallengeList(data.getChallengeByFilter);
         }
     }, [data]);
 
