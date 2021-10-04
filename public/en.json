@@ -174,5 +174,8 @@
   "view-participants-button": {
     "view": "View ",
     "participants": "Participants"
+  },
+  "unjoin-button": {
+    "unjoin": "Abandon"
   }
 }
