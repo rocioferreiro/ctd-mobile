@@ -18,6 +18,7 @@ import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
+import ViewParticipantsButton from "./ViewParticipantsButton";
 
 interface Props {
     challenge: Challenge
@@ -216,7 +217,13 @@ const ChallengePage = (props: Props) => {
                     </View>
 
                     <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
+                        {props.currentUserId!==props.challenge.owner &&
                         <JoinButton/>
+                        }
+                        {props.currentUserId===props.challenge.owner &&
+                       <ViewParticipantsButton/>
+                        }
+
                     </View>
                     <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
 
