@@ -12,7 +12,8 @@ export function getApolloClientInstance(): ApolloClient<object> {
   const uri = 'http://192.168.0.237:8080/graphql'
 
   getToken().then(token => {
-    const header = token? {authorization: 'Bearer ' + token} : {}
+    console.log(token)
+    const header = token? {"Authorization": 'Bearer ' + token} : {}
     return new ApolloClient<object>({
       link: new HttpLink({
         uri: uri ,

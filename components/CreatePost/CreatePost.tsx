@@ -2,7 +2,7 @@ import React from "react";
 
 import {Colors, useTheme} from 'react-native-paper';
 import {View,Text} from "../Themed";
-import {Button, Dimensions, ScrollView} from "react-native";
+import {Dimensions, ScrollView} from "react-native";
 import PostTextInput from "./PostTextInput";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import ImageButton from "./ImageButton";
@@ -12,10 +12,10 @@ import {CreatePostFormValues} from "../CreateChallengeForm/Types";
 import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST} from "../apollo-graph/Mutations";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {useTranslation} from "react-i18next";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
-import ConfirmationModal from "../Challenge/ConfirmationModal";
+import {getApolloClientInstance} from "../apollo-graph/Client";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -25,11 +25,17 @@ type Props = {
 const CreatePost = (props:Props) => {
     const { colors } = useTheme();
     const [image, setImage] = React.useState(null)
-    const  [open, setOpen] =React.useState(false)
     const [ addImage, setAddImage] = React.useState(false)
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
+    const [token,setToken] = React.useState('')
+    const [userId, setUserId] = React.useState('');
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+        getToken().then(t => setToken(t))
+    }, [])
+
     const [createPost] = useMutation(CREATE_POST, {
         onCompleted: () => {
             setCreationSuccess(true);
@@ -39,14 +45,13 @@ const CreatePost = (props:Props) => {
             props.toastOn();
             console.log(err);
         },
-        refetchQueries: ["FIND_POSTS_OF_USER"]
+        refetchQueries: ["FIND_POSTS_OF_USER"],
+        context: {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
     });
-
-    const [userId, setUserId] = React.useState('');
-
-    React.useEffect(() => {
-        getUserId().then(id => setUserId(id));
-    }, [])
 
     const initialValues: CreatePostFormValues = {
         "title": '',
@@ -84,19 +89,11 @@ const CreatePost = (props:Props) => {
     const handlePublish = () =>{
         onSubmitCreation()
 
-
-
     }
 
 
     return (
-
-        <View>
-
-        <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>setOpen(false)} text={"Post Successfully Created"} cancelText={"Cancel"} acceptText={"Okay"}></ConfirmationModal>
-
         <View style={{width:Dimensions.get("screen").width, height:Dimensions.get("window").height, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
-            <Button title={"holii"} onPress={()=>setOpen(true)}></Button>
             <View style={{width:"100%",alignItems:"flex-start" ,padding:10,marginTop: 20, backgroundColor: 'rgba(0,0,0,0)'}}>
                 <View style={{
                     display: "flex",
@@ -181,7 +178,6 @@ const CreatePost = (props:Props) => {
                 </ScrollView>
             </View>
 
-        </View>
         </View>
 
     )

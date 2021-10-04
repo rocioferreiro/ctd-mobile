@@ -9,7 +9,7 @@ import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-nat
 import {useFonts} from 'expo-font';
 import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
+import {deleteToken, getToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
@@ -63,7 +63,15 @@ type Auth = {
 }
 
 // @ts-ignore
-export const AuthContext = React.createContext<Auth>();
+export const AuthContext = React.createContext<Auth>(async (_, { headers }) => {
+    const token = await getToken();
+
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
+        }
+    }});
 
 export default function App() {
     const isLoadingComplete = useCachedResources();

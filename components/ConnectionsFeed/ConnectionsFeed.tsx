@@ -4,7 +4,7 @@ import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {ACCEPT_CONNECTION, REJECT_CONNECTION} from "../apollo-graph/Mutations";
 
 const ConnectionsFeed = () => {
@@ -12,14 +12,29 @@ const ConnectionsFeed = () => {
     const [userId, setUserId] = useState<string>();
     const [pendingConnections, setPendingConnections] = useState<any>();
     const [lastConnectionAnswered, setLastConnectionAnswered] = useState<string>();
-
-    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+        getToken().then(t => setToken(t))
+    }, [])
+    const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
+        fetchPolicy: 'cache-and-network',
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }
+    });
 
     const [acceptConnection] = useMutation(ACCEPT_CONNECTION, {
         onCompleted: () => {
             const filteredConnections = pendingConnections.filter(connection => connection.followUser.id !== lastConnectionAnswered);
             setPendingConnections(filteredConnections);
             setLastConnectionAnswered(null);
+        },
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         }
     });
     const [rejectConnection] = useMutation(REJECT_CONNECTION, {
@@ -27,6 +42,11 @@ const ConnectionsFeed = () => {
             const filteredConnections = pendingConnections.filter(connection => connection.followUser.id !== lastConnectionAnswered);
             setPendingConnections(filteredConnections);
             setLastConnectionAnswered(null);
+        },
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         }
     });
 

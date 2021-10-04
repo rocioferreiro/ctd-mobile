@@ -9,7 +9,7 @@ import ChallengeCard from "../ChallengeCard/ChallengeCard";
 import {TabScreen} from "react-native-paper-tabs";
 import {useLazyQuery} from "@apollo/client";
 import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import ChallengePage from "../Challenge/ChallengePage";
 
 interface Props {
@@ -24,7 +24,17 @@ const CategoryList = (props: Props) => {
 
   const [challengeList, setChallengeList] = useState<any>([]);
   const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
-  const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY);
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
+  const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
 
 
   useEffect(() => {
@@ -138,9 +148,11 @@ const CategoryList = (props: Props) => {
           <View style={{padding: Dimensions.get("window").height * 0.05, backgroundColor: 'transparent'}}/>
         </ScrollView> :
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-          <View style={{backgroundColor: 'transparent', width: Dimensions.get('window').width}}>
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', width: Dimensions.get('screen').width}}>
             <IconButton icon={'chevron-left'} onPress={() => {setSelectedSDG(-1)}}/>
-            <SearchBarComponent onChange={onChange}/>
+            <View style={{width: '100%'}}>
+              <SearchBarComponent onChange={onChange}/>
+            </View>
           </View>
           <Divider/>
           <ScrollView style={{

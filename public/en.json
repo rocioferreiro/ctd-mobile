@@ -11,7 +11,9 @@
   },
   "register": {
     "error":"Error",
+    "success": "Success",
     "errorDescription": "Registration Failed",
+    "successDescription": "Registration Successful",
     "cancel": "Cancel",
     "name": "First Name",
     "lastname": "Last Name",
@@ -30,12 +32,14 @@
     "followers": "Connections",
     "connect": "Connect",
     "connected": "Connected",
-    "pending": "Pending"
+    "pending": "Pending",
+    "no-challenges": "Go join some challenges now!",
+    "no-posts": "You have created no posts yet",
+    "no-results": "Nothing to show"
   },
   "create-post": {
     "create-post": " Create Post",
     "add-image": "Add Image"
-
   },
   "publish-button": {
     "publish": "Publish"
@@ -54,7 +58,6 @@
     "search": "Search",
     "home": "home"
   },
-
   "home": {
     "cancel": "Cancel",
     "challenges-active": "Active Challenges",
@@ -64,7 +67,6 @@
     "points": "Points",
     "sustainable": "Sustainable",
     "global": "Global"
-
   },
   "view-post": {
    "report":"Report",
@@ -87,12 +89,12 @@
     "end-event": "End Event",
     "release-date": "Release date",
     "challenge-description": "Challenge Description"
-
   },
   "challenge-card":{
     "join": "Join",
     "view": "View",
-    "challenge-description": "Challenge Description"
+    "challenge-description": "Challenge Description",
+    "level": "Level"
 },
   "join-button": {
     "join-this-challenge": "Join This Challenge",
@@ -114,7 +116,6 @@
     "challenge-description": "Challenge Description",
     "challenge-title": "Challenge Title",
     "create-new-challenge": "Create a new Challenge!"
-
   },
   "onu-objective-choice": {
     "objetive": "Objetive",
@@ -129,7 +130,6 @@
     "at-least-week": "Inscriptions should be open for at least a week",
     "inscriptions-open": "Inscriptions Open",
     "when-will-challenge": "When will the Challenge take place?"
-
   },
   "search-bar": {
     "placeholder":"Search for Challenges.."
@@ -175,6 +175,4 @@
     "view": "View ",
     "participants": "Participants"
   }
-
-
 }

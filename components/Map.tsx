@@ -9,6 +9,7 @@ import {ActivityIndicator, Modal, useTheme} from "react-native-paper";
 import LottieView from "lottie-react-native";
 import * as Location from "expo-location";
 import ChallengePage from "./Challenge/ChallengePage";
+import {getToken} from "./Storage";
 
 type MarkerInfo = {
     title: string,
@@ -32,8 +33,37 @@ const Map = () => {
         if (location && location.latitude && location.longitude) return {latitude: location.latitude, longitude: location.longitude}
         else return {latitude: 0.0, longitude: 0.0}
     };
-    const [findNearbyChallenges, {data: challengeData,error: challengeError,loading: challengeLoading}] = useLazyQuery(FIND_NEARBY_CHALLENGES, {variables: getLocationLazily()});
-    const [findNearbyUsers, {data: userData,error: userError,loading: userLoading}] = useLazyQuery(FIND_NEARBY_USERS, {variables: getLocationLazily()});
+
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+        (async () => {
+            let enabled = await Location.hasServicesEnabledAsync();
+            console.log(enabled)
+            if (!enabled) {
+                let {status} = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+            }
+            let location = await Location.getLastKnownPositionAsync({});
+            setLocation(location.coords);
+        })();
+        getToken().then(t => setToken(t))
+    }, [])
+
+    const [findNearbyChallenges, {data: challengeData,error: challengeError,loading: challengeLoading}] = useLazyQuery(FIND_NEARBY_CHALLENGES, {
+        variables: getLocationLazily(),
+        context: {
+            headers: {'Authorization' : 'Bearer ' + token}
+        }
+    });
+    const [findNearbyUsers, {data: userData,error: userError,loading: userLoading}] = useLazyQuery(FIND_NEARBY_USERS, {
+        variables: getLocationLazily(),
+        context: {
+            headers: {'Authorization' : 'Bearer ' + token}
+        }
+    });
     const [errorMsg, setErrorMsg] = useState(null);
     const [modal, setModal] = React.useState(false);
     const [modalID, setModalID] = React.useState(undefined);
@@ -67,28 +97,11 @@ const Map = () => {
     });
 
     useEffect(() => {
-        (async () => {
-            let enabled = await Location.hasServicesEnabledAsync();
-            console.log(enabled)
-            if (!enabled) {
-                let {status} = await Location.requestForegroundPermissionsAsync();
-                if (status !== 'granted') {
-                    setErrorMsg('Permission to access location was denied');
-                    return;
-                }
-            }
-            let location = await Location.getLastKnownPositionAsync({});
-            setLocation(location.coords);
-        })();
-    }, []);
-
-    useEffect(() => {
         if (location) {
             findNearbyChallenges();
             findNearbyUsers();
         }
     }, [location]);
-
     useEffect(() => {
         if(userData && challengeData){
             const result = userData.findNearbyUsers.map((u) => {
@@ -128,7 +141,6 @@ const Map = () => {
             setChallengeMarkers(cResult)
         }
     }, [userData, challengeData]);
-
 
     if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
     if (userError) {

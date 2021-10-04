@@ -4,7 +4,7 @@ import {ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity} from 
 import {IconButton, useTheme} from "react-native-paper";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST, LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 
 type Props = {
   title: string,
@@ -16,26 +16,40 @@ type Props = {
 
 const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
-  const userId = getUserId();
+  // const userId = getUserId(); this made no sense, it's a promise
   const [liked, setLiked] = React.useState(false);
-  const [likePost] = useMutation(LIKE_POST, {
-    onCompleted: () => {
-      setLiked(true);
-    },
-    onError: err => {
-      props.onError(err);
-    },
-    refetchQueries: []
-  });
-  const [unlikePost] = useMutation(UNLIKE_POST, {
-    onCompleted: () => {
-      setLiked(false);
-    },
-    onError: err => {
-      props.onError(err);
-    },
-    refetchQueries: []
-  });
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
+  // const [likePost] = useMutation(LIKE_POST, {
+  //   onCompleted: () => {
+  //     setLiked(true);
+  //   },
+  //   onError: err => {
+  //     props.onError(err);
+  //   },
+  //   refetchQueries: [],
+  //   context: {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   }
+  // });
+  // const [unlikePost] = useMutation(UNLIKE_POST, {
+  //   onCompleted: () => {
+  //     setLiked(false);
+  //   },
+  //   onError: err => {
+  //     props.onError(err);
+  //   },
+  //   refetchQueries: [],
+  //   context: {
+  //     headers: {
+  //       'Authorization': 'Bearer ' + token
+  //     }
+  //   }
+  // });
 
   const styles = StyleSheet.create({
     imageTextContainer: {
@@ -84,10 +98,10 @@ const PostThumbnail = (props: Props) => {
     }}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
         <IconButton
-          onPress={() => {
-            if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
-            else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
-          }}
+          // onPress={() => {
+          //   if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
+          //   else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
+          // }}
           icon={liked ? 'heart' : 'heart-outline'}
           color={colors.background}
         />

@@ -3,14 +3,11 @@ import {Button, useTheme} from "react-native-paper";
 import React from "react";
 import {colorShade} from "../Models/shadingColor";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
-import ChallengePage from "./ChallengePage";
 import {Challenge} from "../Models/Challenge";
 
 type Props = {
   challenge:Challenge
 }
-
-
 const ChallengeONUObjetives = (props: Props) => {
 
     const {colors} = useTheme();

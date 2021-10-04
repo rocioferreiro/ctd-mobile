@@ -62,9 +62,6 @@ const Stepper = (props: Props) => {
         },
     });
 
-    const [theStep, setStep] = useState<ReactElement>(content[0])
-    const [theIndex, setIndex] = useState(0)
-
     return <ProgressSteps style={{position: 'relative', overflow: 'visible'}} completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
                           completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}
                           progressBarColor={colors.accent}>

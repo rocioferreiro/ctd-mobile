@@ -12,7 +12,6 @@ const Landing = () => {
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
     const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
 
     const styles = StyleSheet.create({
         background: {
@@ -37,7 +36,7 @@ const Landing = () => {
         content: {
             display: "flex",
             width: Dimensions.get('screen').width,
-            height: '35%',
+            height: '45%',
             justifyContent: 'space-between',
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0)'
@@ -72,13 +71,13 @@ const Landing = () => {
                 <Divider/>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login.done')}</Button>
                 <Divider/>
-                <View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>
-                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
-                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>
-                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
-                </View>
-                <Divider/>
-                <AuthScreen/>
+                {/*<View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>*/}
+                {/*    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />*/}
+                {/*    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>*/}
+                {/*    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />*/}
+                {/*</View>*/}
+                {/*<Divider/>*/}
+                {/*<AuthScreen/>*/}
             </View>
             }
         </View>

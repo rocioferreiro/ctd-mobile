@@ -7,6 +7,7 @@ import {ChallengeObjective} from "./Types";
 import {useLazyQuery} from "@apollo/client";
 import Toast from "react-native-toast-message";
 import {GET_SCORE} from "../apollo-graph/Queries";
+import {getToken} from "../Storage";
 
 type Props = {
     formik: any
@@ -47,17 +48,24 @@ const ChallengePoints = (props: Props) => {
     const [totalPoints, setTotalPoints] = useState(0);
     const [objectivePoints, setObjectivePoints] = useState("0");
     const {colors} = useTheme();
+    const [token,setToken] = React.useState('')
+
+    React.useEffect(() => {
+        getToken().then(t => setToken(t))
+        getScore()
+    }, [])
 
     const [getScore, {data: resultedPoints}] = useLazyQuery(GET_SCORE, {
         variables: {newChallenge: parseChallenge(props.formik.values)},
         onError: () => {
             toastOn();
+        },
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         }
     });
-
-    useEffect(() => {
-        getScore()
-    }, [])
 
     useEffect(() => {
         if (resultedPoints) {

@@ -22,7 +22,7 @@ const MyTabbar = () => {
   const [userId, setUserId] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
   const {t, i18n} = useTranslation();
-  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {ownerId: userId}});
+  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {ownerId: userId}, fetchPolicy: 'cache-and-network'});
 
   function toastOn() {
     Toast.show({
