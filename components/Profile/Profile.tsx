@@ -55,9 +55,6 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [token,setToken] = React.useState('')
-  React.useEffect(() => {
-    getToken().then(t => setToken(t))
-  }, [])
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
@@ -112,12 +109,19 @@ export function Profile(props: Props) {
     }
   });
   const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
-    variables: {ownerId: userId},
+    variables: {userId: userId},
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: data => {
+      console.log(data)
+    },
+    onError: error => {
+      console.log('ERRORRRR')
+      console.log(error)
     }
   });
 
@@ -142,8 +146,14 @@ export function Profile(props: Props) {
     }
   });
 
-  useEffect(() => {
-    if (!props.otherUserId) getConnectionRequestsNumber();
+  React.useEffect(() => {
+    getToken().then(t => setToken(t));
+    if (!props.otherUserId) {
+      getUserId().then(id => {
+        setUserId(id);
+        getConnectionRequestsNumber({variables: {userId: id}});
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -386,9 +396,9 @@ export function Profile(props: Props) {
     }
   }
 
-  const getActiveChallenge = (challenge) => {
+  const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -405,9 +415,9 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const getFinishedChallenge = (challenge) => {
+  const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
@@ -475,7 +485,7 @@ export function Profile(props: Props) {
                         backgroundColor: colors.accent,
                         position: 'absolute',
                         bottom: 10,
-                        left: -2,
+                        left: -15,
                         zIndex: 2
                       }}>
                         {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
@@ -539,8 +549,8 @@ export function Profile(props: Props) {
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
@@ -566,8 +576,8 @@ export function Profile(props: Props) {
           <View style={{...styles.sectionContainer}}>
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge, key);
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
