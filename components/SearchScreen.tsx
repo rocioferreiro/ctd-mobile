@@ -6,7 +6,7 @@ import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView, Text, useWindowDimensions} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
-import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
+import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_BY_FILTER, FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getToken, getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
@@ -25,7 +25,7 @@ const SearchScreen = () => {
     React.useEffect(() => {
         getToken().then(t => setToken(t))
     }, [])
-    const [findChallenges, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
+    const [findChallenges, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_FILTER, {
         context: {
             headers: {
                 'Authorization': 'Bearer ' + token
