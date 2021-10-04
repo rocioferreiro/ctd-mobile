@@ -45,6 +45,12 @@ const CreatePost = (props:Props) => {
             props.toastOn();
             console.log(err);
         },
+        refetchQueries: ["FIND_POSTS_OF_USER"],
+        context: {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
     });
 
     const initialValues: CreatePostFormValues = {
@@ -97,13 +103,13 @@ const CreatePost = (props:Props) => {
                     padding: 15,
                     backgroundColor: "rgba(0,0,0,0)"
                 }}>
-        <Text style={{
-            fontSize: 35,
-            fontWeight: 'bold',
-            color: colors.primary,
-            marginLeft: 5,
-            marginTop: -20,
-        }}>{t('create-post.create-post')}</Text>
+                    <Text style={{
+                        fontSize: 35,
+                        fontWeight: 'bold',
+                        color: colors.primary,
+                        marginLeft: 5,
+                        marginTop: -20,
+                    }}>{t('create-post.create-post')}</Text>
                 </View>
                 <ScrollView>
                     <View style={{
@@ -116,8 +122,8 @@ const CreatePost = (props:Props) => {
 
 
                     }}
-                          >
-                <PostTextInput formik={formik} />
+                    >
+                        <PostTextInput formik={formik} />
                     </View>
                     <View style={{
                         display: "flex",
@@ -134,10 +140,10 @@ const CreatePost = (props:Props) => {
                                 padding: 10,
                                 backgroundColor: "rgba(0,0,0,0)"
                             }}>
-                          <CancelButton  setAddImage={setAddImage}/>
-                            <ImagePicker image={image} setImage={setImage}/>
+                                <CancelButton  setAddImage={setAddImage}/>
+                                <ImagePicker image={image} setImage={setImage}/>
                             </View>
-                                :
+                            :
                             <View style={{
                                 display: "flex",
                                 justifyContent: 'flex-start',
@@ -146,14 +152,14 @@ const CreatePost = (props:Props) => {
                                 backgroundColor: "rgba(0,0,0,0)",
                                 alignItems:'center'
                             }}>
-                            <Text  style={{
-                                fontSize: 15,
-                                fontWeight: 'normal',
-                                color:Colors.blue400,
-                                marginLeft: 5,
-                                marginTop: -5,
-                            }}> {t('create-post.add-image')}</Text>
-                            <ImageButton setAddImage={setAddImage}/>
+                                <Text  style={{
+                                    fontSize: 15,
+                                    fontWeight: 'normal',
+                                    color:Colors.blue400,
+                                    marginLeft: 5,
+                                    marginTop: -5,
+                                }}> {t('create-post.add-image')}</Text>
+                                <ImageButton setAddImage={setAddImage}/>
                             </View>
                         }
 

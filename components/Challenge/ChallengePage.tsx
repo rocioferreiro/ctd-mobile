@@ -19,7 +19,7 @@ import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
 import ViewParticipantsButton from "./ViewParticipantsButton";
-import {CREATE_POST} from "../apollo-graph/Mutations";
+import {CREATE_POST, JOIN_CHALLENGE} from "../apollo-graph/Mutations";
 
 interface Props {
     challenge: Challenge
@@ -61,9 +61,10 @@ const ChallengePage = (props: Props) => {
     }, [props.challenge])
 
 
-    const [createPost] = useMutation(CREATE_POST, {
+    const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
         onCompleted: () => {
             setIsJoined(true);
+            props.toastOn()
 
         },
         onError: err => {
@@ -77,6 +78,12 @@ const ChallengePage = (props: Props) => {
             }
         }
     });
+
+    function handleJoin(){
+        joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
+            props.toastOn();
+        });
+    }
     const styles = StyleSheet.create({
         title: {
             fontSize: 35,
