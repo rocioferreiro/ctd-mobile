@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme, ActivityIndicator, IconButton} from 'react-native-paper';
-import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity} from "react-native";
+import {Dimensions, Modal, Platform, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
 import {Profile} from "../Profile/Profile";
-import {getToken, getUserId} from "../Storage";
+import {getToken} from "../Storage";
 
 interface Props {
   challenge: any;
@@ -134,8 +134,8 @@ const ChallengeCard = (props: Props) => {
                  setViewProfile(!viewProfile);
                }}>
           <IconButton onPress={() => setViewProfile(false)}
+                      style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}]}
                       icon={'chevron-left'}
-                      style={styles.button}
                       size={40}
           />
           <Profile otherUserId={getOwner()}/>

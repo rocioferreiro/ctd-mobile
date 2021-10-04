@@ -69,7 +69,8 @@ query newFindUserById($targetUserId: String!, $currentUserId: String!){
             longitude
           }
         }
-    } 
+    }
+    state 
   }
 }
 `;

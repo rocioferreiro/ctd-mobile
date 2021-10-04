@@ -4,9 +4,9 @@ import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
 import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
-import {Dimensions, ScrollView, Text, useWindowDimensions} from "react-native";
+import {Dimensions, ScrollView, Text} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
-import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_BY_FILTER, FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
+import {FIND_CHALLENGES_BY_FILTER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import {getToken, getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
@@ -17,7 +17,7 @@ import {
 import {useTranslation} from "react-i18next";
 
 const SearchScreen = () => {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
@@ -34,11 +34,6 @@ const SearchScreen = () => {
         variables: {title: ''}
     });
     const [challengeList, setChallengeList] = useState<any>([]);
-    const [routes] = React.useState([
-        { key: 'first', title: t('search-screen.for-you') },
-        { key: 'second', title: t('search-screen.search') },
-        { key: 'third', title: t('search-screen.collections') },
-    ]);
 
     useEffect(() => {
         getUserId().then(id => {
@@ -49,7 +44,8 @@ const SearchScreen = () => {
 
     useEffect(() => {
         if (data) {
-            setChallengeList(data.getChallengeByFilter);
+            console.log(data)
+            setChallengeList(data.getChallengeByFilter.challenges);
         }
     }, [data]);
 
@@ -101,7 +97,7 @@ const SearchScreen = () => {
 
                     <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> {t('search-screen.challenges')} </Text>
 
-                  <Tabs
+                  <Tabs defaultIndex={2}
                     style={{ backgroundColor: colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1, width: Dimensions.get('window').width + 6 }} // works the same as AppBar in react-native-paper
                   >
                     <TabScreen label={t('search-screen.for-you')}>

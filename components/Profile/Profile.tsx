@@ -77,6 +77,9 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: data => {
+      console.log(data)
     }
   });
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -115,13 +118,6 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    },
-    onCompleted: data => {
-      console.log(data)
-    },
-    onError: error => {
-      console.log('ERRORRRR')
-      console.log(error)
     }
   });
 
@@ -146,7 +142,7 @@ export function Profile(props: Props) {
     }
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getToken().then(t => setToken(t));
     if (!props.otherUserId) {
       getUserId().then(id => {
@@ -155,7 +151,6 @@ export function Profile(props: Props) {
       });
     }
   }, []);
-
   useEffect(() => {
     if (props.otherUserId) {
       setUserId(props.otherUserId);
@@ -172,7 +167,6 @@ export function Profile(props: Props) {
       });
     }
   }, [props.otherUserId]);
-
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
@@ -180,12 +174,10 @@ export function Profile(props: Props) {
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);
-
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
   }, [viewPost]);
-
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.otherUserId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
@@ -205,8 +197,7 @@ export function Profile(props: Props) {
     });
   }
 
-  const onError = (error) => {
-    console.log(error);
+  const onError = () => {
     toastError();
   }
 
@@ -236,7 +227,8 @@ export function Profile(props: Props) {
       fontSize: 24,
       fontWeight: "bold",
       color: colors.primary,
-      marginRight: 15
+      marginRight: 15,
+      paddingBottom: 5
     },
     secondaryText: {
       fontSize: 12,
@@ -244,7 +236,7 @@ export function Profile(props: Props) {
     },
     forODS: {
       marginTop: 10,
-      width: 60,
+      width: 62,
       textAlign: 'center',
       alignSelf: "center",
     },
@@ -280,8 +272,8 @@ export function Profile(props: Props) {
     },
     sectionContainer: {
       backgroundColor: 'transparent',
-      paddingLeft: 30,
-      paddingRight: 30
+      paddingHorizontal: 30,
+      paddingVertical: 15
     },
     image: {
       height: 180,
@@ -433,7 +425,7 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const myIcon = <ImageElement style={{height: 50, width: 50}}
+  const myIcon = <ImageElement style={{height: 40, width: 40}}
                                source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
 
@@ -553,7 +545,7 @@ export function Profile(props: Props) {
                   if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) < new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
@@ -569,7 +561,7 @@ export function Profile(props: Props) {
               })}
             </ScrollView>
           {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.otherUserId) &&
-          <NoResults text={t('profile.no-challenges')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
+          <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
           }
         </View>
         }
@@ -580,8 +572,8 @@ export function Profile(props: Props) {
                   if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge, key);
                 })}
               </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
-            <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {!props.otherUserId &&
@@ -619,7 +611,10 @@ export function Profile(props: Props) {
                getConnectionRequestsNumber();
              }}>
         <View style={{backgroundColor: colors.surface}}>
-          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => setViewConnectionsFeed(false)}
+          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => {
+            setViewConnectionsFeed(false)
+            getConnectionRequestsNumber()
+          }}
                       icon={'chevron-left'}
           />
         </View>
