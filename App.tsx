@@ -15,6 +15,7 @@ import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
 import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
+import ConfirmationModal from "./components/Challenge/ConfirmationModal";
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
@@ -179,6 +180,7 @@ export default function App() {
                               <Landing/>
                             }
                             <Toast ref={(ref) => Toast.setRef(ref)}/>
+
                         </AuthContext.Provider>
                     </PaperProvider>
                     <StatusBar/>
