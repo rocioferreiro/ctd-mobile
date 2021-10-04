@@ -75,3 +75,10 @@ export const JOIN_CHALLENGE = gql`
 }
 
 `;
+
+export const UNJOIN_CHALLENGE = gql`
+ mutation UnjoinChallenge($subscriptionChallengeId:String!,$userId:String!){
+  addUserToChallenge(subscriptionChallengeId: $subscriptionChallengeId,userId:$userId)
+}
+
+`;

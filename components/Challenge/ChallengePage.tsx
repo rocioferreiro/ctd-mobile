@@ -20,7 +20,7 @@ import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
 import ViewParticipantsButton from "./ViewParticipantsButton";
-import {CREATE_POST, JOIN_CHALLENGE} from "../apollo-graph/Mutations";
+import {CREATE_POST, JOIN_CHALLENGE, UNJOIN_CHALLENGE} from "../apollo-graph/Mutations";
 import UnJoinButton from "./UnJoinButton";
 
 interface Props {
@@ -84,6 +84,30 @@ const ChallengePage = (props: Props) => {
     function handleJoin(){
         joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
            toastOn();
+        });
+    }
+
+    const [unjoinChallenge] = useMutation(UNJOIN_CHALLENGE, {
+        onCompleted: () => {
+            setIsJoined(false);
+            toastOn()
+
+        },
+        onError: err => {
+            toastOnError();
+
+        },
+        refetchQueries: ["FIND_POSTS_OF_USER"],
+        context: {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
+    });
+
+    function handleUnjoin(){
+        unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
+            toastOn();
         });
     }
 
@@ -268,7 +292,7 @@ const ChallengePage = (props: Props) => {
                         <JoinButton handleJoin={()=>handleJoin()}/>
                         }
                         {props.currentUserId!==props.challenge.owner && isJoined &&
-                        <UnJoinButton handleUnJoin={()=>console.log("unjoin")}/>
+                        <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
                         }
                         {props.currentUserId===props.challenge.owner &&
                        <ViewParticipantsButton/>
