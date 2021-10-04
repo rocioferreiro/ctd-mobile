@@ -4,14 +4,12 @@ import {Text} from "../Themed";
 import {useTranslation} from "react-i18next";
 
 interface  Props {
-
     handlePublish:(formik) =>void
     formik:any
 }
 
 const PublishButton = (props:Props) => {
-    const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
+    const {t} = useTranslation();
     const { colors } = useTheme();
     return (
         <Button style={{backgroundColor: colors.extra,width:"100%",borderRadius:10}} icon="check-bold" mode="contained"

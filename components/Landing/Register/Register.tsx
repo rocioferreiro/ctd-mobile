@@ -20,14 +20,12 @@ const Register = (props: Props) => {
     const {t, i18n} = useTranslation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [animationFinished, setAnimationFinished] = useState(false);
     const [errorMarker, setErrorMarker] = useState({
         firstName: false,
         lastName: false,
-        username: false,
         email: false,
         password: false
     });
@@ -42,6 +40,15 @@ const Register = (props: Props) => {
         });
     }
 
+    const successToast = (message: string, description: string = '') => {
+        Toast.show({
+            type: 'success',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     const reanimatedStyle = useAnimatedStyle(() => {
         return {
             opacity: visible.value,
@@ -49,13 +56,14 @@ const Register = (props: Props) => {
         }
     }, [])
 
-    const [register] = useMutation(REGISTER, {
+    const [register, {loading}] = useMutation(REGISTER, {
         onCompleted: token => {
             props.onCancel();
+            successToast(t('register.success'), t('register.successDescription'));
         },
         onError: (e) => {
-            console.log(e)
-            toastOn(t('register.error'), t('register.errorDescription'))
+            console.log(e);
+            toastOn(t('register.error'), t('register.errorDescription'));
         }
     });
 
@@ -152,7 +160,7 @@ const Register = (props: Props) => {
                     name: firstName,
                     lastname: lastName,
                     mail: email,
-                    biography: username,
+                    biography: '',
                     password: password,
                     role: 'NORMAL',
                     address: {
@@ -227,22 +235,6 @@ const Register = (props: Props) => {
                         />
                     </View>
                 </View>
-                {errorMarker.username && <Text style={styles.error}> username must be min. 2 characters </Text>}
-                <Input
-                    placeholder={"Username"}
-                    style={errorMarker.username ? [styles.input, {
-                        borderWidth: 3,
-                        borderColor: colors.error,
-                        borderStyle: 'solid'
-                    }] : styles.input}
-                    value={username}
-                    maxLength={20}
-                    onChangeText={t => {
-                        setUsername(t);
-                        setErrorMarker({...errorMarker, username: !(username.length >= 1)});
-                    }}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                />
                 {errorMarker.email && <Text style={styles.error}> {t('register.emailError')} </Text>}
                 <Input
                     placeholder={t('login.email')}
@@ -282,7 +274,7 @@ const Register = (props: Props) => {
                     display: "flex",
                     justifyContent: 'space-around'
                 }}>
-                    <Button style={styles.button} mode={'contained'} onPress={() => {
+                    <Button style={styles.button} mode={'contained'} loading={loading} onPress={() => {
                         if (!((email.length <= 0) || (password.length <= 0) || (errorMarker.email) || (errorMarker.firstName) || (errorMarker.lastName) || (errorMarker.password) || (errorMarker.password))) onRegister();
                     }}>{t('register.done')}</Button>
                     <Button style={styles.cancelButton} mode={'contained'} onPress={() => {

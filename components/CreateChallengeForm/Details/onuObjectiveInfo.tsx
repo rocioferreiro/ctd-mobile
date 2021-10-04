@@ -4,7 +4,7 @@ import * as React from "react";
 
 export const onuPictures = () => {
 
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   const obj1 = {image: require(`../../../assets/images/objetive1.png`), title: t('onu-objective-info.no-poverty'), description: t('onu-objective-info.no-poverty-description')}
   const obj2 = {image: require(`../../../assets/images/objetive2.png`), title: t('onu-objective-info.zero-hunger'), description: t('onu-objective-info.zero-hunger-description')}

@@ -34,7 +34,7 @@ query findNearbyUsers($latitude: Float!, $longitude: Float!) {
 }
 `;
 
-export const FIND_USER_BY_ID = gql`
+/*export const FIND_USER_BY_ID = gql`
 query findUserById($userId: String!){
   findUserById(id: $userId){
     name
@@ -50,7 +50,7 @@ query findUserById($userId: String!){
     }
   }
 }
-`;
+`;*/
 
 export const NEW_FIND_USER_BY_ID = gql`
 query newFindUserById($targetUserId: String!, $currentUserId: String!){
@@ -256,5 +256,38 @@ query newGetPendingConnections($userId: String!) {
         mail
     }
   }
+}
+`;
+
+export const GET_CHALLENGES_BY_FILTER = gql`
+query getChallengeByFilter($title: String!) {
+    getChallengeByFilter(filter:{ title: $title}, pageSize:10, pageNumber:1) {
+           actualPage
+           challenges{
+            categories
+            boost
+            description
+            endEvent
+            startEvent
+            endInscription 
+            startInscription 
+            id
+            title
+            owner
+            upVotes
+            downVotes
+            coordinates{
+              longitude
+              latitude
+            }
+            objectives{
+              points 
+              name
+            }
+          }
+            size
+            totalElements
+            totalPages
+           }
 }
 `;

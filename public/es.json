@@ -12,7 +12,9 @@
   },
   "register": {
     "error":"Error",
+    "success": "Éxito",
     "errorDescription": "La creación del usuario falló",
+    "successDescription": "La creación del usuario fue exitosa",
     "cancel": "Cancelar",
     "name": "Nommbre",
     "lastname": "Apellido",
@@ -31,7 +33,10 @@
     "followers": "Conexiones",
     "connect": "Conectar",
     "connected": "Conectado",
-    "pending": "Pendiente"
+    "pending": "Pendiente",
+    "no-challenges": "Únete a un desafío para comenzar!",
+    "no-posts": "Todavía no has creado ninguna publicación",
+    "no-results": "Nada para mostrar"
   },
   "create-post": {
     "create-post": "Crear Publicación",
@@ -92,9 +97,8 @@
   "challenge-card":{
     "join": "Únete",
     "view": "Ver más",
-    "challenge-description": "Descripcion de Desafío"
-
-
+    "challenge-description": "Descripcion de Desafío",
+    "level": "Nivel"
   },
   "join-button": {
     "join-this-challenge": "Únete a este Desafío",

@@ -5,8 +5,6 @@ import {Challenge} from "../Models/Challenge";
 import {StyleSheet,Text} from "react-native";
 import {useTranslation} from "react-i18next";
 
-
-
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 interface Props {
@@ -16,7 +14,6 @@ interface Props {
 const ChallengeCardMini = (props: Props) => {
     const { colors } = useTheme();
     const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
     const styles = StyleSheet.create({
         joinButton: {
             borderRadius: 20,

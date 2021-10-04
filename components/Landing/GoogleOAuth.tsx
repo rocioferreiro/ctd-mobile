@@ -1,8 +1,7 @@
 import React, {useContext} from 'react';
-import {Text, Image, ImageComponent, Pressable, Dimensions} from 'react-native';
+import {Image, Pressable, Dimensions} from 'react-native';
 import {View} from "../Themed";
 import * as Google from 'expo-google-app-auth';
-import ImageButton from "../CreatePost/ImageButton";
 import {AuthContext} from "../../App";
 import Toast from "react-native-toast-message";
 
