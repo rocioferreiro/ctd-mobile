@@ -64,11 +64,11 @@ const ChallengePage = (props: Props) => {
     const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
         onCompleted: () => {
             setIsJoined(true);
-            props.toastOn()
+            //props.toastOn()
 
         },
         onError: err => {
-            props.toastOn();
+            //props.toastOn();
 
         },
         refetchQueries: ["FIND_POSTS_OF_USER"],
@@ -81,7 +81,7 @@ const ChallengePage = (props: Props) => {
 
     function handleJoin(){
         joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
-            props.toastOn();
+            //props.toastOn();
         });
     }
     const styles = StyleSheet.create({
@@ -245,7 +245,7 @@ const ChallengePage = (props: Props) => {
 
                     <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
                         {props.currentUserId!==props.challenge.owner &&
-                        <JoinButton/>
+                        <JoinButton handleJoin={()=>handleJoin()}/>
                         }
                         {props.currentUserId===props.challenge.owner &&
                        <ViewParticipantsButton/>
