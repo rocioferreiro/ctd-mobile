@@ -543,7 +543,7 @@ export function Profile(props: Props) {
                   if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
                 })}
               </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
             <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
@@ -558,7 +558,7 @@ export function Profile(props: Props) {
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
-          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) &&
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.otherUserId) &&
           <NoResults text={t('profile.no-challenges')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
           }
         </View>
@@ -570,7 +570,7 @@ export function Profile(props: Props) {
                   if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
                 })}
               </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) && (!props.otherUserId) &&
             <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>

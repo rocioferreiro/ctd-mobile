@@ -83,11 +83,8 @@ const PostThumbnail = (props: Props) => {
     <View style={{
       ...styles.footer,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: 20,
-      paddingRight: 20
     }}>
-      <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <IconButton
           // onPress={() => {
           //   if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
