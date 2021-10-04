@@ -45,12 +45,6 @@ const CreatePost = (props:Props) => {
             props.toastOn();
             console.log(err);
         },
-        refetchQueries: ["FIND_POSTS_OF_USER"],
-        context: {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        }
     });
 
     const initialValues: CreatePostFormValues = {

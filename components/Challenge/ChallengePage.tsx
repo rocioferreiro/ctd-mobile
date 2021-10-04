@@ -11,7 +11,7 @@ import {Dimensions, Image, ImageBackground, ScrollView, TouchableWithoutFeedback
 import {View, Text} from "../Themed";
 import {StyleSheet} from 'react-native';
 import {Challenge} from "../Models/Challenge";
-import {useLazyQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
@@ -19,15 +19,18 @@ import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
 import ViewParticipantsButton from "./ViewParticipantsButton";
+import {CREATE_POST} from "../apollo-graph/Mutations";
 
 interface Props {
     challenge: Challenge
     setSelectedChallenge: (Challenge) => void
     currentUserId: string
+    toastOn:()=>void
 }
 
 const ChallengePage = (props: Props) => {
     const onuInfo = onuPictures()
+    const [isJoined,setIsJoined]= React.useState(false)
     const {t, i18n} = useTranslation();
     const [openChoices, setOpenChoices] = React.useState(false);
     const {colors} = useTheme();
@@ -57,6 +60,23 @@ const ChallengePage = (props: Props) => {
         if (props.challenge) getUser();
     }, [props.challenge])
 
+
+    const [createPost] = useMutation(CREATE_POST, {
+        onCompleted: () => {
+            setIsJoined(true);
+
+        },
+        onError: err => {
+            props.toastOn();
+
+        },
+        refetchQueries: ["FIND_POSTS_OF_USER"],
+        context: {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
+    });
     const styles = StyleSheet.create({
         title: {
             fontSize: 35,
