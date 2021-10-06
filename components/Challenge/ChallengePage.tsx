@@ -106,9 +106,10 @@ const ChallengePage = (props: Props) => {
     });
 
     function handleUnjoin(){
-        unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
+       /* unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
             toastOn();
-        });
+        });*/
+        console.log("unjoin")
     }
 
     function toastOn() {
