@@ -11,13 +11,100 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
+import {useMutation} from "@apollo/client";
+import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
+import Stepper from "../CreateChallengeForm/Stepper";
+import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
+import {useFormik} from "formik";
+import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
+import {getToken, getUserId} from "../Storage";
 
 const CTDHome = () => {
   const {t, i18n} = useTranslation();
   const {colors} = useTheme();
+
+  function toastOn() {
+    Toast.show({
+      type: 'error',
+      text1: 'Challenge Creation Error',
+      text2: 'Try again later',
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
+  }
   const categories = ["1", "2", "3"]
   const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
   const [createPost, setCreatePost] = React.useState(false);
+  const [create, setCreate] = React.useState(false)
+  const [creationSuccess, setCreationSuccess] = React.useState(false)
+  const [userId, setUserId] = React.useState('');
+  const [token, setToken] = React.useState('');
+  const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
+    onCompleted: () => {
+      setCreationSuccess(true);
+      setCreate(false);
+    },
+    onError: err => {
+      toastOn();
+      console.log(err);
+    },
+    refetchQueries: [],
+    context: {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }
+  });
+
+  React.useEffect(() => {
+    getUserId().then(id => setUserId(id));
+    getToken().then(t => setToken(t))
+  }, [])
+
+  const parseAndSendChallenge = (challenge) => {
+    const newChallengeDTOInput = {
+      "title": challenge.title,
+      "startEvent": convertDateToString(challenge.startsFrom),
+      "endEvent": convertDateToString(challenge.finishesOn),
+      "startInscription": convertDateToString(challenge.inscriptionsFrom),
+      "endInscription": convertDateToString(challenge.inscriptionsTo),
+      "description": challenge.description + (challenge.locationExtraInfo ? '\n' + challenge.locationExtraInfo : ''),
+      "owner": userId,
+      "categories": challenge.ONUObjective,
+      "objectives": challenge.challengeObjectives,
+      "coordinates": {
+        "latitude": challenge.coordinates.coordinates[0],
+        "longitude": challenge.coordinates.coordinates[1]
+      }
+    }
+    console.log(newChallengeDTOInput)
+    createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
+      toastOn();
+    });
+  }
+  const onSubmitCreation = () => {
+    parseAndSendChallenge(formik.values);
+  }
+
+  const initialValues: CreateChallengeFormValues = {
+    title: '',
+    description: '',
+    challengeObjectives: [],
+    coordinates: null,
+    locationExtraInfo: '',
+    inscriptionsFrom: new Date(),
+    inscriptionsTo: new Date(),
+    startsFrom: new Date(),
+    finishesOn: new Date(),
+    totalPoints: 0,
+    ONUObjective: []
+  }
+
+  const formik = useFormik(
+    {
+      initialValues: initialValues,
+      onSubmit: onSubmitCreation
+    }
+  )
 
   const styles = StyleSheet.create({
     container: {
@@ -63,6 +150,14 @@ const CTDHome = () => {
       textAlign: 'right',
       fontWeight: 'bold',
       marginHorizontal: 20,
+    },
+    create: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      fontSize: 20,
+      color: colors.primary,
+      textAlign: 'center',
+      fontWeight: 'normal',
+      margin: 10,
     },
     detailtitle: {
       backgroundColor: 'rgba(0,0,0,0)',
@@ -129,6 +224,7 @@ const CTDHome = () => {
 
   return (
     <View style={styles.container}>
+      {(!create && !creationSuccess && !createPost) &&
       <View style={{
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
@@ -178,22 +274,21 @@ const CTDHome = () => {
               backgroundColor: colors.primary,
               borderRadius: 90
             }}>
-              <View style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                backgroundColor: colors.primary,
-                alignItems: "center",
-                justifyContent: 'space-between'
-              }}>
-                <Text style={styles.subtitle}>36500k </Text>
-                <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                  <Text style={styles.detailtitle}> {t('home.global')}</Text>
-                  <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
-                  <Text style={styles.detailtitle}> {t('home.points')}</Text>
+                <View style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  backgroundColor: colors.primary,
+                  alignItems: "center",
+                  justifyContent: 'space-between'
+                }}>
+                  <Text style={styles.subtitle}>36500k </Text>
+                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                    <Text style={styles.detailtitle}> {t('home.global')}</Text>
+                    <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
+                    <Text style={styles.detailtitle}> {t('home.points')}</Text>
+                  </View>
                 </View>
-              </View>
             </View>
-
           </View>
           <View style={{
             width: "100%",
@@ -262,12 +357,11 @@ const CTDHome = () => {
                       <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
                     </View>
                   </View>
-
-
                 </TouchableWithoutFeedback>
               })}
             </View>
           </View>
+
           <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
             <Button onPress={() => setCreatePost(true)}
                     icon={{name: 'add', type: 'ionicon'}}
@@ -275,10 +369,25 @@ const CTDHome = () => {
             />
           </View>
 
+            <TouchableWithoutFeedback
+                onPress={() => setCreate(true)}>
+                <View style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  backgroundColor: 'transparent',
+                  alignItems: "center",
+                  justifyContent: 'space-between'
+                }}>
+                    <Text style={styles.create}>{t('home.challenge')}!</Text>
+                    <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+
           <PostFeed/>
 
         </ScrollView>
-      </View>
+      </View>}
 
       {createPost && <Card style={styles.creationCard}>
           <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
@@ -292,6 +401,24 @@ const CTDHome = () => {
           <CreatePost toastOn={toastOnPostError} setCreatePost={setCreatePost}/>
       </Card>
       }
+
+      {create && <Card style={styles.creationCard}>
+        {/*<Image source={require('../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
+        {/*PARA FONDO COLOR: descomentar el de abajo, comentar el de arriba*/}
+          <Image source={require('../../assets/images/connections.png')} resizeMode={'cover'}
+                 style={styles.background}/>
+          <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
+              <Button onPress={() => setCreate(false)}
+                      icon={{name: 'chevron-back-outline', type: 'ionicon'}}
+                      buttonStyle={styles.button}
+                      titleStyle={{color: colors.primary}}
+                      title="Cancel"
+              />
+          </View>
+          <Stepper onSubmit={onSubmitCreation} formik={formik} isLoading={loading}/>
+      </Card>}
+
+      {creationSuccess && <ChallengeCreationSuccessful close={() => setCreationSuccess(false)}/>}
 
     </View>
   )
