@@ -12,10 +12,9 @@ import {CreatePostFormValues} from "../CreateChallengeForm/Types";
 import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST} from "../apollo-graph/Mutations";
-import {getToken, getUserId} from "../Storage";
+import {getUserId} from "../Storage";
 import {useTranslation} from "react-i18next";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
-import {getApolloClientInstance} from "../apollo-graph/Client";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -29,30 +28,6 @@ const CreatePost = (props:Props) => {
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
-    const [token,setToken] = React.useState('')
-    const [userId, setUserId] = React.useState('');
-    React.useEffect(() => {
-        getUserId().then(id => setUserId(id));
-        getToken().then(t => setToken(t))
-    }, [])
-
-    const [createPost] = useMutation(CREATE_POST, {
-        onCompleted: () => {
-            setCreationSuccess(true);
-            props.setCreatePost(false);
-        },
-        onError: err => {
-            props.toastOn();
-            console.log(err);
-        },
-        refetchQueries: ["FIND_POSTS_OF_USER"],
-        context: {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        }
-    });
-
     const initialValues: CreatePostFormValues = {
         "title": '',
         "owner": '',
@@ -65,11 +40,29 @@ const CreatePost = (props:Props) => {
         parseAndSendPost(formik.values);
     }
     const formik = useFormik(
-        {
-            initialValues: initialValues,
-            onSubmit: onSubmitCreation
-        }
+      {
+          initialValues: initialValues,
+          onSubmit: onSubmitCreation
+      }
     )
+    const [createPost] = useMutation(CREATE_POST, {
+        onCompleted: () => {
+            setCreationSuccess(true);
+            props.setCreatePost(false);
+            formik.handleReset(() => {});
+        },
+        onError: err => {
+            props.toastOn();
+            console.log(err);
+        },
+        refetchQueries: ["FIND_POSTS_OF_USER"]
+    });
+
+    const [userId, setUserId] = React.useState('');
+
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+    }, [])
     const parseAndSendPost = (post) => {
         const newPostDTOInput = {
             "title": post.title,
@@ -85,12 +78,9 @@ const CreatePost = (props:Props) => {
         });
     }
 
-
     const handlePublish = () =>{
         onSubmitCreation()
-
     }
-
 
     return (
         <View style={{width:Dimensions.get("screen").width, height:Dimensions.get("window").height, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
@@ -103,13 +93,13 @@ const CreatePost = (props:Props) => {
                     padding: 15,
                     backgroundColor: "rgba(0,0,0,0)"
                 }}>
-                    <Text style={{
-                        fontSize: 35,
-                        fontWeight: 'bold',
-                        color: colors.primary,
-                        marginLeft: 5,
-                        marginTop: -20,
-                    }}>{t('create-post.create-post')}</Text>
+        <Text style={{
+            fontSize: 35,
+            fontWeight: 'bold',
+            color: colors.primary,
+            marginLeft: 5,
+            marginTop: -20,
+        }}>{t('create-post.create-post')}</Text>
                 </View>
                 <ScrollView>
                     <View style={{
@@ -122,8 +112,8 @@ const CreatePost = (props:Props) => {
 
 
                     }}
-                    >
-                        <PostTextInput formik={formik} />
+                          >
+                <PostTextInput formik={formik} />
                     </View>
                     <View style={{
                         display: "flex",
@@ -140,10 +130,10 @@ const CreatePost = (props:Props) => {
                                 padding: 10,
                                 backgroundColor: "rgba(0,0,0,0)"
                             }}>
-                                <CancelButton  setAddImage={setAddImage}/>
-                                <ImagePicker image={image} setImage={setImage}/>
+                          <CancelButton  setAddImage={setAddImage}/>
+                            <ImagePicker image={image} setImage={setImage}/>
                             </View>
-                            :
+                                :
                             <View style={{
                                 display: "flex",
                                 justifyContent: 'flex-start',
@@ -152,14 +142,14 @@ const CreatePost = (props:Props) => {
                                 backgroundColor: "rgba(0,0,0,0)",
                                 alignItems:'center'
                             }}>
-                                <Text  style={{
-                                    fontSize: 15,
-                                    fontWeight: 'normal',
-                                    color:Colors.blue400,
-                                    marginLeft: 5,
-                                    marginTop: -5,
-                                }}> {t('create-post.add-image')}</Text>
-                                <ImageButton setAddImage={setAddImage}/>
+                            <Text  style={{
+                                fontSize: 15,
+                                fontWeight: 'normal',
+                                color:Colors.blue400,
+                                marginLeft: 5,
+                                marginTop: -5,
+                            }}> {t('create-post.add-image')}</Text>
+                            <ImageButton setAddImage={setAddImage}/>
                             </View>
                         }
 
