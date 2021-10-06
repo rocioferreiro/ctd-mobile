@@ -542,10 +542,10 @@ export function Profile(props: Props) {
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge, key);
+                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
-            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) < new Date()).length == 0) &&
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
             }
           </View>
@@ -569,7 +569,7 @@ export function Profile(props: Props) {
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge, key);
+                  if (new Date(challenge.endEvent) <= new Date()) return getFinishedChallenge(challenge, key);
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&

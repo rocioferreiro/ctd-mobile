@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
-import {Modal, StyleSheet, TouchableOpacity} from "react-native";
+import {Dimensions, Modal, Platform, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
@@ -145,7 +145,7 @@ const ViewPost = (props:Props) => {
              }}>
         <IconButton onPress={() => setViewProfile(false)}
                     icon={'chevron-left'}
-                    style={styles.button}
+                    style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}
                     size={40}
         />
         <Profile otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>

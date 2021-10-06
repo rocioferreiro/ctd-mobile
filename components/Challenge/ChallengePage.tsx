@@ -202,7 +202,7 @@ const ChallengePage = (props: Props) => {
             <Title style={{
               fontSize: 20, color: colors.primary,
               padding: 10
-            }}>{t('challenge-page.challenge-objetives')}</Title>
+            }}>{t('challenge-page.challenge-objectives')}</Title>
           </Button>
           {props.challenge.objectives.map((objective, i) =>
             <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
@@ -224,7 +224,7 @@ const ChallengePage = (props: Props) => {
             <Title style={{
               fontSize: 20, color: colors.primary,
               padding: 10
-            }}>{t('challenge-page.sustainable-objetives')}</Title>
+            }}>{t('challenge-page.sustainable-objectives')}</Title>
           </Button>
 
           <View style={{

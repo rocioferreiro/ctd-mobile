@@ -27,6 +27,7 @@ const CategoryList = (props: Props) => {
     getToken().then(t => setToken(t))
   }, [])
   const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
+    fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -107,7 +108,7 @@ const CategoryList = (props: Props) => {
   });
 
   function handleSelectSDG(i: number) {
-    findChallengesByCategory({variables: {category: i}})
+    findChallengesByCategory({variables: {category: i-1}})
     setSelectedSDG(i)
   }
 

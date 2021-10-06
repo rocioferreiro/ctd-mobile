@@ -134,7 +134,7 @@ const ChallengeCard = (props: Props) => {
                  setViewProfile(!viewProfile);
                }}>
           <IconButton onPress={() => setViewProfile(false)}
-                      style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}]}
+                      style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("screen").height*0.05}: {}]}
                       icon={'chevron-left'}
                       size={40}
           />
