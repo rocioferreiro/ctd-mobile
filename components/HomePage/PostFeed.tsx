@@ -10,7 +10,7 @@ import {useEffect} from "react";
 import {getToken, getUserId} from "../Storage";
 
 
-const PostFeed = () => {
+const PostFeed = ({navigation}) => {
   const [open, setOpen] = React.useState(false)
   const [token,setToken] = React.useState('')
     React.useEffect(() => {
@@ -38,7 +38,7 @@ const PostFeed = () => {
         {postsByConnectionsData?.getPostByConnections.map((post, index) => {
           return <TouchableWithoutFeedback key={index}>
             <View style={{backgroundColor: colors.surface}}>
-              <ViewPost post={post} open={open}/>
+              <ViewPost post={post} open={open} navigation={navigation}/>
             </View>
 
           </TouchableWithoutFeedback>

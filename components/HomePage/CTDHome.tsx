@@ -19,7 +19,7 @@ import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
 
-const CTDHome = () => {
+const CTDHome = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const {colors} = useTheme();
 
@@ -384,7 +384,7 @@ const CTDHome = () => {
                 </View>
             </TouchableWithoutFeedback>
 
-          <PostFeed/>
+          <PostFeed navigation={navigation}/>
 
         </ScrollView>
       </View>}
