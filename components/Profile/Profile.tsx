@@ -302,6 +302,17 @@ export function Profile(props: Props) {
       bottom: 0,
       justifyContent: 'flex-end'
     },
+    imageCoverContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'space-between'
+    },
     logout: {
       width: Dimensions.get('window').width,
       justifyContent: 'center',
@@ -330,15 +341,11 @@ export function Profile(props: Props) {
       zIndex: 0
     },
     connectButton: {
-      position: "absolute",
-      top: 10,
-      right: 10,
-      zIndex: 2,
       backgroundColor: colors.accent,
       borderRadius: 20,
       marginTop: 50,
-      height: 33,
-      width: "40%"
+      width: "40%",
+      height: 30
     }
   });
 
@@ -440,16 +447,25 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-        {props.route.params?.otherId && <Button2 icon="plus"
-                                       style={styles.connectButton}
-                                       onPress={() => onConnect()} color={colors.background}
-                                       labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
-        > {getConnectButtonLabel()}
-        </Button2>}<Image
-          source={require('../../assets/images/profile-background.jpg')}
-          resizeMode={'cover'}
-          style={styles.profileBackground}
-      />
+
+          <ImageBackground style={styles.profileBackground}
+                           //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
+                           source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'}>
+                {props.route.params?.otherId && <View style={styles.imageCoverContainer}>
+                    <IconButton onPress={() => props.navigation.goBack()} style={{marginTop: 50}} icon={'chevron-left'}/>
+                    <Button2 icon="plus"
+                             style={styles.connectButton}
+                             onPress={() => onConnect()} color={colors.background}
+                             labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
+                    > {getConnectButtonLabel()}
+                    </Button2>
+                </View>}
+          </ImageBackground>
+        {/*  <Image*/}
+        {/*  source={require('../../assets/images/profile-background.jpg')}*/}
+        {/*  resizeMode={'cover'}*/}
+        {/*  style={styles.profileBackground}*/}
+        {/*/>*/}
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
