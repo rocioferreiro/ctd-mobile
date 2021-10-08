@@ -14,6 +14,7 @@ import ChallengePage from "../Challenge/ChallengePage";
 
 interface Props {
   setSelectedChallenge: (Challenge) => void;
+  navigation: any
 }
 
 const CategoryList = (props: Props) => {
@@ -155,7 +156,7 @@ const CategoryList = (props: Props) => {
           }}>
             {challengeList.map((challenge, i) =>
               <View key={i} style={{marginBottom: 5}}>
-                <ChallengeCard setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
+                <ChallengeCard navigation={props.navigation} setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
                 <Divider/>
               </View>
             )}

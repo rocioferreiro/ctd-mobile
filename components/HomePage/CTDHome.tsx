@@ -384,7 +384,7 @@ const CTDHome = ({navigation}) => {
                 </View>
             </TouchableWithoutFeedback>
 
-          <PostFeed/>
+          <PostFeed navigation={navigation}/>
 
         </ScrollView>
       </View>}
