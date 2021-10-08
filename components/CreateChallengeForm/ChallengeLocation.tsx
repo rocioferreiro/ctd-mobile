@@ -15,7 +15,6 @@ const ChallengeLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
     const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 
@@ -90,7 +89,7 @@ const ChallengeLocation = (props: Props) => {
             bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.15 : 0,
             width: '100%',
             backgroundColor: colors.surface,
-            height: Dimensions.get("window").height * 0.1
+            height: Dimensions.get("window").height * 0.09
         }
     });
 

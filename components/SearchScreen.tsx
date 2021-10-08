@@ -4,52 +4,48 @@ import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
 import ChallengeCard from "./ChallengeCard/ChallengeCard";
 import {useLazyQuery} from "@apollo/client";
 import SearchBarComponent from "./SearchBar/SearchBarComponent";
-import {Dimensions, ScrollView, Text, StyleSheet, useWindowDimensions} from "react-native";
+import {Dimensions, ScrollView, Text} from "react-native";
 import ChallengePage from "./Challenge/ChallengePage";
-import {FIND_CHALLENGES_OF_USER} from "./apollo-graph/Queries";
+import {FIND_CHALLENGES_BY_FILTER} from "./apollo-graph/Queries";
 import LottieView from "lottie-react-native";
-import {getUserId} from "./Storage";
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import {getToken, getUserId} from "./Storage";
 import CategoryList from "./CategoryList/CategoryList";
-import {
-  Button,
-  Title,
-  Paragraph,
-} from 'react-native-paper';
 import {
   Tabs,
   TabScreen,
-  useTabIndex,
-  useTabNavigation,
 } from 'react-native-paper-tabs';
 import {useTranslation} from "react-i18next";
 
 const SearchScreen = () => {
-    const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
+    const {t} = useTranslation();
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
-    const [index, setIndex] = useState(0);
     const {colors} = useTheme();
-    const layout = useWindowDimensions();
-    const [findChallengesOfUser, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {variables: {userId: userId}});
+    const [token,setToken] = React.useState('')
+    React.useEffect(() => {
+        getToken().then(t => setToken(t))
+    }, [])
+    const [findChallenges, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_FILTER, {
+        context: {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        },
+        variables: {title: ''}
+    });
     const [challengeList, setChallengeList] = useState<any>([]);
-    const [routes] = React.useState([
-        { key: 'first', title: t('search-screen.for-you') },
-        { key: 'second', title: t('search-screen.search') },
-        { key: 'third', title: t('search-screen.collections') },
-    ]);
 
     useEffect(() => {
         getUserId().then(id => {
             setUserId(id);
-            findChallengesOfUser();
+            findChallenges();
         });
     }, []);
 
     useEffect(() => {
         if (data) {
-            setChallengeList(data.getCreatedChallengesByUser)
+            console.log(data)
+            setChallengeList(data.getChallengeByFilter.challenges);
         }
     }, [data]);
 
@@ -85,7 +81,6 @@ const SearchScreen = () => {
             const filteredChallenges = data.getCreatedChallengesByUser.filter(challenge =>
                 challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
             );
-            console.log(filteredChallenges)
             setChallengeList(filteredChallenges);
         }
     }
@@ -93,7 +88,7 @@ const SearchScreen = () => {
     return (
         <View>
             {selectedChallenge ?
-                <ChallengePage setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+                <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                 <Card style={{
                     width: Dimensions.get('window').width,
                     height: '100%',
@@ -102,7 +97,7 @@ const SearchScreen = () => {
 
                     <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> {t('search-screen.challenges')} </Text>
 
-                  <Tabs
+                  <Tabs defaultIndex={2}
                     style={{ backgroundColor: colors.surface, borderBottomColor: colors.accent, borderBottomWidth: 1, width: Dimensions.get('window').width + 6 }} // works the same as AppBar in react-native-paper
                   >
                     <TabScreen label={t('search-screen.for-you')}>
@@ -122,8 +117,7 @@ const SearchScreen = () => {
                               <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                               <Divider/>
                             </View>
-                          )
-                          }
+                          )}
                         </ScrollView>
                       </View>
                     </TabScreen>
@@ -132,7 +126,6 @@ const SearchScreen = () => {
                         justifyContent:'center',
                         alignItems:'center',
                         alignContent:'center',
-
                         width:'100%',
                         backgroundColor:colors.surface,
                         marginBottom:50

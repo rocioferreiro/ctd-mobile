@@ -9,30 +9,35 @@ import ChallengeCard from "../ChallengeCard/ChallengeCard";
 import {TabScreen} from "react-native-paper-tabs";
 import {useLazyQuery} from "@apollo/client";
 import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import ChallengePage from "../Challenge/ChallengePage";
 
 interface Props {
   setSelectedChallenge: (Challenge) => void;
 }
 
-
 const CategoryList = (props: Props) => {
-
 
   const onuInfo = onuPictures()
 
   const [challengeList, setChallengeList] = useState<any>([]);
   const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
-  const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY);
-
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
+  const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
 
   useEffect(() => {
     if (data) {
-      console.log(selectedSDG)
       setChallengeList(data.getChallengeByFilter.challenges)
-      console.log(data)
-      console.log("challenges should be above")
     }
   }, [data]);
 
@@ -42,7 +47,6 @@ const CategoryList = (props: Props) => {
       const filteredChallenges = data.getChallengeByFilter.challenges.filter(challenge =>
         challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
       );
-      console.log(filteredChallenges)
       setChallengeList(filteredChallenges);
     }
   }
@@ -104,7 +108,7 @@ const CategoryList = (props: Props) => {
   });
 
   function handleSelectSDG(i: number) {
-    findChallengesByCategory({variables: {category: i}})
+    findChallengesByCategory({variables: {category: i-1}})
     setSelectedSDG(i)
   }
 
@@ -114,8 +118,8 @@ const CategoryList = (props: Props) => {
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           {onuInfo.map((v, i) => {
             return (
-              <TouchableOpacity onPress={() => handleSelectSDG(i + 1)}>
-                <View style={styles.card} key={i}>
+              <TouchableOpacity key={i} onPress={() => handleSelectSDG(i + 1)}>
+                <View style={styles.card}>
                   <View style={[styles.sideNumberContainer, {backgroundColor: colors[i]}]}>
                     <Text style={styles.number}>{i + 1}</Text>
                     <Image style={styles.logo} source={onuLogos[i].image}/>
@@ -133,14 +137,15 @@ const CategoryList = (props: Props) => {
                 </View>
               </TouchableOpacity>
             )
-          })
-          }
+          })}
           <View style={{padding: Dimensions.get("window").height * 0.05, backgroundColor: 'transparent'}}/>
         </ScrollView> :
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-          <View style={{backgroundColor: 'transparent', width: Dimensions.get('window').width}}>
+          <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'transparent', width: Dimensions.get('screen').width}}>
             <IconButton icon={'chevron-left'} onPress={() => {setSelectedSDG(-1)}}/>
-            <SearchBarComponent onChange={onChange}/>
+            <View style={{width: '100%'}}>
+              <SearchBarComponent onChange={onChange}/>
+            </View>
           </View>
           <Divider/>
           <ScrollView style={{
@@ -153,15 +158,12 @@ const CategoryList = (props: Props) => {
                 <ChallengeCard setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
                 <Divider/>
               </View>
-            )
-            }
+            )}
             <View style={{padding: Dimensions.get("window").height * 0.05, backgroundColor: 'transparent'}}/>
           </ScrollView>
         </View>
-
       }
     </View>
-
   );
 }
 export default CategoryList;

@@ -3,14 +3,11 @@ import { IconButton, Colors } from 'react-native-paper';
 import {useTranslation} from "react-i18next";
 
 interface  Props {
-
     setAddImage:(boolean) =>void
-
 }
 
 const CancelButton = (props:Props) => {
     const {t, i18n} = useTranslation();
-    const [language, setLanguage] = React.useState(i18n.language);
     return (
         <IconButton
             icon="close"

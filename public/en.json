@@ -11,7 +11,9 @@
   },
   "register": {
     "error":"Error",
+    "success": "Success",
     "errorDescription": "Registration Failed",
+    "successDescription": "Registration Successful",
     "cancel": "Cancel",
     "name": "First Name",
     "lastname": "Last Name",
@@ -30,12 +32,14 @@
     "followers": "Connections",
     "connect": "Connect",
     "connected": "Connected",
-    "pending": "Pending"
+    "pending": "Pending",
+    "no-challenges": "Go join some challenges now!",
+    "no-posts": "You have created no posts yet",
+    "no-results": "Nothing to show"
   },
   "create-post": {
     "create-post": " Create Post",
     "add-image": "Add Image"
-
   },
   "publish-button": {
     "publish": "Publish"
@@ -54,17 +58,16 @@
     "search": "Search",
     "home": "home"
   },
-
   "home": {
     "cancel": "Cancel",
     "challenges-active": "Active Challenges",
-    "top": "Top SGDs",
+    "challenge": "New Challenge",
+    "top": "Top SDGs",
     "level": "Level",
     "your-experience": "Your Experience",
     "points": "Points",
     "sustainable": "Sustainable",
     "global": "Global"
-
   },
   "view-post": {
    "report":"Report",
@@ -80,19 +83,20 @@
   },
   "challenge-page": {
     "challenge-location": "Challenge location",
-    "sustainable-objetives": "Sustainable Objetives",
-    "challenge-objetives": "Challenge Objetives",
+    "sustainable-objectives": "Sustainable Objectives",
+    "challenge-objectives": "Challenge Objectives",
     "inscriptions-end": "Inscriptions end",
     "inscriptions-start": "Inscriptions Start",
     "end-event": "End Event",
     "release-date": "Release date",
-    "challenge-description": "Challenge Description"
-
+    "challenge-description": "Challenge Description",
+    "back": "Go back"
   },
   "challenge-card":{
     "join": "Join",
     "view": "View",
-    "challenge-description": "Challenge Description"
+    "challenge-description": "Challenge Description",
+    "level": "Level"
 },
   "join-button": {
     "join-this-challenge": "Join This Challenge",
@@ -107,29 +111,28 @@
     "goal-at-least": "You need at least one Goal",
     "goal-placeholder": "Goal..",
     "challenge-goals": "Challenge Goals",
-    "choose-objetives": "Choose Objetives",
-    "select-at-least": "Select at least one objetive",
-    "edit-objetives": "Edit Objetives",
-    "sustainable-objetives": "Sustainable Objetives",
+    "choose-objectives": "Choose Objetives",
+    "select-at-least": "Select at least one objective",
+    "edit-objectives": "Edit Objetives",
+    "sustainable-objectives": "Sustainable Objetives",
     "challenge-description": "Challenge Description",
     "challenge-title": "Challenge Title",
     "create-new-challenge": "Create a new Challenge!"
-
   },
   "onu-objective-choice": {
-    "objetive": "Objetive",
-    "current-objetives": "Current Objetives",
-    "choose-sustainable-objetives":"Choose Sustainable Objetives"
+    "objective": "Objective",
+    "current-objectives": "Current Objectives",
+    "choose-sustainable-objectives":"Choose Sustainable Objectives"
   },
   "challenge-extra-info":{
     "upload-image": "Upload Image",
     "to": "To",
-    "From": "From",
+    "from": "From",
     "select-valid-date": "Select a valid date",
     "at-least-week": "Inscriptions should be open for at least a week",
     "inscriptions-open": "Inscriptions Open",
-    "when-will-challenge": "When will the Challenge take place?"
-
+    "when-will-challenge": "When will the Challenge take place?",
+    "challenge-active": "Challenge is Active"
   },
   "search-bar": {
     "placeholder":"Search for Challenges.."
@@ -140,7 +143,7 @@
     "zero-hunger": "Zero Hunger",
     "zero-hunger-description": "The food and agriculture sector offers key solutions for development, and is central for hunger and poverty eradication.",
     "good-health": "Good Health and Well-being",
-    "good-health=description": "Ensuring healthy lives and promoting the well-being for all at all ages is essential to sustainable development.",
+    "good-health-description": "Ensuring healthy lives and promoting the well-being for all at all ages is essential to sustainable development.",
     "quality-education": "Quality Education",
     "quality-education-description": "Obtaining a quality education is the foundation to improving people’s lives and sustainable development.",
     "gender": "Gender Equality",
@@ -170,6 +173,4 @@
     "partner":  "Partnerships",
     "partner-description": "Revitalize the global partnership for sustainable development."
   }
-
-
 }
