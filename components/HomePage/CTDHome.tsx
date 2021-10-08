@@ -384,8 +384,6 @@ const CTDHome = ({navigation}) => {
                 </View>
             </TouchableWithoutFeedback>
 
-            <Button onPress={() => navigation.navigate('tabbar', {screen: 'challenge', params: {challengeId: 7}})}>SEE CHALLENGE</Button>
-
           <PostFeed/>
 
         </ScrollView>
