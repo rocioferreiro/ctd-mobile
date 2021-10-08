@@ -12,7 +12,7 @@ import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
 
-const CTDHome = () => {
+const CTDHome = ({navigation}) => {
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
     const {colors} = useTheme();
@@ -208,6 +208,9 @@ const CTDHome = () => {
                                 icon={{name: 'add', type: 'ionicon'}}
                                 buttonStyle={styles.button}
                         />
+                        <Button onPress={() => navigation.navigate('tabbar', {screen: 'challenge', params: {challengeId: '7'}})}
+                                buttonStyle={styles.button}
+                        >SEE CHALLENGE</Button>
                     </View>
 
                     <PostFeed/>

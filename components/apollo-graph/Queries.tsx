@@ -3,17 +3,18 @@ import {  gql } from '@apollo/client';
 //if u want to test these queries pls use ChallengeList or UserList function in router component
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
-query findChallengeById{
-  findChallengeById(id: 1){
-    title
-    user
-    address {
-      coordinates {
-        longitude
+query findChallengeById($id: String!){
+  findChallengeById(id: $id){
+      id
+      title
+    	owner
+      description
+      startEvent
+    	coordinates {
         latitude
+        longitude
       }
     }
-  }
 }
 `;
 
