@@ -19,7 +19,7 @@ import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
 
-const CTDHome = () => {
+const CTDHome = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const {colors} = useTheme();
 
@@ -383,6 +383,8 @@ const CTDHome = () => {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
+
+            <Button onPress={() => navigation.navigate('tabbar', {screen: 'challenge', params: {challengeId: 7}})}>SEE CHALLENGE</Button>
 
           <PostFeed/>
 
