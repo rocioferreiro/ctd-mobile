@@ -7,7 +7,7 @@ import {
   ImageBackground,
   Modal, Platform,
   ScrollView,
-  StyleSheet,
+  StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback
 } from "react-native";
 import {Icon} from "react-native-elements";
@@ -391,7 +391,7 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -405,12 +405,12 @@ export function Profile(props: Props) {
         <Text style={styles.whiteText}><Text
           style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   }
 
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
@@ -423,7 +423,7 @@ export function Profile(props: Props) {
         <Icon style={{marginRight: 4}} type={'feather'} name={'user'} color={colors.background}/>
         <Text style={styles.whiteText}>154</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   }
 
   const myIcon = <ImageElement style={{height: 40, width: 40}}
