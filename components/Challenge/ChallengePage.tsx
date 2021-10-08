@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import MapView, {LatLng, Marker} from "react-native-maps";
+import Toast from "react-native-toast-message";
 import {
   useTheme,
   Title,
@@ -11,13 +12,16 @@ import {Dimensions, Image, ImageBackground, ScrollView, TouchableWithoutFeedback
 import {View, Text} from "../Themed";
 import {StyleSheet} from 'react-native';
 import {Challenge} from "../Models/Challenge";
-import {useLazyQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {FIND_CHALLENGE_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import LottieView from "lottie-react-native";
 import JoinButton from "./JoinButton";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {useTranslation} from "react-i18next";
 import {getToken, getUserId} from "../Storage";
+import {JOIN_CHALLENGE, UNJOIN_CHALLENGE} from "../apollo-graph/Mutations";
+import ViewParticipantsButton from "./ViewParticipantsButton";
+import UnJoinButton from "./UnJoinButton";
 
 interface Props {
   challenge?: Challenge
@@ -28,6 +32,7 @@ interface Props {
 }
 
 const ChallengePage = (props: Props) => {
+  const [isJoined,setIsJoined]= React.useState(false)
   const onuInfo = onuPictures();
   const [challengeInfo, setChallengeInfo] = useState<Challenge>();
   const [currentId, setCurrentId] = useState<string>();
@@ -50,7 +55,71 @@ const ChallengePage = (props: Props) => {
       headers: {'Authorization': "Bearer " + token}
     },
   });
+  const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
+    onCompleted: () => {
+      setIsJoined(true);
+      toastOn()
 
+    },
+    onError: err => {
+      toastOnError();
+
+    },
+    refetchQueries: ["FIND_POSTS_OF_USER"],
+    context: {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }
+  });
+  function handleJoin(){
+    joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
+      toastOn();
+    });
+  }
+
+  const [unjoinChallenge] = useMutation(UNJOIN_CHALLENGE, {
+    onCompleted: () => {
+      setIsJoined(false);
+      toastOn()
+
+    },
+    onError: err => {
+      toastOnError();
+
+    },
+    refetchQueries: ["FIND_POSTS_OF_USER"],
+    context: {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }
+  });
+
+  function handleUnjoin(){
+    /* unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
+         toastOn();
+     });*/
+    console.log("unjoin")
+  }
+
+  function toastOn() {
+    Toast.show({
+      type: 'success',
+      text1: 'You Joined this Challenge',
+      text2: 'Good Luck!',
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
+  }
+
+  function toastOnError() {
+    Toast.show({
+      type: 'error',
+      text1: 'Join Challenge Error',
+      text2: 'Try Again Later',
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
+  }
   const [getChallege] = useLazyQuery(FIND_CHALLENGE_BY_ID,
     {
       variables: {id: 7},//TODO CHALLENGE ID,
@@ -254,7 +323,15 @@ const ChallengePage = (props: Props) => {
         </View>
 
         <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-          <JoinButton/>
+          {props.currentUserId!==props.challenge.owner && !isJoined &&
+          <JoinButton handleJoin={()=>handleJoin()}/>
+          }
+          {props.currentUserId!==props.challenge.owner && isJoined &&
+          <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
+          }
+          {props.currentUserId===props.challenge.owner &&
+          <ViewParticipantsButton/>
+          }
         </View>
         <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
 
