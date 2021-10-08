@@ -112,7 +112,9 @@ const ChallengeCard = (props: Props) => {
             width: 100,
             marginLeft: 40,
             marginRight: 120,
-          }} onPress={() => props.setSelectedChallenge(props.challenge)}
+          }} onPress={() => {
+            props.navigation.navigate('challenge', {challengeId: props.challenge.id});
+          }}
           ><Title style={{
             fontSize: 15, color: colors.primary, padding: 0
           }}>{t('challenge-card.view')}</Title>
