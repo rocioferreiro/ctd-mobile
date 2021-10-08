@@ -1,14 +1,13 @@
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme, ActivityIndicator, IconButton} from 'react-native-paper';
-import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity} from "react-native";
+import {Dimensions, Modal, Platform, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_USER_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
-import LottieView from "lottie-react-native";
-import {getUserId} from "../Storage";
 import {Profile} from "../Profile/Profile";
+import {getToken} from "../Storage";
 
 interface Props {
   challenge: any;
@@ -17,7 +16,6 @@ interface Props {
 
 const ChallengeCard = (props: Props) => {
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
   const {colors} = useTheme();
   const styles = StyleSheet.create({
     joinButton: {
@@ -54,17 +52,25 @@ const ChallengeCard = (props: Props) => {
     if (props.challenge) return props.challenge.owner
     else return ''
   };
+  const [token,setToken] = React.useState('')
+  React.useEffect(() => {
+    getToken().then(t => setToken(t))
+  }, [])
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     variables: {
       currentUserId: getOwner(),
       targetUserId: getOwner()
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
   const LeftContent = props => <Avatar.Text
     label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]} {...props}/>
 
   useEffect(() => {
-    console.log(props.challenge)
     if (props.challenge) getUser()
   }, [props.challenge]);
 
@@ -85,7 +91,7 @@ const ChallengeCard = (props: Props) => {
           setViewProfile(true);
         }} style={{backgroundColor: 'transparent', marginRight: 20}}>
         <Card.Title title={data.findUserById.user.name + ' ' + data.findUserById.user.lastname}
-                    subtitle={'Level ' + data.findUserById.user.level} left={LeftContent}/>
+                    subtitle={t('challenge-card.level') + ' ' + data.findUserById.user.level} left={LeftContent}/>
         </TouchableOpacity>
         <Card.Content>
           <Title style={{
@@ -128,8 +134,8 @@ const ChallengeCard = (props: Props) => {
                  setViewProfile(!viewProfile);
                }}>
           <IconButton onPress={() => setViewProfile(false)}
+                      style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("screen").height*0.05}: {}]}
                       icon={'chevron-left'}
-                      style={styles.button}
                       size={40}
           />
           <Profile otherUserId={getOwner()}/>

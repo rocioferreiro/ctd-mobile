@@ -3,14 +3,11 @@ import {Button, useTheme} from "react-native-paper";
 import React from "react";
 import {colorShade} from "../Models/shadingColor";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
-import ChallengePage from "./ChallengePage";
 import {Challenge} from "../Models/Challenge";
 
 type Props = {
   challenge:Challenge
 }
-
-
 const ChallengeONUObjetives = (props: Props) => {
 
     const {colors} = useTheme();
@@ -112,6 +109,7 @@ const ChallengeONUObjetives = (props: Props) => {
             fontSize: 20
         }
     });
+    const onuInfo = onuPictures();
     return(
     <View style={{display: 'flex', flexDirection: 'column'}}>
         <View style={{
@@ -125,7 +123,7 @@ const ChallengeONUObjetives = (props: Props) => {
                 return <TouchableWithoutFeedback key={index}>
                     <Image
                         style={{width: 70, height: 70, borderRadius: 25, marginHorizontal: 10}}
-                        source={onuPictures[index].image}/>
+                        source={onuInfo[index].image}/>
                 </TouchableWithoutFeedback>
             })}
         </View>

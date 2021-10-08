@@ -5,20 +5,20 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Modal,
+  Modal, Platform,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback
 } from "react-native";
 import {Icon} from "react-native-elements";
-import {Button, Card, IconButton, useTheme} from "react-native-paper";
+import {Badge, Button, Card, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
   FIND_POST_BY_ID,
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
-  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS
+  NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
@@ -29,10 +29,11 @@ import Toast from "react-native-toast-message";
 import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
+import NoResults from "./NoResults";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -53,26 +54,103 @@ export function Profile(props: Props) {
   const [viewPostId, setViewPostId] = useState();
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
+  const [token,setToken] = React.useState('')
 
-  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {fetchPolicy: 'cache-and-network'});
-  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {variables: {id: viewPostId}});
-  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
-  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID);
-  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER);
-  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS);
-  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {fetchPolicy: 'cache-and-network'});
+  const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {
+    variables: {id: viewPostId},
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onCompleted: data => {
+      console.log(data)
+    }
+  });
+  const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+  const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
+    variables: {userId: userId},
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
 
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.pending);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
   const [disconnect] = useMutation(DISCONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.connect);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
 
+  useEffect(() => {
+    getToken().then(t => setToken(t));
+    if (!props.otherUserId) {
+      getUserId().then(id => {
+        setUserId(id);
+        getConnectionRequestsNumber({variables: {userId: id}});
+      });
+    }
+  }, []);
   useEffect(() => {
     if (props.otherUserId) {
       setUserId(props.otherUserId);
@@ -89,20 +167,17 @@ export function Profile(props: Props) {
       });
     }
   }, [props.otherUserId]);
-
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
       getUser({variables: {targetUserId: userId, currentUserId: loggedInUserId}});
       getChallenges({variables: {userId: userId}});
     }
-  }, [userId, loggedInUserId])
-
+  }, [userId, loggedInUserId]);
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
-  }, [viewPost])
-
+  }, [viewPost]);
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.otherUserId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
@@ -122,8 +197,7 @@ export function Profile(props: Props) {
     });
   }
 
-  const onError = (error) => {
-    console.log(error);
+  const onError = () => {
     toastError();
   }
 
@@ -153,7 +227,8 @@ export function Profile(props: Props) {
       fontSize: 24,
       fontWeight: "bold",
       color: colors.primary,
-      marginRight: 15
+      marginRight: 15,
+      paddingBottom: 5
     },
     secondaryText: {
       fontSize: 12,
@@ -161,7 +236,7 @@ export function Profile(props: Props) {
     },
     forODS: {
       marginTop: 10,
-      width: 60,
+      width: 62,
       textAlign: 'center',
       alignSelf: "center",
     },
@@ -197,9 +272,8 @@ export function Profile(props: Props) {
     },
     sectionContainer: {
       backgroundColor: 'transparent',
-      paddingTop: 30,
-      paddingLeft: 30,
-      paddingRight: 30,
+      paddingHorizontal: 30,
+      paddingVertical: 15
     },
     image: {
       height: 180,
@@ -314,9 +388,9 @@ export function Profile(props: Props) {
     }
   }
 
-  const getActiveChallenge = (challenge) => {
+  const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -333,9 +407,9 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const getFinishedChallenge = (challenge) => {
+  const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <View style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
@@ -351,7 +425,7 @@ export function Profile(props: Props) {
     </View>
   }
 
-  const myIcon = <ImageElement style={{height: 50, width: 50}}
+  const myIcon = <ImageElement style={{height: 40, width: 40}}
                                source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
 
@@ -388,19 +462,32 @@ export function Profile(props: Props) {
                       </View>
                   </View>
               </View>
-              <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-                  <OptionsMenu
-                      customButton={myIcon}
-                      options={["English", "Español", "Cancel"]}
-                      actions={[() => handleChange("en"), () => handleChange("es"), () => {
-                      }]}
-                  />
-                {
-                  (!props.otherUserId) && <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-                      <Icon type={'feather'} name={'user-plus'}/>
-                  </TouchableWithoutFeedback>
-                }
-              </View>
+            {(!props.otherUserId) &&
+            <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+                <OptionsMenu
+                    customButton={myIcon}
+                    options={["English", "Español", "Cancel"]}
+                    actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                    }]}
+                />
+                <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                      {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
+                      <Badge size={20} style={{
+                        backgroundColor: colors.accent,
+                        position: 'absolute',
+                        bottom: 10,
+                        left: -15,
+                        zIndex: 2
+                      }}>
+                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
+                      </Badge>}
+                        <Icon type={'feather'} name={'user-plus'}/>
+                    </View>
+                </TouchableWithoutFeedback>
+
+            </View>
+            }
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
@@ -415,17 +502,17 @@ export function Profile(props: Props) {
                   <View>
                       <Avatar.Image size={50} source={onuLogos[0].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>End Poverty</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.no-poverty')}</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[1].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>0 Hunger</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.zero-hunger')}</Text>
                   </View>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[13].image}
                                     style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>Submarine Life</Text>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.life-water')}</Text>
                   </View>
               </View>
           </View>
@@ -451,36 +538,46 @@ export function Profile(props: Props) {
                   </Button>
               </View>
           </View>
-          <View style={styles.sectionContainer}>
+          <View style={{...styles.sectionContainer, paddingTop: 30}}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            }
           </View>
         {postsOfUser &&
         <View style={styles.sectionContainer}>
             <Text style={styles.primaryText}>{t('profile.posts')}</Text>
             <ScrollView horizontal={true}>
-              {postsOfUser.findPostByOwner.map((post, i) => {
+              {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
                   setViewPostId(postId);
                   setViewPost(true);
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.otherUserId) &&
+          <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
+          }
         </View>
         }
           <View style={{...styles.sectionContainer}}>
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) <= new Date()) return getFinishedChallenge(challenge, key);
                 })}
               </ScrollView>
+            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
+            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            }
           </View>
-        {!props.otherUserId && <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100}]}>
+        {!props.otherUserId &&
+        <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button
                 uppercase={false}
                 mode={'outlined'}
@@ -511,9 +608,13 @@ export function Profile(props: Props) {
              visible={viewConnectionsFeed}
              onRequestClose={() => {
                setViewConnectionsFeed(!viewConnectionsFeed);
+               getConnectionRequestsNumber();
              }}>
-        <View style={{backgroundColor: colors.surface,}}>
-          <IconButton onPress={() => setViewConnectionsFeed(false)}
+        <View style={{backgroundColor: colors.surface}}>
+          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => {
+            setViewConnectionsFeed(false)
+            getConnectionRequestsNumber()
+          }}
                       icon={'chevron-left'}
           />
         </View>

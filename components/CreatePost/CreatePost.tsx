@@ -12,9 +12,10 @@ import {CreatePostFormValues} from "../CreateChallengeForm/Types";
 import {useFormik} from "formik";
 import {useMutation} from "@apollo/client";
 import {CREATE_POST} from "../apollo-graph/Mutations";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
 import {useTranslation} from "react-i18next";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
+import {getApolloClientInstance} from "../apollo-graph/Client";
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
@@ -28,6 +29,30 @@ const CreatePost = (props:Props) => {
     const [creationSuccess, setCreationSuccess] = React.useState(false)
     const {t, i18n} = useTranslation();
     const [language, setLanguage] = React.useState(i18n.language);
+    const [token,setToken] = React.useState('')
+    const [userId, setUserId] = React.useState('');
+    React.useEffect(() => {
+        getUserId().then(id => setUserId(id));
+        getToken().then(t => setToken(t))
+    }, [])
+
+    const [createPost] = useMutation(CREATE_POST, {
+        onCompleted: () => {
+            setCreationSuccess(true);
+            props.setCreatePost(false);
+        },
+        onError: err => {
+            props.toastOn();
+            console.log(err);
+        },
+        refetchQueries: ["FIND_POSTS_OF_USER"],
+        context: {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }
+    });
+
     const initialValues: CreatePostFormValues = {
         "title": '',
         "owner": '',
@@ -45,24 +70,7 @@ const CreatePost = (props:Props) => {
           onSubmit: onSubmitCreation
       }
     )
-    const [createPost] = useMutation(CREATE_POST, {
-        onCompleted: () => {
-            setCreationSuccess(true);
-            props.setCreatePost(false);
-            formik.handleReset(() => {});
-        },
-        onError: err => {
-            props.toastOn();
-            console.log(err);
-        },
-        refetchQueries: ["FIND_POSTS_OF_USER"]
-    });
 
-    const [userId, setUserId] = React.useState('');
-
-    React.useEffect(() => {
-        getUserId().then(id => setUserId(id));
-    }, [])
     const parseAndSendPost = (post) => {
         const newPostDTOInput = {
             "title": post.title,

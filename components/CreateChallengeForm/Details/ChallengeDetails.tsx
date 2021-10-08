@@ -15,7 +15,6 @@ type Props = {
 
 const ChallengeDetails = (props: Props) => {
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
   const { colors } = useTheme();
   const {formik} = props;
   const [keyboardShown, setKeyboardShown] = React.useState(false);
@@ -25,8 +24,9 @@ const ChallengeDetails = (props: Props) => {
   const [onuObjectives, setOnuObjectives] = React.useState([]);
   const [openChoices, setOpenChoices] = React.useState(false);
   const [errorMarker, setErrorMarker] = React.useState({title: false, description: false, goals: false, onu: false})
+  const onuInfo = onuPictures();
 
-    const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
         title: {
             fontSize: 30,
             fontWeight: 'bold',
@@ -144,7 +144,7 @@ const ChallengeDetails = (props: Props) => {
 
   useEffect(() => {
     if(formik.values.ONUObjective && formik.values.ONUObjective.length > 0) {
-        setOnuObjectives(formik.values.ONUObjective.map(i =>{return {image: onuPictures[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
+        setOnuObjectives(formik.values.ONUObjective.map(i =>{return {image: onuInfo[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
     }
     if(formik.values.challengeObjectives && formik.values.challengeObjectives.length > 0){
       setGoals(formik.values.challengeObjectives)
@@ -206,7 +206,7 @@ const ChallengeDetails = (props: Props) => {
                             inputContainerStyle={{borderBottomWidth: 0}}
                         />
 
-                        <Text style={styles.label}> {t('challenge-details.sustainable-objetives')} </Text>
+                        <Text style={styles.label}> {t('challenge-details.sustainable-objectives')} </Text>
                         {onuObjectives.length > 0 ?
                             <View style={{display: 'flex', flexDirection: 'column'}}>
                                 <View style={{
@@ -232,7 +232,7 @@ const ChallengeDetails = (props: Props) => {
                                     padding: 15
                                 }}>
                                     <Button style={styles.editOptionsButton} mode={'contained'}
-                                            onPress={() => setOpenChoices(true)}> {t('challenge-details.edit-objetives')}</Button>
+                                            onPress={() => setOpenChoices(true)}> {t('challenge-details.edit-objectives')}</Button>
                                 </View>
                             </View> :
                               <View>
@@ -245,7 +245,7 @@ const ChallengeDetails = (props: Props) => {
                                       padding: 15
                                   }}>
                                       <Button style={styles.optionsButton} mode={'contained'}
-                                              onPress={() => setOpenChoices(true)}>{t('challenge-details.choose-objetives')} </Button>
+                                              onPress={() => setOpenChoices(true)}>{t('challenge-details.choose-objectives')} </Button>
                                   </View>
                               </View>
                         }
