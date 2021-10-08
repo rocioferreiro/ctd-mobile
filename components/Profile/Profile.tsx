@@ -42,7 +42,8 @@ enum ConnectionStatus {
 }
 
 interface Props {
-  otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
+  navigation: any,
+  route?: any
 }
 
 export function Profile(props: Props) {
@@ -144,7 +145,7 @@ export function Profile(props: Props) {
 
   useEffect(() => {
     getToken().then(t => setToken(t));
-    if (!props.otherUserId) {
+    if (!props.route.params?.otherId) {
       getUserId().then(id => {
         setUserId(id);
         getConnectionRequestsNumber({variables: {userId: id}});
@@ -152,8 +153,8 @@ export function Profile(props: Props) {
     }
   }, []);
   useEffect(() => {
-    if (props.otherUserId) {
-      setUserId(props.otherUserId);
+    if (props.route.params?.otherId) {
+      setUserId(props.route.params?.otherId);
       getUserId().then(id => {
         setLoggedInUserId(id);
         getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
@@ -166,7 +167,7 @@ export function Profile(props: Props) {
         setLoggedInUserId(id);
       });
     }
-  }, [props.otherUserId]);
+  }, [props.route.params?.otherId]);
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
@@ -179,14 +180,14 @@ export function Profile(props: Props) {
     findPostById();
   }, [viewPost]);
   useEffect(() => {
-    if (connectionsData && pendingConnectionsData && props.otherUserId) {
-      if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
+    if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
+      if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
         setConnectionStatus(ConnectionStatus.connected);
-      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.otherUserId))
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.route.params?.otherId))
         setConnectionStatus(ConnectionStatus.pending);
       else setConnectionStatus(ConnectionStatus.connect);
     }
-  }, [connectionsData, pendingConnectionsData, props.otherUserId]);
+  }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
 
   function toastError() {
     Toast.show({
@@ -439,7 +440,7 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-        {props.otherUserId && <Button2 icon="plus"
+        {props.route.params?.otherId && <Button2 icon="plus"
                                        style={styles.connectButton}
                                        onPress={() => onConnect()} color={colors.background}
                                        labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
@@ -462,7 +463,7 @@ export function Profile(props: Props) {
                       </View>
                   </View>
               </View>
-            {(!props.otherUserId) &&
+            {(!props.route.params?.otherId) &&
             <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
                 <OptionsMenu
                     customButton={myIcon}
@@ -546,7 +547,7 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
-            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {postsOfUser &&
@@ -555,13 +556,14 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
-                  setViewPostId(postId);
-                  setViewPost(true);
+                  // setViewPostId(postId);
+                  // setViewPost(true);
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
-          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.otherUserId) &&
-          <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
+          <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
           }
         </View>
         }
@@ -573,10 +575,10 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
-        {!props.otherUserId &&
+        {!props.route.params?.otherId &&
         <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button
                 uppercase={false}
@@ -584,6 +586,7 @@ export function Profile(props: Props) {
                 style={{width: '40%'}}
                 onPress={() => {
                   auth.signOut().catch(e => console.log(e))
+                  //props.navigation.navigate('landing')
                 }}
             >
               {t('profile.logout')}
@@ -591,18 +594,18 @@ export function Profile(props: Props) {
         </View>}
       </ScrollView>
       }
-      {viewPost && postData &&
-      <Card style={styles.creationCard}>
-          <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
-          <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
-              <IconButton onPress={() => setViewPost(false)}
-                          icon={'chevron-left'}
-                          style={styles.button}
-              />
-          </View>
-          <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
-      </Card>
-      }
+      {/*{viewPost && postData &&*/}
+      {/*<Card style={styles.creationCard}>*/}
+      {/*    <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
+      {/*    <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>*/}
+      {/*        <IconButton onPress={() => setViewPost(false)}*/}
+      {/*                    icon={'chevron-left'}*/}
+      {/*                    style={styles.button}*/}
+      {/*        />*/}
+      {/*    </View>*/}
+      {/*    <ViewPost navigation={props.navigation} open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>*/}
+      {/*</Card>*/}
+      {/*}*/}
       <Modal animationType="fade"
              presentationStyle={"fullScreen"}
              visible={viewConnectionsFeed}

@@ -16,7 +16,7 @@ import {
 } from 'react-native-paper-tabs';
 import {useTranslation} from "react-i18next";
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
     const {t} = useTranslation();
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
@@ -114,7 +114,7 @@ const SearchScreen = () => {
                         }}>
                           {challengeList.map((challenge, i) =>
                             <View key={i} style={{marginBottom: 5}}>
-                              <ChallengeCard setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                              <ChallengeCard navigation={navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                               <Divider/>
                             </View>
                           )}
@@ -130,7 +130,7 @@ const SearchScreen = () => {
                         backgroundColor:colors.surface,
                         marginBottom:50
                       }} >
-                        <CategoryList setSelectedChallenge={setSelectedChallenge}/>
+                        <CategoryList navigation={navigation} setSelectedChallenge={setSelectedChallenge}/>
                       </View>
                     </TabScreen>
                   </Tabs>
