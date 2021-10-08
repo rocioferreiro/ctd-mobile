@@ -1,5 +1,5 @@
 import React, {ReactElement, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./Details/ChallengeDetails";
@@ -41,6 +41,7 @@ const Stepper = (props: Props) => {
             paddingRight: 17,
             paddingTop: 8,
             paddingBottom: 8,
+            marginBottom: Dimensions.get('screen').height*0.03
         },
         previousButtonIcon: {
             borderRadius: 20,
@@ -50,6 +51,7 @@ const Stepper = (props: Props) => {
             paddingTop: 8,
             paddingBottom: 8,
             backgroundColor: '#c1c1c1',
+            marginBottom: Dimensions.get('screen').height*0.03
         },
         finishButton: {
             backgroundColor: colors.extra,

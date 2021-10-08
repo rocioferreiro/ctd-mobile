@@ -61,6 +61,7 @@
   "home": {
     "cancel": "Cancelar",
     "challenges-active": "Desafíos Activos",
+    "challenge": "Creá un Desafío",
     "top": "Top ODS",
     "level": "Nivel",
     "your-experience": "Tú Experiencia",
@@ -88,7 +89,8 @@
     "inscriptions-start": "Comienzo de Inscripciones",
     "end-event": "Finalización del Evento",
     "release-date": "Comienzo del Evento",
-    "challenge-description": "Descripción del Desafío"
+    "challenge-description": "Descripción del Desafío",
+    "back": "Volver"
   },
   "challenge-card": {
     "join": "Únete",
@@ -109,27 +111,30 @@
     "goal-at-least": "Necesitas al menos un objetivo",
     "goal-placeholder": "Objetivo..",
     "challenge-goals": "Objetivos del Desafío",
-    "choose-objetives": "Elige Objetivos",
+    "choose-objectives": "Elige Objetivos",
     "select-at-least": "Elige al menos un objetivo",
-    "edit-objetives": "Edita Objetivos",
-    "sustainable-objetives": "Objetivos Sustentables",
+    "edit-objectives": "Edita Objetivos",
+    "sustainable-objectives": "Objetivos Sustentables",
     "challenge-description": "Descripción de Desafío",
     "challenge-title": "Título de Desafio",
     "create-new-challenge": "Crea un nuevo Desafío!"
   },
   "onu-objective-choice": {
-    "objetive": "Objetivo",
-    "current-objetives": "Objetivos Actuales",
-    "choose-sustainable-objetives": "Elige Objetivos Sustentables"
+    "objective": "Objetivo",
+    "current-objectives": "Objetivos Actuales",
+    "choose-sustainable-objectives":"Elige Objetivos Sustentables",
+    "objetive": "Objetivo"
+
   },
   "challenge-extra-info": {
     "upload-image": "Subir Imagen",
     "to": "Desde",
-    "From": "Hasta",
+    "from": "Hasta",
     "select-valid-date": "Selecciona una fecha valida",
     "at-least-week": "Las inscripciones deben estar abiertas durante al menos una semana",
     "inscriptions-open": "Inscripciones Abiertas",
-    "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?"
+    "when-will-challenge": "¿Cuando se llevara a cabo el Desafío?",
+    "challenge-active": "El desafío estará activo"
   },
   "search-bar": {
     "placeholder": "Buscar Desafíos.."
@@ -140,7 +145,7 @@
     "zero-hunger": "Hambre Cero",
     "zero-hunger-description": "Poner fin al hambre y asegurar el acceso de todas las personas a una alimentación sana, nutritiva y suficiente.",
     "good-health": "Salud y Bienestar",
-    "good-health=description": "Garantizar una vida sana y promover el bienestar en todas las edades es esencial para el desarrollo sostenible.",
+    "good-health-description": "Garantizar una vida sana y promover el bienestar en todas las edades es esencial para el desarrollo sostenible.",
     "quality-education": "Educación de Calidad",
     "quality-education-description": "La educación permite la movilidad socioeconómica ascendente y es clave para salir de la pobreza.",
     "gender": "Igualdad de Género",

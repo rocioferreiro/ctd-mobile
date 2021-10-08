@@ -5,9 +5,9 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Modal,
+  Modal, Platform,
   ScrollView,
-  StyleSheet,
+  StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback
 } from "react-native";
 import {Icon} from "react-native-elements";
@@ -42,7 +42,8 @@ enum ConnectionStatus {
 }
 
 interface Props {
-  otherUserId?: string; // if != to null means it's a profile from another user, not the logged in
+  navigation: any,
+  route?: any
 }
 
 export function Profile(props: Props) {
@@ -55,9 +56,6 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [token,setToken] = React.useState('')
-  React.useEffect(() => {
-    getToken().then(t => setToken(t))
-  }, [])
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
@@ -80,6 +78,9 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: data => {
+      console.log(data)
     }
   });
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -112,7 +113,7 @@ export function Profile(props: Props) {
     }
   });
   const [getConnectionRequestsNumber, {data: pendingConnectionsNumberData}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
-    variables: {ownerId: userId},
+    variables: {userId: userId},
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -124,21 +125,36 @@ export function Profile(props: Props) {
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.pending);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
   const [disconnect] = useMutation(DISCONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.connect);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
     }
   });
 
   useEffect(() => {
-    if (!props.otherUserId) getConnectionRequestsNumber();
+    getToken().then(t => setToken(t));
+    if (!props.route.params?.otherId) {
+      getUserId().then(id => {
+        setUserId(id);
+        getConnectionRequestsNumber({variables: {userId: id}});
+      });
+    }
   }, []);
-
   useEffect(() => {
-    if (props.otherUserId) {
-      setUserId(props.otherUserId);
+    if (props.route.params?.otherId) {
+      setUserId(props.route.params?.otherId);
       getUserId().then(id => {
         setLoggedInUserId(id);
         getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
@@ -151,8 +167,7 @@ export function Profile(props: Props) {
         setLoggedInUserId(id);
       });
     }
-  }, [props.otherUserId]);
-
+  }, [props.route.params?.otherId]);
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
@@ -160,21 +175,19 @@ export function Profile(props: Props) {
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);
-
   useEffect(() => {
     if (!viewPost) return;
     findPostById();
   }, [viewPost]);
-
   useEffect(() => {
-    if (connectionsData && pendingConnectionsData && props.otherUserId) {
-      if (connectionsData.getAllMyConnections.some(connection => connection === props.otherUserId))
+    if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
+      if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
         setConnectionStatus(ConnectionStatus.connected);
-      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.otherUserId))
+      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.route.params?.otherId))
         setConnectionStatus(ConnectionStatus.pending);
       else setConnectionStatus(ConnectionStatus.connect);
     }
-  }, [connectionsData, pendingConnectionsData, props.otherUserId]);
+  }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
 
   function toastError() {
     Toast.show({
@@ -185,8 +198,7 @@ export function Profile(props: Props) {
     });
   }
 
-  const onError = (error) => {
-    console.log(error);
+  const onError = () => {
     toastError();
   }
 
@@ -216,7 +228,8 @@ export function Profile(props: Props) {
       fontSize: 24,
       fontWeight: "bold",
       color: colors.primary,
-      marginRight: 15
+      marginRight: 15,
+      paddingBottom: 5
     },
     secondaryText: {
       fontSize: 12,
@@ -224,7 +237,7 @@ export function Profile(props: Props) {
     },
     forODS: {
       marginTop: 10,
-      width: 60,
+      width: 62,
       textAlign: 'center',
       alignSelf: "center",
     },
@@ -260,8 +273,8 @@ export function Profile(props: Props) {
     },
     sectionContainer: {
       backgroundColor: 'transparent',
-      paddingLeft: 30,
-      paddingRight: 30
+      paddingHorizontal: 30,
+      paddingVertical: 15
     },
     image: {
       height: 180,
@@ -288,6 +301,17 @@ export function Profile(props: Props) {
       right: 0,
       bottom: 0,
       justifyContent: 'flex-end'
+    },
+    imageCoverContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'space-between'
     },
     logout: {
       width: Dimensions.get('window').width,
@@ -317,15 +341,11 @@ export function Profile(props: Props) {
       zIndex: 0
     },
     connectButton: {
-      position: "absolute",
-      top: 10,
-      right: 10,
-      zIndex: 2,
       backgroundColor: colors.accent,
       borderRadius: 20,
       marginTop: 50,
-      height: 33,
-      width: "40%"
+      width: "40%",
+      height: 30
     }
   });
 
@@ -376,9 +396,9 @@ export function Profile(props: Props) {
     }
   }
 
-  const getActiveChallenge = (challenge) => {
+  const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -392,12 +412,12 @@ export function Profile(props: Props) {
         <Text style={styles.whiteText}><Text
           style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   }
 
-  const getFinishedChallenge = (challenge) => {
+  const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'transparent', marginRight: 20}}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
@@ -410,10 +430,10 @@ export function Profile(props: Props) {
         <Icon style={{marginRight: 4}} type={'feather'} name={'user'} color={colors.background}/>
         <Text style={styles.whiteText}>154</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   }
 
-  const myIcon = <ImageElement style={{height: 50, width: 50}}
+  const myIcon = <ImageElement style={{height: 40, width: 40}}
                                source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
   />
 
@@ -427,16 +447,25 @@ export function Profile(props: Props) {
     <View style={styles.container}>
       {!viewPost &&
       <ScrollView>
-        {props.otherUserId && <Button2 icon="plus"
-                                       style={styles.connectButton}
-                                       onPress={() => onConnect()} color={colors.background}
-                                       labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
-        > {getConnectButtonLabel()}
-        </Button2>}<Image
-          source={require('../../assets/images/profile-background.jpg')}
-          resizeMode={'cover'}
-          style={styles.profileBackground}
-      />
+
+          <ImageBackground style={styles.profileBackground}
+                           //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
+                           source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'}>
+                {props.route.params?.otherId && <View style={styles.imageCoverContainer}>
+                    <IconButton onPress={() => props.navigation.goBack()} style={{marginTop: 50}} icon={'chevron-left'}/>
+                    <Button2 icon="plus"
+                             style={styles.connectButton}
+                             onPress={() => onConnect()} color={colors.background}
+                             labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
+                    > {getConnectButtonLabel()}
+                    </Button2>
+                </View>}
+          </ImageBackground>
+        {/*  <Image*/}
+        {/*  source={require('../../assets/images/profile-background.jpg')}*/}
+        {/*  resizeMode={'cover'}*/}
+        {/*  style={styles.profileBackground}*/}
+        {/*/>*/}
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
@@ -450,32 +479,32 @@ export function Profile(props: Props) {
                       </View>
                   </View>
               </View>
-              <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-                  <OptionsMenu
-                      customButton={myIcon}
-                      options={["English", "Español", "Cancel"]}
-                      actions={[() => handleChange("en"), () => handleChange("es"), () => {
-                      }]}
-                  />
-                {
-                  (!props.otherUserId) &&
-                  <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-                      <>
-                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
-                        <Badge size={20} style={{
-                          backgroundColor: colors.accent,
-                          position: 'absolute',
-                          bottom: 10,
-                          left: -2,
-                          zIndex: 2
-                        }}>
-                          {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
-                        </Badge>}
-                          <Icon type={'feather'} name={'user-plus'}/>
-                      </>
-                  </TouchableWithoutFeedback>
-                }
-              </View>
+            {(!props.route.params?.otherId) &&
+            <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
+                <OptionsMenu
+                    customButton={myIcon}
+                    options={["English", "Español", "Cancel"]}
+                    actions={[() => handleChange("en"), () => handleChange("es"), () => {
+                    }]}
+                />
+                <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                      {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
+                      <Badge size={20} style={{
+                        backgroundColor: colors.accent,
+                        position: 'absolute',
+                        bottom: 10,
+                        left: -15,
+                        zIndex: 2
+                      }}>
+                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
+                      </Badge>}
+                        <Icon type={'feather'} name={'user-plus'}/>
+                    </View>
+                </TouchableWithoutFeedback>
+
+            </View>
+            }
           </View>
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
@@ -529,12 +558,12 @@ export function Profile(props: Props) {
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) < new Date()) return getActiveChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={t('profile.no-results')} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
         {postsOfUser &&
@@ -543,28 +572,29 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
-                  setViewPostId(postId);
-                  setViewPost(true);
+                  // setViewPostId(postId);
+                  // setViewPost(true);
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
-          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) &&
-          <NoResults text={t('profile.no-challenges')} subtext={props.otherUserId ? '' : t('profile.no-posts')}/>
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
+          <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
           }
         </View>
         }
           <View style={{...styles.sectionContainer}}>
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map(challenge => {
-                  if (new Date(challenge.endEvent) >= new Date()) return getFinishedChallenge(challenge);
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) <= new Date()) return getFinishedChallenge(challenge, key);
                 })}
               </ScrollView>
             {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={'Nothing to show'} subtext={props.otherUserId ? '' : t('profile.no-challenges')}/>
+            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
-        {!props.otherUserId &&
+        {!props.route.params?.otherId &&
         <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button
                 uppercase={false}
@@ -572,6 +602,7 @@ export function Profile(props: Props) {
                 style={{width: '40%'}}
                 onPress={() => {
                   auth.signOut().catch(e => console.log(e))
+                  //props.navigation.navigate('landing')
                 }}
             >
               {t('profile.logout')}
@@ -579,18 +610,18 @@ export function Profile(props: Props) {
         </View>}
       </ScrollView>
       }
-      {viewPost && postData &&
-      <Card style={styles.creationCard}>
-          <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>
-          <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>
-              <IconButton onPress={() => setViewPost(false)}
-                          icon={'chevron-left'}
-                          style={styles.button}
-              />
-          </View>
-          <ViewPost open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>
-      </Card>
-      }
+      {/*{viewPost && postData &&*/}
+      {/*<Card style={styles.creationCard}>*/}
+      {/*    <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
+      {/*    <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>*/}
+      {/*        <IconButton onPress={() => setViewPost(false)}*/}
+      {/*                    icon={'chevron-left'}*/}
+      {/*                    style={styles.button}*/}
+      {/*        />*/}
+      {/*    </View>*/}
+      {/*    <ViewPost navigation={props.navigation} open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>*/}
+      {/*</Card>*/}
+      {/*}*/}
       <Modal animationType="fade"
              presentationStyle={"fullScreen"}
              visible={viewConnectionsFeed}
@@ -598,8 +629,11 @@ export function Profile(props: Props) {
                setViewConnectionsFeed(!viewConnectionsFeed);
                getConnectionRequestsNumber();
              }}>
-        <View style={{backgroundColor: colors.surface,}}>
-          <IconButton onPress={() => setViewConnectionsFeed(false)}
+        <View style={{backgroundColor: colors.surface}}>
+          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => {
+            setViewConnectionsFeed(false)
+            getConnectionRequestsNumber()
+          }}
                       icon={'chevron-left'}
           />
         </View>

@@ -3,15 +3,27 @@ import {  gql } from '@apollo/client';
 //if u want to test these queries pls use ChallengeList or UserList function in router component
 //then replace the id with your users test id
 export const FIND_CHALLENGE_BY_ID = gql`
-query findChallengeById{
-  findChallengeById(id: 1){
+query findChallengeById($id: Long!){
+  findChallengeById(id: $id){
+   id
     title
-    user
-    address {
-      coordinates {
-        longitude
-        latitude
-      }
+    owner
+    objectives {
+      points
+      name
+    }
+    endEvent
+    score
+    startEvent
+    startInscription
+    endInscription
+    upVotes
+    locationGeohash
+    categories
+    description
+    coordinates {
+      latitude
+      longitude
     }
   }
 }
@@ -69,7 +81,8 @@ query newFindUserById($targetUserId: String!, $currentUserId: String!){
             longitude
           }
         }
-    } 
+    }
+    state 
   }
 }
 `;
@@ -182,6 +195,40 @@ query findPostById($id: String!){
 export const FIND_CHALLENGES_BY_CATEGORY = gql`
 query getChallengeByFilter($category: Int!) {
     getChallengeByFilter(filter:{ category: [$category]}, pageSize:10,pageNumber:0) {
+           actualPage
+           challenges{
+            categories
+            boost
+            description
+            endEvent
+            startEvent
+            endInscription 
+            startInscription 
+            id
+            title
+            owner
+            upVotes
+            downVotes
+            coordinates{
+              longitude
+              latitude
+            }
+            objectives{
+              points 
+              name
+              
+            }
+          }
+            size
+            totalElements
+            totalPages
+           }
+}
+`;
+
+export const FIND_CHALLENGES_BY_FILTER = gql`
+query getChallengeByFilter($title: String!) {
+    getChallengeByFilter(filter:{ title: $title}, pageSize:10,pageNumber:0) {
            actualPage
            challenges{
             categories

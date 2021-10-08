@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {Avatar, Button, Card, Title, Paragraph, useTheme, ActivityIndicator, IconButton} from 'react-native-paper';
-import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity} from "react-native";
+import {Avatar, Button, Card, Title, Paragraph, useTheme, ActivityIndicator} from 'react-native-paper';
+import {Dimensions, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
-import {Profile} from "../Profile/Profile";
-import {getToken, getUserId} from "../Storage";
+import {getToken} from "../Storage";
 
 interface Props {
   challenge: any;
-  setSelectedChallenge: (Challenge) => void
+  setSelectedChallenge: (Challenge) => void,
+  navigation: any
 }
 
 const ChallengeCard = (props: Props) => {
@@ -47,7 +47,7 @@ const ChallengeCard = (props: Props) => {
       margin: 0
     }
   });
-  const [viewProfile, setViewProfile] = useState(false);
+  //const [viewProfile, setViewProfile] = useState(false);
   const getOwner = () => {
     if (props.challenge) return props.challenge.owner
     else return ''
@@ -71,7 +71,6 @@ const ChallengeCard = (props: Props) => {
     label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]} {...props}/>
 
   useEffect(() => {
-    console.log(props.challenge)
     if (props.challenge) getUser()
   }, [props.challenge]);
 
@@ -89,7 +88,7 @@ const ChallengeCard = (props: Props) => {
     (props.challenge && data) ?
       <Card style={{backgroundColor: colors.surface}}>
         <TouchableOpacity onPress={() => {
-          setViewProfile(true);
+          props.navigation.navigate('profile', {otherId: props.challenge.owner.id ? props.challenge.owner.id : props.challenge.owner})
         }} style={{backgroundColor: 'transparent', marginRight: 20}}>
         <Card.Title title={data.findUserById.user.name + ' ' + data.findUserById.user.lastname}
                     subtitle={t('challenge-card.level') + ' ' + data.findUserById.user.level} left={LeftContent}/>
@@ -113,7 +112,9 @@ const ChallengeCard = (props: Props) => {
             width: 100,
             marginLeft: 40,
             marginRight: 120,
-          }} onPress={() => props.setSelectedChallenge(props.challenge)}
+          }} onPress={() => {
+            props.navigation.navigate('challenge', {challengeId: props.challenge.id});
+          }}
           ><Title style={{
             fontSize: 15, color: colors.primary, padding: 0
           }}>{t('challenge-card.view')}</Title>
@@ -128,19 +129,19 @@ const ChallengeCard = (props: Props) => {
           }}>{t('challenge-card.join')}</Title>
           </Button>
         </Card.Actions>
-        <Modal animationType="fade"
-               presentationStyle={"fullScreen"}
-               visible={viewProfile}
-               onRequestClose={() => {
-                 setViewProfile(!viewProfile);
-               }}>
-          <IconButton onPress={() => setViewProfile(false)}
-                      icon={'chevron-left'}
-                      style={styles.button}
-                      size={40}
-          />
-          <Profile otherUserId={getOwner()}/>
-        </Modal>
+        {/*<Modal animationType="fade"*/}
+        {/*       presentationStyle={"fullScreen"}*/}
+        {/*       visible={viewProfile}*/}
+        {/*       onRequestClose={() => {*/}
+        {/*         setViewProfile(!viewProfile);*/}
+        {/*       }}>*/}
+        {/*  <IconButton onPress={() => setViewProfile(false)}*/}
+        {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("screen").height*0.05}: {}]}*/}
+        {/*              icon={'chevron-left'}*/}
+        {/*              size={40}*/}
+        {/*  />*/}
+        {/*  <Profile navigation={props.navigation} otherUserId={getOwner()}/>*/}
+        {/*</Modal>*/}
       </Card>
       :
       <View/>

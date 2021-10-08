@@ -7,7 +7,7 @@ import Register from "./Register/Register";
 import AuthScreen from "./GoogleOAuth";
 import {useTranslation} from "react-i18next";
 
-const Landing = () => {
+const Landing = ({navigation}) => {
     const { colors } = useTheme();
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
@@ -76,6 +76,7 @@ const Landing = () => {
                 {/*    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>*/}
                 {/*    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />*/}
                 {/*</View>*/}
+
                 {/*<Divider/>*/}
                 {/*<AuthScreen/>*/}
             </View>

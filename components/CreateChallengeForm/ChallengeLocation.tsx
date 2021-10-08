@@ -89,7 +89,7 @@ const ChallengeLocation = (props: Props) => {
             bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.15 : 0,
             width: '100%',
             backgroundColor: colors.surface,
-            height: Dimensions.get("window").height * 0.1
+            height: Dimensions.get("window").height * 0.09
         }
     });
 

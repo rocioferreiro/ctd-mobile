@@ -1,10 +1,7 @@
 import React from 'react';
 import {Text, View} from "../Themed";
-import {ImageBackground, StyleSheet, TouchableHighlight, TouchableOpacity} from "react-native";
+import {ImageBackground, StyleSheet, TouchableOpacity} from "react-native";
 import {IconButton, useTheme} from "react-native-paper";
-import {useMutation} from "@apollo/client";
-import {CREATE_POST, LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {getToken, getUserId} from "../Storage";
 
 type Props = {
   title: string,
@@ -16,12 +13,6 @@ type Props = {
 
 const PostThumbnail = (props: Props) => {
   const {colors} = useTheme();
-  // const userId = getUserId(); this made no sense, it's a promise
-  const [liked, setLiked] = React.useState(false);
-  const [token,setToken] = React.useState('')
-  React.useEffect(() => {
-    getToken().then(t => setToken(t))
-  }, [])
   // const [likePost] = useMutation(LIKE_POST, {
   //   onCompleted: () => {
   //     setLiked(true);
@@ -92,25 +83,22 @@ const PostThumbnail = (props: Props) => {
     <View style={{
       ...styles.footer,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: 20,
-      paddingRight: 20
     }}>
-      <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <IconButton
           // onPress={() => {
           //   if (liked) unlikePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
           //   else likePost({variables: {userId: userId, postId: props.postId}})//.then((r) => console.log(r))
           // }}
-          icon={liked ? 'heart' : 'heart-outline'}
+          icon={'heart'}
           color={colors.background}
         />
-        <Text style={styles.whiteText}>{props.upvotes + liked}</Text>
+        <Text style={styles.whiteText}>{props.upvotes}</Text>
       </View>
-      <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-        <IconButton icon={'chat-outline'} color={colors.background}/>
-        <Text style={styles.whiteText}>0</Text>
-      </View>
+      {/*<View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>*/}
+      {/*  <IconButton icon={'chat-outline'} color={colors.background}/>*/}
+      {/*  <Text style={styles.whiteText}>0</Text>*/}
+      {/*</View>*/}
     </View>
   </TouchableOpacity>);
 }

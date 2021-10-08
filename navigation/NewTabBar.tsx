@@ -17,13 +17,15 @@ import {PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Que
 import {getUserId} from "../components/Storage";
 import PersonIcon from "./PersonIcon";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChallengePage from "../components/Challenge/ChallengePage";
+import ViewPost from "../components/viewPost/ViewPost";
 
 const MyTabbar = ({navigation, route}) => {
   const {colors} = useTheme();
   const [userId, setUserId] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
   const {t, i18n} = useTranslation();
-  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {ownerId: userId}, fetchPolicy: 'cache-and-network'});
+  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {userId: userId}, fetchPolicy: 'cache-and-network'});
 
   function toastOn() {
     Toast.show({
@@ -96,6 +98,12 @@ const MyTabbar = ({navigation, route}) => {
         <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful} />
         <Stack.Screen name={'map'} component={Map} />
         <Stack.Screen name={'profile'} component={Profile} />
+        <Stack.Screen name={'challenge'} >
+          {props => <ChallengePage {...props}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'post'}>
+          {(props) => <ViewPost {...props} open={true}/>}
+        </Stack.Screen>
       </Stack.Navigator>
       <Tabbar
         style={{zIndex: 5}}

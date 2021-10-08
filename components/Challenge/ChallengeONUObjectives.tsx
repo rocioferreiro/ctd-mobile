@@ -109,6 +109,7 @@ const ChallengeONUObjetives = (props: Props) => {
             fontSize: 20
         }
     });
+    const onuInfo = onuPictures();
     return(
     <View style={{display: 'flex', flexDirection: 'column'}}>
         <View style={{
@@ -122,7 +123,7 @@ const ChallengeONUObjetives = (props: Props) => {
                 return <TouchableWithoutFeedback key={index}>
                     <Image
                         style={{width: 70, height: 70, borderRadius: 25, marginHorizontal: 10}}
-                        source={onuPictures[index].image}/>
+                        source={onuInfo[index].image}/>
                 </TouchableWithoutFeedback>
             })}
         </View>
