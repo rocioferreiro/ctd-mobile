@@ -73,7 +73,7 @@ const ChallengePage = (props: Props) => {
     }
   });
   function handleJoin(){
-    joinChallenge({variables: {idUser:props.currentUserId,idChallenge:challengeInfo.id}}).catch(() => {
+    joinChallenge({variables: {idUser:currentId,idChallenge:challengeInfo.id}}).catch(() => {
       toastOn();
     });
   }
