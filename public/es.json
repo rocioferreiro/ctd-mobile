@@ -1,16 +1,16 @@
 {
-  "title":{
-    "ctd":  "bienvenido a ctd",
+  "title": {
+    "ctd": "bienvenido a ctd",
     "or": "O"
   },
   "login": {
-    "password":"Contraseña",
+    "password": "Contraseña",
     "email": "Mail",
     "cancel": "Cancelar",
     "done": "Iniciar Sesión"
   },
   "register": {
-    "error":"Error",
+    "error": "Error",
     "success": "Éxito",
     "errorDescription": "La creación del usuario falló",
     "successDescription": "La creación del usuario fue exitosa",
@@ -70,7 +70,7 @@
     "global": "Puntos"
   },
   "view-post": {
-    "report":"Reportar",
+    "report": "Reportar",
     "copy-link": "Copiar Enlace",
     "disconnect": "Desconectar",
     "cancel": "Cancelar"
@@ -83,8 +83,8 @@
   },
   "challenge-page": {
     "challenge-location": "Ubicación del Desafío",
-    "sustainable-objectives": "Objetivos Sustentables",
-    "challenge-objectives": "Objetivos del Desafío",
+    "sustainable-objetives": "Objetivos Sustentables",
+    "challenge-objetives": "Objetivos del Desafío",
     "inscriptions-end": "Fin de Inscripciones",
     "inscriptions-start": "Comienzo de Inscripciones",
     "end-event": "Finalización del Evento",
@@ -107,7 +107,7 @@
     "view": "Ver más",
     "share": "Compartir"
   },
-  "challenge-details":{
+  "challenge-details": {
     "goal-at-least": "Necesitas al menos un objetivo",
     "goal-placeholder": "Objetivo..",
     "challenge-goals": "Objetivos del Desafío",
@@ -122,9 +122,11 @@
   "onu-objective-choice": {
     "objective": "Objetivo",
     "current-objectives": "Objetivos Actuales",
-    "choose-sustainable-objectives":"Elige Objetivos Sustentables"
+    "choose-sustainable-objectives":"Elige Objetivos Sustentables",
+    "objetive": "Objetivo"
+
   },
-  "challenge-extra-info":{
+  "challenge-extra-info": {
     "upload-image": "Subir Imagen",
     "to": "Desde",
     "from": "Hasta",
@@ -135,7 +137,7 @@
     "challenge-active": "El desafío estará activo"
   },
   "search-bar": {
-    "placeholder":"Buscar Desafíos.."
+    "placeholder": "Buscar Desafíos.."
   },
   "onu-objective-info": {
     "no-poverty": "Fin de la Pobreza",
@@ -170,7 +172,14 @@
     "life-land-description": "Afronta la necesidad de abordar las amenazas a las que se enfrentan las especies silvestres y los ecosistemas.",
     "peace": "Paz, Justicia e Instituciones Sólidas",
     "peace-description": "Nos entrentamos con los conflictos, la inseguridad, las instituciones débiles y el acceso limitado a la justicia.",
-    "partner":  "Alianzas para Lograr los Objetivos",
+    "partner": "Alianzas para Lograr los Objetivos",
     "partner-description": "Los ODS solo se pueden conseguir con asociaciones mundiales sólidas y cooperación."
+  },
+  "view-participants-button": {
+    "view": "Ver",
+    "participants": "Participantes"
+  },
+  "unjoin-button": {
+    "unjoin": "Abandonar"
   }
 }

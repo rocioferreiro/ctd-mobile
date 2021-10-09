@@ -172,5 +172,13 @@
     "peace-description": "Access to justice for all, and building effective, accountable institutions at all levels.",
     "partner":  "Partnerships",
     "partner-description": "Revitalize the global partnership for sustainable development."
+  },
+
+  "view-participants-button": {
+    "view": "View ",
+    "participants": "Participants"
+  },
+  "unjoin-button": {
+    "unjoin": "Abandon"
   }
 }
