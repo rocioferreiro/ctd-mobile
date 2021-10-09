@@ -73,7 +73,7 @@ const ChallengePage = (props: Props) => {
     }
   });
   function handleJoin(){
-    joinChallenge({variables: {idUser:props.currentUserId,idChallenge:props.challenge.id}}).catch(() => {
+    joinChallenge({variables: {idUser:props.currentUserId,idChallenge:challengeInfo.id}}).catch(() => {
       toastOn();
     });
   }
@@ -120,9 +120,8 @@ const ChallengePage = (props: Props) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const [getChallege] = useLazyQuery(FIND_CHALLENGE_BY_ID,
+  const [getChallenge] = useLazyQuery(FIND_CHALLENGE_BY_ID,
     {
-      variables: {id: 7},//TODO CHALLENGE ID,
       context: {
         headers: {'Authorization': "Bearer " + token}
       },
@@ -136,6 +135,7 @@ const ChallengePage = (props: Props) => {
 
   useEffect(() => {
     getToken().then(t => setToken(t));
+    getUserId().then(u => setCurrentId(u))
   }, [])
 
   useEffect(() => {
@@ -144,7 +144,7 @@ const ChallengePage = (props: Props) => {
       setMarker(props.challenge.coordinates);
     }
     else if (props.route.params?.challengeId)
-      getChallege();
+      getChallenge({variables: {id: props.route.params?.challengeId}});
 
 
     if (props.currentUserId)
@@ -323,13 +323,13 @@ const ChallengePage = (props: Props) => {
         </View>
 
         <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-          {props.currentUserId!==props.challenge.owner && !isJoined &&
+          {currentId !==challengeInfo.owner && !isJoined &&
           <JoinButton handleJoin={()=>handleJoin()}/>
           }
-          {props.currentUserId!==props.challenge.owner && isJoined &&
+          {currentId!==challengeInfo.owner && isJoined &&
           <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
           }
-          {props.currentUserId===props.challenge.owner &&
+          {currentId===challengeInfo.owner &&
           <ViewParticipantsButton/>
           }
         </View>
