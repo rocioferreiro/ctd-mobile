@@ -354,6 +354,14 @@ export function Profile(props: Props) {
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
 
+  function handleDisconnect() {
+    setOpen(true)
+  }
+  function doDisconnect(){
+    disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+    setOpen(false)
+  }
+
   const onConnect = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
@@ -381,7 +389,7 @@ export function Profile(props: Props) {
         break;
       case ConnectionStatus.pending:
       case ConnectionStatus.connected:
-        disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+        handleDisconnect()
         break;
     }
 
@@ -447,7 +455,7 @@ export function Profile(props: Props) {
 
   return (
     <View style={styles.container}>
-      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>setOpen(false)} text={"Are you sure you want to Disconnect with this user?"}
+      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={"Are you sure you want to Disconnect with this user?"}
                          cancelText={"Cancel"} acceptText={"YES"}/>
       {!viewPost &&
       <ScrollView>
