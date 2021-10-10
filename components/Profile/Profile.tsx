@@ -34,6 +34,7 @@ import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
+import ConfirmationModal from "../Challenge/ConfirmationModal";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -47,6 +48,7 @@ interface Props {
 }
 
 export function Profile(props: Props) {
+  const [open,setOpen]=React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [userId, setUserId] = useState('');
@@ -445,6 +447,8 @@ export function Profile(props: Props) {
 
   return (
     <View style={styles.container}>
+      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>setOpen(false)} text={"Are you sure you want to Disconnect with this user?"}
+                         cancelText={"Cancel"} acceptText={"YES"}/>
       {!viewPost &&
       <ScrollView>
 
