@@ -455,8 +455,8 @@ export function Profile(props: Props) {
 
   return (
     <View style={styles.container}>
-      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={"Are you sure you want to Disconnect with this user?"}
-                         cancelText={"Cancel"} acceptText={"YES"}/>
+      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={t('profile.modal-text')}
+                         cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
       {!viewPost &&
       <ScrollView>
 
