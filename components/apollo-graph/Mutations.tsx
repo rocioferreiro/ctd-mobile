@@ -7,6 +7,16 @@ mutation createChallenge($newChallenge: ChallengeDTOInput!){
   }
 }
 `;
+
+export const SAVE_GOOGLE_USER = gql`
+mutation saveGoogleUser($googleUser: GoogleLoginRequestInput!){
+  saveGoogleUser(req: $googleUser){
+    id
+    token
+  }
+}
+`;
+
 export const CREATE_POST = gql`
 mutation createPost($newPost: PostDTOInput!){
   savePost(post:$newPost)

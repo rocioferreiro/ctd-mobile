@@ -9,7 +9,34 @@ export type User = {
     mail: string,
     name: string,
     role: Role,
-    coordinates?: [number, number]
+    coordinates?: [number, number],
+    photoUrl?: string
+}
+
+export type GoogleUser = {
+    email: string,
+    familyName: string,
+    givenName: string,
+    photoUrl: string
+}
+
+export type GoogleLogin = {
+    accessToken: string,
+    idToken: string,
+    refreshToken: string,
+    user: GoogleUser
+}
+
+export function jsonToGoogleLogin(json) {
+    const user: GoogleUser = {
+        email: json["user"]["email"],
+        familyName: json["user"]["familyName"],
+        givenName: json["user"]["givenName"],
+        photoUrl: json["user"]["photoUrl"]
+    }
+    return {
+        accessToken: json["accessToken"], idToken: json["idToken"], refreshToken: json["refreshToken"], user: user
+    }
 }
 
 export type Address = {

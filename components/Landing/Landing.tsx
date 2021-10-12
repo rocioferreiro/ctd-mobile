@@ -71,14 +71,14 @@ const Landing = ({navigation}) => {
                 <Divider/>
                 <Button style={styles.button} mode={'contained'} onPress={() => {setLoginOpen(true)}}>{t('login.done')}</Button>
                 <Divider/>
-                {/*<View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>*/}
-                {/*    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />*/}
-                {/*    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>*/}
-                {/*    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />*/}
-                {/*</View>*/}
+                <View style={{flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0)', width: "50%"}}>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
+                    <Text style={{ alignSelf:'center', paddingHorizontal:5, fontSize: 14 , color: '#c1c1c1'}}> {t('title.or')} </Text>
+                    <View style={{backgroundColor: '#c1c1c1', height: 2, flex: 1, alignSelf: 'center'}} />
+                </View>
 
-                {/*<Divider/>*/}
-                {/*<AuthScreen/>*/}
+                <Divider/>
+                <AuthScreen/>
             </View>
             }
         </View>

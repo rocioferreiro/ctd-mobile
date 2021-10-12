@@ -4,10 +4,35 @@ import {View} from "../Themed";
 import * as Google from 'expo-google-app-auth';
 import {AuthContext} from "../../App";
 import Toast from "react-native-toast-message";
+import {useMutation} from "@apollo/client";
+import {SAVE_GOOGLE_USER} from "../apollo-graph/Mutations";
+import {setContext} from "@apollo/client/link/context";
+import {getToken} from "../Storage";
+import {jsonToGoogleLogin} from "../Models/User";
 
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
+  const [saveUser, {data: user, loading, client}] = useMutation(SAVE_GOOGLE_USER, {
+    onCompleted: response => {
+      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token}).then(() => {
+      client.setLink(setContext(async (_, { headers }) => {
+        const token = await getToken();
+        return {
+          headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
+          }
+        }
+      }))
+    }).catch(() => {
+      toastOn('Error', 'Something went wrong')
+    });
+  },
+  onError: error => {
+      console.log(error)
+  }});
+
   function toastOn(message: string, description: string = '') {
     Toast.show({
       type: 'error',
@@ -26,11 +51,12 @@ const AuthScreen = () => {
       });
 
       if (result.type === 'success') {
-        console.log(result)
+        await saveUser({variables: {googleUser: jsonToGoogleLogin(result)}})
         //TODO: send this info to back and create the real userId (not ready in back)
-        auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
-          toastOn('Error', 'Authentication Failed')
-        });
+
+        // auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
+        //   toastOn('Error', 'Authentication Failed')
+        // });
         return result.accessToken;
 
       } else {
