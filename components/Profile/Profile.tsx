@@ -79,8 +79,9 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
-    onCompleted: data => {
-      console.log(data)
+    onError: error => {
+      console.log('profile error');
+      console.log(error);
     }
   });
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -88,6 +89,10 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onError: error => {
+      console.log('profile error');
+      console.log(error);
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
@@ -157,7 +162,7 @@ export function Profile(props: Props) {
       setUserId(props.route.params?.otherId);
       getUserId().then(id => {
         setLoggedInUserId(id);
-        getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
+        getLoggedInUser({variables: {targetUserId: id}});
         getConnections({variables: {userId: id}});
         getPendingConnections({variables: {userId: id}});
       });
@@ -171,7 +176,7 @@ export function Profile(props: Props) {
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
-      getUser({variables: {targetUserId: userId, currentUserId: loggedInUserId}});
+      getUser({variables: {targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);

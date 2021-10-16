@@ -44,7 +44,6 @@ const SearchScreen = ({navigation}) => {
 
     useEffect(() => {
         if (data) {
-            console.log(data)
             setChallengeList(data.getChallengeByFilter.challenges);
         }
     }, [data]);
@@ -87,7 +86,8 @@ const SearchScreen = ({navigation}) => {
 
     return (
         <View>
-            {selectedChallenge ?
+            {
+                selectedChallenge ?
                 <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                 <Card style={{
                     width: Dimensions.get('window').width,
@@ -114,7 +114,7 @@ const SearchScreen = ({navigation}) => {
                         }}>
                           {challengeList.map((challenge, i) =>
                             <View key={i} style={{marginBottom: 5}}>
-                              <ChallengeCard navigation={navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
+                              <ChallengeCard token={token} navigation={navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                               <Divider/>
                             </View>
                           )}

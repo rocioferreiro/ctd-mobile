@@ -6,18 +6,18 @@ import {useEffect} from "react";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
-import {getToken} from "../Storage";
 
 interface Props {
-  challenge: any;
+  token: string,
+  challenge: any,
   setSelectedChallenge: (Challenge) => void,
   navigation: any
 }
 
 const ChallengeCard = (props: Props) => {
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {colors} = useTheme();
-  const styles = StyleSheet.create({
+  StyleSheet.create({
     joinButton: {
       borderRadius: 20,
       backgroundColor: colors.accent,
@@ -47,32 +47,26 @@ const ChallengeCard = (props: Props) => {
       margin: 0
     }
   });
-  //const [viewProfile, setViewProfile] = useState(false);
-  const getOwner = () => {
-    if (props.challenge) return props.challenge.owner
-    else return ''
-  };
-  const [token,setToken] = React.useState('')
-  React.useEffect(() => {
-    getToken().then(t => setToken(t))
-  }, [])
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
-    variables: {
-      currentUserId: getOwner(),
-      targetUserId: getOwner()
-    },
+    variables: {targetUserId: props.challenge.owner},
     context: {
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + props.token
       }
+    },
+    onError: error1 => {
+      console.log('challenge card error');
+      console.log(error1);
     }
   });
   const LeftContent = props => <Avatar.Text
     label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]} {...props}/>
 
   useEffect(() => {
-    if (props.challenge) getUser()
-  }, [props.challenge]);
+    if (props.challenge && props.token) {
+      getUser();
+    } else console.log('challenge or token is undefined in challenge card');
+  }, [props.challenge, props.token]);
 
   if (loading) return <View style={{
     display: 'flex',
@@ -129,19 +123,6 @@ const ChallengeCard = (props: Props) => {
           }}>{t('challenge-card.join')}</Title>
           </Button>
         </Card.Actions>
-        {/*<Modal animationType="fade"*/}
-        {/*       presentationStyle={"fullScreen"}*/}
-        {/*       visible={viewProfile}*/}
-        {/*       onRequestClose={() => {*/}
-        {/*         setViewProfile(!viewProfile);*/}
-        {/*       }}>*/}
-        {/*  <IconButton onPress={() => setViewProfile(false)}*/}
-        {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("screen").height*0.05}: {}]}*/}
-        {/*              icon={'chevron-left'}*/}
-        {/*              size={40}*/}
-        {/*  />*/}
-        {/*  <Profile navigation={props.navigation} otherUserId={getOwner()}/>*/}
-        {/*</Modal>*/}
       </Card>
       :
       <View/>

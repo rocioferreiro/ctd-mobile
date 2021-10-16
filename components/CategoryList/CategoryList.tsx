@@ -156,7 +156,7 @@ const CategoryList = (props: Props) => {
           }}>
             {challengeList.map((challenge, i) =>
               <View key={i} style={{marginBottom: 5}}>
-                <ChallengeCard navigation={props.navigation} setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
+                <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
                 <Divider/>
               </View>
             )}

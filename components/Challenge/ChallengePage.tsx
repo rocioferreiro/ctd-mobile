@@ -49,11 +49,15 @@ const ChallengePage = (props: Props) => {
   const [token, setToken] = React.useState('');
 
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
-    variables: {targetUserId: getOwner(), currentUserId: currentId},
+    variables: {targetUserId: getOwner()},
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {'Authorization': "Bearer " + token}
     },
+    onError: error1 => {
+      console.log('challenge page error');
+      console.log(error1);
+    }
   });
   const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
     onCompleted: () => {
