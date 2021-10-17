@@ -22,6 +22,7 @@ import {getToken, getUserId} from "../Storage";
 import {JOIN_CHALLENGE, UNJOIN_CHALLENGE} from "../apollo-graph/Mutations";
 import ViewParticipantsButton from "./ViewParticipantsButton";
 import UnJoinButton from "./UnJoinButton";
+import VerifyQRButton from "./VerifyQRButton";
 
 interface Props {
   challenge?: Challenge
@@ -36,7 +37,7 @@ const ChallengePage = (props: Props) => {
   const onuInfo = onuPictures();
   const [challengeInfo, setChallengeInfo] = useState<Challenge>();
   const [currentId, setCurrentId] = useState<string>();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {colors} = useTheme();
   const [marker, setMarker] = useState<LatLng>(props.challenge ? props.challenge.coordinates : {
     latitude: 0,
@@ -63,7 +64,8 @@ const ChallengePage = (props: Props) => {
     },
     onError: err => {
       toastOnError();
-
+      console.log('challenge page error');
+      console.log(err);
     },
     refetchQueries: ["FIND_POSTS_OF_USER"],
     context: {
@@ -135,7 +137,7 @@ const ChallengePage = (props: Props) => {
 
   useEffect(() => {
     getToken().then(t => setToken(t));
-    getUserId().then(u => setCurrentId(u))
+    getUserId().then(u => setCurrentId(u));
   }, [])
 
   useEffect(() => {
@@ -157,6 +159,8 @@ const ChallengePage = (props: Props) => {
     if (props.challenge) {
       setChallengeInfo(props.challenge);
       getUser();
+      console.log(currentId)
+      console.log(challengeInfo.owner)
     }
   }, [props.challenge]);
 
@@ -323,14 +327,17 @@ const ChallengePage = (props: Props) => {
         </View>
 
         <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-          {currentId !==challengeInfo.owner && !isJoined &&
+          {currentId !==challengeInfo.owner && !isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
           <JoinButton handleJoin={()=>handleJoin()}/>
           }
-          {currentId!==challengeInfo.owner && isJoined &&
+          {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
           <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
           }
-          {currentId===challengeInfo.owner &&
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
           <ViewParticipantsButton/>
+          }
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
+          <VerifyQRButton navigation={props.navigation} challengeId={challengeInfo.id}/>
           }
         </View>
         <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>

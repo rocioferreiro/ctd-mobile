@@ -181,5 +181,8 @@
   },
   "unjoin-button": {
     "unjoin": "Abandonar"
+  },
+  "verifyQR-button": {
+    "verify": "Completar Desafío"
   }
 }

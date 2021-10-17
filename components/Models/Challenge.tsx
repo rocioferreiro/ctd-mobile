@@ -4,22 +4,22 @@ export type Challenge  = {
     boost?: Boolean,
     categories: string[],
     coordinates: Tuple,
-    description?: String,
+    description?: string,
     downVotes?: number,
-    endEvent: String,
-    endInscription: String,
+    endEvent: string,
+    endInscription: string,
     id?: number,
-    locationGeohash?: String,
+    locationGeohash?: string,
     objectives: ChallengeObjective[],
-    owner: String,
-    startEvent: String,
-    startInscription: String,
-    title?: String,
+    owner: string,
+    startEvent: string,
+    startInscription: string,
+    title?: string,
     upVotes?: number
 }
 
 export type ChallengeObjective = {
-    name: String,
+    name: string,
     points: number,
     id?: number
 }
