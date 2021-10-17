@@ -3,7 +3,6 @@ import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
 import {
   Dimensions,
-  Image,
   ImageBackground,
   Modal, Platform,
   ScrollView,
@@ -11,11 +10,10 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import {Icon} from "react-native-elements";
-import {Badge, Button, Card, IconButton, useTheme} from "react-native-paper";
+import {Badge, Button, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
-  FIND_POST_BY_ID,
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
   NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
@@ -26,7 +24,6 @@ import OptionsMenu from "react-native-options-menu";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
-import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
@@ -52,21 +49,12 @@ export function Profile(props: Props) {
   const [userId, setUserId] = useState('');
   const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
-  const [viewPostId, setViewPostId] = useState();
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [token,setToken] = React.useState('')
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
-    context: {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    }
-  });
-  const [findPostById, {data: postData}] = useLazyQuery(FIND_POST_BY_ID, {
-    variables: {id: viewPostId},
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -180,10 +168,6 @@ export function Profile(props: Props) {
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);
-  useEffect(() => {
-    if (!viewPost) return;
-    findPostById();
-  }, [viewPost]);
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
@@ -461,7 +445,7 @@ export function Profile(props: Props) {
                     <Button2 icon="plus"
                              style={styles.connectButton}
                              onPress={() => onConnect()} color={colors.background}
-                             labelStyle={{fontWeight: 'bold', fontSize: 11, fontFamily: 'sans'}}
+                             labelStyle={{fontWeight: 'bold', fontSize: 11}}
                     > {getConnectButtonLabel()}
                     </Button2>
                 </View>}
@@ -555,7 +539,7 @@ export function Profile(props: Props) {
                   <Button
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
                       onPress={() => {
-                      }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
+                      }} color={colors.background} labelStyle={{fontWeight: 'bold'}}
                   > {t('profile.about')}
                   </Button>
               </View>
