@@ -51,7 +51,7 @@ export function Profile(props: Props) {
   const [viewPost, setViewPost] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
-  const [token,setToken] = React.useState('')
+  const [token, setToken] = React.useState('')
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
@@ -137,14 +137,17 @@ export function Profile(props: Props) {
   });
 
   useEffect(() => {
-    getToken().then(t => setToken(t));
-    if (!props.route.params?.otherId) {
-      getUserId().then(id => {
-        setUserId(id);
-        getConnectionRequestsNumber({variables: {userId: id}});
-      });
-    }
+    getToken().then(t => {
+      setToken(t);
+      if (!props.route.params?.otherId) {
+        getUserId().then(id => {
+          setUserId(id);
+          getConnectionRequestsNumber({variables: {userId: id}});
+        });
+      }
+    });
   }, []);
+
   useEffect(() => {
     if (props.route.params?.otherId) {
       setUserId(props.route.params?.otherId);
@@ -161,6 +164,7 @@ export function Profile(props: Props) {
       });
     }
   }, [props.route.params?.otherId]);
+
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
@@ -168,6 +172,7 @@ export function Profile(props: Props) {
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);
+
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
       if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
@@ -626,7 +631,7 @@ export function Profile(props: Props) {
                       icon={'chevron-left'}
           />
         </View>
-        <ConnectionsFeed/>
+        <ConnectionsFeed navigation={props.navigation}/>
       </Modal>
     </View>
   );

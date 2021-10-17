@@ -21,10 +21,7 @@ const SearchScreen = ({navigation}) => {
     const [selectedChallenge, setSelectedChallenge] = useState();
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
-    const [token,setToken] = React.useState('')
-    React.useEffect(() => {
-        getToken().then(t => setToken(t))
-    }, [])
+    const [token, setToken] = React.useState('')
     const [findChallenges, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_FILTER, {
         context: {
             headers: {
@@ -36,9 +33,12 @@ const SearchScreen = ({navigation}) => {
     const [challengeList, setChallengeList] = useState<any>([]);
 
     useEffect(() => {
-        getUserId().then(id => {
-            setUserId(id);
-            findChallenges();
+        getToken().then(t => {
+            setToken(t);
+            getUserId().then(id => {
+                setUserId(id);
+                findChallenges();
+            });
         });
     }, []);
 

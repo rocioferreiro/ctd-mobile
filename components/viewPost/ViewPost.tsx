@@ -26,14 +26,13 @@ const ViewPost = (props:Props) => {
   const [liked, setLiked] = React.useState(false);
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
-  //const [viewProfile, setViewProfile] = useState(false);
   const [post, setPost] = useState<Post>();
   const [likes, setLikes] = React.useState<number>()
   const [token,setToken] = React.useState('')
 
   React.useEffect(() => {
     getToken().then(t => setToken(t))
-  }, [])
+  }, []);
 
   const [getPost] = useLazyQuery(FIND_POST_BY_ID, {
     context: {

@@ -9,27 +9,26 @@ import {GET_POST_BY_CONNECTIONS} from "../apollo-graph/Queries";
 import {useEffect} from "react";
 import {getToken, getUserId} from "../Storage";
 
-
 const PostFeed = ({navigation}) => {
   const [open, setOpen] = React.useState(false)
-  const [token,setToken] = React.useState('')
-    React.useEffect(() => {
-      getToken().then(t => setToken(t))
-    }, [])
-    const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {
-      fetchPolicy: 'cache-and-network',
-      context: {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
+  const [token, setToken] = React.useState('')
+  const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
       }
-    });
+    }
+  });
   const {colors} = useTheme();
 
   useEffect(() => {
-    getUserId().then(id => {
-      getPostsByConnections({variables: {userId: id}});
-    });
+    getToken().then(t => {
+      setToken(t);
+      getUserId().then(id => {
+        getPostsByConnections({variables: {userId: id}});
+      });
+    })
   }, []);
 
   return (
@@ -40,7 +39,6 @@ const PostFeed = ({navigation}) => {
             <View style={{backgroundColor: colors.surface}}>
               <ViewPost post={post} open={open} navigation={navigation}/>
             </View>
-
           </TouchableWithoutFeedback>
         })}
       </ScrollView>

@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, Modal, Platform, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
-import {Avatar, Button, IconButton, useTheme} from "react-native-paper";
+import {Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {Avatar, Button, useTheme} from "react-native-paper";
 import {Text} from "../Themed";
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_GET_PENDING_CONNECTIONS} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {ACCEPT_CONNECTION, REJECT_CONNECTION} from "../apollo-graph/Mutations";
-import {Profile} from "../Profile/Profile";
 
-const ConnectionsFeed = () => {
+type Props = {
+    navigation: any,
+}
+
+const ConnectionsFeed = (props: Props) => {
     const {colors} = useTheme();
     const [userId, setUserId] = useState<string>();
-    const [userProfile, setUserProfile] = useState<string>();
     const [pendingConnections, setPendingConnections] = useState<any>();
     const [lastConnectionAnswered, setLastConnectionAnswered] = useState<string>();
     const [token,setToken] = React.useState('')
-    React.useEffect(() => {
-        getToken().then(t => setToken(t))
-    }, [])
     const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
         fetchPolicy: 'cache-and-network',
         context: {
@@ -53,10 +52,13 @@ const ConnectionsFeed = () => {
     });
 
     useEffect(() => {
-        getUserId().then(id => {
-            setUserId(id);
-            getPendingConnections({variables: {userId: id}})
-        });
+        getToken().then(t => {
+            setToken(t);
+            getUserId().then(id => {
+                setUserId(id);
+                getPendingConnections({variables: {userId: id}})
+            });
+        })
     }, []);
 
     useEffect(() => {
@@ -118,7 +120,7 @@ const ConnectionsFeed = () => {
             <View style={styles.userInfoContainer}>
                 <Avatar.Image size={86} source={require('../../assets/images/profile.png')} style={{marginRight: 15}}/>
                 <View style={{backgroundColor: 'transparent', marginRight: 25}}>
-                    <TouchableWithoutFeedback onPress={() => setUserProfile(connection.followUser.id)}>
+                    <TouchableWithoutFeedback onPress={() => props.navigation.push('profile', {otherId: connection.followUser.id})}>
                         <View style={{backgroundColor: 'transparent'}}>
                             <Text style={styles.primaryText}>{connection.followUser.name} {connection.followUser.lastname}</Text>
                             <Text style={styles.secondaryText}>{connection.followUser.mail}</Text>
@@ -146,19 +148,6 @@ const ConnectionsFeed = () => {
             <ScrollView style={{marginTop: 30}}>
                 {pendingConnections?.map(connection => renderConnection(connection))}
             </ScrollView>
-            <Modal animationType="fade"
-                   presentationStyle={"fullScreen"}
-                   visible={!!userProfile}
-                   onRequestClose={() => {
-                       setUserProfile(undefined);
-                   }}>
-                <IconButton onPress={() => setUserProfile(undefined)}
-                            style={[styles.button, Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}]}
-                            icon={'chevron-left'}
-                            size={40}
-                />
-                <Profile otherUserId={userProfile}/>
-            </Modal>
         </View>
     )
 }
