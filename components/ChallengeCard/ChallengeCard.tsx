@@ -65,7 +65,7 @@ const ChallengeCard = (props: Props) => {
   useEffect(() => {
     if (props.challenge && props.token) {
       getUser();
-    } else console.log('challenge or token is undefined in challenge card');
+    } else console.log('challenge or token is undefined at challenge card');
   }, [props.challenge, props.token]);
 
   if (loading) return <View style={{
