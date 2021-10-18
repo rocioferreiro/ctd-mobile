@@ -20,12 +20,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
 
-const MyTabbar = ({navigation, route}) => {
+const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
   const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER,
     {
       variables: {userId: userId},

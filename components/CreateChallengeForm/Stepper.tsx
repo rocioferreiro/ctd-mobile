@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';

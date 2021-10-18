@@ -344,7 +344,6 @@ export function Profile(props: Props) {
   });
 
   const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
 
   const onConnect = () => {
     switch (connectionStatus) {
@@ -433,7 +432,6 @@ export function Profile(props: Props) {
 
   function handleChange(itemValue) {
     i18n.changeLanguage(itemValue)
-    setLanguage(itemValue)
     console.log(i18n.language)
   }
 

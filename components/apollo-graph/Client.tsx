@@ -13,7 +13,7 @@ export function getApolloClientInstance(): ApolloClient<object> {
   const httpLink = new HttpLink({
       uri: uri,
       headers: {},
-      useGETForQueries: true
+      useGETForQueries: false
     });
 
   // const headerLink = setContext(async (request, previousContext) => {

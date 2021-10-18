@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Card, useTheme} from "react-native-paper";
+import {useTheme} from "react-native-paper";
 import {View} from "../../Themed";
 import ImagePicker from "./ImagePicker";
 import DatePicker from "./DatePicker";
@@ -13,8 +13,7 @@ type Props = {
 }
 
 const ChallengeExtraInfo = (props: Props) => {
-  const {t, i18n} = useTranslation();
-  const [language, setLanguage] = React.useState(i18n.language);
+  const {t} = useTranslation();
   const {colors} = useTheme()
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
@@ -75,8 +74,8 @@ const ChallengeExtraInfo = (props: Props) => {
   });
 
   const addDays = (days : number, date): Date => {
-    var futureDate = new Date(date);
-    futureDate.setDate(futureDate. getDate() + days);
+    const futureDate = new Date(date);
+    futureDate.setDate(futureDate.getDate() + days);
     return futureDate;
   }
 

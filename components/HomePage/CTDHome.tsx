@@ -20,7 +20,7 @@ import {convertDateToString, CreateChallengeFormValues} from "../CreateChallenge
 import {getToken, getUserId} from "../Storage";
 
 const CTDHome = ({navigation}) => {
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {colors} = useTheme();
 
   function toastOn() {
@@ -77,7 +77,7 @@ const CTDHome = ({navigation}) => {
       }
     }
     console.log(newChallengeDTOInput)
-    createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(e => {
+    createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
     });
   }
