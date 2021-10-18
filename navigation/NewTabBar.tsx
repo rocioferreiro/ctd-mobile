@@ -19,6 +19,7 @@ import PersonIcon from "./PersonIcon";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
+import EditProfile from "../components/Profile/EditProfile";
 
 const MyTabbar = ({navigation, route}) => {
   const {colors} = useTheme();
@@ -98,6 +99,7 @@ const MyTabbar = ({navigation, route}) => {
         <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful} />
         <Stack.Screen name={'map'} component={Map} />
         <Stack.Screen name={'profile'} component={Profile} />
+        <Stack.Screen name={'edit-profile'} component={EditProfile} />
         <Stack.Screen name={'challenge'} >
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>

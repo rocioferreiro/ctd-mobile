@@ -26,7 +26,6 @@ import OptionsMenu from "react-native-options-menu";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
-import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
@@ -414,7 +413,6 @@ export function Profile(props: Props) {
       </View>
     </TouchableOpacity>
   }
-
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
     return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
@@ -500,6 +498,11 @@ export function Profile(props: Props) {
                         {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
                       </Badge>}
                         <Icon type={'feather'} name={'user-plus'}/>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => props.navigation.navigate('edit-profile')}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                        <Icon type={'feather'} name={'edit-2'}/>
                     </View>
                 </TouchableWithoutFeedback>
 

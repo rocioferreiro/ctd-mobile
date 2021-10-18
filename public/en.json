@@ -17,6 +17,8 @@
     "cancel": "Cancel",
     "name": "First Name",
     "lastname": "Last Name",
+    "birthDate": "Birth Date",
+    "gender": "Gender",
     "emailError": "Invalid email address",
     "passwordError": "min. 8 digits, an upper case letter and a number",
     "done": "Register"
@@ -36,6 +38,14 @@
     "no-challenges": "Go join some challenges now!",
     "no-posts": "You have created no posts yet",
     "no-results": "Nothing to show"
+  },
+  "editProfile": {
+    "user": "User Information"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
   },
   "create-post": {
     "create-post": " Create Post",

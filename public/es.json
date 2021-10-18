@@ -15,11 +15,21 @@
     "errorDescription": "La creación del usuario falló",
     "successDescription": "La creación del usuario fue exitosa",
     "cancel": "Cancelar",
-    "name": "Nommbre",
+    "name": "Nombre",
     "lastname": "Apellido",
+    "birthDate": "Fecha de Nacimiento",
+    "gender": "Sexo",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
     "done": "Registrarse"
+  },
+  "editProfile": {
+    "user": "Información del Usuario"
+  },
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro"
   },
   "profile": {
     "level": "Nivel",
