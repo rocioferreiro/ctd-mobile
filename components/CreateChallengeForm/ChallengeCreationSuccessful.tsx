@@ -14,7 +14,7 @@ const ChallengeCreationSuccessful = (props: Props) => {
     const styles = StyleSheet.create({
         container: {
             height: Dimensions.get('window').height,
-            marginTop: Dimensions.get('window').height * 0.2,
+            paddingTop: Dimensions.get('window').height * 0.2,
             alignContent: 'center'
         },
         title: {

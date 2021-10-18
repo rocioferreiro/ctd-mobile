@@ -3,15 +3,14 @@ import {View, Text} from "../Themed";
 import React, {useContext, useEffect, useState} from "react";
 import {
   Dimensions,
-  Image,
   ImageBackground,
   Modal, Platform,
   ScrollView,
   StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback
 } from "react-native";
-import {Icon} from "react-native-elements";
-import {Badge, Button, Card, IconButton, useTheme} from "react-native-paper";
+import {Icon, Button} from "react-native-elements";
+import {Badge, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
@@ -26,7 +25,6 @@ import OptionsMenu from "react-native-options-menu";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
-import ViewPost from "../viewPost/ViewPost";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
@@ -34,6 +32,7 @@ import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
+import {Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 
 enum ConnectionStatus {
@@ -51,6 +50,7 @@ export function Profile(props: Props) {
   const [open,setOpen]=React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
+  const [isCreator, setCreator] = useState<boolean>(false)
   const [userId, setUserId] = useState('');
   const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
@@ -83,6 +83,9 @@ export function Profile(props: Props) {
     },
     onCompleted: data => {
       console.log(data)
+      if(data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
+      if(data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
+      else setConnectionStatus(ConnectionStatus.connect)
     }
   });
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -90,6 +93,10 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: result => {
+      if(result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
+      else setCreator(false) // Change to true to see new challenge button
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
@@ -150,6 +157,7 @@ export function Profile(props: Props) {
     if (!props.route.params?.otherId) {
       getUserId().then(id => {
         setUserId(id);
+        getLoggedInUser({variables: {targetUserId: id, currentUserId: id}});
         getConnectionRequestsNumber({variables: {userId: id}});
       });
     }
@@ -183,11 +191,11 @@ export function Profile(props: Props) {
   }, [viewPost]);
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
-      if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
-        setConnectionStatus(ConnectionStatus.connected);
-      else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.route.params?.otherId))
-        setConnectionStatus(ConnectionStatus.pending);
-      else setConnectionStatus(ConnectionStatus.connect);
+      // if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
+      //   setConnectionStatus(ConnectionStatus.connected);
+      // else if (pendingConnectionsData.getMyPendingConnection.some(connection => connection.followUser.id === props.route.params?.otherId))
+      //   setConnectionStatus(ConnectionStatus.pending);
+      // else setConnectionStatus(ConnectionStatus.connect);
     }
   }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
 
@@ -328,6 +336,14 @@ export function Profile(props: Props) {
       paddingLeft: 0,
       marginTop: 25
     },
+    buttonAddChallenge: {
+      backgroundColor: colors.extra,
+      color: '#fff',
+      borderRadius: 20,
+      margin: 0,
+      paddingVertical: 5,
+      paddingHorizontal: 0,
+    },
     creationCard: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height * 0.95,
@@ -365,26 +381,26 @@ export function Profile(props: Props) {
   const onConnect = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
-        const target = userData.findUserById.user;
-        const following = loggedInUserData.findUserById.user;
-        const targetUser = {
-          id: target.id, mail: target.mail, address: {
-            coordinates: {
-              latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude
-            }
-          }, favouriteODS: target.favouriteODS
-        };
-        const followingUser = {
-          id: following.id, mail: following.mail, address: {
-            coordinates: {
-              latitude: target.address.coordinates.latitude,
-              longitude: target.address.coordinates.latitude
-            }
-          }, favouriteODS: following.favouriteODS
-        };
+        // const target = userData.findUserById.user;
+        // const following = loggedInUserData.findUserById.user;
+        // const targetUser = {
+        //   id: target.id, mail: target.mail, address: {
+        //     coordinates: {
+        //       latitude: target.address.coordinates.latitude,
+        //       longitude: target.address.coordinates.latitude
+        //     }
+        //   }, favouriteODS: target.favouriteODS
+        // };
+        // const followingUser = {
+        //   id: following.id, mail: following.mail, address: {
+        //     coordinates: {
+        //       latitude: target.address.coordinates.latitude,
+        //       longitude: target.address.coordinates.latitude
+        //     }
+        //   }, favouriteODS: following.favouriteODS
+        // };
 
-        const variables = {variables: {targetUser: targetUser, followingUser: followingUser}}
+        const variables = {variables: {followingUserId: userId, loggedUserId: loggedInUserId}}
         connect(variables).catch(e => console.log(e));
         break;
       case ConnectionStatus.pending:
@@ -559,15 +575,16 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  <Button
+                  <Button2
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
                       onPress={() => {
                       }} color={colors.background} labelStyle={{fontWeight: 'bold', fontFamily: 'sans'}}
                   > {t('profile.about')}
-                  </Button>
+                  </Button2>
               </View>
           </View>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
+            {/*TODO change to challenges im subscribed to*/}
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
@@ -595,7 +612,29 @@ export function Profile(props: Props) {
           }
         </View>
         }
+
+        { (!props.route.params?.otherId && isCreator) &&
+          <View style={{...styles.sectionContainer, paddingTop: 30}}>
+              <View style={{backgroundColor: 'transparent', display: "flex", flexDirection: "row", justifyContent: "space-between", height:40, alignItems:"center"}}>
+                  <Text style={styles.primaryText}>{t('profile.my-challenges')}</Text>
+                  <Button onPress={() => props.navigation.navigate('challengeCreation')}
+                          icon={{name: 'add', type: 'ionicon'}}
+                          buttonStyle={styles.buttonAddChallenge}
+                  />
+              </View>
+
+              <ScrollView horizontal={true}>
+                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
+                })}
+              </ScrollView>
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
+            }
+          </View>
+        }
           <View style={{...styles.sectionContainer}}>
+            {/*TODO change to my verified completed challenges (or to verify?)*/}
               <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
@@ -608,7 +647,7 @@ export function Profile(props: Props) {
           </View>
         {!props.route.params?.otherId &&
         <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
-            <Button
+            <Button2
                 uppercase={false}
                 mode={'outlined'}
                 style={{width: '40%'}}
@@ -618,7 +657,7 @@ export function Profile(props: Props) {
                 }}
             >
               {t('profile.logout')}
-            </Button>
+            </Button2>
         </View>}
       </ScrollView>
       }
