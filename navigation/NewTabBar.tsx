@@ -19,6 +19,8 @@ import PersonIcon from "./PersonIcon";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
+import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
+import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
@@ -109,6 +111,13 @@ const MyTabbar = ({navigation}) => {
           {props => <CreatePost {...props} setCreatePost={setCreatePost} toastOn={toastOn} />}
         </Stack.Screen>
         <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful} />
+        <Stack.Screen name={'challengeCreationSuccessful'} >
+          {props => <ChallengeCreationSuccessful {...props} close={()=> {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'challengeCreation'} component={ChallengeCreation} />
         <Stack.Screen name={'map'} component={Map} />
         <Stack.Screen name={'profile'} component={Profile} />
         <Stack.Screen name={'challenge'} >
