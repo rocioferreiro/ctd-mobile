@@ -33,6 +33,7 @@ import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
 import {Role} from "../Models/User";
+import ConfirmationModal from "../Challenge/ConfirmationModal";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -46,6 +47,7 @@ interface Props {
 }
 
 export function Profile(props: Props) {
+  const [open,setOpen]=React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [isCreator, setCreator] = useState<boolean>(false)
@@ -368,6 +370,14 @@ export function Profile(props: Props) {
   const {t, i18n} = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language);
 
+  function handleDisconnect() {
+    setOpen(true)
+  }
+  function doDisconnect(){
+    disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+    setOpen(false)
+  }
+
   const onConnect = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
@@ -395,7 +405,7 @@ export function Profile(props: Props) {
         break;
       case ConnectionStatus.pending:
       case ConnectionStatus.connected:
-        disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+        handleDisconnect()
         break;
     }
 
@@ -461,6 +471,8 @@ export function Profile(props: Props) {
 
   return (
     <View style={styles.container}>
+      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={t('profile.modal-text')}
+                         cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
       {!viewPost &&
       <ScrollView>
 
