@@ -169,8 +169,8 @@ export function Profile(props: Props) {
       getUserId().then(id => {
         setLoggedInUserId(id);
         getLoggedInUser({variables: {targetUserId: id}});
-        getConnections({variables: {userId: id}});
-        getPendingConnections({variables: {userId: id}});
+        getConnections();
+        getPendingConnections();
       });
     } else {
       getUserId().then(id => {
