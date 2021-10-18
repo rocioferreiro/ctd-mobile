@@ -35,7 +35,10 @@
     "pending": "Pendiente",
     "no-challenges": "Únete a un desafío para comenzar!",
     "no-posts": "Todavía no has creado ninguna publicación",
-    "no-results": "Nada para mostrar"
+    "no-results": "Nada para mostrar",
+    "modal-text": "¿Seguro que quieres Desconectarte de este usuario?",
+    "modal-cancel": "Cancelar",
+    "modal-accept": "Aceptar"
   },
   "create-post": {
     "create-post": "Crear Publicación",
