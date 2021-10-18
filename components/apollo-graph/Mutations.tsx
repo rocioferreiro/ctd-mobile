@@ -53,8 +53,8 @@ mutation unlikePost($userId: String!, $postId: String!){
 `;
 
 export const CONNECT = gql`
-mutation connect($targetUser: UserInput!, $followingUser: UserInput!){
-  connect(targetUser: $targetUser, followingUser: $followingUser)
+mutation connect($followingUserId: String!, $loggedUserId: String!){
+  connect(followingUserId: $followingUserId, loggedUserId: $loggedUserId)
 }
 `;
 

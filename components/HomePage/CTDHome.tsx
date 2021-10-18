@@ -57,7 +57,9 @@ const CTDHome = ({navigation}) => {
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
-    getToken().then(t => setToken(t))
+    getToken().then(t => {
+      setToken(t)
+    })
   }, [])
 
   const parseAndSendChallenge = (challenge) => {
