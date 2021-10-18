@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text} from "../Themed";
-import {categoryBackgrounds, colors, onuLogos, ONUObjectives} from "../ONUObjectives";
-import {Dimensions, Image, ImageBackground, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import {categoryBackgrounds, colors, onuLogos} from "../ONUObjectives";
+import {Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
-import {Card, Divider, IconButton, useTheme} from "react-native-paper";
+import {Divider, IconButton} from "react-native-paper";
 import SearchBarComponent from "../SearchBar/SearchBarComponent";
 import ChallengeCard from "../ChallengeCard/ChallengeCard";
-import {TabScreen} from "react-native-paper-tabs";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_CHALLENGES_BY_CATEGORY, FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
-import {getToken, getUserId} from "../Storage";
-import ChallengePage from "../Challenge/ChallengePage";
+import {FIND_CHALLENGES_BY_CATEGORY} from "../apollo-graph/Queries";
+import {getToken} from "../Storage";
 
 interface Props {
   setSelectedChallenge: (Challenge) => void;
@@ -23,10 +21,10 @@ const CategoryList = (props: Props) => {
 
   const [challengeList, setChallengeList] = useState<any>([]);
   const [selectedSDG, setSelectedSDG] = React.useState<number>(-1)
-  const [token,setToken] = React.useState('')
+  const [token, setToken] = React.useState('')
   React.useEffect(() => {
-    getToken().then(t => setToken(t))
-  }, [])
+    getToken().then(t => setToken(t));
+  }, []);
   const [findChallengesByCategory, {data, error, loading}] = useLazyQuery(FIND_CHALLENGES_BY_CATEGORY, {
     fetchPolicy: 'cache-and-network',
     context: {
@@ -156,7 +154,7 @@ const CategoryList = (props: Props) => {
           }}>
             {challengeList.map((challenge, i) =>
               <View key={i} style={{marginBottom: 5}}>
-                <ChallengeCard navigation={props.navigation} setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
+                <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={props.setSelectedChallenge} challenge={challenge}/>
                 <Divider/>
               </View>
             )}

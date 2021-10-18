@@ -26,14 +26,13 @@ const ViewPost = (props:Props) => {
   const [liked, setLiked] = React.useState(false);
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
-  //const [viewProfile, setViewProfile] = useState(false);
   const [post, setPost] = useState<Post>();
   const [likes, setLikes] = React.useState<number>()
   const [token,setToken] = React.useState('')
 
   React.useEffect(() => {
     getToken().then(t => setToken(t))
-  }, [])
+  }, []);
 
   const [getPost] = useLazyQuery(FIND_POST_BY_ID, {
     context: {
@@ -66,8 +65,12 @@ const ViewPost = (props:Props) => {
       headers: {'Authorization' : 'Bearer ' + token}
     },
     onCompleted: (data) => {
-      setOwner(data.findUserById.user)
-   }});
+      setOwner(data.findUserById.user);
+   },
+  onError: error => {
+      console.log('view post error');
+      console.log(error);
+  }});
 
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
@@ -123,7 +126,7 @@ const ViewPost = (props:Props) => {
   useEffect(() => {
     if (post && post.owner) {
       getUserId().then(id => {
-        getOwnerData({variables: {targetUserId: post.owner.id? post.owner.id : post.owner, currentUserId: id}});
+        getOwnerData({variables: {targetUserId: post.owner.id? post.owner.id : post.owner}});
         setUserId(id);
         if (post.owner.id == id) setLiked(true);
       })

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Slider from '@react-native-community/slider';
-import {Badge, Card, IconButton, useTheme} from "react-native-paper";
+import {Badge, IconButton, useTheme} from "react-native-paper";
 import {View, Text} from "../Themed";
 import {Dimensions, StyleSheet, TextInput} from "react-native";
 import {ChallengeObjective} from "./Types";
@@ -46,13 +46,20 @@ const ChallengePoints = (props: Props) => {
     }
 
     const [totalPoints, setTotalPoints] = useState(0);
-    const [objectivePoints, setObjectivePoints] = useState("0");
     const {colors} = useTheme();
     const [token,setToken] = React.useState('')
 
     React.useEffect(() => {
-        getToken().then(t => setToken(t))
-        getScore()
+        getToken().then(t => {
+            setToken(t);
+            getScore({
+                context: {
+                    headers: {
+                        'Authorization': 'Bearer ' + t
+                    }
+                }
+            })
+        })
     }, [])
 
     const [getScore, {data: resultedPoints}] = useLazyQuery(GET_SCORE, {
@@ -160,14 +167,12 @@ const ChallengePoints = (props: Props) => {
     const onInputChanged = (value: number, objective: ChallengeObjective) => {
         console.log(value)
         if (!value) {
-            setObjectivePoints("0");
             const currentObjectives = [...props.formik.values.challengeObjectives];
             const changedObjective = currentObjectives.find(o => o.name == objective.name);
             changedObjective.points = '0';
             props.formik.setFieldValue('challengeObjectives', currentObjectives);
         }
         if (value && value <= maxPoints && value >= minPoints) {
-            setObjectivePoints(`${value}`);
             const currentObjectives = [...props.formik.values.challengeObjectives];
             const changedObjective = currentObjectives.find(o => o.name == objective.name);
             changedObjective.points = value;
