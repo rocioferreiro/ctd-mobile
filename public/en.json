@@ -194,5 +194,8 @@
   },
   "unjoin-button": {
     "unjoin": "Abandon"
+  },
+  "verifyQR-button": {
+    "verify": "Complete Challenge"
   }
 }

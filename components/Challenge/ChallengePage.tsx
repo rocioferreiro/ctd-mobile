@@ -22,6 +22,7 @@ import {getToken, getUserId} from "../Storage";
 import {JOIN_CHALLENGE, UNJOIN_CHALLENGE} from "../apollo-graph/Mutations";
 import ViewParticipantsButton from "./ViewParticipantsButton";
 import UnJoinButton from "./UnJoinButton";
+import VerifyQRButton from "./VerifyQRButton";
 
 interface Props {
   challenge?: Challenge
@@ -65,9 +66,10 @@ const ChallengePage = (props: Props) => {
       toastOn()
 
     },
-    onError: () => {
+    onError: err => {
       toastOnError();
-
+      console.log('challenge page error');
+      console.log(err);
     },
     refetchQueries: ["FIND_POSTS_OF_USER"],
     context: {
@@ -89,7 +91,7 @@ const ChallengePage = (props: Props) => {
       toastOn()
 
     },
-    onError: err => {
+    onError: () => {
       toastOnError();
 
     },
@@ -332,18 +334,21 @@ const ChallengePage = (props: Props) => {
 
           </View>
 
-          <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-            {currentId !== challengeInfo.owner && !isJoined &&
-            <JoinButton handleJoin={() => handleJoin()}/>
-            }
-            {currentId !== challengeInfo.owner && isJoined &&
-            <UnJoinButton handleUnJoin={() => handleUnjoin()}/>
-            }
-            {currentId === challengeInfo.owner &&
-            <ViewParticipantsButton/>
-            }
-          </View>
-          <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
+        <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
+          {currentId !==challengeInfo.owner && !isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
+          <JoinButton handleJoin={()=>handleJoin()}/>
+          }
+          {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
+          <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
+          }
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
+          <ViewParticipantsButton/>
+          }
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
+          <VerifyQRButton navigation={props.navigation} challengeId={challengeInfo.id}/>
+          }
+        </View>
+        <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
 
             <Button icon="information" style={{backgroundColor: "rgba(0,0,0,0)"}}>
               <Title style={{
