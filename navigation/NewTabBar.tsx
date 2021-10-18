@@ -19,6 +19,7 @@ import PersonIcon from "./PersonIcon";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
+import EditProfile from "../components/Profile/EditProfile";
 import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
 
@@ -119,6 +120,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'challengeCreation'} component={ChallengeCreation} />
         <Stack.Screen name={'map'} component={Map} />
         <Stack.Screen name={'profile'} component={Profile} />
+        <Stack.Screen name={'edit-profile'} component={EditProfile} />
         <Stack.Screen name={'challenge'} >
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>

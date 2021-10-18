@@ -13,6 +13,20 @@ export type User = {
     photoUrl?: string
 }
 
+export type UserForEdition = {
+    lastname: string,
+    name: string,
+    birthDate?: Date,
+    gender?: Gender,
+
+    photoUrl?: string,
+    biography?: string,
+
+    address?: Address,
+
+    favouriteODS?: number[]
+}
+
 export type GoogleUser = {
     email: string,
     familyName: string,

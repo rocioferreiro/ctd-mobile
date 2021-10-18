@@ -438,7 +438,6 @@ export function Profile(props: Props) {
       </View>
     </TouchableOpacity>
   }
-
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
     return <TouchableOpacity onPress={() => props.navigation.navigate('challenge', {challengeId: challenge.id})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
@@ -525,6 +524,11 @@ export function Profile(props: Props) {
                         {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
                       </Badge>}
                         <Icon type={'feather'} name={'user-plus'}/>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => props.navigation.navigate('edit-profile')}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                        <Icon type={'feather'} name={'edit-2'}/>
                     </View>
                 </TouchableWithoutFeedback>
 
