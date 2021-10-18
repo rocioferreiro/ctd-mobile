@@ -25,8 +25,12 @@ const PostFeed = ({navigation}) => {
   useEffect(() => {
     getToken().then(t => {
       setToken(t);
-      getUserId().then(id => {
-        getPostsByConnections({variables: {userId: id}});
+      getPostsByConnections({
+        context: {
+          headers: {
+            'Authorization': 'Bearer ' + t
+          }
+        }
       });
     })
   }, []);

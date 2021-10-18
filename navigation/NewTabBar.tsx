@@ -30,7 +30,6 @@ const MyTabbar = ({navigation}) => {
   const {t} = useTranslation();
   const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER,
     {
-      variables: {userId: userId},
       fetchPolicy: 'cache-and-network',
       context: {
         headers: {

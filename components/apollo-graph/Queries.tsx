@@ -243,14 +243,14 @@ query getChallengeByFilter($title: String!) {
 `;
 
 export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
-query myPendingConnectionsNumber($userId: String!) {
-  getMyPendingConnectionsNumber(userId: $userId)
+query myPendingConnectionsNumber {
+  getMyPendingConnectionsNumber
 }
 `;
 
 export const GET_POST_BY_CONNECTIONS = gql`
-query getPostByConnections($userId: String!) {
-  getPostByConnections(userId: $userId) {
+query getPostByConnections {
+  getPostByConnections {
     id
     boosted
     creationDate
