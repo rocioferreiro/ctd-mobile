@@ -66,7 +66,7 @@ const ChallengePage = (props: Props) => {
       toastOn()
 
     },
-    onError: () => {
+    onError: err => {
       toastOnError();
       console.log('challenge page error');
       console.log(err);
@@ -91,7 +91,7 @@ const ChallengePage = (props: Props) => {
       toastOn()
 
     },
-    onError: err => {
+    onError: () => {
       toastOnError();
 
     },
