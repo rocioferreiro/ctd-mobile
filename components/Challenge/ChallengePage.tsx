@@ -32,11 +32,11 @@ interface Props {
 }
 
 const ChallengePage = (props: Props) => {
-  const [isJoined,setIsJoined]= React.useState(false)
+  const [isJoined, setIsJoined] = React.useState(false)
   const onuInfo = onuPictures();
   const [challengeInfo, setChallengeInfo] = useState<Challenge>();
   const [currentId, setCurrentId] = useState<string>();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {colors} = useTheme();
   const [marker, setMarker] = useState<LatLng>(props.challenge ? props.challenge.coordinates : {
     latitude: 0,
@@ -49,11 +49,15 @@ const ChallengePage = (props: Props) => {
   const [token, setToken] = React.useState('');
 
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
-    variables: {targetUserId: getOwner(), currentUserId: currentId},
+    variables: {targetUserId: getOwner()},
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {'Authorization': "Bearer " + token}
     },
+    onError: error1 => {
+      console.log('challenge page error');
+      console.log(error1);
+    }
   });
   const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
     onCompleted: () => {
@@ -61,7 +65,7 @@ const ChallengePage = (props: Props) => {
       toastOn()
 
     },
-    onError: err => {
+    onError: () => {
       toastOnError();
 
     },
@@ -72,8 +76,9 @@ const ChallengePage = (props: Props) => {
       }
     }
   });
-  function handleJoin(){
-    joinChallenge({variables: {idUser:currentId,idChallenge:challengeInfo.id}}).catch(() => {
+
+  function handleJoin() {
+    joinChallenge({variables: {idUser: currentId, idChallenge: challengeInfo.id}}).catch(() => {
       toastOn();
     });
   }
@@ -96,7 +101,7 @@ const ChallengePage = (props: Props) => {
     }
   });
 
-  function handleUnjoin(){
+  function handleUnjoin() {
     /* unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
          toastOn();
      });*/
@@ -120,8 +125,8 @@ const ChallengePage = (props: Props) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const [getChallenge] = useLazyQuery(FIND_CHALLENGE_BY_ID,
-    {
+
+  const [getChallenge] = useLazyQuery(FIND_CHALLENGE_BY_ID, {
       context: {
         headers: {'Authorization': "Bearer " + token}
       },
@@ -134,26 +139,25 @@ const ChallengePage = (props: Props) => {
     });
 
   useEffect(() => {
-    getToken().then(t => setToken(t));
-    getUserId().then(u => setCurrentId(u))
-  }, [])
+    getUserId().then(u => {
+      setCurrentId(u);
+      getToken().then(t => {
+        setToken(t);
+        if (props.challenge) {
+          setChallengeInfo(props.challenge);
+          setMarker(props.challenge.coordinates);
+        } else if (props.route.params?.challengeId)
+          getChallenge({variables: {id: props.route.params?.challengeId}});
+        if (props.currentUserId)
+          setCurrentId(props.currentUserId);
+        else
+          getUserId().then(id => setCurrentId(id));
+      });
+    });
+  }, []);
 
   useEffect(() => {
-    if (props.challenge) {
-      setChallengeInfo(props.challenge);
-      setMarker(props.challenge.coordinates);
-    }
-    else if (props.route.params?.challengeId)
-      getChallenge({variables: {id: props.route.params?.challengeId}});
-
-
-    if (props.currentUserId)
-      setCurrentId(props.currentUserId);
-    else
-      getUserId().then(id => setCurrentId(id));
-  }, [token]);
-
-  useEffect(() => {
+    if (!token) return;
     if (props.challenge) {
       setChallengeInfo(props.challenge);
       getUser();
@@ -220,185 +224,202 @@ const ChallengePage = (props: Props) => {
   }
 
   return ((challengeInfo) ?
-    <View style={{
-      width: Dimensions.get("window").width,
-      height: Dimensions.get('window').height,
-      backgroundColor: colors.surface
-    }}>
-      <View
-        style={{width: "100%", alignItems: "flex-start", padding: 10, marginTop: 20, backgroundColor: colors.surface}}>
-        <Button icon="keyboard-backspace" onPress={() => {
-          if (props.challenge) props.setSelectedChallenge(null)
-          else props.navigation.goBack()
-        }}>
-          {t('challenge-page.back')}
-        </Button>
-      </View>
-      <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
-                  style={{backgroundColor: "rgba(0,0,0,0)"}}>
+      <View style={{
+        width: Dimensions.get("window").width,
+        height: Dimensions.get('window').height,
+        backgroundColor: colors.surface
+      }}>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "flex-start",
+            padding: 10,
+            marginTop: 20,
+            backgroundColor: colors.surface
+          }}>
+          <Button icon="keyboard-backspace" onPress={() => {
+            if (props.challenge) props.setSelectedChallenge(null)
+            else props.navigation.goBack()
+          }}>
+            {t('challenge-page.back')}
+          </Button>
+        </View>
+        <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
+                    style={{backgroundColor: "rgba(0,0,0,0)"}}>
 
-        <ImageBackground
-          style={{width: "100%", height: 300, display: "flex", justifyContent: "center", alignItems: "center"}}
-          source={require('../../assets/images/compost.jpg')}
-        >
-          <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}}
-                       label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]}/>
-          <Text style={styles.title}> {challengeInfo.title}</Text>
-          <Text style={{color: colors.background}}> {data.findUserById.user.mail} </Text>
+          <ImageBackground
+            style={{width: "100%", height: 300, display: "flex", justifyContent: "center", alignItems: "center"}}
+            source={require('../../assets/images/compost.jpg')}
+          >
+            <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}}
+                         label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]}/>
+            <Text style={styles.title}> {challengeInfo.title}</Text>
+            <Text style={{color: colors.background}}> {data.findUserById.user.mail} </Text>
 
-        </ImageBackground>
-        <View style={{
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 10,
-          backgroundColor: colors.surface
-        }}>
+          </ImageBackground>
           <View style={{
-            width: "90%",
+            width: "100%",
             justifyContent: "center",
             alignItems: "center",
             padding: 10,
             backgroundColor: colors.surface
           }}>
-            <Title style={{
-              fontSize: 20, color: colors.primary,
-              marginTop: 5, fontWeight: "bold"
-            }}>{challengeInfo.description}</Title>
-
-          </View>
-        </View>
-        <View style={{justifyContent: "center", alignItems: "center", padding: 10, backgroundColor: colors.surface}}>
-          <View style={{
-            width: "90%",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 15,
-            marginRight: 20,
-            marginLeft: 20,
-            backgroundColor: colors.primary,
-            borderRadius: 10
-          }}>
-            <Title style={{
-              fontSize: 20, color: colors.background,
-              marginTop: 5
-            }}>{t('challenge-page.release-date')}: {challengeInfo.startEvent}</Title>
-            <Title style={{
-              fontSize: 20, color: colors.accent,
-              marginTop: 5, fontWeight: "bold"
-            }}>{t('challenge-page.end-event')}: {challengeInfo.endEvent}</Title>
-            <Title style={{
-              fontSize: 20, color: colors.background,
-              marginTop: 5
-            }}>{t('challenge-page.inscriptions-start')}: {challengeInfo.startInscription}</Title>
-            <Title style={{
-              fontSize: 20, color: colors.accent,
-              marginTop: 5, fontWeight: "bold"
-            }}>{t('challenge-page.inscriptions-end')}: {challengeInfo.endInscription}</Title>
-          </View>
-        </View>
-
-        <View style={{
-          width: "100%",
-          justifyContent: "center",
-          padding: 15,
-          marginLeft: 4,
-          backgroundColor: colors.surface
-        }}>
-          <Button icon="check-bold" style={{backgroundColor: "rgba(0,0,0,0)"}}>
-            <Title style={{
-              fontSize: 20, color: colors.primary,
-              padding: 10
-            }}>{t('challenge-page.challenge-objectives')}</Title>
-          </Button>
-          {challengeInfo.objectives.map((objective, i) =>
-            <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
+            <View style={{
+              width: "90%",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 10,
+              backgroundColor: colors.surface
+            }}>
               <Title style={{
-                marginLeft: 4, fontSize: 20, color: colors.primary,
-                marginTop: 5
-              }}>{objective.name}</Title>
+                fontSize: 20, color: colors.primary,
+                marginTop: 5, fontWeight: "bold"
+              }}>{challengeInfo.description}</Title>
+
             </View>
-          )}
-
-        </View>
-
-        <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-          {currentId !==challengeInfo.owner && !isJoined &&
-          <JoinButton handleJoin={()=>handleJoin()}/>
-          }
-          {currentId!==challengeInfo.owner && isJoined &&
-          <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
-          }
-          {currentId===challengeInfo.owner &&
-          <ViewParticipantsButton/>
-          }
-        </View>
-        <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
-
-          <Button icon="information" style={{backgroundColor: "rgba(0,0,0,0)"}}>
-            <Title style={{
-              fontSize: 20, color: colors.primary,
-              padding: 10
-            }}>{t('challenge-page.sustainable-objectives')}</Title>
-          </Button>
+          </View>
+          <View style={{justifyContent: "center", alignItems: "center", padding: 10, backgroundColor: colors.surface}}>
+            <View style={{
+              width: "90%",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 15,
+              marginRight: 20,
+              marginLeft: 20,
+              backgroundColor: colors.primary,
+              borderRadius: 10
+            }}>
+              <Title style={{
+                fontSize: 20, color: colors.background,
+                marginTop: 5
+              }}>{t('challenge-page.release-date')}: {challengeInfo.startEvent}</Title>
+              <Title style={{
+                fontSize: 20, color: colors.accent,
+                marginTop: 5, fontWeight: "bold"
+              }}>{t('challenge-page.end-event')}: {challengeInfo.endEvent}</Title>
+              <Title style={{
+                fontSize: 20, color: colors.background,
+                marginTop: 5
+              }}>{t('challenge-page.inscriptions-start')}: {challengeInfo.startInscription}</Title>
+              <Title style={{
+                fontSize: 20, color: colors.accent,
+                marginTop: 5, fontWeight: "bold"
+              }}>{t('challenge-page.inscriptions-end')}: {challengeInfo.endInscription}</Title>
+            </View>
+          </View>
 
           <View style={{
-            display: 'flex',
-            flexDirection: 'row',
+            width: "100%",
             justifyContent: "center",
-            paddingHorizontal: 10,
-            paddingTop: 10,
-            backgroundColor: 'rgba(0,0,0,0)'
+            padding: 15,
+            marginLeft: 4,
+            backgroundColor: colors.surface
           }}>
-            {challengeInfo.categories.map((s, index) => {
-              return <TouchableWithoutFeedback key={index}>
-                <Image
-                  style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
-                  source={onuInfo[parseInt(s)].image}/>
-              </TouchableWithoutFeedback>
-            })}
-          </View>
-
-                 </View>
-
-                 <View style={{width:"100%",justifyContent: "center",padding:10,marginRight:6,marginLeft:6, backgroundColor:colors.surface,borderRadius:40}}>
-
-
-                     <Title style={{ fontSize: 20, color: colors.primary,
-                         marginTop: 5,fontWeight:"bold"}}>{t('challenge-page.challenge-location')}</Title>
-                     {/*<Title style={{ fontSize: 15, color: colors.primary,*/}
-                     {/*    marginTop: 5}}>This a is short description of the challenge location</Title>*/}
-
-                 </View>
-
-
-        <View style={styles.card}>
-
-          <View style={styles.mapWrapper}>
-
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: challengeInfo ? challengeInfo.coordinates.latitude : 0,
-                longitude: challengeInfo ? challengeInfo.coordinates.longitude : 0,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
-              }}
-            >
-              {
-                marker &&
-                <Marker coordinate={marker}/>
-              }
-            </MapView>
+            <Button icon="check-bold" style={{backgroundColor: "rgba(0,0,0,0)"}}>
+              <Title style={{
+                fontSize: 20, color: colors.primary,
+                padding: 10
+              }}>{t('challenge-page.challenge-objectives')}</Title>
+            </Button>
+            {challengeInfo.objectives.map((objective, i) =>
+              <View key={i} style={{marginBottom: 5, backgroundColor: 'rgba(0,0,0,0)'}}>
+                <Title style={{
+                  marginLeft: 4, fontSize: 20, color: colors.primary,
+                  marginTop: 5
+                }}>{objective.name}</Title>
+              </View>
+            )}
 
           </View>
-        </View>
 
-      </ScrollView>
+          <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
+            {currentId !== challengeInfo.owner && !isJoined &&
+            <JoinButton handleJoin={() => handleJoin()}/>
+            }
+            {currentId !== challengeInfo.owner && isJoined &&
+            <UnJoinButton handleUnJoin={() => handleUnjoin()}/>
+            }
+            {currentId === challengeInfo.owner &&
+            <ViewParticipantsButton/>
+            }
+          </View>
+          <View style={{width: "100%", justifyContent: "center", padding: 15, backgroundColor: colors.surface}}>
 
-    </View>
-    :
-    <View/>
-)}
+            <Button icon="information" style={{backgroundColor: "rgba(0,0,0,0)"}}>
+              <Title style={{
+                fontSize: 20, color: colors.primary,
+                padding: 10
+              }}>{t('challenge-page.sustainable-objectives')}</Title>
+            </Button>
+
+            <View style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: "center",
+              paddingHorizontal: 10,
+              paddingTop: 10,
+              backgroundColor: 'rgba(0,0,0,0)'
+            }}>
+              {challengeInfo.categories.map((s, index) => {
+                return <TouchableWithoutFeedback key={index}>
+                  <Image
+                    style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                    source={onuInfo[parseInt(s)].image}/>
+                </TouchableWithoutFeedback>
+              })}
+            </View>
+
+          </View>
+
+          <View style={{
+            width: "100%",
+            justifyContent: "center",
+            padding: 10,
+            marginRight: 6,
+            marginLeft: 6,
+            backgroundColor: colors.surface,
+            borderRadius: 40
+          }}>
+
+
+            <Title style={{
+              fontSize: 20, color: colors.primary,
+              marginTop: 5, fontWeight: "bold"
+            }}>{t('challenge-page.challenge-location')}</Title>
+            {/*<Title style={{ fontSize: 15, color: colors.primary,*/}
+            {/*    marginTop: 5}}>This a is short description of the challenge location</Title>*/}
+
+          </View>
+
+
+          <View style={styles.card}>
+
+            <View style={styles.mapWrapper}>
+
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: challengeInfo ? challengeInfo.coordinates.latitude : 0,
+                  longitude: challengeInfo ? challengeInfo.coordinates.longitude : 0,
+                  latitudeDelta: 0.1,
+                  longitudeDelta: 0.1,
+                }}
+              >
+                {
+                  marker &&
+                  <Marker coordinate={marker}/>
+                }
+              </MapView>
+
+            </View>
+          </View>
+
+        </ScrollView>
+
+      </View>
+      :
+      <View/>
+  )
+}
 
 export default ChallengePage;
