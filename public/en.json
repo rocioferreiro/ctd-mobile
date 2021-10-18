@@ -29,6 +29,7 @@
     "finished-challenges": "Finished Challenges",
     "posts": "Posts",
     "active-challenges": "Active Challenges",
+    "my-challenges": "My Challenges",
     "about": "About",
     "challenges": "Challenges",
     "followers": "Connections",
@@ -37,7 +38,10 @@
     "pending": "Pending",
     "no-challenges": "Go join some challenges now!",
     "no-posts": "You have created no posts yet",
-    "no-results": "Nothing to show"
+    "no-results": "Nothing to show",
+    "modal-text": "Are you sure you want to Disconnect from this user?",
+    "modal-cancel": "Cancel",
+    "modal-accept": "Accept"
   },
   "editProfile": {
     "user": "User Information"
