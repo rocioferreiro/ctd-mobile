@@ -604,7 +604,7 @@ export function Profile(props: Props) {
                 return <PostThumbnail onPressed={(postId) => {
                   // setViewPostId(postId);
                   // setViewPost(true);
-                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId}})
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>
