@@ -7,7 +7,7 @@ interface Props {
 
 }
 
-const JoinButton = (props: Props) => {
+const ChallengeVerificationPage = (props: Props) => {
     const {t, i18n} = useTranslation();
     const { colors } = useTheme();
     return(<View>
@@ -16,4 +16,4 @@ const JoinButton = (props: Props) => {
     );
 }
 
-export default JoinButton;
+export default ChallengeVerificationPage;
