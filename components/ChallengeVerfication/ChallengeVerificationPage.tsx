@@ -10,7 +10,7 @@ type Props = {
     close: () => void
 }
 
-const ChallengeCreationSuccessful = (props: Props) => {
+const ChallengeVerificationPage = (props: Props) => {
     const { colors } = useTheme();
     const {t, i18n} = useTranslation();
 
