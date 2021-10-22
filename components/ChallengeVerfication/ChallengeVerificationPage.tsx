@@ -27,13 +27,22 @@ const ChallengeVerificationPage = (props: Props) => {
             textAlign: 'center'
 
         },
+        challengetitle: {
+            fontSize: 25,
+            fontWeight: 'normal',
+            color: colors.primary,
+            textAlign: 'center',
+            fontStyle:'italic'
+
+        },
         subtitle: {
             padding:3,
             paddingTop:10,
             fontSize: 23,
             fontWeight: 'bold',
             color: colors.extra,
-            textAlign: 'center'
+            textAlign: 'center',
+            fontStyle:'italic'
 
         },
         subtitle1: {
@@ -66,9 +75,10 @@ const ChallengeVerificationPage = (props: Props) => {
     return(
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                <Text style={styles.title}> Save the Turtles Challenge Completed!</Text>
-                <Text style={styles.subtitle}>You Earned 300 Experience!</Text>
-                <Text style={styles.subtitle1}>Well Done!</Text>
+                <Text style={styles.challengetitle}> Save the Turtles </Text>
+                <Text style={styles.title}>{t('verification.challenge-completed')}</Text>
+                <Text style={styles.subtitle}>{t('verification.you-earned')} 300 {t('verification.exp')}</Text>
+                <Text style={styles.subtitle1}>{t('verification.well-done')}</Text>
                 <LottieView
                     style={styles.trophy}
                     source={require('../../assets/lottie/67230-trophy-winner.json')}
@@ -78,7 +88,7 @@ const ChallengeVerificationPage = (props: Props) => {
                     resizeMode={'contain'}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>Return</Button>
+                    <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>{t('verification.return')}</Button>
                 </View>
             </View>
         </Card>

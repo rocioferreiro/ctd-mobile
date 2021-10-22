@@ -198,5 +198,12 @@
   },
   "verifyQR-button": {
     "verify": "Completar Desafío"
+  },
+  "verification": {
+    "challenge-completed": "¡Desafío Completado!",
+    "you-earned": "Ganaste",
+    "exp": "de Experiencia",
+    "well-done": "¡Buen Trabajo!",
+    "return": "Volver"
   }
 }
