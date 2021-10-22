@@ -34,6 +34,13 @@ const ChallengeVerificationPage = (props: Props) => {
             textAlign: 'center'
 
         },
+        subtitle1: {
+            fontSize: 30,
+            fontWeight: 'bold',
+            color: colors.primary,
+            textAlign: 'center'
+
+        },
         checkmark: {
             width: '100%',
             height: 400,
@@ -55,7 +62,8 @@ const ChallengeVerificationPage = (props: Props) => {
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                 <Text style={styles.title}>Challenge Completed!</Text>
-                <Text style={styles.title}>You Earned 300 Experience!</Text>
+                <Text style={styles.subtitle1}>Challenge Title</Text>
+                <Text style={styles.subtitle}>You Earned 300 Experience!</Text>
                 <LottieView
                     style={styles.checkmark}
                     source={require('../../assets/lottie/checkmark.json')}
