@@ -91,6 +91,7 @@
     "react-native-svg": "^12.1.1",
     "react-native-svg-uri": "^1.2.3",
     "react-native-tab-view": "^3.1.1",
+    "react-native-timeline-flatlist": "^0.7.6",
     "react-native-toast-message": "^1.4.9",
     "react-native-toastify": "^0.2.2",
     "react-native-view-shot": "^3.1.2",
