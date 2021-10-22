@@ -21,15 +21,16 @@ const ChallengeVerificationPage = (props: Props) => {
             alignContent: 'center'
         },
         title: {
-            fontSize: 35,
+            fontSize: 25,
             fontWeight: 'bold',
             color: colors.primary,
             textAlign: 'center'
 
         },
         subtitle: {
+            padding:3,
             paddingTop:10,
-            fontSize: 30,
+            fontSize: 23,
             fontWeight: 'bold',
             color: colors.extra,
             textAlign: 'center'
@@ -65,7 +66,7 @@ const ChallengeVerificationPage = (props: Props) => {
     return(
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                <Text style={styles.title}>Challenge Completed!</Text>
+                <Text style={styles.title}> Save the Turtles Challenge Completed!</Text>
                 <Text style={styles.subtitle}>You Earned 300 Experience!</Text>
                 <Text style={styles.subtitle1}>Well Done!</Text>
                 <LottieView
