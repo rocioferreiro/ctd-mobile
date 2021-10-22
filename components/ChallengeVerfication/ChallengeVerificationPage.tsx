@@ -17,7 +17,7 @@ const ChallengeVerificationPage = (props: Props) => {
     const styles = StyleSheet.create({
         container: {
             height: Dimensions.get('window').height,
-            paddingTop: Dimensions.get('window').height * 0.2,
+            paddingTop: Dimensions.get('window').height * 0.09,
             alignContent: 'center'
         },
         title: {
@@ -28,6 +28,7 @@ const ChallengeVerificationPage = (props: Props) => {
 
         },
         subtitle: {
+            paddingTop:10,
             fontSize: 30,
             fontWeight: 'bold',
             color: colors.extra,
@@ -35,17 +36,20 @@ const ChallengeVerificationPage = (props: Props) => {
 
         },
         subtitle1: {
-            fontSize: 30,
-            fontWeight: 'bold',
-            color: colors.primary,
+            paddingTop:10,
+            fontSize: 20,
+            fontWeight:'normal',
+            color: colors.accent,
             textAlign: 'center'
 
         },
-        checkmark: {
+        trophy: {
             width: '100%',
-            height: 400,
+            height: 320,
+
         },
         buttonContainer: {
+            paddingTop:40,
             justifyContent: "center",
             width: '100%',
             alignItems: "center",
@@ -62,15 +66,15 @@ const ChallengeVerificationPage = (props: Props) => {
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
                 <Text style={styles.title}>Challenge Completed!</Text>
-                <Text style={styles.subtitle1}>Challenge Title</Text>
                 <Text style={styles.subtitle}>You Earned 300 Experience!</Text>
+                <Text style={styles.subtitle1}>Well Done!</Text>
                 <LottieView
-                    style={styles.checkmark}
-                    source={require('../../assets/lottie/checkmark.json')}
+                    style={styles.trophy}
+                    source={require('../../assets/lottie/67230-trophy-winner.json')}
                     autoPlay
                     loop
-                    speed={0.4}
-                    resizeMode={'cover'}
+                    speed={1}
+                    resizeMode={'contain'}
                 />
                 <View style={styles.buttonContainer}>
                     <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>Return</Button>
