@@ -15,11 +15,21 @@
     "errorDescription": "La creación del usuario falló",
     "successDescription": "La creación del usuario fue exitosa",
     "cancel": "Cancelar",
-    "name": "Nommbre",
+    "name": "Nombre",
     "lastname": "Apellido",
+    "birthDate": "Fecha de Nacimiento",
+    "gender": "Sexo",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
     "done": "Registrarse"
+  },
+  "editProfile": {
+    "user": "Información del Usuario"
+  },
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro"
   },
   "profile": {
     "level": "Nivel",
@@ -27,6 +37,7 @@
     "finished-challenges": "Desafíos Finalizados",
     "posts": "Publicaciones",
     "active-challenges": "Desafíos Activos",
+    "my-challenges": "Mis Desafíos",
     "about": "Más",
     "challenges": "Desafíos",
     "followers": "Conexiones",
@@ -35,7 +46,10 @@
     "pending": "Pendiente",
     "no-challenges": "Únete a un desafío para comenzar!",
     "no-posts": "Todavía no has creado ninguna publicación",
-    "no-results": "Nada para mostrar"
+    "no-results": "Nada para mostrar",
+    "modal-text": "¿Seguro que quieres Desconectarte de este usuario?",
+    "modal-cancel": "Cancelar",
+    "modal-accept": "Aceptar"
   },
   "create-post": {
     "create-post": "Crear Publicación",
@@ -181,5 +195,8 @@
   },
   "unjoin-button": {
     "unjoin": "Abandonar"
+  },
+  "verifyQR-button": {
+    "verify": "Completar Desafío"
   }
 }

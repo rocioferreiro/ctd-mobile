@@ -14,18 +14,30 @@ import PostCreationSuccessful from "../components/CreatePost/PostCreationSuccess
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
 import {PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Queries";
-import {getUserId} from "../components/Storage";
+import {getToken, getUserId} from "../components/Storage";
 import PersonIcon from "./PersonIcon";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
+import EditProfile from "../components/Profile/EditProfile";
+import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
+import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
 
-const MyTabbar = ({navigation, route}) => {
+const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
   const [userId, setUserId] = useState('');
+  const [token, setToken] = useState('');
   const [createPost, setCreatePost] = React.useState<Boolean>(true)
-  const {t, i18n} = useTranslation();
-  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {variables: {userId: userId}, fetchPolicy: 'cache-and-network'});
+  const {t} = useTranslation();
+  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER,
+    {
+      fetchPolicy: 'cache-and-network',
+      context: {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }}
+    );
 
   function toastOn() {
     Toast.show({
@@ -74,7 +86,10 @@ const MyTabbar = ({navigation, route}) => {
   useEffect(() => {
     getUserId().then(id => {
       setUserId(id);
-      getConnectionRequestsNumber();
+      getToken().then(token => {
+        setToken(token);
+        getConnectionRequestsNumber();
+      })
     });
   }, []);
 
@@ -96,8 +111,16 @@ const MyTabbar = ({navigation, route}) => {
           {props => <CreatePost {...props} setCreatePost={setCreatePost} toastOn={toastOn} />}
         </Stack.Screen>
         <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful} />
+        <Stack.Screen name={'challengeCreationSuccessful'} >
+          {props => <ChallengeCreationSuccessful {...props} close={()=> {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'challengeCreation'} component={ChallengeCreation} />
         <Stack.Screen name={'map'} component={Map} />
         <Stack.Screen name={'profile'} component={Profile} />
+        <Stack.Screen name={'edit-profile'} component={EditProfile} />
         <Stack.Screen name={'challenge'} >
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>

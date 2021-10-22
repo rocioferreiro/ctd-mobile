@@ -46,27 +46,9 @@ query findNearbyUsers($latitude: Float!, $longitude: Float!) {
 }
 `;
 
-/*export const FIND_USER_BY_ID = gql`
-query findUserById($userId: String!){
-  findUserById(id: $userId){
-    name
-    id
-    mail
-    role
-    lastname
-    address {
-      coordinates {
-        latitude
-        longitude
-      }
-    }
-  }
-}
-`;*/
-
 export const NEW_FIND_USER_BY_ID = gql`
-query newFindUserById($targetUserId: String!, $currentUserId: String!){
-  findUserById(targetUserId: $targetUserId, currentUserId: $currentUserId){
+query newFindUserById($targetUserId: String!){
+  findUserById(targetUserId: $targetUserId){
     user {
         name
         id
@@ -261,14 +243,14 @@ query getChallengeByFilter($title: String!) {
 `;
 
 export const PENDING_CONNECTION_REQUESTS_NUMBER = gql`
-query myPendingConnectionsNumber($userId: String!) {
-  getMyPendingConnectionsNumber(userId: $userId)
+query myPendingConnectionsNumber {
+  getMyPendingConnectionsNumber
 }
 `;
 
 export const GET_POST_BY_CONNECTIONS = gql`
-query getPostByConnections($userId: String!) {
-  getPostByConnections(userId: $userId) {
+query getPostByConnections {
+  getPostByConnections {
     id
     boosted
     creationDate
@@ -282,20 +264,14 @@ query getPostByConnections($userId: String!) {
 `;
 
 export const GET_CONNECTIONS = gql`
-query getConnections($userId: String!) {
-  getAllMyConnections(userId: $userId)
-}
-`;
-
-export const GET_PENDING_CONNECTIONS = gql`
-query getPendingConnections($userId: String!) {
-  getMyPendingConnection(userId: $userId)
+query getConnections {
+  getAllMyConnections
 }
 `;
 
 export const NEW_GET_PENDING_CONNECTIONS = gql`
-query newGetPendingConnections($userId: String!) {
-  getMyPendingConnection(userId: $userId) {
+query newGetPendingConnections {
+  getMyPendingConnection {
     followUser {
         id
         name
