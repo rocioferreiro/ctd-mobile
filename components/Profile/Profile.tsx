@@ -706,7 +706,7 @@ export function Profile(props: Props) {
               timeStyle={{textAlign: 'center', backgroundColor:colors.primary, color:'white', padding:5, borderRadius:13}}
               descriptionStyle={{color:'#c2c2c2'}}
               renderDetail={renderDetail}
-              detailContainerStyle={{marginBottom: 5,paddingLeft: 5, paddingRight: 5, backgroundColor: colorShade(colors.surface, -15), borderRadius: 10}}
+              detailContainerStyle={{marginBottom: 30,paddingLeft: 5, paddingRight: 5, backgroundColor: colorShade(colors.surface, -15), borderRadius: 10}}
               options={{
                 style:{paddingTop:5, paddingHorizontal: 10}
               }}
