@@ -1,7 +1,11 @@
 import * as React from 'react';
-import {Button, Title, useTheme} from 'react-native-paper';
+import {Button, IconButton, Title, useTheme} from 'react-native-paper';
 import {useTranslation} from "react-i18next";
 import * as Linking from 'expo-linking';
+import QRCode from "react-native-qrcode-svg";
+import {useState} from "react";
+import {View} from "../Themed";
+import {Dimensions, Modal, Platform} from "react-native";
 
 type Props = {
   navigation: any,
@@ -11,12 +15,14 @@ type Props = {
 const VerifyQRButton = (props: Props) => {
   const {t} = useTranslation();
   const {colors} = useTheme();
+  const [clicked, setClicked] = useState<boolean>(false);
+
   let challengeDeepLink = Linking.createURL('tabbar/challenge', {
     queryParams: {challengeId: props.challengeId},
   });
 
   return (
-    <Button
+    !clicked ? <Button
       style={{
         backgroundColor: '#22bb33',
         height: 70,
@@ -29,10 +35,25 @@ const VerifyQRButton = (props: Props) => {
       onPress={() => {
         // props.navigation.navigate('verify', {link: challengeDeepLink})
         console.log(challengeDeepLink);
+        setClicked(true);
         // the link is passed to the QRPage component so that it can be converted into a QR
       }}>
       <Title style={{fontSize: 22, fontWeight: "bold", color: colors.background}}>{t('verifyQR-button.verify')}</Title>
-    </Button>
+    </Button> :
+    <Modal animationType="fade"
+           presentationStyle={"fullScreen"}
+           visible={clicked}
+           onRequestClose={() => setClicked(false)}>
+        <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}}
+                    onPress={() => setClicked(false)} icon={'chevron-left'}/>
+        <View style={{justifyContent: 'center', alignItems: 'center', height: '80%'}}>
+        <QRCode
+            value={challengeDeepLink}
+            size={300}
+        />
+        </View>
+    </Modal>
+
   );
 }
 
