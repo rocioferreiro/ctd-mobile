@@ -7,7 +7,7 @@ import {getToken, getUserId} from "../Storage";
 import {useFormik} from "formik";
 import {Gender, UserForEdition} from "../Models/User";
 import {colorShade} from "../Models/shadingColor";
-import {Input} from "react-native-elements";
+import {Icon, Input} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -101,7 +101,7 @@ const EditProfile = ({navigation}) => {
         biography: userData.findUserById.user.biography? userData.findUserById.user.biography : '',
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
-        birthDate: userData.findUserById.user.birthDate ? userData.findUserById.user.birthDate : ''
+        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date()
       })
     }
   }, [userData])
@@ -229,6 +229,9 @@ const EditProfile = ({navigation}) => {
           setOpen(true)
         }}>
         <View style={styles.nameInputContainer}>
+          <View style={{backgroundColor: 'transparent', position: "absolute", top: 12, right: 90}}>
+            <Icon size={15} type={'feather'} name={'edit-2'}/>
+          </View>
             <Input
               placeholder={t('register.birthDate')}
               disabled

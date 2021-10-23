@@ -314,3 +314,15 @@ query getChallengeByFilter($title: String!) {
            }
 }
 `;
+
+export const GET_VERIFIED_CHALLENGES = gql`
+query getVerifiedChallenges {
+    getVerifiedChallenges {
+        description
+        endEvent
+        id
+        title
+        score
+    }
+}
+`;

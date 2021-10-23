@@ -10,12 +10,12 @@ import {
   TouchableWithoutFeedback,View as ViewR
 } from "react-native";
 import {Icon, Button, Image} from "react-native-elements";
-import {Badge, IconButton, Title, useTheme} from "react-native-paper";
+import {ActivityIndicator, Badge, IconButton, Title, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
-import {useLazyQuery, useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
   FIND_POSTS_OF_USER,
-  GET_CONNECTIONS,
+  GET_CONNECTIONS, GET_VERIFIED_CHALLENGES,
   NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
@@ -47,6 +47,10 @@ interface Props {
   route?: any
 }
 
+function prettifyDate(date) {
+  return date.toLocaleString('default', { month: 'short' }) + ' ' + date.toLocaleString('default', { day: '2-digit' })
+}
+
 export function Profile(props: Props) {
   const [open,setOpen]=React.useState(false)
   const {colors} = useTheme();
@@ -58,6 +62,15 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [token, setToken] = React.useState('')
+  const [timeLineData, setTimeLineData] = React.useState([])
+  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading, error: verifiedError}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  })
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
     context: {
@@ -159,6 +172,7 @@ export function Profile(props: Props) {
           getLoggedInUser({variables: {targetUserId: id}});
           getConnectionRequestsNumber({variables: {userId: id}});
         });
+        getVerifiedChallenges();
       }
     });
   }, []);
@@ -194,6 +208,13 @@ export function Profile(props: Props) {
       // else setConnectionStatus(ConnectionStatus.connect);
     }
   }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
+  useEffect(() => {
+    if(verifiedChallengesData) {
+      setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
+        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title, description: c.description, imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'};
+      }))
+    }
+  }, [verifiedLoading])
 
   function toastError() {
     Toast.show({
@@ -385,19 +406,6 @@ export function Profile(props: Props) {
     }
   });
   const {t, i18n} = useTranslation();
-
-  function prettifyDate(date) {
-    return date.toLocaleString('default', { month: 'short' }) + ' ' + date.toLocaleString('default', { day: '2-digit' })
-  }
-
-  const timeLineData = [
-    {time: prettifyDate(new Date()), year: 2021, id: 1, title: 'Event 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: prettifyDate(new Date()), year: 2021, id: 2, title: 'Come please save the turtles', description: 'Event 2 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: prettifyDate(new Date()), year: 2021, id: 3, title: 'Event 3', description: 'Lorem Ipsum is simply dummy text of the printing and tyr took a galley of type and scrambled iype specimen book. It has survived not only', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: prettifyDate(new Date()), year: 2021, id: 4, title: 'Event 4', description: 'Event 4 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: prettifyDate(new Date()), year: 2021, id: 5, title: 'Event 5', description: 'Event 5 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'}
-  ]
-
   function renderTime(rowData, sectionID, rowID){
     return <ViewR style={{backgroundColor:colors.primary, padding:5, borderRadius:13, width: 50, height: 70, justifyContent: "center", marginTop: 5}}>
       <Text style={{textAlign: 'center', color:'white', fontSize: 17}}>{rowData.time}</Text>
@@ -690,32 +698,36 @@ export function Profile(props: Props) {
             }
           </View>
         }
-          <View style={{...styles.sectionContainer}}>
-            {/*TODO change to my verified completed challenges (or to verify?)*/}
-              <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
-              <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) <= new Date()) return getFinishedChallenge(challenge, key);
-                })}
-              </ScrollView>
-            {(challengesData?.getCreatedChallengesByUser?.length == 0 || !challengesData?.getCreatedChallengesByUser) &&
-            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
-            }
-          </View>
-          <Timeline
-              circleSize={20}
-              circleColor={colors.accent}
-              lineColor={colors.accent}
-              descriptionStyle={{color:'#c2c2c2'}}
-              renderDetail={renderDetail}
-              renderTime={renderTime}
-              detailContainerStyle={{marginBottom: 30,paddingLeft: 5, paddingRight: 5, backgroundColor: colorShade(colors.surface, -15), borderRadius: 10}}
-              options={{
-                style:{paddingTop:1, paddingHorizontal: 10}
-              }}
-              data={timeLineData}
-              onEventPress={onTimeLinePress}
-          />
+        {(!props.route.params?.otherId) &&
+        <View style={{...styles.sectionContainer}}>
+            <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
+            <Timeline
+                circleSize={20}
+                circleColor={colors.accent}
+                lineColor={colors.accent}
+                descriptionStyle={{color: '#c2c2c2'}}
+                renderDetail={renderDetail}
+                renderTime={renderTime}
+                detailContainerStyle={{
+                  marginBottom: 30,
+                  paddingLeft: 5,
+                  paddingRight: 5,
+                  backgroundColor: colorShade(colors.surface, -15),
+                  borderRadius: 10
+                }}
+                options={{
+                  style: {paddingTop: 1, paddingHorizontal: 10}
+                }}
+                data={timeLineData}
+                onEventPress={onTimeLinePress}
+            />
+          {(verifiedLoading) ? <ActivityIndicator size="large"/> : (timeLineData.length == 0) &&
+              <NoResults text={t('profile.no-results')}
+                         subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
+          }
+        </View>
+        }
+
         {!props.route.params?.otherId &&
         <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button2
@@ -732,18 +744,6 @@ export function Profile(props: Props) {
         </View>}
       </ScrollView>
       }
-      {/*{viewPost && postData &&*/}
-      {/*<Card style={styles.creationCard}>*/}
-      {/*    <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
-      {/*    <View style={{width: '25%', backgroundColor: 'rgba(0,0,0,0)',}}>*/}
-      {/*        <IconButton onPress={() => setViewPost(false)}*/}
-      {/*                    icon={'chevron-left'}*/}
-      {/*                    style={styles.button}*/}
-      {/*        />*/}
-      {/*    </View>*/}
-      {/*    <ViewPost navigation={props.navigation} open post={{...postData.findPostById, upVotes: postData.findPostById.upvotes}}/>*/}
-      {/*</Card>*/}
-      {/*}*/}
       <Modal animationType="fade"
              presentationStyle={"fullScreen"}
              visible={viewConnectionsFeed}
