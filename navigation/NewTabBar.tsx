@@ -22,12 +22,13 @@ import ViewPost from "../components/viewPost/ViewPost";
 import EditProfile from "../components/Profile/EditProfile";
 import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
-import OptionsCreate from "./OptionsCreate";
+import CreateFAB from "./CreateFAB";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
   const [token, setToken] = useState('');
-  const [createPost, setCreatePost] = React.useState<Boolean>(true)
+  const [createPost, setCreatePost] = React.useState<boolean>(true);
+  const [openOptions, setOpenOptions] = React.useState<boolean>(false);
   const {t} = useTranslation();
   const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
     fetchPolicy: 'cache-and-network',
@@ -64,9 +65,9 @@ const MyTabbar = ({navigation}) => {
     },
     {
       name: t('new-tabbar.new'),
-      url: 'options-create',
-      activeIcon: <Icon name="camera" color="#fff" size={25}/>,
-      inactiveIcon: <Icon name="camera" color="#4d4d4d" size={25}/>
+      url: 'creation-options',
+      activeIcon: <Icon name="auto-awesome" color="#fff" size={25}/>,
+      inactiveIcon: <Icon name="auto-awesome" color="#4d4d4d" size={25}/>
     },
     {
       name: t('new-tabbar.map'),
@@ -108,7 +109,6 @@ const MyTabbar = ({navigation}) => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name={'home'} component={CTDHome}/>
         <Stack.Screen name={'search'} component={SearchScreen}/>
-        <Stack.Screen name={'options-create'} component={OptionsCreate}/>
         <Stack.Screen name={'createPost'}>
           {props => <CreatePost {...props} setCreatePost={setCreatePost} toastOn={toastOn}/>}
         </Stack.Screen>
@@ -130,6 +130,7 @@ const MyTabbar = ({navigation}) => {
           {(props) => <ViewPost {...props} open={true}/>}
         </Stack.Screen>
       </Stack.Navigator>
+      <CreateFAB open={openOptions} onClose={() => {setOpenOptions(false)}} navigation={navigation}/>
       <Tabbar
         style={{zIndex: 5}}
         tabs={tabs}
@@ -138,7 +139,8 @@ const MyTabbar = ({navigation}) => {
         activeTabBackground={colors.light}
         labelStyle={{color: '#000', fontWeight: '600', fontSize: 11}}
         onTabChange={a => {
-          navigation.navigate(a.url);
+          if (a.url === 'creation-options') setOpenOptions(true)
+          else navigation.navigate(a.url);
         }}
       />
     </View>
