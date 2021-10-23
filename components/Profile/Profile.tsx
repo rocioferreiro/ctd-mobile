@@ -7,10 +7,10 @@ import {
   Modal, Platform,
   ScrollView,
   StyleSheet, TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,View as ViewR
 } from "react-native";
 import {Icon, Button, Image} from "react-native-elements";
-import {Badge, IconButton, useTheme} from "react-native-paper";
+import {Badge, IconButton, Title, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {
@@ -58,7 +58,6 @@ export function Profile(props: Props) {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [token, setToken] = React.useState('')
-
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
     fetchPolicy: 'cache-and-network',
     context: {
@@ -130,7 +129,6 @@ export function Profile(props: Props) {
       }
     }
   });
-
   const [connect] = useMutation(CONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.pending);
@@ -164,7 +162,6 @@ export function Profile(props: Props) {
       }
     });
   }, []);
-
   useEffect(() => {
     if (props.route.params?.otherId) {
       setUserId(props.route.params?.otherId);
@@ -181,7 +178,6 @@ export function Profile(props: Props) {
       });
     }
   }, [props.route.params?.otherId]);
-
   useEffect(() => {
     if (userId && loggedInUserId) {
       findPostsOfUser({variables: {ownerId: userId}});
@@ -189,7 +185,6 @@ export function Profile(props: Props) {
       getChallenges({variables: {userId: userId}});
     }
   }, [userId, loggedInUserId]);
-
   useEffect(() => {
     if (connectionsData && pendingConnectionsData && props.route.params?.otherId) {
       // if (connectionsData.getAllMyConnections.some(connection => connection === props.route.params?.otherId))
@@ -208,7 +203,6 @@ export function Profile(props: Props) {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-
   const onError = () => {
     toastError();
   }
@@ -367,7 +361,7 @@ export function Profile(props: Props) {
       height: 30
     },
     title:{
-      fontSize:16,
+      fontSize:22,
       fontWeight: 'bold',
       marginBottom:5
     },
@@ -381,7 +375,8 @@ export function Profile(props: Props) {
       width: 60,
       minHeight: 60,
       height: 100,
-      borderRadius: 5
+      borderRadius: 5,
+      marginTop: 3
     },
     textDescription: {
       marginLeft: 10,
@@ -389,20 +384,29 @@ export function Profile(props: Props) {
       color: 'gray'
     }
   });
-
   const {t, i18n} = useTranslation();
 
+  function prettifyDate(date) {
+    return date.toLocaleString('default', { month: 'short' }) + ' ' + date.toLocaleString('default', { day: '2-digit' })
+  }
+
   const timeLineData = [
-    {time: new Date().toISOString().slice(0,10), id: 1, title: 'Event 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: new Date().toISOString().slice(0,10), id: 2, title: 'Come please save the turtles', description: 'Event 2 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: new Date().toISOString().slice(0,10), id: 3, title: 'Event 3', description: 'Lorem Ipsum is simply dummy text of the printing and tyr took a galley of type and scrambled iype specimen book. It has survived not only', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: new Date().toISOString().slice(0,10), id: 4, title: 'Event 4', description: 'Event 4 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
-    {time: new Date().toISOString().slice(0,10), id: 5, title: 'Event 5', description: 'Event 5 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'}
+    {time: prettifyDate(new Date()), year: 2021, id: 1, title: 'Event 1', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
+    {time: prettifyDate(new Date()), year: 2021, id: 2, title: 'Come please save the turtles', description: 'Event 2 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
+    {time: prettifyDate(new Date()), year: 2021, id: 3, title: 'Event 3', description: 'Lorem Ipsum is simply dummy text of the printing and tyr took a galley of type and scrambled iype specimen book. It has survived not only', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
+    {time: prettifyDate(new Date()), year: 2021, id: 4, title: 'Event 4', description: 'Event 4 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'},
+    {time: prettifyDate(new Date()), year: 2021, id: 5, title: 'Event 5', description: 'Event 5 Description', imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'}
   ]
+
+  function renderTime(rowData, sectionID, rowID){
+    return <ViewR style={{backgroundColor:colors.primary, padding:5, borderRadius:13, width: 50, height: 70, justifyContent: "center", marginTop: 5}}>
+      <Text style={{textAlign: 'center', color:'white', fontSize: 17}}>{rowData.time}</Text>
+      <Text style={{textAlign: 'center', color:'white', fontSize: 13}}>{rowData.year}</Text>
+    </ViewR>
+  }
 
   function renderDetail(rowData, sectionID, rowID) {
     let title = <Text style={[styles.title]}>{rowData.title}</Text>
-    var desc = null
 
     return (
       <View style={{flex:1, backgroundColor: 'transparent'}}>
@@ -702,13 +706,12 @@ export function Profile(props: Props) {
               circleSize={20}
               circleColor={colors.accent}
               lineColor={colors.accent}
-              timeContainerStyle={{minWidth:52, marginTop: -5}}
-              timeStyle={{textAlign: 'center', backgroundColor:colors.primary, color:'white', padding:5, borderRadius:13}}
               descriptionStyle={{color:'#c2c2c2'}}
               renderDetail={renderDetail}
+              renderTime={renderTime}
               detailContainerStyle={{marginBottom: 30,paddingLeft: 5, paddingRight: 5, backgroundColor: colorShade(colors.surface, -15), borderRadius: 10}}
               options={{
-                style:{paddingTop:5, paddingHorizontal: 10}
+                style:{paddingTop:1, paddingHorizontal: 10}
               }}
               data={timeLineData}
               onEventPress={onTimeLinePress}
