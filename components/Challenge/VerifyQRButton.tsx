@@ -38,7 +38,7 @@ const VerifyQRButton = (props: Props) => {
         setClicked(true);
         // the link is passed to the QRPage component so that it can be converted into a QR
       }}>
-      <Title style={{fontSize: 22, fontWeight: "bold", color: colors.background}}>{t('verifyQR-button.verify')}</Title>
+      <Title style={{fontSize: 16, fontWeight: "bold", color: colors.background}}>{t('verifyQR-button.verify')}</Title>
     </Button> :
     <Modal animationType="fade"
            presentationStyle={"fullScreen"}
