@@ -12,7 +12,7 @@ import {
 import {Icon, Button} from "react-native-elements";
 import {Badge, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
-import {useLazyQuery, useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
   FIND_POSTS_OF_USER,
   GET_CONNECTIONS,
@@ -104,7 +104,7 @@ export function Profile(props: Props) {
       }
     }
   });
-  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS, {
+  const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -169,7 +169,6 @@ export function Profile(props: Props) {
       getUserId().then(id => {
         setLoggedInUserId(id);
         getLoggedInUser({variables: {targetUserId: id}});
-        getConnections();
         getPendingConnections();
       });
     } else {
@@ -564,7 +563,7 @@ export function Profile(props: Props) {
           </View>
           <View style={styles.detailsContainer}>
               <View style={styles.detail}>
-                  <Text style={styles.primaryText}>46K</Text>
+                  <Text style={styles.primaryText}>{connectionsData?.getAllMyConnections?.length || 0}</Text>
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
               </View>
               <View style={styles.detail}>
@@ -572,7 +571,7 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
-                  <Text style={styles.primaryText}>17</Text>
+                  <Text style={styles.primaryText}>{challengesData?.getCreatedChallengesByUser?.length || 0}</Text>
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
