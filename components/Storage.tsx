@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 const tokenName = 'secure_token';
+const refreshTokenName = 'secure_refresh_token';
 const userId = 'user_id';
 
 export async function saveToken(value) {
@@ -31,4 +32,16 @@ export async function getTokenAndUserId() {
     let token = await SecureStore.getItemAsync(tokenName);
     let id = await SecureStore.getItemAsync(userId);
     return {token, id}
+}
+
+export async function saveRefreshToken(value) {
+    await SecureStore.setItemAsync(refreshTokenName, value);
+}
+
+export async function getRefreshToken() {
+    return await SecureStore.getItemAsync(refreshTokenName);
+}
+
+export async function deleteRefreshToken() {
+    return await SecureStore.deleteItemAsync(refreshTokenName);
 }

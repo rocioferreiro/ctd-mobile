@@ -13,25 +13,26 @@ import {jsonToGoogleLogin} from "../Models/User";
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
-  const [saveUser, {data: user, loading, client}] = useMutation(SAVE_GOOGLE_USER, {
+  const [saveUser, {data: user, client}] = useMutation(SAVE_GOOGLE_USER, {
     onCompleted: response => {
-      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token}).then(() => {
-      client.setLink(setContext(async (_, { headers }) => {
-        const token = await getToken();
-        return {
-          headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : "",
+      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token, refreshToken: ''}).then(() => {
+        client.setLink(setContext(async (_, {headers}) => {
+          const token = await getToken();
+          return {
+            headers: {
+              ...headers,
+              authorization: token ? `Bearer ${token}` : "",
+            }
           }
-        }
-      }))
-    }).catch(() => {
-      toastOn('Error', 'Something went wrong')
-    });
-  },
-  onError: error => {
-      console.log(error)
-  }});
+        }))
+      }).catch(() => {
+        toastOn('Error', 'Something went wrong')
+      });
+    },
+    onError: error => {
+      console.log(error);
+    }
+  });
 
   function toastOn(message: string, description: string = '') {
     Toast.show({
@@ -50,14 +51,17 @@ const AuthScreen = () => {
         scopes: ['profile', 'email'],
       });
 
-      if (result.type === 'success') {
-        await saveUser({variables: {googleUser: jsonToGoogleLogin(result)}})
-        //TODO: send this info to back and create the real userId (not ready in back)
+      console.log('this is the result');
+      console.log(result);
 
+      if (result.type === 'success') {
+        // await saveUser({variables: {googleUser: jsonToGoogleLogin(result)}})
+        // //TODO: send this info to back and create the real userId (not ready in back)
+        //
         // auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
         //   toastOn('Error', 'Authentication Failed')
         // });
-        return result.accessToken;
+        // return result.accessToken;
 
       } else {
         console.log('cancelled')
@@ -70,7 +74,7 @@ const AuthScreen = () => {
   return (
     <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
       <Pressable onPress={signInWithGoogleAsync}>
-        <Image source={require('../../assets/images/google-icon.png')} style={{width:40, height:40}}/>
+        <Image source={require('../../assets/images/google-icon.png')} style={{width: 40, height: 40}}/>
       </Pressable>
     </View>
   )

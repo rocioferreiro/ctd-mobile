@@ -3,13 +3,20 @@ import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
-import {ApolloProvider} from '@apollo/client';
+import {ApolloProvider, useMutation} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
 import {Linking, LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
+import {
+  deleteRefreshToken,
+  deleteToken,
+  deleteUserId,
+  getTokenAndUserId, saveRefreshToken,
+  saveToken,
+  saveUserId
+} from "./components/Storage";
 import {View} from "./components/Themed";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
@@ -17,6 +24,7 @@ import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {REFRESH_TOKEN} from "./components/apollo-graph/Mutations";
 
 i18next.init({
   interpolation: {escapeValue: false},  // React already does escaping
@@ -136,10 +144,19 @@ export default function App() {
       saveUserId(userInfo.idUser).catch(e => {
         console.log(e);
       });
+      saveRefreshToken(userInfo.refreshToken).catch(e => {
+        console.log(e);
+      });
       dispatch({type: 'LOGIN', userToken: userInfo.token, userId: userInfo.idUser});
     },
     signOut: async () => {
       deleteToken().catch(e => {
+        console.log(e);
+      });
+      deleteUserId().catch(e => {
+        console.log(e);
+      });
+      deleteRefreshToken().catch(e => {
         console.log(e);
       });
       dispatch({type: 'LOGOUT'});

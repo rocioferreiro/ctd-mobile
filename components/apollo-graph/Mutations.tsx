@@ -28,6 +28,7 @@ mutation login($loginUser: LoginUserInput!){
   login(loginUser:$loginUser){
     idUser
     token
+    refreshToken
   }
 }
 `;
@@ -37,6 +38,15 @@ mutation register($newUser: InputUserInput!) {
 	saveUser(newUser: $newUser) {
         id
     }
+}
+`;
+
+export const REFRESH_TOKEN = gql`
+mutation updateToken($refreshToken: String!) {
+  updateToken(refreshToken: $refreshToken) {
+    refreshToken
+    token
+  }
 }
 `;
 
