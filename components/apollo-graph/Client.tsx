@@ -8,7 +8,7 @@ import {getToken} from "../Storage";
 
 export function getApolloClientInstance(): ApolloClient<object> {
 
-  const uri = 'http://192.168.1.101:8080/graphql';
+  const uri = 'http://192.168.0.233:8080/graphql';
 
   const httpLink = new HttpLink({
       uri: uri,
