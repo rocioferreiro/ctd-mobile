@@ -151,7 +151,7 @@ const EditProfile = ({navigation}) => {
       shadowOpacity: 0.5,
       shadowColor: '#DAB99D',
       elevation: 4,
-      height: 60,
+      height: 120,
       //position:'absolute'
 
     },
@@ -296,9 +296,9 @@ const EditProfile = ({navigation}) => {
             value={formik.values.biography}
             label={t('register.bio')}
             labelStyle={{color: colors.primary, paddingHorizontal: 15, paddingTop: 10}}
-            maxLength={100}
+            maxLength={200}
             multiline={true}
-            onChangeText={t => formik.setFieldValue('name', t)}
+            onChangeText={t => formik.setFieldValue('biography', t)}
             inputContainerStyle={{borderBottomWidth: 0}}
         />
       </View>
