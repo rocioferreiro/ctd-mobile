@@ -51,8 +51,6 @@ const ChallengeCardScrollView = (props:Props) => {
 
     return (
        <View>
-           <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> hello ctd </Text>
-
            {
                 selectedChallenge ?
                     <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
@@ -61,9 +59,6 @@ const ChallengeCardScrollView = (props:Props) => {
                         height: '100%',
                         backgroundColor: colors.surface
                     }}>
-
-                        <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> {t('search-screen.challenges')} </Text>
-
                                 <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                                     <Divider/>
                                     <ScrollView style={{
