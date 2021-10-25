@@ -3,11 +3,11 @@ import React, {useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useCachedResources from './hooks/useCachedResources';
-import {ApolloProvider, useMutation} from '@apollo/client';
+import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
-import {Linking, LogBox} from 'react-native';
+import {LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
 import {
   deleteRefreshToken,
@@ -24,7 +24,6 @@ import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {REFRESH_TOKEN} from "./components/apollo-graph/Mutations";
 
 i18next.init({
   interpolation: {escapeValue: false},  // React already does escaping

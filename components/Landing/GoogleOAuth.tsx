@@ -6,15 +6,13 @@ import {AuthContext} from "../../App";
 import Toast from "react-native-toast-message";
 import {useMutation} from "@apollo/client";
 import {SAVE_GOOGLE_USER} from "../apollo-graph/Mutations";
-import {setContext} from "@apollo/client/link/context";
-import {getToken} from "../Storage";
 import {jsonToGoogleLogin} from "../Models/User";
 import {androidClientId, iOSClientId} from "../../ClientId";
 
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
-  const [saveUser, {data: user, client}] = useMutation(SAVE_GOOGLE_USER, {
+  const [saveUser] = useMutation(SAVE_GOOGLE_USER, {
     onCompleted: response => {
       auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token, refreshToken: ''}).catch(() => {
         toastOn('Error', 'Something went wrong')

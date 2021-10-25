@@ -40,15 +40,6 @@ mutation register($newUser: InputUserInput!) {
 }
 `;
 
-export const REFRESH_TOKEN = gql`
-mutation updateToken($refreshToken: String!) {
-  updateToken(refreshToken: $refreshToken) {
-    refreshToken
-    token
-  }
-}
-`;
-
 export const LIKE_POST = gql`
 mutation likePost($userId: String!, $postId: String!){
   likePost(userId: $userId, postId: $postId)

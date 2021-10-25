@@ -5,7 +5,7 @@ import {
   HttpLink
 } from '@apollo/client';
 import {setContext} from "@apollo/client/link/context";
-import {getRefreshToken, getToken, getTokenType, saveRefreshToken, saveToken} from "../Storage";
+import {getRefreshToken, getToken, getTokenType} from "../Storage";
 import jwtDecode from "jwt-decode";
 import {androidClientId, iOSClientId} from "../../ClientId";
 
@@ -56,6 +56,8 @@ export function getApolloClientInstance(): ApolloClient<object> {
         // await saveToken(r.data.updateToken.token);
         // await saveRefreshToken(r.data.updateToken.refreshToken);
         // token = r.data.updateToken.token;
+
+        // GOOGLE
         let clientId;
         if (Platform.OS === 'ios') clientId = iOSClientId;
         else if (Platform.OS === 'android') clientId = androidClientId;
@@ -73,6 +75,7 @@ export function getApolloClientInstance(): ApolloClient<object> {
           })
         });
         res.json().then(r => console.log(r))
+        // END GOOGLE
       }
       if (type === 'google') {
         // Make the refresh request to google
