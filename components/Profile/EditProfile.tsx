@@ -319,7 +319,7 @@ const EditProfile = ({navigation}) => {
             inputContainerStyle={{borderBottomWidth: 0}}
         />
       </View>
-      <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
+      <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface}}>
         <ScrollView style={{
           backgroundColor: 'rgba(0,0,0,0)',
           overflow: "visible",
