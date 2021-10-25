@@ -323,7 +323,7 @@ const EditProfile = ({navigation}) => {
         <ScrollView style={{
           backgroundColor: 'rgba(0,0,0,0)',
           overflow: "visible",
-          marginBottom: Dimensions.get('screen').height * 0.20
+          marginBottom: Dimensions.get('screen').height * 0.03
         }}>
         <View style={{
           display: "flex",
