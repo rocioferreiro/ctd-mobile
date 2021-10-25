@@ -197,7 +197,7 @@ const EditProfile = ({navigation}) => {
 
     },
     photoInputContainer: {
-      marginLeft:-Dimensions.get('window').width*0.2,
+      marginLeft:-Dimensions.get('window').width*0.08,
       paddingHorizontal:0,
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
