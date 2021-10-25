@@ -57,11 +57,14 @@ query newFindUserById($targetUserId: String!){
         level
         lastname
         favouriteODS
+        biography
         address {
           coordinates {
             latitude
             longitude
           }
+          province
+          country
         }
     }
     state 
