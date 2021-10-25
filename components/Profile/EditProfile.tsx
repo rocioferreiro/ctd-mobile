@@ -328,11 +328,25 @@ const EditProfile = ({navigation}) => {
         />
       </View>
       <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface}}>
+
         <ScrollView style={{
           backgroundColor: 'rgba(0,0,0,0)',
           overflow: "visible",
           marginBottom: Dimensions.get('screen').height * 0.03
         }}>
+          <View style={{marginLeft:-Dimensions.get('window').width*0.2,
+            paddingHorizontal:0,
+            flexDirection: 'row',
+            backgroundColor: 'rgba(0,0,0,0)',}}>
+          <Text style={{
+            color: colors.primary,
+            fontWeight: "bold",
+            fontSize: 15,
+            marginLeft: 2,
+            paddingHorizontal: 15,
+            paddingTop: 5
+          }}> {t('register.profile-image')}</Text>
+          </View>
           {addImage ?
               <View style={styles.photoInputContainer}>
               <View style={{
@@ -351,13 +365,13 @@ const EditProfile = ({navigation}) => {
 
                 <Text style={{
                   color: colors.primary,
-                  fontWeight: "bold",
+                  fontWeight: "normal",
                   fontSize: 15,
                   marginLeft: 2,
                   paddingHorizontal: 15,
                   paddingTop: 5
                 }}> {t('register.add-profile-image')}</Text>
-                  <View style={{marginTop:4}}>
+                  <View style={{marginTop:6}}>
                   <ImageButtonProfile setAddImage={setAddImage}/>
                   </View>
                 </View>

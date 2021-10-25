@@ -25,7 +25,8 @@
     "bio-placeholder": "Cuentanos sobre ti...",
     "bio": "Biografía",
     "add-profile-image": "Agrega imagen de perfil",
-    "profile-info": "Información de Perfil"
+    "profile-info": "Información de Perfil",
+    "profile-image": "Imagen de Perfil"
   },
   "editProfile": {
     "user": "Información del Usuario"
