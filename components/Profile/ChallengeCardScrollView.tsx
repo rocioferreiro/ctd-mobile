@@ -19,6 +19,7 @@ type Props = {
     challenges?: Challenge[];
     navigation?: any
     challengeId?: any
+    route?: any,
 }
 
 
@@ -29,8 +30,11 @@ const ChallengeCardScrollView = (props:Props) => {
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
-    const [challenges, setChallenges] = useState<Challenge[]>();
 
+/*    React.useEffect(() => {
+        if (props.challenges) setChallenges(props.challenges);
+        else setChallenges([]);
+    }, [])*/
 
 
     useEffect(() => {
@@ -44,9 +48,12 @@ const ChallengeCardScrollView = (props:Props) => {
     }, []);
 
 
+
     return (
-        challenges? <View>
-            {
+       <View>
+           <Text style={{marginTop:Dimensions.get('window').height*0.06, fontSize:40, fontWeight:'bold', marginBottom:5, color:colors.primary}}> hello ctd </Text>
+
+           {
                 selectedChallenge ?
                     <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                     <Card style={{
@@ -64,7 +71,7 @@ const ChallengeCardScrollView = (props:Props) => {
                                         backgroundColor: 'rgba(0,0,0,0)',
                                         overflow: "visible"
                                     }}>
-                                        {props.challenges.map((challenge, i) =>
+                                        {props.route.params.challenges.map((challenge, i) =>
                                             <View key={i} style={{marginBottom: 5}}>
                                                 <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                                                 <Divider/>
@@ -72,12 +79,9 @@ const ChallengeCardScrollView = (props:Props) => {
                                         )}
                                     </ScrollView>
                                 </View>
-
-
                     </Card>
-
             }
-        </View>:<View style={{backgroundColor:colors.extra}}></View>
+        </View>
 
     )
 }
