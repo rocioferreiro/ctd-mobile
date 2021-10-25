@@ -7,7 +7,7 @@ import {getToken, getUserId} from "../Storage";
 import {useFormik} from "formik";
 import {Gender, UserForEdition} from "../Models/User";
 import {colorShade} from "../Models/shadingColor";
-import {Input} from "react-native-elements";
+import {colors, Input} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -346,8 +346,21 @@ const EditProfile = ({navigation}) => {
               </View>
               :
               <View style={styles.adddImageContainer}>
-                <Text  style={{color: colors.primary,fontWeight:"bold",fontSize:15,marginLeft:2 ,paddingHorizontal: 15, paddingTop: 5}}> {t('create-post.add-image')}</Text>
-                <ImageButtonProfile setAddImage={setAddImage}/>
+
+                <View style={[{flexDirection:'row', alignItems:'center'}]}>
+
+                <Text style={{
+                  color: colors.primary,
+                  fontWeight: "bold",
+                  fontSize: 15,
+                  marginLeft: 2,
+                  paddingHorizontal: 15,
+                  paddingTop: 5
+                }}> {t('register.add-profile-image')}</Text>
+                  <View style={{marginTop:4}}>
+                  <ImageButtonProfile setAddImage={setAddImage}/>
+                  </View>
+                </View>
               </View>
           }
 
