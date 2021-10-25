@@ -15,6 +15,7 @@ import CancelButton from "../CreatePost/CancelButton";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import {Text} from "../Themed";
 import ImageButton from "../CreatePost/ImageButton";
+import ImageButtonProfile from "./ImageButtonProfile";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -204,7 +205,7 @@ const EditProfile = ({navigation}) => {
 
     },
     adddImageContainer: {
-      marginLeft:-Dimensions.get('window').width*0.08,
+      marginLeft:-Dimensions.get('window').width*0.2,
       paddingHorizontal:0,
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
@@ -344,14 +345,9 @@ const EditProfile = ({navigation}) => {
               </View>
               </View>
               :
-              <View style={styles.adddImageContainerContainer}>
-                <Text  style={{
-                  fontSize: 15,
-                  fontWeight: 'normal',
-                  color:Colors.blue400,
-                  marginLeft: 5,
-                }}> {t('create-post.add-image')}</Text>
-                <ImageButton setAddImage={setAddImage}/>
+              <View style={styles.adddImageContainer}>
+                <Text  style={{color: colors.primary,fontWeight:"bold",fontSize:15,marginLeft:2 ,paddingHorizontal: 15, paddingTop: 5}}> {t('create-post.add-image')}</Text>
+                <ImageButtonProfile setAddImage={setAddImage}/>
               </View>
           }
 
