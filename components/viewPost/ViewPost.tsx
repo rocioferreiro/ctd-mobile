@@ -18,6 +18,7 @@ type Props = {
   open: boolean,
   route?: any,
   navigation?: any
+  key:number
 }
 
 const ViewPost = (props:Props) => {
