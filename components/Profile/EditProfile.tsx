@@ -140,6 +140,21 @@ const EditProfile = ({navigation}) => {
       elevation: 4,
       height: 60
     },
+    inputBio: {
+      marginTop: 5,
+      width: '100%',
+      backgroundColor: colors.surface,
+      fontSize: 20,
+      borderRadius: 30,
+      padding: 15,
+      shadowOffset: {width: 5, height: 5},
+      shadowOpacity: 0.5,
+      shadowColor: '#DAB99D',
+      elevation: 4,
+      height: 60,
+      //position:'absolute'
+
+    },
     button: {
       backgroundColor: colors.accent,
       borderRadius: 20,
@@ -167,7 +182,14 @@ const EditProfile = ({navigation}) => {
       alignContent: "center",
       justifyContent: "center",
       height: 50
-    }
+    },
+    bioInputContainer: {
+      marginLeft:-Dimensions.get('window').width*0.2,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
   });
 
 
@@ -266,7 +288,21 @@ const EditProfile = ({navigation}) => {
       expanded={profileExpanded}
       onPress={handlePressProfile}>
 
-      <List.Item title="Second item" />
+
+      <View style={styles.bioInputContainer}>
+        <Input
+            placeholder={t('register.bio-placeholder')}
+            style={styles.inputBio}
+            value={formik.values.biography}
+            label={t('register.bio')}
+            labelStyle={{color: colors.primary, paddingHorizontal: 15, paddingTop: 10}}
+            maxLength={100}
+            multiline={true}
+            onChangeText={t => formik.setFieldValue('name', t)}
+            inputContainerStyle={{borderBottomWidth: 0}}
+        />
+      </View>
+
     </List.Accordion>
 
     <List.Accordion
