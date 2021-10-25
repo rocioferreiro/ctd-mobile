@@ -211,7 +211,8 @@ const EditProfile = ({navigation}) => {
     <View style={{height: Dimensions.get('window').height*0.05, paddingTop: 10, alignSelf: 'center'}}/>
     <ScrollView style={{
       backgroundColor: 'rgba(0,0,0,0)',
-      overflow: "visible"
+      overflow: "visible",
+      marginBottom: Dimensions.get('screen').height * 0.20
     }}>
     <List.Accordion
       title={t("editProfile.user")}
@@ -321,7 +322,8 @@ const EditProfile = ({navigation}) => {
       <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
         <ScrollView style={{
           backgroundColor: 'rgba(0,0,0,0)',
-          overflow: "visible"
+          overflow: "visible",
+          marginBottom: Dimensions.get('screen').height * 0.20
         }}>
         <View style={{
           display: "flex",
