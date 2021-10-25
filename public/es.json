@@ -24,7 +24,8 @@
     "done": "Registrarse",
     "bio-placeholder": "Cuentanos sobre ti...",
     "bio": "Biografía",
-    "add-profile-image": "Agrega imagen de perfil"
+    "add-profile-image": "Agrega imagen de perfil",
+    "profile-info": "Información de Perfil"
   },
   "editProfile": {
     "user": "Información del Usuario"

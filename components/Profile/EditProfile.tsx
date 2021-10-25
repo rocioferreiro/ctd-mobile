@@ -307,7 +307,7 @@ const EditProfile = ({navigation}) => {
     </List.Accordion>
 
     <List.Accordion
-      title="Profile info"
+      title={t('register.profile-info')}
       style={styles.backgroundAlt}
       left={props => <List.Icon {...props} icon="card-account-details-outline" />}
       expanded={profileExpanded}
