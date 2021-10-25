@@ -77,7 +77,7 @@ const ChallengeCardScrollView = (props:Props) => {
                     </Card>
 
             }
-        </View>:<View/>
+        </View>:<View style={{backgroundColor:colors.extra}}></View>
 
     )
 }

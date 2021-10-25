@@ -421,7 +421,7 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview' ,params: {challengeId: challenge.id, challenges:challengesData.getCreatedChallengesByUser}})} >
+    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview' ,params: {challengeId: challenge.id, challenges:challengesData.getCreatedChallengesByUser}})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -439,7 +439,7 @@ export function Profile(props: Props) {
   }
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview' ,params: {challengeId: challenge.id, challenges:challengesData.getCreatedChallengesByUser}})} >
+    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview' ,params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
