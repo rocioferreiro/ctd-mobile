@@ -1,22 +1,24 @@
 import React, {useEffect, useState} from "react";
-import {View} from "./Themed";
+
 import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
-import ChallengeCard from "./ChallengeCard/ChallengeCard";
+
 import {useLazyQuery} from "@apollo/client";
-import SearchBarComponent from "./SearchBar/SearchBarComponent";
 import {Dimensions, ScrollView, Text} from "react-native";
-import ChallengePage from "./Challenge/ChallengePage";
-import {FIND_CHALLENGES_BY_FILTER} from "./apollo-graph/Queries";
+
 import LottieView from "lottie-react-native";
 
 import {useTranslation} from "react-i18next";
 import {Post} from "../Models/Post";
 import {Challenge} from "../Models/Challenge";
-import {getUserId} from "../Storage";
+import {getToken, getUserId} from "../Storage";
+import {View} from "../Themed";
+import ChallengePage from "../Challenge/ChallengePage";
+import ChallengeCard from "../ChallengeCard/ChallengeCard";
 
 type Props = {
     challenges?: Challenge[];
     navigation?: any
+    challengeId?: any
 }
 
 
