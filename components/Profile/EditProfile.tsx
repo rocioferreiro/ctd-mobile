@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Dimensions, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
-import {Button, IconButton, List, useTheme} from "react-native-paper";
+import {Button, Colors, IconButton, List, useTheme} from "react-native-paper";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
@@ -11,6 +11,10 @@ import {Input} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
+import CancelButton from "../CreatePost/CancelButton";
+import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
+import {Text} from "../Themed";
+import ImageButton from "../CreatePost/ImageButton";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -26,6 +30,8 @@ const EditProfile = ({navigation}) => {
   const handlePressOds = () => setOdsExpanded(!odsExpanded);
   const [showDropDown, setShowDropDown] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [ addImage, setAddImage] = React.useState(false)
+
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -301,6 +307,47 @@ const EditProfile = ({navigation}) => {
             onChangeText={t => formik.setFieldValue('biography', t)}
             inputContainerStyle={{borderBottomWidth: 0}}
         />
+      </View>
+      <View style={styles.bioInputContainer}>
+        <View style={{
+          display: "flex",
+          justifyContent: 'center',
+          width: '100%',
+          flexDirection: 'row',
+          padding: 15,
+          backgroundColor: "rgba(0,0,0,0)"
+        }}>
+          {addImage ?
+              <View style={{
+                display: "flex",
+                width: '100%',
+                padding: 10,
+                backgroundColor: "rgba(0,0,0,0)"
+              }}>
+                <CancelButton  setAddImage={setAddImage}/>
+                <ImagePicker image={formik.values.photoUrl} setImage={t => formik.setFieldValue('photoUrl', t)}/>
+              </View>
+              :
+              <View style={{
+                display: "flex",
+                justifyContent: 'flex-start',
+                width: '100%',
+                flexDirection: 'row',
+                backgroundColor: "rgba(0,0,0,0)",
+                alignItems:'center'
+              }}>
+                <Text  style={{
+                  fontSize: 15,
+                  fontWeight: 'normal',
+                  color:Colors.blue400,
+                  marginLeft: 5,
+                  marginTop: -5,
+                }}> {t('create-post.add-image')}</Text>
+                <ImageButton setAddImage={setAddImage}/>
+              </View>
+          }
+
+        </View>
       </View>
 
     </List.Accordion>
