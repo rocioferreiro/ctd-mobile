@@ -21,7 +21,11 @@
     "gender": "Gender",
     "emailError": "Invalid email address",
     "passwordError": "min. 8 digits, an upper case letter and a number",
-    "done": "Register"
+    "done": "Register",
+    "bio-placeholder": "Tell us about yourself...",
+    "bio": "Biography",
+    "add-profile-image": "Add Profile Image"
+
   },
   "profile": {
     "level": "Level",
