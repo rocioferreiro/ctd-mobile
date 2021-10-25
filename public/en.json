@@ -68,7 +68,7 @@
   "new-tabbar": {
     "profile": "Profile",
     "map": "Map",
-    "new-post": "New Post",
+    "new": "Create",
     "search": "Search",
     "home": "home"
   },
@@ -196,6 +196,6 @@
     "unjoin": "Abandon"
   },
   "verifyQR-button": {
-    "verify": "Complete Challenge"
+    "verify": "Show Verification Code"
   }
 }
