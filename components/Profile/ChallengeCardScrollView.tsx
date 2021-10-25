@@ -29,6 +29,7 @@ const ChallengeCardScrollView = (props:Props) => {
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
+    const [challenges, setChallenges] = useState<Challenge[]>();
 
 
 
@@ -43,14 +44,8 @@ const ChallengeCardScrollView = (props:Props) => {
     }, []);
 
 
-
-
-
-
-
-
     return (
-        <View>
+        challenges? <View>
             {
                 selectedChallenge ?
                     <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
@@ -82,7 +77,7 @@ const ChallengeCardScrollView = (props:Props) => {
                     </Card>
 
             }
-        </View>
+        </View>:<View/>
 
     )
 }
