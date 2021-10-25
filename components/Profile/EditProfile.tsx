@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Colors, IconButton, List, useTheme} from "react-native-paper";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
@@ -196,13 +196,23 @@ const EditProfile = ({navigation}) => {
       backgroundColor: 'rgba(0,0,0,0)',
 
     },
+    photoInputContainer: {
+      marginLeft:-Dimensions.get('window').width*0.2,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
   });
 
 
   return <View style={styles.container}>
     <IconButton icon={'chevron-left'} style={{marginTop: 25}} onPress={navigation.goBack}/>
     <View style={{height: Dimensions.get('window').height*0.05, paddingTop: 10, alignSelf: 'center'}}/>
-
+    <ScrollView style={{
+      backgroundColor: 'rgba(0,0,0,0)',
+      overflow: "visible"
+    }}>
     <List.Accordion
       title={t("editProfile.user")}
       style={styles.background}
@@ -308,47 +318,48 @@ const EditProfile = ({navigation}) => {
             inputContainerStyle={{borderBottomWidth: 0}}
         />
       </View>
-      <View style={styles.bioInputContainer}>
+      <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface, paddingTop: Dimensions.get("window").height*0.05}}>
+        <ScrollView style={{
+          backgroundColor: 'rgba(0,0,0,0)',
+          overflow: "visible"
+        }}>
         <View style={{
           display: "flex",
           justifyContent: 'center',
-          width: '100%',
           flexDirection: 'row',
-          padding: 15,
-          backgroundColor: "rgba(0,0,0,0)"
+          backgroundColor: "rgba(0,0,0,0)",
+          width: Dimensions.get('window').width*0.7,
+          height: 300,
+          borderRadius: 20
         }}>
           {addImage ?
+              <View style={styles.photoInputContainer}>
               <View style={{
                 display: "flex",
                 width: '100%',
-                padding: 10,
                 backgroundColor: "rgba(0,0,0,0)"
               }}>
                 <CancelButton  setAddImage={setAddImage}/>
                 <ImagePicker image={formik.values.photoUrl} setImage={t => formik.setFieldValue('photoUrl', t)}/>
               </View>
+              </View>
               :
-              <View style={{
-                display: "flex",
-                justifyContent: 'flex-start',
-                width: '100%',
-                flexDirection: 'row',
-                backgroundColor: "rgba(0,0,0,0)",
-                alignItems:'center'
-              }}>
+              <View style={styles.photoInputContainer}>
                 <Text  style={{
                   fontSize: 15,
                   fontWeight: 'normal',
                   color:Colors.blue400,
                   marginLeft: 5,
-                  marginTop: -5,
                 }}> {t('create-post.add-image')}</Text>
                 <ImageButton setAddImage={setAddImage}/>
               </View>
           }
 
+
         </View>
+        </ScrollView>
       </View>
+
 
     </List.Accordion>
 
@@ -378,6 +389,7 @@ const EditProfile = ({navigation}) => {
     {/*<Button style={styles.button}> Favourite ODS </Button>*/}
 
     <Button style={styles.doneButton}> Done! </Button>
+    </ScrollView>
   </View>
 }
 
