@@ -203,6 +203,13 @@ const EditProfile = ({navigation}) => {
       backgroundColor: 'rgba(0,0,0,0)',
 
     },
+    adddImageContainer: {
+      marginLeft:-Dimensions.get('window').width*0.08,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
   });
 
 
@@ -325,15 +332,6 @@ const EditProfile = ({navigation}) => {
           overflow: "visible",
           marginBottom: Dimensions.get('screen').height * 0.03
         }}>
-        <View style={{
-          display: "flex",
-          justifyContent: 'center',
-          flexDirection: 'row',
-          backgroundColor: "rgba(0,0,0,0)",
-          width: Dimensions.get('window').width*0.7,
-          height: 300,
-          borderRadius: 20
-        }}>
           {addImage ?
               <View style={styles.photoInputContainer}>
               <View style={{
@@ -346,7 +344,7 @@ const EditProfile = ({navigation}) => {
               </View>
               </View>
               :
-              <View style={styles.photoInputContainer}>
+              <View style={styles.adddImageContainerContainer}>
                 <Text  style={{
                   fontSize: 15,
                   fontWeight: 'normal',
@@ -358,7 +356,7 @@ const EditProfile = ({navigation}) => {
           }
 
 
-        </View>
+
         </ScrollView>
       </View>
 
