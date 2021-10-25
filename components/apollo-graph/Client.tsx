@@ -1,25 +1,26 @@
 import * as React from 'react';
+import { Platform } from 'react-native';
 import {
   ApolloClient, InMemoryCache,
-  HttpLink, useMutation
+  HttpLink
 } from '@apollo/client';
 import {setContext} from "@apollo/client/link/context";
-import {getRefreshToken, getToken, saveRefreshToken, saveToken} from "../Storage";
-import { onError } from "@apollo/client/link/error";
+import {getRefreshToken, getToken, getTokenType, saveRefreshToken, saveToken} from "../Storage";
 import jwtDecode from "jwt-decode";
-import {REFRESH_TOKEN} from "./Mutations";
+import {androidClientId, iOSClientId} from "../../ClientId";
 
 export function getApolloClientInstance(): ApolloClient<object> {
-  /*
-    si no hay token no lo agrega
-    si hay token chequea si esta expirado
-      no --> agrege header y listo
-      si --> chequea si es de google
-        si --> le pega a google con el refresh token y obtiene el nuevo
-        no --> le pega al back y obtiene el nuevo
-     */
 
   const uri = 'http://192.168.1.101:8080/graphql';
+  const refreshTokenMutation =
+    `
+      mutation updateToken($refreshToken: String!) {
+        updateToken(refreshToken: $refreshToken) {
+          refreshToken
+          token
+        }
+      }
+      `;
 
   const httpLink = new HttpLink({
     uri: uri,
@@ -29,37 +30,68 @@ export function getApolloClientInstance(): ApolloClient<object> {
 
   const authLink = setContext(async (request, previousContext) => {
 
-    const token = await getToken();
+    let token = await getToken();
 
-    return(
+    const decoded: any = jwtDecode(token);
+    // Check if token is expired
+    if (!(Date.now() >= decoded.exp * 1000)) {// TODO sacar el !
+      const type = await getTokenType(); // To check if the token is ctd or google
+      const refreshToken = await getRefreshToken();
+      if (type === 'ctd') {
+        // Make the refresh token mutation to backend
+        // const res = await fetch(uri, {
+        //   method: 'POST',
+        //   headers: {
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     query: refreshTokenMutation,
+        //     variables: {
+        //       refreshToken: refreshToken
+        //     }
+        //   })
+        // });
+        // const r = await res.json();
+        // await saveToken(r.data.updateToken.token);
+        // await saveRefreshToken(r.data.updateToken.refreshToken);
+        // token = r.data.updateToken.token;
+        let clientId;
+        if (Platform.OS === 'ios') clientId = iOSClientId;
+        else if (Platform.OS === 'android') clientId = androidClientId;
+        const res = await fetch('https://www.googleapis.com/oauth2/v4/token', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "client_id": clientId,
+            "client_secret": '',
+            "refresh_token": refreshToken,
+            "grant_type": "refresh_token"
+          })
+        });
+        res.json().then(r => console.log(r))
+      }
+      if (type === 'google') {
+        // Make the refresh request to google
+
+      }
+    }
+
+    return (
       {
         headers: {
           ...previousContext.headers,
-          // 'Authorization': token ? `Bearer ${token}` : "",
+          'Authorization': token ? `Bearer ${token}` : '',
         },
       }
     );
   });
 
-  const onUnauthorized = onError(({ networkError }) => {
-    // const [refreshToken] = useMutation(REFRESH_TOKEN, {
-    //   onCompleted: data => {
-    //     saveToken(data.updateToken.token).catch(e => console.log(e));
-    //     saveRefreshToken(data.updateToken.refreshToken).catch(e => console.log(e));
-    //     console.log('success!')
-    //   },
-    //   onError: error => console.log(error)
-    // });
-    if (networkError && networkError.message === 'Response not successful: Received status code 401') {
-      getRefreshToken().then(rt => {
-        // if (rt) refreshToken({variables: {refreshToken: rt}}).catch(e => console.log(e))
-        if (rt) console.log('success')
-      });
-    }
-  })
-
   return new ApolloClient<object>({
-    link: onUnauthorized.concat(authLink.concat(httpLink)),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     connectToDevTools: process.env.NODE_ENV === 'development',
   });

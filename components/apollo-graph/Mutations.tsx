@@ -9,10 +9,9 @@ mutation createChallenge($newChallenge: ChallengeDTOInput!){
 `;
 
 export const SAVE_GOOGLE_USER = gql`
-mutation saveGoogleUser($googleUser: GoogleLoginRequestInput!){
-  saveGoogleUser(req: $googleUser){
+mutation googleLogin($googleUser: GoogleLoginRequestInput!){
+  googleLogin(req: $googleUser) {
     id
-    token
   }
 }
 `;

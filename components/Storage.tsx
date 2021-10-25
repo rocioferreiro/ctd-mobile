@@ -3,6 +3,10 @@ import * as SecureStore from 'expo-secure-store';
 const tokenName = 'secure_token';
 const refreshTokenName = 'secure_refresh_token';
 const userId = 'user_id';
+// Token type lets us diferentiate between a google token and a ctd token
+// If the token was issued by google token_type should be 'google'
+// If the token was issued by ctd token_type should be 'ctd'
+const tokenType = 'token_type';
 
 export async function saveToken(value) {
     await SecureStore.setItemAsync(tokenName, value);
@@ -44,4 +48,16 @@ export async function getRefreshToken() {
 
 export async function deleteRefreshToken() {
     return await SecureStore.deleteItemAsync(refreshTokenName);
+}
+
+export async function saveTokenType(value) {
+    await SecureStore.setItemAsync(tokenType, value);
+}
+
+export async function getTokenType() {
+    return await SecureStore.getItemAsync(tokenType);
+}
+
+export async function deleteTokenType() {
+    return await SecureStore.deleteItemAsync(tokenType);
 }

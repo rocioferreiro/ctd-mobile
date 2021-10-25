@@ -22,21 +22,10 @@ const Login = (props: Props) => {
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const {t} = useTranslation();
-  const [loginMutation, {loading, client}] = useMutation(LOGIN, {
-    onCompleted: token => {
-      console.log(token.login)
-      auth.signIn(token.login).then(() => {
-        client.setLink(setContext(async (_, {headers}) => {
-          const token = await getToken();
-
-          return {
-            headers: {
-              ...headers,
-              authorization: token ? `Bearer ${token}` : "",
-            }
-          }
-        }))
-      }).catch(e => {
+  const [loginMutation, {loading}] = useMutation(LOGIN, {
+    onCompleted: response => {
+      console.log(response.login)
+      auth.signIn({...response.login, tokenType: 'ctd'}).catch(e => {
         toastOn('Error', 'Mail or Password is incorrect');
         console.log(e);
       });

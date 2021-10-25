@@ -9,23 +9,14 @@ import {SAVE_GOOGLE_USER} from "../apollo-graph/Mutations";
 import {setContext} from "@apollo/client/link/context";
 import {getToken} from "../Storage";
 import {jsonToGoogleLogin} from "../Models/User";
+import {androidClientId, iOSClientId} from "../../ClientId";
 
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
   const [saveUser, {data: user, client}] = useMutation(SAVE_GOOGLE_USER, {
     onCompleted: response => {
-      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token, refreshToken: ''}).then(() => {
-        client.setLink(setContext(async (_, {headers}) => {
-          const token = await getToken();
-          return {
-            headers: {
-              ...headers,
-              authorization: token ? `Bearer ${token}` : "",
-            }
-          }
-        }))
-      }).catch(() => {
+      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token, refreshToken: ''}).catch(() => {
         toastOn('Error', 'Something went wrong')
       });
     },
@@ -46,22 +37,23 @@ const AuthScreen = () => {
   async function signInWithGoogleAsync() {
     try {
       const result = await Google.logInAsync({
-        androidClientId: '746337143443-o7i5sscrcv8n70g445an6fc6orcagco9.apps.googleusercontent.com',
-        iosClientId: '746337143443-uph0bsq7i5sthtddijmn217qlr20edti.apps.googleusercontent.com',
+        androidClientId: androidClientId,
+        iosClientId: iOSClientId,
         scopes: ['profile', 'email'],
       });
 
-      console.log('this is the result');
-      console.log(result);
-
       if (result.type === 'success') {
-        // await saveUser({variables: {googleUser: jsonToGoogleLogin(result)}})
-        // //TODO: send this info to back and create the real userId (not ready in back)
-        //
-        // auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
-        //   toastOn('Error', 'Authentication Failed')
-        // });
-        // return result.accessToken;
+        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(res => {
+          console.log(res.data)
+          auth.signIn({idUser: res.data.saveGoogleUser.id, token: result.accessToken, refreshToken: result.refreshToken, tokenType: 'google'}).catch(() => {
+            toastOn('Error', 'Authentication Failed')
+          });
+        }).catch(e => {
+          console.log('error in google login mutation');
+          console.log(e);
+        });
+
+        return result.accessToken;
 
       } else {
         console.log('cancelled')

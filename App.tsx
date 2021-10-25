@@ -11,10 +11,10 @@ import {Linking, LogBox} from 'react-native';
 import Landing from "./components/Landing/Landing";
 import {
   deleteRefreshToken,
-  deleteToken,
+  deleteToken, deleteTokenType,
   deleteUserId,
   getTokenAndUserId, saveRefreshToken,
-  saveToken,
+  saveToken, saveTokenType,
   saveUserId
 } from "./components/Storage";
 import {View} from "./components/Themed";
@@ -147,6 +147,9 @@ export default function App() {
       saveRefreshToken(userInfo.refreshToken).catch(e => {
         console.log(e);
       });
+      saveTokenType(userInfo.tokenType).catch(e => {
+        console.log(e);
+      })
       dispatch({type: 'LOGIN', userToken: userInfo.token, userId: userInfo.idUser});
     },
     signOut: async () => {
@@ -159,6 +162,9 @@ export default function App() {
       deleteRefreshToken().catch(e => {
         console.log(e);
       });
+      deleteTokenType().catch(e => {
+        console.log(e);
+      })
       dispatch({type: 'LOGOUT'});
     },
     signUp: () => {
