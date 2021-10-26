@@ -11,6 +11,8 @@ import {FIND_POST_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
+import {share} from "../Share";
+import * as Linking from 'expo-linking';
 
 type Props = {
   post?: Post,
@@ -189,6 +191,10 @@ const ViewPost = (props:Props) => {
             </View>
             <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
               <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
+                let redirectUrl = Linking.createURL('post', {
+                  queryParams: { id: post.id },
+                });
+                share(redirectUrl);
               }}/>
             </View>
           </Card.Actions>
