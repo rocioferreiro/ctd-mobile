@@ -43,7 +43,7 @@ const AuthScreen = () => {
       if (result.type === 'success') {
         saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(res => {
           console.log(res.data)
-          auth.signIn({idUser: res.data.saveGoogleUser.id, token: result.accessToken, refreshToken: result.refreshToken, tokenType: 'google'}).catch(() => {
+          auth.signIn({idUser: res.data.saveGoogleUser.id, token: result.idToken, refreshToken: result.refreshToken, tokenType: 'google'}).catch(() => {
             toastOn('Error', 'Authentication Failed')
           });
         }).catch(e => {

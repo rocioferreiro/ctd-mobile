@@ -5,7 +5,7 @@ import {
   HttpLink
 } from '@apollo/client';
 import {setContext} from "@apollo/client/link/context";
-import {getRefreshToken, getToken, getTokenType} from "../Storage";
+import {getRefreshToken, getToken, getTokenType, saveRefreshToken, saveToken} from "../Storage";
 import jwtDecode from "jwt-decode";
 import {androidClientId, iOSClientId} from "../../ClientId";
 
@@ -34,9 +34,10 @@ export function getApolloClientInstance(): ApolloClient<object> {
 
     const decoded: any = jwtDecode(token);
     // Check if token is expired
-    if (!(Date.now() >= decoded.exp * 1000)) {// TODO sacar el !
+    if (!(Date.now() >= decoded?.exp * 1000)) {// TODO sacar el !
       const type = await getTokenType(); // To check if the token is ctd or google
       const refreshToken = await getRefreshToken();
+      console.log(decoded)
       if (type === 'ctd') {
         // Make the refresh token mutation to backend
         // const res = await fetch(uri, {
@@ -61,11 +62,10 @@ export function getApolloClientInstance(): ApolloClient<object> {
         let clientId;
         if (Platform.OS === 'ios') clientId = iOSClientId;
         else if (Platform.OS === 'android') clientId = androidClientId;
-        const res = await fetch('https://www.googleapis.com/oauth2/v4/token', {
+        const res = await fetch('https://securetoken.googleapis.com/v1/token', {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
           body: JSON.stringify({
             "client_id": clientId,
@@ -74,7 +74,9 @@ export function getApolloClientInstance(): ApolloClient<object> {
             "grant_type": "refresh_token"
           })
         });
-        res.json().then(r => console.log(r))
+        const r = await res.json();// TODO check case refresh token is revoked
+        console.log(r);
+        // await saveToken(r["id_token"]);
         // END GOOGLE
       }
       if (type === 'google') {
