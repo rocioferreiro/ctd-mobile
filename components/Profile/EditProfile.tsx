@@ -267,6 +267,8 @@ const EditProfile = ({navigation}) => {
       onPress={handlePressProfile}>
 
       <List.Item title="Second item" />
+
+      
     </List.Accordion>
 
     <List.Accordion
