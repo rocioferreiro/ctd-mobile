@@ -55,6 +55,7 @@ export function Profile(props: Props) {
   const [viewPost, setViewPost] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
+  const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
 
   const [findPostsOfUser, {data: postsOfUser}] = useLazyQuery(FIND_POSTS_OF_USER, {
@@ -464,6 +465,18 @@ export function Profile(props: Props) {
     console.log(i18n.language)
   }
 
+  const getLocationString = () => {
+    const address = userData?.findUserById?.user?.address;
+
+    let location = null;
+
+    if (address?.province) location = address.province;
+    if (address?.country) location += ", " + address.country;
+    if (!location) location = "Not completed";
+
+    return location;
+  }
+
   return (
     <View style={styles.container}>
       <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={t('profile.modal-text')}
@@ -575,14 +588,14 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  <Button2
+                  {!viewBiography ? <Button2
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => {
-                      }} color={colors.background} labelStyle={{fontWeight: 'bold'}}
+                      onPress={() => setViewBiography(true)} color={colors.background} labelStyle={{fontWeight: 'bold'}}
                   > {t('profile.about')}
-                  </Button2>
+                  </Button2> :  <Icon onPress={() => setViewBiography(false)} style={{marginRight: 4}} type={'feather'} name={'x'} color={colors.accent} size={32}/>}
               </View>
           </View>
+        { !viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             {/*TODO change to challenges im subscribed to*/}
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
@@ -645,6 +658,15 @@ export function Profile(props: Props) {
             <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
+            </View>  :
+            <View style={styles.sectionContainer}>
+              <Text style={styles.primaryText}>Bio</Text>
+              <Text style={styles.secondaryText}>{userData?.findUserById?.user?.biography || "Not completed"}</Text>
+              <View style={{backgroundColor: 'transparent', flexDirection: "row", marginTop: 20, alignItems: "center"}}>
+                <Icon style={{marginRight: 4}} type={'feather'} name={'map-pin'} color={colors.primary} size={32}/>
+                <Text style={{...styles.primaryText, fontSize: 16}}>{getLocationString()}</Text>
+              </View>
+            </View> }
         {!props.route.params?.otherId &&
         <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
             <Button2
@@ -659,8 +681,7 @@ export function Profile(props: Props) {
               {t('profile.logout')}
             </Button2>
         </View>}
-      </ScrollView>
-      }
+      </ScrollView>}
       {/*{viewPost && postData &&*/}
       {/*<Card style={styles.creationCard}>*/}
       {/*    <Image source={require('../../assets/images/dots.png')} resizeMode={'cover'} style={styles.background}/>*/}
