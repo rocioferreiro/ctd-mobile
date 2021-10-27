@@ -11,6 +11,7 @@ import {Input} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
+import ProfileLocation from "./ProfileLocation";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -26,6 +27,7 @@ const EditProfile = ({navigation}) => {
   const handlePressOds = () => setOdsExpanded(!odsExpanded);
   const [showDropDown, setShowDropDown] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(true)
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -277,8 +279,9 @@ const EditProfile = ({navigation}) => {
       left={props => <List.Icon {...props} icon="map-marker" />}
       expanded={locationExpanded}
       onPress={handlePressLocation}>
-      <List.Item title="First item" />
-      <List.Item title="Second item" />
+      <View>
+        <ProfileLocation setDisabled={setDisabled} formik={formik}></ProfileLocation>
+      </View>
     </List.Accordion>
 
     <List.Accordion
