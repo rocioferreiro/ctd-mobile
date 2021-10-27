@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {View, Text} from "../Themed";
 import {Button, Card, useTheme} from "react-native-paper";
@@ -12,7 +11,7 @@ type Props = {
 
 const ChallengeVerificationPage = (props: Props) => {
     const { colors } = useTheme();
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
 
     const styles = StyleSheet.create({
         container: {
@@ -56,7 +55,7 @@ const ChallengeVerificationPage = (props: Props) => {
         trophy: {
             width: '100%',
             height: 320,
-
+            alignSelf: "center"
         },
         buttonContainer: {
             paddingTop:40,
