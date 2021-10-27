@@ -80,15 +80,15 @@ mutation rejectConnection($myUserID: String!, $otherUserID: String!){
 addUserToChallenge(idUser: String!, idChallenge: Long!): String!*/
 
 export const JOIN_CHALLENGE = gql`
- mutation JoinChallenge($idUser:String!,$idChallenge:Long!){
-  addUserToChallenge(idUser: $idUser,idChallenge:$idChallenge)
+ mutation JoinChallenge($idChallenge:Long!){
+  addUserToChallenge(idChallenge:$idChallenge)
 }
 
 `;
 
 export const UNJOIN_CHALLENGE = gql`
- mutation UnjoinChallenge($subscriptionChallengeId:String!,$userId:String!){
-  addUserToChallenge(subscriptionChallengeId: $subscriptionChallengeId,userId:$userId)
+ mutation UnJoinChallenge($challengeId: Long!){
+  unsubscribeFromAChallenge(challengeId: $challengeId)
 }
 
 `;

@@ -4,17 +4,19 @@ import React, {useState, useEffect} from "react";
 import {Post} from "../Models/Post";
 import {Icon} from "react-native-elements";
 import {Text, View} from "../Themed";
-import {Dimensions, Modal, Platform, StyleSheet, TouchableOpacity} from "react-native";
+import {ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
 import {FIND_POST_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
-import {Profile} from "../Profile/Profile";
+import {share} from "../Share";
+import * as Linking from 'expo-linking';
 
 type Props = {
   post?: Post,
+  additionalPosts?: Post[];
   open: boolean,
   route?: any,
   navigation?: any
@@ -27,6 +29,7 @@ const ViewPost = (props:Props) => {
   const [owner, setOwner] = React.useState<any>()
   const {t, i18n} = useTranslation();
   const [post, setPost] = useState<Post>();
+  const [additionalPosts, setAdditionalPosts] = useState<Post[]>();
   const [likes, setLikes] = React.useState<number>()
   const [token,setToken] = React.useState('')
 
@@ -58,6 +61,11 @@ const ViewPost = (props:Props) => {
       }
     }
   }, [token])
+
+  React.useEffect(() => {
+    if (props.additionalPosts) setAdditionalPosts(props.additionalPosts);
+    else if (props.route.params?.additionalPosts) setAdditionalPosts(props.route.params.additionalPosts);
+  }, [props.route.params, props.additionalPosts])
 
 
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -141,50 +149,77 @@ const ViewPost = (props:Props) => {
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
     actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
-  return (post ?
-    <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
-      <TouchableOpacity onPress={() => {
-        props.navigation.navigate('profile', {otherId: post.owner.id ? post.owner.id : post.owner})
-      }} style={{backgroundColor: 'transparent', marginRight: 20}}>
-        <Card.Title subtitleStyle={{color: colors.primary, fontFamily:'sans-serif-medium'}}
-                    title={<Text style={{fontWeight: 'bold', color: colors.primary, fontSize: 20, fontFamily:'sans-serif-medium'}}>{owner && owner.mail}</Text>}
-                    subtitle={post.creationDate}
-                    left={LeftContent}
-                    right={RightContent}/>
-      </TouchableOpacity>
-      <Card.Content style={{marginHorizontal: 7, marginBottom: 10}}>
-        <Text style={{
-          fontSize: 20, color: colors.primary,
-          marginTop: 5, fontWeight:'bold'
-        }}>{post.title}</Text>
-        <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{ post.text }</Paragraph>
-      </Card.Content>
-      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}} source={require('../../assets/images/post.jpg')}/>}
-      <Card.Actions style={{width: '100%', display:'flex', justifyContent:'space-between', marginVertical: 10}}>
-        <View style={{display:'flex', flexDirection:'row', alignItems: 'center', marginLeft: 15, backgroundColor:'rgba(0,0,0,0)'}}>
-          <IconButton disabled={post.owner.id == userId} icon={liked ? 'heart' : 'heart-outline'} onPress={() => likePost(!liked)}/>
-          <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
-          {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
-          {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
-        </View>
-        <View style={{marginRight:15, backgroundColor:'rgba(0,0,0,0)'}}>
-          <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {}}/>
-        </View>
-      </Card.Actions>
-      {/*<Modal animationType="fade"*/}
-      {/*       presentationStyle={"fullScreen"}*/}
-      {/*       visible={viewProfile}*/}
-      {/*       onRequestClose={() => {*/}
-      {/*         setViewProfile(!viewProfile);*/}
-      {/*       }}>*/}
-      {/*  <IconButton onPress={() => setViewProfile(false)}*/}
-      {/*              icon={'chevron-left'}*/}
-      {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}*/}
-      {/*              size={40}*/}
-      {/*  />*/}
-      {/*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*/}
-      {/*</Modal>*/}
-    </Card> : <View/>
+  const getPostCard = (post) => {
+    return (
+        <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
+          <TouchableOpacity onPress={() => {
+            props.navigation.navigate('profile', {otherId: post.owner?.id ? post.owner?.id : post.owner})
+          }} style={{backgroundColor: 'transparent', marginRight: 20}}>
+            <Card.Title subtitleStyle={{color: colors.primary, fontFamily: 'sans-serif-medium'}}
+                        title={<Text style={{
+                          fontWeight: 'bold',
+                          color: colors.primary,
+                          fontSize: 20,
+                          fontFamily: 'sans-serif-medium'
+                        }}>{owner && owner.mail}</Text>}
+                        subtitle={post.creationDate}
+                        left={LeftContent}
+                        right={RightContent}/>
+          </TouchableOpacity>
+          <Card.Content style={{marginHorizontal: 7, marginBottom: 10}}>
+            <Text style={{
+              fontSize: 20, color: colors.primary,
+              marginTop: 5, fontWeight: 'bold'
+            }}>{post.title}</Text>
+            <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{post.text}</Paragraph>
+          </Card.Content>
+          {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}}
+                                                            source={require('../../assets/images/post.jpg')}/>}
+          <Card.Actions style={{width: '100%', display: 'flex', justifyContent: 'space-between', marginVertical: 10}}>
+            <View style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 15,
+              backgroundColor: 'rgba(0,0,0,0)'
+            }}>
+              <IconButton disabled={post.owner?.id == userId} icon={liked ? 'heart' : 'heart-outline'}
+                          onPress={() => likePost(!liked)}/>
+              <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
+              {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
+              {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
+            </View>
+            <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
+              <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
+                let redirectUrl = Linking.createURL('post', {
+                  queryParams: { id: post.id },
+                });
+                share(redirectUrl);
+              }}/>
+            </View>
+          </Card.Actions>
+          {/*<Modal animationType="fade"*/}
+          {/*       presentationStyle={"fullScreen"}*/}
+          {/*       visible={viewProfile}*/}
+          {/*       onRequestClose={() => {*/}
+          {/*         setViewProfile(!viewProfile);*/}
+          {/*       }}>*/}
+          {/*  <IconButton onPress={() => setViewProfile(false)}*/}
+          {/*              icon={'chevron-left'}*/}
+          {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}*/}
+          {/*              size={40}*/}
+          {/*  />*/}
+          {/*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*/}
+          {/*</Modal>*/}
+        </Card>
+    )
+  }
+
+  return (additionalPosts ?
+    <ScrollView>
+      {post && getPostCard(post)}
+      {additionalPosts.map(additionalPost => additionalPost.id !== post?.id && getPostCard(additionalPost))}
+    </ScrollView> : (post ? <View>{getPostCard(post)}</View> : <View/>)
   )
 };
 
