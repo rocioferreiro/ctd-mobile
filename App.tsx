@@ -7,7 +7,8 @@ import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
-import {Linking, LogBox} from 'react-native';
+import {LogBox} from 'react-native';
+import * as Linking from "expo-linking";
 import Landing from "./components/Landing/Landing";
 import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
 import {View} from "./components/Themed";
@@ -160,6 +161,18 @@ export default function App() {
     }, 1000);
   }, []);
 
+  const prefix = Linking.makeUrl("/");
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Landing: "landing",
+        NewTabBar: "tabbar"
+      },
+    },
+  };
+
   const Stack = createNativeStackNavigator();
 
   if (!isLoadingComplete || !loaded || loginState.isLoading) {
@@ -177,7 +190,7 @@ export default function App() {
           <ApolloProvider client={getApolloClientInstance()}>
             <PaperProvider theme={reactNativePaperTheme}>
               <AuthContext.Provider value={authContext}>
-                <NavigationContainer>
+                <NavigationContainer linking={linking}>
                   <Stack.Navigator screenOptions={{
                     headerShown: false
                   }}>
