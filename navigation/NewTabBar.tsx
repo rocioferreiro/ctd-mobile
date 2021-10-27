@@ -23,6 +23,7 @@ import EditProfile from "../components/Profile/EditProfile";
 import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
 import CreateFAB from "./CreateFAB";
+import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
@@ -123,6 +124,12 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'map'} component={Map}/>
         <Stack.Screen name={'profile'} component={Profile}/>
         <Stack.Screen name={'edit-profile'} component={EditProfile}/>
+        <Stack.Screen name={'challenge-verification'} >
+          {props => <ChallengeVerificationPage {...props} close={()=> {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
         <Stack.Screen name={'challenge'}>
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>

@@ -197,5 +197,12 @@
   },
   "verifyQR-button": {
     "verify": "Show Verification Code"
+  },
+  "verification": {
+    "challenge-completed": "Challenge Completed!",
+    "you-earned": "You Earned",
+    "exp": "Experience!",
+    "well-done": "Well Done!",
+    "return": "Return"
   }
 }
