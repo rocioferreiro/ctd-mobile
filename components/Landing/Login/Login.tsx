@@ -26,7 +26,7 @@ const Login = (props: Props) => {
     onCompleted: response => {
       console.log(response.login)
       auth.signIn({...response.login, tokenType: 'ctd'}).catch(e => {
-        toastOn('Error', 'Mail or Password is incorrect');
+        console.log('There is an error in the Login component');
         console.log(e);
       });
 

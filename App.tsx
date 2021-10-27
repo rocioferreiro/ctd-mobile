@@ -24,6 +24,8 @@ import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import firebase from "firebase";
+import {firebaseConfig} from "./ClientId";
 
 i18next.init({
   interpolation: {escapeValue: false},  // React already does escaping
@@ -172,6 +174,7 @@ export default function App() {
   }), []);
   // This useEffect fetches the token from the storage so that the user doesn't have to log in every time
   useEffect(() => {
+    firebase.initializeApp(firebaseConfig);
     setTimeout(async () => {
       getTokenAndUserId().then(r => {
         dispatch({type: 'RETRIEVE_TOKEN', userToken: r.token, userId: r.id});

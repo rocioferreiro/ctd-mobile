@@ -8,20 +8,12 @@ import {useMutation} from "@apollo/client";
 import {SAVE_GOOGLE_USER} from "../apollo-graph/Mutations";
 import {jsonToGoogleLogin} from "../Models/User";
 import {androidClientId, iOSClientId} from "../../ClientId";
+import firebase from "firebase";
 
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
-  const [saveUser] = useMutation(SAVE_GOOGLE_USER, {
-    onCompleted: response => {
-      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token, refreshToken: ''}).catch(() => {
-        toastOn('Error', 'Something went wrong')
-      });
-    },
-    onError: error => {
-      console.log(error);
-    }
-  });
+  const [saveUser] = useMutation(SAVE_GOOGLE_USER, {});
 
   function toastOn(message: string, description: string = '') {
     Toast.show({
@@ -41,9 +33,18 @@ const AuthScreen = () => {
       });
 
       if (result.type === 'success') {
-        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(res => {
-          console.log(res.data)
-          auth.signIn({idUser: res.data.saveGoogleUser.id, token: result.idToken, refreshToken: result.refreshToken, tokenType: 'google'}).catch(() => {
+
+        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(async res => {
+          console.log(res);
+          console.log('hey?');
+          const cred = firebase.auth.GoogleAuthProvider.credential(null, result.accessToken);
+          await firebase.auth().signInWithCredential(cred).catch(console.error);
+          auth.signIn({
+            idUser: res.data.saveGoogleUser.id,
+            token: result.idToken,
+            refreshToken: result.refreshToken,
+            tokenType: 'google'
+          }).catch(() => {
             toastOn('Error', 'Authentication Failed')
           });
         }).catch(e => {
@@ -57,7 +58,8 @@ const AuthScreen = () => {
         console.log('cancelled')
       }
     } catch (e) {
-      console.log('error')
+      console.log('error');
+      console.log(e);
     }
   }
 
