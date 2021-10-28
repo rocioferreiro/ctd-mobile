@@ -5,7 +5,7 @@ import {
 } from '@apollo/client';
 import {setContext} from "@apollo/client/link/context";
 import {getRefreshToken, getToken, getTokenType, saveRefreshToken, saveToken} from "../Storage";
-import jwtDecode from "jwt-decode";
+import jwtDecode, {JwtPayload} from "jwt-decode";
 import firebase from "firebase";
 import {useContext} from "react";
 import {AuthContext} from "../../App";
@@ -34,13 +34,18 @@ export function getApolloClientInstance(): ApolloClient<object> {
 
     let token = await getToken();
 
-    const decoded: any = jwtDecode(token);
+    let decoded;
+    try {
+      decoded = jwtDecode<JwtPayload>(token);
+    } catch (e) {
+      console.log('could not decode token');
+    }
     // Check if token is expired
-    if (Date.now() >= decoded?.exp * 1000) {
+    if (decoded && Date.now() >= decoded?.exp * 1000) {
       const type = await getTokenType(); // To check if the token is ctd or google
-      const refreshToken = await getRefreshToken();
       if (type === 'ctd') {
         // Make the refresh token mutation to backend
+        const refreshToken = await getRefreshToken();
         const res = await fetch(uri, {
           method: 'POST',
           headers: {
@@ -58,8 +63,7 @@ export function getApolloClientInstance(): ApolloClient<object> {
         await saveToken(r.data.updateToken.token);
         await saveRefreshToken(r.data.updateToken.refreshToken);
         token = r.data.updateToken.token;
-      }
-      if (type === 'google') {
+      } else if (type === 'google') {
         // Get token from firebase. Firebase automatically refreshes the token if it is expired so it always returns a fresh one
         const idToken = await firebase.auth().currentUser.getIdToken(true).catch((e) => {
           // User has revoked access to they need to be logged out

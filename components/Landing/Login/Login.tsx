@@ -33,6 +33,7 @@ const Login = (props: Props) => {
     },
     onError: e => {
       toastOn('Error', 'Mail or Password is incorrect');
+      console.log('error in login component')
       console.log(e);
     }
   });
