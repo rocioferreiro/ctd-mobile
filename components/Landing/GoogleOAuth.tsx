@@ -34,11 +34,11 @@ const AuthScreen = () => {
 
       if (result.type === 'success') {
 
-        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(async res => {
-          console.log(res);
-          console.log('hey?');
-          const cred = firebase.auth.GoogleAuthProvider.credential(null, result.accessToken);
-          await firebase.auth().signInWithCredential(cred).catch(console.error);
+        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(res => {
+          // Pass the user to the firebase client. This is needed to refresh the token (see /components/apollo-graph/Client.tsx)
+          const cred = firebase.auth.GoogleAuthProvider.credential(null, result.accessToken); // Create credentials
+          firebase.auth().signInWithCredential(cred).catch(console.error); // Sign in with the credentials created
+          // Sign in to the app using the data from the request
           auth.signIn({
             idUser: res.data.saveGoogleUser.id,
             token: result.idToken,
