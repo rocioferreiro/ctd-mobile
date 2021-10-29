@@ -7,7 +7,7 @@ import {getToken, getUserId} from "../Storage";
 import {useFormik} from "formik";
 import {Gender, UserForEdition} from "../Models/User";
 import {colorShade} from "../Models/shadingColor";
-import {colors, Input} from "react-native-elements";
+import {Icon, Input, colors} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
@@ -276,6 +276,9 @@ const EditProfile = ({navigation}) => {
           setOpen(true)
         }}>
         <View style={styles.nameInputContainer}>
+          <View style={{backgroundColor: 'transparent', position: "absolute", top: 12, right: 90}}>
+            <Icon size={15} type={'feather'} name={'edit-2'}/>
+          </View>
             <Input
               placeholder={t('register.birthDate')}
               disabled
