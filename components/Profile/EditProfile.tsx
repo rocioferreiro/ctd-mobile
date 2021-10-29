@@ -108,7 +108,7 @@ const EditProfile = ({navigation}) => {
         biography: userData.findUserById.user.biography? userData.findUserById.user.biography : '',
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
-        birthDate: userData.findUserById.user.birthDate ? userData.findUserById.user.birthDate : ''
+        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date()
       })
     }
   }, [userData])
@@ -191,21 +191,21 @@ const EditProfile = ({navigation}) => {
       height: 50
     },
     bioInputContainer: {
-      marginLeft:-Dimensions.get('window').width*0.2,
+      marginLeft:-Dimensions.get('window').width*0.15,
       paddingHorizontal:0,
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
 
     },
     photoInputContainer: {
-      marginLeft:-Dimensions.get('window').width*0.08,
+      marginLeft:-Dimensions.get('window').width*0.05,
       paddingHorizontal:0,
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
 
     },
     adddImageContainer: {
-      marginLeft:-Dimensions.get('window').width*0.2,
+      marginLeft:-Dimensions.get('window').width*0.1,
       paddingHorizontal:0,
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
@@ -334,7 +334,7 @@ const EditProfile = ({navigation}) => {
           overflow: "visible",
           marginBottom: Dimensions.get('screen').height * 0.03
         }}>
-          <View style={{marginLeft:-Dimensions.get('window').width*0.2,
+          <View style={{marginLeft:-Dimensions.get('window').width*0.15,
             paddingHorizontal:0,
             flexDirection: 'row',
             backgroundColor: 'rgba(0,0,0,0)',}}>
