@@ -638,7 +638,7 @@ export function Profile(props: Props) {
           </View>
           <View style={styles.detailsContainer}>
               <View style={styles.detail}>
-                  <Text style={styles.primaryText}>{connectionsData?.getAllMyConnections?.length || 0}</Text>
+                  <Text style={styles.primaryText}>{userData?.findUserById?.connectionQuantity || 0}</Text>
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
               </View>
               <View style={styles.detail}>

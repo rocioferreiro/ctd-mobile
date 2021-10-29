@@ -336,10 +336,10 @@ const ChallengePage = (props: Props) => {
           {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
           <UnJoinButton handleUnJoin={()=>handleUnJoin()}/>
           }
-          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
           <ViewParticipantsButton/>
           }
-          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
           <VerifyQRButton navigation={props.navigation} challengeId={challengeInfo.id}/>
           }
         </View>

@@ -67,7 +67,8 @@ query newFindUserById($targetUserId: String!){
           country
         }
     }
-    state 
+    state
+    connectionQuantity 
   }
 }
 `;
