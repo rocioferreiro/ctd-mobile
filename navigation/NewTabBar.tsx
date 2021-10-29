@@ -22,6 +22,7 @@ import ViewPost from "../components/viewPost/ViewPost";
 import EditProfile from "../components/Profile/EditProfile";
 import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
+import ChallengeCardScrollView from "../components/Profile/ChallengeCardScrollView";
 import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 
@@ -135,6 +136,9 @@ const MyTabbar = ({navigation}) => {
         </Stack.Screen>
         <Stack.Screen name={'post'}>
           {(props) => <ViewPost {...props} open={true}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'challenges-scrollview'}>
+          {(props) => <ChallengeCardScrollView {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
       <CreateFAB open={openOptions} onClose={() => {setOpenOptions(false)}} navigation={navigation}/>
