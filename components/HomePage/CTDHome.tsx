@@ -18,6 +18,7 @@ import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreatio
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
+import JoinButton from "../Challenge/JoinButton";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -263,6 +264,7 @@ const CTDHome = ({navigation}) => {
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
+                <Button onPress={()=> navigation.navigate('challenge-verification')}></Button>
               </View>
             </View>
           </LinearGradient>
