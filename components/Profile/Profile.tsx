@@ -753,8 +753,6 @@ export function Profile(props: Props) {
               {t('profile.logout')}
             </Button2>
         </View>}
-      </ScrollView>
-      }
       <Modal animationType="fade"
              presentationStyle={"fullScreen"}
              visible={viewConnectionsFeed}
