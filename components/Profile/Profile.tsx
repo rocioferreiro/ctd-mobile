@@ -412,7 +412,6 @@ export function Profile(props: Props) {
       <Text style={{textAlign: 'center', color:'white', fontSize: 13}}>{rowData.year}</Text>
     </ViewR>
   }
-
   function renderDetail(rowData, sectionID, rowID) {
     let title = <Text style={[styles.title]}>{rowData.title}</Text>
 
@@ -753,6 +752,7 @@ export function Profile(props: Props) {
               {t('profile.logout')}
             </Button2>
         </View>}
+
       <Modal animationType="fade"
              presentationStyle={"fullScreen"}
              visible={viewConnectionsFeed}
@@ -770,7 +770,10 @@ export function Profile(props: Props) {
         </View>
         <ConnectionsFeed navigation={props.navigation}/>
       </Modal>
-    </View>
+        </View>: <View/>}
+      </ScrollView>}
+        </View>
   );
 }
+
 
