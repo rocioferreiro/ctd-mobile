@@ -1,16 +1,21 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
-import {Button, IconButton, List, useTheme} from "react-native-paper";
+import {Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {Button, Colors, IconButton, List, useTheme} from "react-native-paper";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {useFormik} from "formik";
 import {Gender, UserForEdition} from "../Models/User";
 import {colorShade} from "../Models/shadingColor";
-import {Icon, Input} from "react-native-elements";
+import {Icon, Input, colors} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
+import CancelButton from "../CreatePost/CancelButton";
+import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
+import {Text} from "../Themed";
+import ImageButton from "../CreatePost/ImageButton";
+import ImageButtonProfile from "./ImageButtonProfile";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -26,6 +31,8 @@ const EditProfile = ({navigation}) => {
   const handlePressOds = () => setOdsExpanded(!odsExpanded);
   const [showDropDown, setShowDropDown] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [ addImage, setAddImage] = React.useState(false)
+
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -140,6 +147,21 @@ const EditProfile = ({navigation}) => {
       elevation: 4,
       height: 60
     },
+    inputBio: {
+      marginTop: 5,
+      width: '100%',
+      backgroundColor: colors.surface,
+      fontSize: 20,
+      borderRadius: 30,
+      padding: 15,
+      shadowOffset: {width: 5, height: 5},
+      shadowOpacity: 0.5,
+      shadowColor: '#DAB99D',
+      elevation: 4,
+      height: 120,
+      //position:'absolute'
+
+    },
     button: {
       backgroundColor: colors.accent,
       borderRadius: 20,
@@ -167,14 +189,39 @@ const EditProfile = ({navigation}) => {
       alignContent: "center",
       justifyContent: "center",
       height: 50
-    }
+    },
+    bioInputContainer: {
+      marginLeft:-Dimensions.get('window').width*0.15,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
+    photoInputContainer: {
+      marginLeft:-Dimensions.get('window').width*0.05,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
+    adddImageContainer: {
+      marginLeft:-Dimensions.get('window').width*0.1,
+      paddingHorizontal:0,
+      flexDirection: 'row',
+      backgroundColor: 'rgba(0,0,0,0)',
+
+    },
   });
 
 
   return <View style={styles.container}>
     <IconButton icon={'chevron-left'} style={{marginTop: 25}} onPress={navigation.goBack}/>
     <View style={{height: Dimensions.get('window').height*0.05, paddingTop: 10, alignSelf: 'center'}}/>
-
+    <ScrollView style={{
+      backgroundColor: 'rgba(0,0,0,0)',
+      overflow: "visible",
+      marginBottom: Dimensions.get('screen').height * 0.20
+    }}>
     <List.Accordion
       title={t("editProfile.user")}
       style={styles.background}
@@ -263,13 +310,83 @@ const EditProfile = ({navigation}) => {
     </List.Accordion>
 
     <List.Accordion
-      title="Profile info"
+      title={t('register.profile-info')}
       style={styles.backgroundAlt}
       left={props => <List.Icon {...props} icon="card-account-details-outline" />}
       expanded={profileExpanded}
       onPress={handlePressProfile}>
 
-      <List.Item title="Second item" />
+
+      <View style={styles.bioInputContainer}>
+        <Input
+            placeholder={t('register.bio-placeholder')}
+            style={styles.inputBio}
+            value={formik.values.biography}
+            label={t('register.bio')}
+            labelStyle={{color: colors.primary, paddingHorizontal: 15, paddingTop: 10}}
+            maxLength={200}
+            multiline={true}
+            onChangeText={t => formik.setFieldValue('biography', t)}
+            inputContainerStyle={{borderBottomWidth: 0}}
+        />
+      </View>
+      <View style={{width:Dimensions.get("screen").width, backgroundColor: colors.surface}}>
+
+        <ScrollView style={{
+          backgroundColor: 'rgba(0,0,0,0)',
+          overflow: "visible",
+          marginBottom: Dimensions.get('screen').height * 0.03
+        }}>
+          <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+            paddingHorizontal:0,
+            flexDirection: 'row',
+            backgroundColor: 'rgba(0,0,0,0)',}}>
+          <Text style={{
+            color: colors.primary,
+            fontWeight: "bold",
+            fontSize: 15,
+            marginLeft: 2,
+            paddingHorizontal: 15,
+            paddingTop: 5
+          }}> {t('register.profile-image')}</Text>
+          </View>
+          {addImage ?
+              <View style={styles.photoInputContainer}>
+              <View style={{
+                display: "flex",
+                width: '100%',
+                backgroundColor: "rgba(0,0,0,0)"
+              }}>
+                <CancelButton  setAddImage={setAddImage}/>
+                <ImagePicker image={formik.values.photoUrl} setImage={t => formik.setFieldValue('photoUrl', t)}/>
+              </View>
+              </View>
+              :
+              <View style={styles.adddImageContainer}>
+
+                <View style={[{flexDirection:'row', alignItems:'center'}]}>
+
+                <Text style={{
+                  color: colors.primary,
+                  fontWeight: "normal",
+                  fontSize: 15,
+                  marginLeft: 2,
+                  paddingHorizontal: 15,
+                  paddingTop: 5
+                }}> {t('register.add-profile-image')}</Text>
+                  <View style={{marginTop:6}}>
+                  <ImageButtonProfile setAddImage={setAddImage}/>
+                  </View>
+                </View>
+              </View>
+          }
+
+
+
+        </ScrollView>
+      </View>
+
+
     </List.Accordion>
 
     <List.Accordion
@@ -298,6 +415,7 @@ const EditProfile = ({navigation}) => {
     {/*<Button style={styles.button}> Favourite ODS </Button>*/}
 
     <Button style={styles.doneButton}> Done! </Button>
+    </ScrollView>
   </View>
 }
 
