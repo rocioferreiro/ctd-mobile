@@ -53,8 +53,8 @@ mutation unlikePost($userId: String!, $postId: String!){
 `;
 
 export const CONNECT = gql`
-mutation connect($followingUserId: String!, $loggedUserId: String!){
-  connect(followingUserId: $followingUserId, loggedUserId: $loggedUserId)
+mutation connect($followingUserId: String!){
+  connect(followingUserId: $followingUserId)
 }
 `;
 
@@ -65,8 +65,8 @@ mutation disconnect($targetUserId: String!, $followingUserId: String!){
 `;
 
 export const ACCEPT_CONNECTION = gql`
-mutation acceptConnection($myUserID: String!, $otherUserID: String!){
-  acceptConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+mutation acceptConnection($otherUserID: String!){
+  acceptConnection(otherUserID: $otherUserID)
 }
 `;
 

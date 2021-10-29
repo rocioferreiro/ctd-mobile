@@ -21,7 +21,12 @@
     "gender": "Sexo",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
-    "done": "Registrarse"
+    "done": "Registrarse",
+    "bio-placeholder": "Cuentanos sobre ti...",
+    "bio": "Biografía",
+    "add-profile-image": "Agrega imagen de perfil",
+    "profile-info": "Información de Perfil",
+    "profile-image": "Imagen de Perfil"
   },
   "editProfile": {
     "user": "Información del Usuario"
