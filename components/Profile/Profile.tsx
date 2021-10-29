@@ -61,6 +61,7 @@ export function Profile(props: Props) {
   const [viewPost, setViewPost] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
+  const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
   const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading, error: verifiedError}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
@@ -118,7 +119,7 @@ export function Profile(props: Props) {
       }
     }
   });
-  const [getConnections, {data: connectionsData}] = useLazyQuery(GET_CONNECTIONS, {
+  const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -182,7 +183,6 @@ export function Profile(props: Props) {
       getUserId().then(id => {
         setLoggedInUserId(id);
         getLoggedInUser({variables: {targetUserId: id}});
-        getConnections();
         getPendingConnections();
       });
     } else {
@@ -528,7 +528,18 @@ export function Profile(props: Props) {
     console.log(i18n.language)
   }
 
-  // @ts-ignore
+  const getLocationString = () => {
+    const address = userData?.findUserById?.user?.address;
+
+    let location = null;
+
+    if (address?.province) location = address.province;
+    if (address?.country) location += ", " + address.country;
+    if (!location) location = "Not completed";
+
+    return location;
+  }
+
   return (
     <View style={styles.container}>
       <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={t('profile.modal-text')}
@@ -628,7 +639,7 @@ export function Profile(props: Props) {
           </View>
           <View style={styles.detailsContainer}>
               <View style={styles.detail}>
-                  <Text style={styles.primaryText}>46K</Text>
+                  <Text style={styles.primaryText}>{connectionsData?.getAllMyConnections?.length || 0}</Text>
                   <Text style={styles.secondaryText}>{t('profile.followers')} </Text>
               </View>
               <View style={styles.detail}>
@@ -636,18 +647,18 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.posts')}</Text>
               </View>
               <View style={styles.detail}>
-                  <Text style={styles.primaryText}>17</Text>
+                  <Text style={styles.primaryText}>{challengesData?.getCreatedChallengesByUser?.length || 0}</Text>
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  <Button2
+                  {!viewBiography ? <Button2
                       style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => {
-                      }} color={colors.background} labelStyle={{fontWeight: 'bold'}}
+                      onPress={() => setViewBiography(true)} color={colors.background} labelStyle={{fontWeight: 'bold'}}
                   > {t('profile.about')}
-                  </Button2>
+                  </Button2> :  <Icon onPress={() => setViewBiography(false)} style={{marginRight: 4}} type={'feather'} name={'x'} color={colors.accent} size={32}/>}
               </View>
           </View>
+        { !viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             {/*TODO change to challenges im subscribed to*/}
               <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
@@ -668,7 +679,7 @@ export function Profile(props: Props) {
                 return <PostThumbnail onPressed={(postId) => {
                   // setViewPostId(postId);
                   // setViewPost(true);
-                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId}})
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
               })}
             </ScrollView>

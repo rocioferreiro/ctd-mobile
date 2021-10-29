@@ -68,7 +68,7 @@
   "new-tabbar": {
     "profile": "Perfíl",
     "map": "Mapa",
-    "new-post": "Publicar",
+    "new": "Crear",
     "search": "Buscar",
     "home": "Inicio"
   },
@@ -197,6 +197,13 @@
     "unjoin": "Abandonar"
   },
   "verifyQR-button": {
-    "verify": "Completar Desafío"
+    "verify": "Mostrar Código de Verificación"
+  },
+  "verification": {
+    "challenge-completed": "¡Desafío Completado!",
+    "you-earned": "Ganaste",
+    "exp": "de Experiencia",
+    "well-done": "¡Buen Trabajo!",
+    "return": "Volver"
   }
 }
