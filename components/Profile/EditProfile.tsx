@@ -416,7 +416,7 @@ const EditProfile = ({navigation}) => {
         <View style={{marginLeft:-Dimensions.get('window').width*0.15,
           backgroundColor: 'rgba(0,0,0,0)',}}>
         <ProfileLocation setDisabled={setDisabled} formik={formik}></ProfileLocation>
-        </View>
+         </View>
       </View>
     </List.Accordion>
 
