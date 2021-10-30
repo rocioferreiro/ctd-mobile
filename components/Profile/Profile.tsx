@@ -603,15 +603,16 @@ export function Profile(props: Props) {
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
                   createPDF(PROFILE_HTML({
-                    username: 'Alejo',
-                    email: 'alejo@mail.com',
-                    connected: 300,
+                    username: userData?.findUserById?.user?.name,
+                    email: userData?.findUserById?.user?.mail,
+                    connected: userData?.findUserById?.connectionQuantity || 0,
                     level: 2,
-                    verifiedChallenges: 2,
-                    sdg: [1,2,3],
+                    verifiedChallenges: verifiedChallengesData.getVerifiedChallenges.length || 0,
+                    sdg: [1,2,3],// TODO Integrate with the other SDGs in respective task
                     challenges: [
-                      {title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]},
-                      {title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]}
+                      verifiedChallengesData?.getVerifiedChallenges.map(c => {
+                        return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
+                      })
                     ]}));
                 }}>
                     <View style={{backgroundColor: 'transparent'}}>
