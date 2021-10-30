@@ -174,64 +174,65 @@ export const PROFILE_HTML = (content: Content) => {
         </div>
     </div>
     <div style="width: 100%; padding: 10px; margin: 5px; display: flex; flex-direction: column; align-items: center">
-        ${content.challenges.map(c => {
-            return `<div style="
-                    width: 80%;
-                    break-inside: avoid;
-                    max-height: 300px;
-                    border-radius: 15px;
-                    padding: 8px;
-                    background-color: #fff;
-                    position: relative;
-                    display: flex;
-                    flex-direction: row;
-                    word-wrap: break-word;
-                    background-clip: border-box;
-                    justify-content: space-evenly;
-                    border: 1px
-                    solid rgba(0,0,0,.125);">
-                        <div style="
-                        display: flex;
-                        text-align: center;
-                        justify-content: space-evenly;
-                        align-items: center;
-                        width: 70%;
-                        flex-direction: row;">
-                          <p style="
-                          margin: 0;
-                          font-weight: 400;
-                          word-wrap: break-word;
-                          text-align: center;
-                          color: #15006D;
-                          min-width: 120px;
-                          font-size: 1.2rem;
-                          -webkit-text-size-adjust: 100%;
-                          -webkit-tap-highlight-color: transparent;">
-                            ${c.completionDate}
-                          </p>
-                          <h6 style="
-                                              margin: 0;
-                                              font-weight: 300;
-                                              word-wrap: break-word;
-                                              text-align: justify;
-                                              color: #15006D;
-                                              padding: 10px;
-                                              font-size: 1.2rem;
-                                              line-height: 1.5;
-                                              -webkit-text-size-adjust: 100%;
-                                              -webkit-tap-highlight-color: transparent;">
-                            ${c.title}
-                          </h6>
-                      </div>
-                        <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
-                          <img src="${getSdgIcon(c.sdg[0])}"
-                               style="border-radius: 50%;" height="35" alt="challenge-icon">
-                          <img src="${getSdgIcon(c.sdg[1])}"
-                               style="border-radius: 50%;" height="35" alt="challenge-icon">
-                          <img src="${getSdgIcon(c.sdg[2])}"
-                               style="border-radius: 50%;" height="35" alt="challenge-icon">
-                        </div>
-                      </div>`
+        ${content.challenges.map(ch => {
+            if (!ch.sdg || ch.sdg.length <= 0) return ``
+            else return `<div style="
+                            width: 80%;
+                            break-inside: avoid;
+                            max-height: 300px;
+                            border-radius: 15px;
+                            padding: 8px;
+                            background-color: #fff;
+                            position: relative;
+                            display: flex;
+                            flex-direction: row;
+                            word-wrap: break-word;
+                            background-clip: border-box;
+                            justify-content: space-evenly;
+                            border: 1px
+                            solid rgba(0,0,0,.125);">
+                                <div style="
+                                display: flex;
+                                text-align: center;
+                                justify-content: space-evenly;
+                                align-items: center;
+                                width: 70%;
+                                flex-direction: row;">
+                                  <p style="
+                                  margin: 0;
+                                  font-weight: 400;
+                                  word-wrap: break-word;
+                                  text-align: center;
+                                  color: #15006D;
+                                  min-width: 120px;
+                                  font-size: 1.2rem;
+                                  -webkit-text-size-adjust: 100%;
+                                  -webkit-tap-highlight-color: transparent;">
+                                    ${ch.completionDate}
+                                  </p>
+                                  <h6 style="
+                                                      margin: 0;
+                                                      font-weight: 300;
+                                                      word-wrap: break-word;
+                                                      text-align: justify;
+                                                      color: #15006D;
+                                                      padding: 10px;
+                                                      font-size: 1.2rem;
+                                                      line-height: 1.5;
+                                                      -webkit-text-size-adjust: 100%;
+                                                      -webkit-tap-highlight-color: transparent;">
+                                    ${ch.title}
+                                  </h6>
+                              </div>
+                                <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
+                                  <img src="${getSdgIcon(ch.sdg[0])}"
+                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
+                                  <img src="${getSdgIcon(ch.sdg[1])}"
+                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
+                                  <img src="${getSdgIcon(ch.sdg[2])}"
+                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
+                                </div>
+                              </div>`
           })}
     </div>
 </div>
