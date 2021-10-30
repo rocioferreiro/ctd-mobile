@@ -56,13 +56,6 @@ const ProfileLocation = (props: Props) => {
     }, []);
 
     const styles = StyleSheet.create({
-        title: {
-            fontSize: 35,
-            fontWeight: 'bold',
-            color: colors.primary,
-            marginLeft: 25,
-            marginTop: -22,
-        },
         card: {
             width: '100%',
             height: Dimensions.get('window').height * 0.7,

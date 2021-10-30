@@ -394,13 +394,29 @@ const EditProfile = ({navigation}) => {
     </List.Accordion>
 
     <List.Accordion
-      title="Location"
+      title={t('register.location')}
       style={styles.background}
       left={props => <List.Icon {...props} icon="map-marker" />}
       expanded={locationExpanded}
       onPress={handlePressLocation}>
       <View>
+        <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+          paddingHorizontal:0,
+          flexDirection: 'row',
+          backgroundColor: 'rgba(0,0,0,0)',}}>
+          <Text style={{
+            color: colors.primary,
+            fontWeight: "bold",
+            fontSize: 15,
+            marginLeft: 2,
+            paddingHorizontal: 15,
+            paddingTop: 5
+          }}> {t('register.change-location')}</Text>
+        </View>
+        <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+          backgroundColor: 'rgba(0,0,0,0)',}}>
         <ProfileLocation setDisabled={setDisabled} formik={formik}></ProfileLocation>
+        </View>
       </View>
     </List.Accordion>
 
