@@ -14,92 +14,194 @@ export const createPDF = async (html) => {
 export const PROFILE_HTML = (content: string[]) => {
   return `
 <html>
-    <head>
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-        <link rel="stylesheet" href="profile.css">
-    </head>
-    <body style="text-align: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9">
-        <h1 style="font-size: 50px; font-family: ApfelGrotezk, Helvetica, monospace; font-weight: bold; color: #15006D">
-            Connect the Dots
-        </h1>
-        <div style="height: 100vh;  align-items: center!important;  justify-content: center!important; display: flex!important;">
-            <div style="width: 380px;
-                        border-radius: 15px;
-                        padding: 8px;
-                        background-color: #fff;
-                        position: relative;
-                        height: 370px;
-                        display: flex;
-                        flex-direction: column;
-                        min-width: 0;
-                        word-wrap: break-word;
-                        background-clip: border-box;
-                        border: 1px
-                        solid rgba(0,0,0,.125);"
-            >
-                <div style="height: 100px;">
-                    <img src="https://i.imgur.com/Qtrsrk5.jpg" style="max-width: 100%; vertical-align: middle; height: 80px; width: 100%; margin-top: 2px; border-radius: 5px">
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body style="text-align: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9">
+<h1 style="font-size: 50px; font-family: ApfelGrotezk, Helvetica, monospace; font-weight: bold; color: #15006D">
+    Connect the Dots
+</h1>
+<div style="align-items: center; justify-content: center; display: flex; flex-direction: column">
+    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; align-items: center; justify-content: space-evenly;">
+        <div style="width: 50%;
+                    border-radius: 15px;
+                    padding: 8px;
+                    background-color: #fff;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    background-clip: border-box;
+                    border: 1px
+                    solid rgba(0,0,0,.125);">
+            <div style="height: 100px;">
+                <img src="https://i.imgur.com/Qtrsrk5.jpg"
+                     style="max-width: 100%; vertical-align: middle; height: 80px; width: 100%; margin-top: 2px; border-radius: 5px"
+                     alt="background">
+            </div>
+            <div style="position: relative; text-align: center;">
+                <div style="position: absolute;
+                            top: -50px;
+                            left: 38%;
+                            height: 90px;
+                            width: 90px;
+                            border: 3px
+                            solid #fff;
+                            border-radius: 50%;"
+                >
+                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                         style="border-radius: 50%;" width="80" alt="profile-pic">
                 </div>
-                <div style="position: relative;  text-align: center!important;">
-                    <div style="position: absolute;
-                                top: -50px;
-                                left: 38%;
-                                height: 90px;
-                                width: 90px;
-                                border: 3px
-                                solid #fff;
-                                border-radius: 50%;"
+            </div>
+            <div style="margin-top: 2rem; text-align: center;
+            display: flex; align-items: center; flex-direction: column">
+                <h4 style="margin-bottom: 0; font-size: 1.5rem;color: #15006D;">User Name</h4>
+                <span style="color: #6c759f; display: block; margin-bottom: 0.5rem; font-size: 1.5rem;">User mail</span>
+                <div style="display: flex; flex-direction: row; margin-top: 15px; width: 80%; justify-content: space-evenly; align-items: center">
+                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                         style="border-radius: 50%;" height="35" alt="challenge-icon">
+                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                         style="border-radius: 50%;" height="35" alt="challenge-icon">
+                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                         style="border-radius: 50%;" height="35" alt="challenge-icon">
+                </div>
+                <div style="display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                padding-right: 1.5rem;
+                padding-left: 1.5rem;
+                width: 85%;
+                margin-bottom: 20px">
+                    <div style="font-weight: 300;
+                                word-wrap: break-word;
+                                text-align: center;
+                                box-sizing: border-box;
+                                font-size: 1.5rem;
+                                line-height: 1.5;
+                                color: #212529;
+                                -webkit-text-size-adjust: 100%;
+                                -webkit-tap-highlight-color: transparent;"
                     >
-                        <img src="https://i.imgur.com/JgYD2nQ.jpg"
-                             style="border-radius: 50%!important;" width="80">
+                        <h6 style="margin-bottom: 0;color: #15006D;">Connected</h6> <span style="color: #15006D;">8,797</span>
                     </div>
-                </div>
-                <div style="margin-top: 3rem !important; text-align: center!important;">
-                    <h4 style="margin-bottom: 0!important; font-size: 1.5rem;">User Name</h4>
-                    <span style="color: #6c757d!important; display: block!important; margin-bottom: 0.5rem !important; font-size: 1.5rem;">User mail</span>
-                    <div style="display: flex!important; justify-content: space-between!important; align-items: center!important; margin-top: 1.5rem !important; padding-right: 1.5rem !important; padding-left: 1.5rem !important;">
-                        <div style="font-weight: 300;
-                                    word-wrap: break-word;
-                                    text-align: center!important;
-                                    box-sizing: border-box;
-                                    font-size: 1.5rem;
-                                    line-height: 1.5;
-                                    color: #212529;
-                                    -webkit-text-size-adjust: 100%;
-                                    -webkit-tap-highlight-color: transparent;"
-                        >
-                            <h6 style="margin-bottom: 0!important;">Followers</h6> <span>8,797</span>
-                        </div>
-                        <div style="font-weight: 300;
-                                    word-wrap: break-word;
-                                    text-align: center!important;
-                                    box-sizing: border-box;
-                                    font-size: 1.5rem;
-                                    line-height: 1.5;
-                                    color: #212529;
-                                    -webkit-text-size-adjust: 100%;
-                                    -webkit-tap-highlight-color: transparent;"
-                        >
-                            <h6 style="margin-bottom: 0!important;">Projects</h6> <span>142</span>
-                        </div>
-                        <div style="font-weight: 300;
-                                    word-wrap: break-word;
-                                    text-align: center!important;
-                                    box-sizing: border-box;
-                                    font-size: 1.5rem;
-                                    line-height: 1.5;
-                                    color: #212529;
-                                    -webkit-text-size-adjust: 100%;
-                                    -webkit-tap-highlight-color: transparent;"
-                        >
-                            <h6 style="margin-bottom: 0!important;">Ranks</h6> <span>129</span>
-                        </div>
+                    <div style="font-weight: 300;
+                                word-wrap: break-word;
+                                text-align: center;
+                                box-sizing: border-box;
+                                font-size: 1.5rem;
+                                line-height: 1.5;
+                                color: #212529;
+                                -webkit-text-size-adjust: 100%;
+                                -webkit-tap-highlight-color: transparent;"
+                    >
+                        <h6 style="margin-bottom: 0;color: #15006D;">Level</h6> <span style="color: #15006D;">142</span>
+                    </div>
+                    <div style="font-weight: 300;
+                                word-wrap: break-word;
+                                text-align: center;
+                                box-sizing: border-box;
+                                font-size: 1.5rem;
+                                line-height: 1.5;
+                                color: #212529;
+                                -webkit-text-size-adjust: 100%;
+                                -webkit-tap-highlight-color: transparent;"
+                    >
+                        <h6 style="margin-bottom: 0;color: #15006D;">Challenges</h6> <span style="color: #15006D;">129</span>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
+            <p style="text-align: justify;
+                      color: #15006D;
+                      line-height: 1.5;
+                      font-size: 18px;
+                      padding: 10px;
+                      margin: 0;
+                      font-family: 'DM Sans', sans-serif;">
+                Connect the Dots is an instrument to make World building NOW. It is a way of connecting people
+                distributed around the world, in pursuit of shared values and convergent interests. The goal is to raise
+                awareness of the importance of taking action in your street corner.</p>
+            <p style="text-align: justify;
+                      color: #15006D;
+                      line-height: 1.5;
+                      font-size: 18px;
+                      margin: 0;
+                      padding: 10px;
+                      font-family: 'DM Sans', sans-serif;">
+                An individual's message becomes the
+                inspiration for the cause of a large group. Connect the dots identifies these "specials" and helps them
+                bond with others to cause a high-impact movement. By visualizing the emerging narrative, which a person
+                shares from his corner in the world, they manage to amplify the call to be part of a globally connected
+                coalition.
+            </p>
+        </div>
+    </div>
+    <div style="width: 100%; padding: 10px; margin: 5px; display: flex; flex-direction: column; align-items: center">
+        <h4></h4>
+        <div style="
+                        width: 80%;
+                        max-height: 300px;
+                        border-radius: 15px;
+                        padding: 8px;
+                        background-color: #fff;
+                        position: relative;
+                        display: flex;
+                        flex-direction: row;
+                        word-wrap: break-word;
+                        background-clip: border-box;
+                        justify-content: space-evenly;
+                        border: 1px
+                        solid rgba(0,0,0,.125);">
+            <div style="
+                        display: flex;
+                        text-align: center;
+                        justify-content: space-evenly;
+                        align-items: center;
+                        width: 70%;
+                        flex-direction: row;">
+                <p style="
+                        margin: 0;
+                        font-weight: 400;
+                        word-wrap: break-word;
+                        text-align: center;
+                        color: #15006D;
+                        min-width: 120px;
+                        font-size: 1.2rem;
+                        -webkit-text-size-adjust: 100%;
+                        -webkit-tap-highlight-color: transparent;">
+                    27 / 08 / 2021
+                </p>
+                <h6 style="
+                        margin: 0;
+                        font-weight: 300;
+                        word-wrap: break-word;
+                        text-align: justify;
+                        color: #15006D;
+                        padding: 10px;
+                        font-size: 1.2rem;
+                        line-height: 1.5;
+                        -webkit-text-size-adjust: 100%;
+                        -webkit-tap-highlight-color: transparent;">
+                    Challenge Title
+                </h6>
+            </div>
+            <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
+                <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                     style="border-radius: 50%;" height="35" alt="challenge-icon">
+                <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                     style="border-radius: 50%;" height="35" alt="challenge-icon">
+                <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                     style="border-radius: 50%;" height="35" alt="challenge-icon">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>
 `
 };
