@@ -144,7 +144,7 @@ const OnuObjectiveChoice  = (props: Props) => {
             {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
               return <TouchableWithoutFeedback key={index} onPress={() => {
                   props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
-                  props.formik.setFieldValue('ONUObjective', props.formik.values.ONUObjective.filter(i => i !== index));
+                  props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index));
               }}>
                 <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
               </TouchableWithoutFeedback>
@@ -166,7 +166,7 @@ const OnuObjectiveChoice  = (props: Props) => {
                 index: currentIndex,
                 image: onuInfo[currentIndex].image
               }]);
-              props.formik.setFieldValue('ONUObjective', [...props.formik.values.ONUObjective, currentIndex]);
+              props.formik.setFieldValue('ONUObjective', [...props.formik.values.favouriteODS, currentIndex]);
             }
           }}
         />
