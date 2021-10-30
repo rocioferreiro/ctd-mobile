@@ -2,6 +2,7 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "../Themed";
 import {DataTable, useTheme} from 'react-native-paper';
+import {colorShade} from "../Models/shadingColor";
 
 const RankingList = ({navigation,route}) => {
 
@@ -13,9 +14,10 @@ const RankingList = ({navigation,route}) => {
 
   const styles = StyleSheet.create({
     container: {
-      paddingTop: 100,
-      paddingHorizontal: 30,
-      backgroundColor: colors.surface
+      marginTop: 50,
+      padding: 15,
+      backgroundColor: '#FFF7F0',
+      borderRadius: 50
     },
     rowContainer: {
       margin: 5
