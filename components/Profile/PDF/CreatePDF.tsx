@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
-import {onuLogos} from "../../ONUObjectives";
 
 export type Content = {
   username: string,

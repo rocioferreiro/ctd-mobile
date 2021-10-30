@@ -18,7 +18,6 @@ import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreatio
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
-import {createPDF, PROFILE_HTML} from "../Profile/PDF/CreatePDF";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -323,9 +322,6 @@ const CTDHome = ({navigation}) => {
                                 progress={0.3}
                                 width={350} height={30}/>
               </View>
-              <Button onPress={() => {
-                createPDF(PROFILE_HTML({username: 'Alejo', email: 'alejo@mail.com', connected: 300, level: 2, verifiedChallenges: 2, sdg: [1,2,3], challenges: [{title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]},{title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]}]}));
-              }}>Print</Button>
               <View style={{
                 width: "100%",
                 justifyContent: "center",
