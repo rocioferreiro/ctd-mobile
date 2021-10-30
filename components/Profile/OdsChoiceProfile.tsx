@@ -9,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import ImageCarousel from "../CreateChallengeForm/Details/objectivesScroll";
 import {ONUObjectives} from "../ONUObjectives";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
+import Toast from "react-native-toast-message";
 
 type Props = {
     selected: any[],
@@ -136,18 +137,30 @@ const OdsChoiceProfile  = (props: Props) => {
         }
     });
 
+    function toastOn(message: string, description: string = '') {
+        Toast.show({
+            type: 'error',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{t('onu-objective-choice.choose-sustainable-objectives')} </Text>
+            <Text style={styles.title}>{t('ods-choice-profile.choose-ods')} </Text>
 
             <View style={{height: Dimensions.get('window').height * 0.12}}>
-                <Text style={styles.label}> {t('onu-objective-choice.current-objectives')} </Text>
                 {props.selected.length > 0 ?
                     <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
                         {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
                             return <TouchableWithoutFeedback key={index} onPress={() => {
+                                if(props.selected.length===2){
+                                    toastOn("Max Favorite ODS Number is 3", "You can't add anymore ODS to your favourites list!")
+                                }
+                                else{
                                 props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
-                                props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index));
+                                props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index));}
                             }}>
                                 <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
                             </TouchableWithoutFeedback>
@@ -164,6 +177,7 @@ const OdsChoiceProfile  = (props: Props) => {
                 <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
                             onPress={() => {
                                 if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
+
                                     props.setSelected([...props.selected, {
                                         obj: Object.keys(ONUObjectives)[currentIndex],
                                         index: currentIndex,
@@ -175,7 +189,7 @@ const OdsChoiceProfile  = (props: Props) => {
                 />
             </View>
             <View style={styles.onuContainer}>
-                <Text style={styles.label}> {t('onu-objective-choice.objective')} {currentIndex+1}:</Text>
+                <Text style={styles.label}> {t('ods-choice-profile.ods')} {currentIndex+1}:</Text>
                 <Text style={styles.label}>{onuInfo[currentIndex].title}</Text>
                 <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>

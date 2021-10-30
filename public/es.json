@@ -212,5 +212,18 @@
     "exp": "de Experiencia",
     "well-done": "¡Buen Trabajo!",
     "return": "Volver"
+  },
+  "profile-ods": {
+    "choose-favorite-ods": "Elige Tus ODS Favoritos",
+    "edit-ods": "Edita Tus ODS Favoritos",
+    "select-at-least": "Seleccioná 3 ODS favoritos para ajustar tu experiencia CTD a tus intereses",
+    "select-ods": "Seleccioná ODS"
+
+  },
+  "ods-choice-profile": {
+    "choose-ods": "Elige ODS Favorito",
+    "current-ods": "ODS Actual",
+    "ods": "Objetivo"
+
   }
 }

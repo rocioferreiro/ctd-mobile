@@ -212,5 +212,18 @@
     "exp": "Experience!",
     "well-done": "Well Done!",
     "return": "Return"
+  },
+  "profile-ods": {
+    "choose-favorite-ods": "Choose Favorite SDG",
+    "edit-ods": "Edit Favorite SDG",
+    "select-at-least": "Select 3 Favorite SDG to adjust your CTD experience to your interests",
+    "select-ods": "Select SDG"
+
+  },
+  "ods-choice-profile": {
+    "choose-ods": "Choose SDG",
+    "current-ods": "Current SGD",
+    "ods": "Objetive"
+
   }
 }

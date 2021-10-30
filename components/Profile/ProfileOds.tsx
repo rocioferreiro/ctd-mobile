@@ -8,6 +8,7 @@ import {colorShade} from "../Models/shadingColor";
 
 import {ONUObjectives} from "../ONUObjectives";
 import OdsChoiceProfile from "./OdsChoiceProfile";
+import Toast from "react-native-toast-message";
 
 type Props = {
     setDisabled: (boolean) => void
@@ -164,6 +165,15 @@ const ProfileOds = (props: Props) => {
 
     }, [])
 
+    function toastOn(message: string, description: string = '') {
+        Toast.show({
+            type: 'error',
+            text1: message,
+            text2: description,
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
     return (
         <View style={{flex: 1}}>
             <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
@@ -173,9 +183,8 @@ const ProfileOds = (props: Props) => {
                                             setOpen={setOpenChoices}/> :
 
                         <View>
-                            <Text style={styles.title}>{t('challenge-details.create-new-challenge')}</Text>
-                            <Text style={styles.label}> {t('challenge-details.sustainable-objectives')} </Text>
-                            {onuObjectives.length > 0 ?
+                            <Text style={styles.label}> {t('profile-ods.choose-favorite-ods')} </Text>
+                            {onuObjectives.length > 0 && onuObjectives.length<4 ?
                                 <View style={{display: 'flex', flexDirection: 'column'}}>
                                     <View style={{
                                         display: 'flex',
@@ -200,11 +209,11 @@ const ProfileOds = (props: Props) => {
                                         padding: 15
                                     }}>
                                         <Button style={styles.editOptionsButton} mode={'contained'}
-                                                onPress={() => setOpenChoices(true)}> {t('challenge-details.edit-objectives')}</Button>
+                                                onPress={() => setOpenChoices(true)}> {t('profile-ods.edit-ods')}</Button>
                                     </View>
                                 </View> :
                                 <View>
-                                    <Text style={{width: '100%', marginLeft: 10, color: colors.primary, paddingTop: 10}}>{t('challenge-details.select-at-least')} </Text>
+                                    <Text style={{width: '100%', marginLeft: 10, color: colors.primary, paddingTop: 10}}>{t('profile-ods.select-at-least')} </Text>
                                     <View style={{
                                         display: "flex",
                                         justifyContent: 'center',
@@ -213,7 +222,7 @@ const ProfileOds = (props: Props) => {
                                         padding: 15
                                     }}>
                                         <Button style={styles.optionsButton} mode={'contained'}
-                                                onPress={() => setOpenChoices(true)}>{t('challenge-details.choose-objectives')} </Button>
+                                                onPress={() => setOpenChoices(true)}>{t('profile-ods.select-ods')} </Button>
                                     </View>
                                 </View>
                             }
