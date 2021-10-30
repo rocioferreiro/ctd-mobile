@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,View as ViewR
 } from "react-native";
 import {Icon, Button, Image} from "react-native-elements";
-import {ActivityIndicator, Badge, IconButton, useTheme} from "react-native-paper";
+import {ActivityIndicator, Badge, IconButton, Title, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
@@ -35,7 +35,6 @@ import {Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
-import {createPDF, PROFILE_HTML} from "./PDF/CreatePDF";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -65,7 +64,7 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
-  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
+  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading, error: verifiedError}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -560,6 +559,11 @@ export function Profile(props: Props) {
                     </Button2>
                 </View>}
           </ImageBackground>
+        {/*  <Image*/}
+        {/*  source={require('../../assets/images/profile-background.jpg')}*/}
+        {/*  resizeMode={'cover'}*/}
+        {/*  style={styles.profileBackground}*/}
+        {/*/>*/}
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
@@ -601,24 +605,7 @@ export function Profile(props: Props) {
                         <Icon type={'feather'} name={'edit-2'}/>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => {
-                  createPDF(PROFILE_HTML({
-                    username: userData?.findUserById?.user?.name,
-                    email: userData?.findUserById?.user?.mail,
-                    connected: userData?.findUserById?.connectionQuantity || 0,
-                    level: 2,
-                    verifiedChallenges: verifiedChallengesData.getVerifiedChallenges.length || 0,
-                    sdg: [1,2,3],// TODO Integrate with the other SDGs in respective task
-                    challenges: [
-                      verifiedChallengesData?.getVerifiedChallenges.map(c => {
-                        return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
-                      })
-                    ]}));
-                }}>
-                    <View style={{backgroundColor: 'transparent'}}>
-                        <Icon type={'feather'} name={'download'}/>
-                    </View>
-                </TouchableWithoutFeedback>
+
             </View>
             }
           </View>
