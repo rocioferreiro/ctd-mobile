@@ -53,8 +53,8 @@ mutation unlikePost($userId: String!, $postId: String!){
 `;
 
 export const CONNECT = gql`
-mutation connect($followingUserId: String!, $loggedUserId: String!){
-  connect(followingUserId: $followingUserId, loggedUserId: $loggedUserId)
+mutation connect($followingUserId: String!){
+  connect(followingUserId: $followingUserId)
 }
 `;
 
@@ -65,8 +65,8 @@ mutation disconnect($targetUserId: String!, $followingUserId: String!){
 `;
 
 export const ACCEPT_CONNECTION = gql`
-mutation acceptConnection($myUserID: String!, $otherUserID: String!){
-  acceptConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+mutation acceptConnection($otherUserID: String!){
+  acceptConnection(otherUserID: $otherUserID)
 }
 `;
 
@@ -80,15 +80,15 @@ mutation rejectConnection($myUserID: String!, $otherUserID: String!){
 addUserToChallenge(idUser: String!, idChallenge: Long!): String!*/
 
 export const JOIN_CHALLENGE = gql`
- mutation JoinChallenge($idUser:String!,$idChallenge:Long!){
-  addUserToChallenge(idUser: $idUser,idChallenge:$idChallenge)
+ mutation JoinChallenge($idChallenge:Long!){
+  addUserToChallenge(idChallenge:$idChallenge)
 }
 
 `;
 
 export const UNJOIN_CHALLENGE = gql`
- mutation UnjoinChallenge($subscriptionChallengeId:String!,$userId:String!){
-  addUserToChallenge(subscriptionChallengeId: $subscriptionChallengeId,userId:$userId)
+ mutation UnJoinChallenge($challengeId: Long!){
+  unsubscribeFromAChallenge(challengeId: $challengeId)
 }
 
 `;

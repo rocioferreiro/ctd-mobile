@@ -21,7 +21,12 @@
     "gender": "Sexo",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
-    "done": "Registrarse"
+    "done": "Registrarse",
+    "bio-placeholder": "Cuentanos sobre ti...",
+    "bio": "Biografía",
+    "add-profile-image": "Agrega imagen de perfil",
+    "profile-info": "Información de Perfil",
+    "profile-image": "Imagen de Perfil"
   },
   "editProfile": {
     "user": "Información del Usuario"
@@ -68,7 +73,7 @@
   "new-tabbar": {
     "profile": "Perfíl",
     "map": "Mapa",
-    "new-post": "Publicar",
+    "new": "Crear",
     "search": "Buscar",
     "home": "Inicio"
   },
@@ -197,6 +202,13 @@
     "unjoin": "Abandonar"
   },
   "verifyQR-button": {
-    "verify": "Completar Desafío"
+    "verify": "Mostrar Código de Verificación"
+  },
+  "verification": {
+    "challenge-completed": "¡Desafío Completado!",
+    "you-earned": "Ganaste",
+    "exp": "de Experiencia",
+    "well-done": "¡Buen Trabajo!",
+    "return": "Volver"
   }
 }

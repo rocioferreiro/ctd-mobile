@@ -41,7 +41,7 @@ const PostFeed = ({navigation}) => {
         {postsByConnectionsData?.getPostByConnections.map((post, index) => {
           return <TouchableWithoutFeedback key={index}>
             <View style={{backgroundColor: colors.surface}}>
-              <ViewPost post={post} open={open} navigation={navigation}/>
+              <ViewPost post={post} open={open} navigation={navigation} additionalPosts={postsByConnectionsData?.getPostByConnections}/>
             </View>
           </TouchableWithoutFeedback>
         })}

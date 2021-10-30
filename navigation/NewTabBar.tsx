@@ -14,30 +14,32 @@ import PostCreationSuccessful from "../components/CreatePost/PostCreationSuccess
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
 import {PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Queries";
-import {getToken, getUserId} from "../components/Storage";
+import {getToken} from "../components/Storage";
 import PersonIcon from "./PersonIcon";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
 import ViewPost from "../components/viewPost/ViewPost";
 import EditProfile from "../components/Profile/EditProfile";
 import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreation";
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
+import ChallengeCardScrollView from "../components/Profile/ChallengeCardScrollView";
+import CreateFAB from "./CreateFAB";
+import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
-  const [userId, setUserId] = useState('');
   const [token, setToken] = useState('');
-  const [createPost, setCreatePost] = React.useState<Boolean>(true)
+  const [createPost, setCreatePost] = React.useState<boolean>(true);
+  const [openOptions, setOpenOptions] = React.useState<boolean>(false);
   const {t} = useTranslation();
-  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER,
-    {
-      fetchPolicy: 'cache-and-network',
-      context: {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      }}
-    );
+  const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
 
   function toastOn() {
     Toast.show({
@@ -50,51 +52,50 @@ const MyTabbar = ({navigation}) => {
 
   const tabs = [
     {
-      name:t('new-tabbar.home'),
+      name: t('new-tabbar.home'),
       url: 'home',
-      activeIcon: <Icon name="home" color='#fff' size={25} />,
-      inactiveIcon: <Icon name="home" color="#4d4d4d" size={25} />
+      activeIcon: <Icon name="home" color='#fff' size={25}/>,
+      inactiveIcon: <Icon name="home" color="#4d4d4d" size={25}/>
     },
     {
       name: t('new-tabbar.search'),
       url: 'search',
       activeIcon: <Icon name={'search-outline'}
-                        type={'ionicon'} color='#fff' size={25} />,
+                        type={'ionicon'} color='#fff' size={25}/>,
       inactiveIcon: <Icon name={'search-outline'}
-                          type={'ionicon'} color="#4d4d4d" size={25} />
+                          type={'ionicon'} color="#4d4d4d" size={25}/>
     },
     {
-      name: t('new-tabbar.new-post'),
-      url: 'createPost',
-      activeIcon: <Icon name="camera" color="#fff" size={25} />,
-      inactiveIcon: <Icon name="camera" color="#4d4d4d" size={25} />
+      name: t('new-tabbar.new'),
+      url: 'creation-options',
+      activeIcon: <Icon name="auto-awesome" color="#fff" size={25}/>,
+      inactiveIcon: <Icon name="auto-awesome" color="#4d4d4d" size={25}/>
     },
     {
       name: t('new-tabbar.map'),
       url: 'map',
-      activeIcon: <Icon name="map" color="#fff" size={25} />,
-      inactiveIcon: <Icon name="map" color="#4d4d4d" size={25} />
+      activeIcon: <Icon name="map" color="#fff" size={25}/>,
+      inactiveIcon: <Icon name="map" color="#4d4d4d" size={25}/>
     },
     {
       name: t('new-tabbar.profile'),
       url: 'profile',
-      activeIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber} backgroundColor={'#fff'}/>,
-      inactiveIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber} backgroundColor={'#4d4d4d'}/>
+      activeIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber}
+                              backgroundColor={'#fff'}/>,
+      inactiveIcon: <PersonIcon badgeColor={colors.accent} badgeNumber={data?.getMyPendingConnectionsNumber}
+                                backgroundColor={'#4d4d4d'}/>
     },
   ];
 
   useEffect(() => {
-    getUserId().then(id => {
-      setUserId(id);
-      getToken().then(token => {
-        setToken(token);
-        getConnectionRequestsNumber();
-      })
+    getToken().then(token => {
+      setToken(token);
+      getConnectionRequestsNumber();
     });
   }, []);
 
   useEffect(() => {
-    if(!createPost) {
+    if (!createPost) {
       navigation.navigate('creationSuccessful');
       setCreatePost(true)
     }
@@ -103,41 +104,54 @@ const MyTabbar = ({navigation}) => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <View style={{backgroundColor: colors.surface, height: (Platform.OS === 'ios') ? Dimensions.get('screen').height + 25 : Dimensions.get('screen').height - 45}}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={'home'} component={CTDHome} />
-        <Stack.Screen name={'search'} component={SearchScreen} />
+    <View style={{
+      backgroundColor: colors.surface,
+      height: (Platform.OS === 'ios') ? Dimensions.get('screen').height + 25 : Dimensions.get('screen').height - 45
+    }}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name={'home'} component={CTDHome}/>
+        <Stack.Screen name={'search'} component={SearchScreen}/>
         <Stack.Screen name={'createPost'}>
-          {props => <CreatePost {...props} setCreatePost={setCreatePost} toastOn={toastOn} />}
+          {props => <CreatePost {...props} setCreatePost={setCreatePost} toastOn={toastOn}/>}
         </Stack.Screen>
-        <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful} />
-        <Stack.Screen name={'challengeCreationSuccessful'} >
-          {props => <ChallengeCreationSuccessful {...props} close={()=> {
+        <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful}/>
+        <Stack.Screen name={'challengeCreationSuccessful'}>
+          {props => <ChallengeCreationSuccessful {...props} close={() => {
             navigation.goBack()
             navigation.goBack()
           }}/>}
         </Stack.Screen>
-        <Stack.Screen name={'challengeCreation'} component={ChallengeCreation} />
-        <Stack.Screen name={'map'} component={Map} />
-        <Stack.Screen name={'profile'} component={Profile} />
-        <Stack.Screen name={'edit-profile'} component={EditProfile} />
-        <Stack.Screen name={'challenge'} >
+        <Stack.Screen name={'challengeCreation'} component={ChallengeCreation}/>
+        <Stack.Screen name={'map'} component={Map}/>
+        <Stack.Screen name={'profile'} component={Profile}/>
+        <Stack.Screen name={'edit-profile'} component={EditProfile}/>
+        <Stack.Screen name={'challenge-verification'} >
+          {props => <ChallengeVerificationPage {...props} close={()=> {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'challenge'}>
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>
         <Stack.Screen name={'post'}>
           {(props) => <ViewPost {...props} open={true}/>}
         </Stack.Screen>
+        <Stack.Screen name={'challenges-scrollview'}>
+          {(props) => <ChallengeCardScrollView {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
+      <CreateFAB open={openOptions} onClose={() => {setOpenOptions(false)}} navigation={navigation}/>
       <Tabbar
         style={{zIndex: 5}}
         tabs={tabs}
         tabBarContainerBackground={colorShade(colors.surface, -15)}
         tabBarBackground={colors.surface}
         activeTabBackground={colors.light}
-
-        labelStyle={{ color: '#000', fontWeight: '600', fontSize: 11 }}
+        labelStyle={{color: '#000', fontWeight: '600', fontSize: 11}}
         onTabChange={a => {
-          navigation.navigate(a.url);
+          if (a.url === 'creation-options') setOpenOptions(true)
+          else navigation.navigate(a.url);
         }}
       />
     </View>
