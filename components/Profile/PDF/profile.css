@@ -1,0 +1,143 @@
+.container {
+    height: 100vh;
+}
+.align-items-center {
+    align-items: center!important;
+}
+.justify-content-center {
+    justify-content: center!important;
+}
+.d-flex {
+    display: flex!important;
+}
+
+.card {
+    width: 380px;
+    border: none;
+    border-radius: 15px;
+    padding: 8px;
+    background-color: #fff;
+    position: relative;
+    height: 370px;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px
+    solid rgba(0,0,0,.125);
+}
+
+.upper {
+    height: 100px;
+}
+
+.user {
+    position: relative;
+}
+.text-center {
+    text-align: center!important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.upper img {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+img, svg {
+    vertical-align: middle;
+}
+
+.profile {
+    position: absolute;
+    top: -50px;
+    left: 38%;
+    height: 90px;
+    width: 90px;
+    border: 3px
+    solid #fff;
+    border-radius: 50%;
+}
+
+.mb-0 {
+    margin-bottom: 0!important;
+}
+
+@media (min-width: 1200px) {
+    .h4, h4 {
+        font-size: 1.5rem;
+    }
+
+    .h4, h4 {
+        font-size: calc(1.275rem + .3vw);
+    }
+}
+
+.text-muted {
+    color: #6c757d!important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.d-block {
+    display: block!important;
+}
+
+.px-4 {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.align-items-center {
+    align-items: center!important;
+}
+
+.justify-content-between {
+    justify-content: space-between!important;
+}
+
+.d-flex {
+    display: flex!important;
+}
+
+.profile img {
+    height: 80px;
+    width: 80px;
+    margin-top: 2px;
+}
+
+.rounded-circle {
+    border-radius: 50%!important;
+}
+
+img, svg {
+    vertical-align: middle;
+}
+
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    margin-right: auto;
+    margin-left: auto;
+}
