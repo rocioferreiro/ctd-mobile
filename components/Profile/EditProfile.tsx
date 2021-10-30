@@ -17,6 +17,7 @@ import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import {Text} from "../Themed";
 import ImageButton from "../CreatePost/ImageButton";
 import ImageButtonProfile from "./ImageButtonProfile";
+import ProfileOds from "./ProfileOds";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -415,7 +416,7 @@ const EditProfile = ({navigation}) => {
         </View>
         <View style={{marginLeft:-Dimensions.get('window').width*0.15,
           backgroundColor: 'rgba(0,0,0,0)',}}>
-        <ProfileLocation setDisabled={setDisabled} formik={formik}></ProfileLocation>
+        <ProfileLocation setDisabled={setDisabled} formik={formik}/>
          </View>
       </View>
     </List.Accordion>
@@ -426,8 +427,9 @@ const EditProfile = ({navigation}) => {
       left={props => <List.Icon {...props} icon="star-circle-outline" />}
       expanded={odsExpanded}
       onPress={handlePressOds}>
-      <List.Item title="First item" />
-      <List.Item title="Second item" />
+    <View>
+      <ProfileOds setDisabled={setDisabled} formik={formik}/>
+    </View>
     </List.Accordion>
 
     {/*<Button style={styles.button}> User info </Button>*/}

@@ -19,9 +19,7 @@ const ProfileOds = (props: Props) => {
     const {formik} = props;
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
-    const [goal, setGoal] = React.useState('');
-    const [goals, setGoals] = React.useState<any[]>([])
-    const [onuObjectives, setOnuObjectives] = React.useState([]);
+    const [onuObjectives, setOnuObjectives] = React.useState(props.formik.values.favouriteODS);
     const [openChoices, setOpenChoices] = React.useState(false);
     const [errorMarker, setErrorMarker] = React.useState({title: false, description: false, goals: false, onu: false})
     const onuInfo = onuPictures();
@@ -131,25 +129,20 @@ const ProfileOds = (props: Props) => {
 
     const verifyChange = (addingGoal) => {
         if(addingGoal) {
-            if(formik.values.title.length > 1 && formik.values.description.length > 1 && formik.values.ONUObjective.length > 0)
+            if( formik.values.favouriteODS.length > 0)
                 props.setDisabled(false)
             else props.setDisabled(true)
-        } else{
-            if(formik.values.title.length > 1 && formik.values.description.length > 1 && goals.length>0 && formik.values.ONUObjective.length > 0)
-                props.setDisabled(false)
-            else props.setDisabled(true)
+
         }
 
     }
 
     useEffect(() => {
-        if(formik.values.ONUObjective && formik.values.ONUObjective.length > 0) {
-            setOnuObjectives(formik.values.ONUObjective.map(i =>{return {image: onuInfo[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
-        }
-        if(formik.values.challengeObjectives && formik.values.challengeObjectives.length > 0){
-            setGoals(formik.values.challengeObjectives)
+        if(formik.values.favouriteODS && formik.values.favouriteODS.length > 0) {
+            setOnuObjectives(formik.values.favouriteODS.map(i =>{return {image: onuInfo[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
             verifyChange(true)
-        } else {
+        }
+        else {
             verifyChange(false)
         }
 
@@ -180,32 +173,6 @@ const ProfileOds = (props: Props) => {
 
                         <View>
                             <Text style={styles.title}>{t('challenge-details.create-new-challenge')}</Text>
-
-                            <Input
-                                placeholder={t('challenge-details.challenge-title')}
-                                style={[styles.input, errorMarker.title ? {borderColor: colors.error, borderWidth:1} : {}]}
-                                value={formik.values.title}
-                                onChangeText={title => {
-                                    formik.setFieldValue('title', title)
-                                    verifyChange(false)
-                                    setErrorMarker({title: title.length <= 1, description: errorMarker.description, goals: errorMarker.goals, onu: errorMarker.onu})
-                                }}
-                                inputContainerStyle={{borderBottomWidth: 0}}
-                            />
-
-                            <Input
-                                placeholder={t('challenge-details.challenge-description')}
-                                style={[styles.input, errorMarker.description ? {borderColor: colors.error, borderWidth:1} : {}, {minHeight: Dimensions.get("window").height * 0.12, paddingTop: 20}]}
-                                value={formik.values.description}
-                                onChangeText={(desc) => {
-                                    formik.setFieldValue('description', desc);
-                                    verifyChange(false)
-                                    setErrorMarker({title: errorMarker.title, description: desc.length <= 1, goals: errorMarker.goals, onu: errorMarker.onu})
-                                }}
-                                multiline={true}
-                                inputContainerStyle={{borderBottomWidth: 0}}
-                            />
-
                             <Text style={styles.label}> {t('challenge-details.sustainable-objectives')} </Text>
                             {onuObjectives.length > 0 ?
                                 <View style={{display: 'flex', flexDirection: 'column'}}>
@@ -249,52 +216,7 @@ const ProfileOds = (props: Props) => {
                                     </View>
                                 </View>
                             }
-                            <Text style={styles.label}>{t('challenge-details.challenge-goals')}</Text>
-                            <View>
-                                <View style={styles.goalAdder}>
 
-                                    <Input
-                                        placeholder={t('challenge-details.goal-placeholder')}
-                                        style={[styles.inputWithIcon, {position: "absolute", bottom: keyboardShown? keyboardHeight - Dimensions.get("window").height*0.3 : 0}]}
-                                        value={goal}
-                                        onChangeText={t => {setGoal(t);}}
-                                        inputContainerStyle={{borderBottomWidth: 0}}
-                                        rightIcon={
-                                            <View style={[styles.goalAdderIcon, {position: "absolute",left: Dimensions.get('window').width*0.77}]}>
-                                                <Icon style={styles.icon}
-                                                      name={'add-outline'}
-                                                      type={'ionicon'}
-                                                      color={'#fff'}
-                                                      onPress={() => {
-                                                          if (goal !== '') {
-                                                              setGoals([...goals, {name: goal, points: 0}]);
-                                                              formik.setFieldValue('challengeObjectives', [...formik.values.challengeObjectives, {name: goal, points: 0}]);
-                                                              setGoal('');
-                                                              setErrorMarker({title: errorMarker.title, description: errorMarker.description, goals: false, onu: errorMarker.onu})
-                                                              verifyChange(true)
-                                                          }
-                                                      }}
-                                                />
-                                            </View>
-                                        }
-                                    />
-                                </View>
-                                {errorMarker.goals && <Text style={[styles.label, {color: colors.error, display: "flex", flexDirection: "row", justifyContent: "center"}]}>{t('challenge-details.goal-at-least')} </Text>}
-                                {goals.map((t, index) =>
-                                    <List.Item key={index} style={styles.listItem}
-                                               title={t.name}
-                                               rippleColor={'#313131'}
-                                               right={props => <Icon {...props} name="close-outline" type={'ionicon'}
-                                                                     onPress={() => {
-                                                                         const newGoals = goals.filter(i => i.name !== t.name)
-                                                                         setGoals(newGoals);
-                                                                         formik.setFieldValue('challengeObjectives', newGoals);
-                                                                         setErrorMarker({title: errorMarker.title, description: errorMarker.description, goals: goals.length <= 1, onu: errorMarker.onu})
-                                                                         verifyChange(false)
-                                                                     }}/>}
-                                    />)}
-
-                            </View>
                         </View>
                     }
                 </View>
