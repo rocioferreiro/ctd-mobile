@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
+import {onuLogos} from "../../ONUObjectives";
 
 export type Content = {
   username: string,
@@ -27,6 +28,10 @@ export const createPDF = async (html) => {
   }
 };
 
+const getSdgIcon = (number: number) => {
+  return 'https://www.un.org/sites/un2.un.org/files/sdg' + number + '-en.png'
+}
+
 export const PROFILE_HTML = (content: Content) => {
   return `
 <html>
@@ -37,6 +42,9 @@ export const PROFILE_HTML = (content: Content) => {
     <title>Connect the Dots - Participation Certificate</title>
 </head>
 <body style="text-align: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9">
+<style> 
+   @page { margin: 20px; } 
+</style>
 <h1 style="font-size: 50px; margin: 10px; font-family: ApfelGrotezk, Helvetica, monospace; font-weight: bold; color: #15006D">
     Connect the Dots
 </h1>
@@ -84,11 +92,11 @@ export const PROFILE_HTML = (content: Content) => {
                     ${content.email}
                 </span>
                 <div style="display: flex; flex-direction: row; margin-top: 15px; width: 80%; justify-content: space-evenly; align-items: center">
-                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                    <img src="${getSdgIcon(content.sdg[0])}"
                          style="border-radius: 50%;" height="35" alt="challenge-icon">
-                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                    <img src="${getSdgIcon(content.sdg[1])}"
                          style="border-radius: 50%;" height="35" alt="challenge-icon">
-                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                    <img src="${getSdgIcon(content.sdg[2])}"
                          style="border-radius: 50%;" height="35" alt="challenge-icon">
                 </div>
                 <div style="display: flex;
@@ -140,7 +148,7 @@ export const PROFILE_HTML = (content: Content) => {
                 </div>
             </div>
         </div>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
+        <div style="display: flex; break-inside: avoid; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
             <p style="text-align: justify;
                       color: #15006D;
                       line-height: 1.5;
@@ -170,6 +178,7 @@ export const PROFILE_HTML = (content: Content) => {
         ${content.challenges.map(c => {
             return `<div style="
                     width: 80%;
+                    break-inside: avoid;
                     max-height: 300px;
                     border-radius: 15px;
                     padding: 8px;
@@ -216,14 +225,14 @@ export const PROFILE_HTML = (content: Content) => {
                           </h6>
                       </div>
                         <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
-                          <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                          <img src="${getSdgIcon(c.sdg[0])}"
                                style="border-radius: 50%;" height="35" alt="challenge-icon">
-                          <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                          <img src="${getSdgIcon(c.sdg[1])}"
                                style="border-radius: 50%;" height="35" alt="challenge-icon">
-                          <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                          <img src="${getSdgIcon(c.sdg[2])}"
                                style="border-radius: 50%;" height="35" alt="challenge-icon">
                         </div>
-                      </div>`;
+                      </div>`
           })}
     </div>
 </div>
