@@ -5,8 +5,9 @@ import {Icon, Input} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {colorShade} from "../Models/shadingColor";
-import OnuObjectiveChoice from "../CreateChallengeForm/Details/onuObjectiveChoice";
+
 import {ONUObjectives} from "../ONUObjectives";
+import OdsChoiceProfile from "./OdsChoiceProfile";
 
 type Props = {
     setDisabled: (boolean) => void
@@ -168,7 +169,7 @@ const ProfileOds = (props: Props) => {
             <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
                 <View style={styles.card}>
                     {openChoices ?
-                        <OnuObjectiveChoice formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
+                        <OdsChoiceProfile formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
                                             setOpen={setOpenChoices}/> :
 
                         <View>
