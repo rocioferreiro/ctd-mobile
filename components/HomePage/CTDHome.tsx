@@ -324,7 +324,7 @@ const CTDHome = ({navigation}) => {
                                 width={350} height={30}/>
               </View>
               <Button onPress={() => {
-                createPDF(PROFILE_HTML(['hello', 'world', 'SADDDDDDDDDDDDDDDDD', 'ASDDDDDDDDDDDD', 'WWWWWWWWWWWWWQQQQ']));
+                createPDF(PROFILE_HTML({username: 'Alejo', email: 'alejo@mail.com', connected: 300, level: 2, verifiedChallenges: 2, sdg: [1,2,3], challenges: [{title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]},{title: 'hi', completionDate: '12/12/2121', sdg: [1,2,3]}]}));
               }}>Print</Button>
               <View style={{
                 width: "100%",
