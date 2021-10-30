@@ -2,9 +2,12 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "../Themed";
 import {DataTable, useTheme} from 'react-native-paper';
-import {colorShade} from "../Models/shadingColor";
 
-const RankingList = ({navigation,route}) => {
+type Props = {
+  ods?: number
+}
+
+const RankingList = (props: Props) => {
 
   const [listData, setListData] = React.useState([{title: 'Great challenge', participants: 700, score: 500},
     {title: 'Great challenge', participants: 700, score: 500},
@@ -46,9 +49,7 @@ const RankingList = ({navigation,route}) => {
             <DataTable.Cell style={{padding: 0}} numeric><Text style={{color: colors.accent, fontWeight:"bold", fontFamily: 'aria'}}>{i.score}</Text></DataTable.Cell>
           </DataTable.Row>
         </View>
-
       })}
-
     </DataTable>
   </View>
 }
