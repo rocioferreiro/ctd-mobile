@@ -85,7 +85,8 @@ const EditProfile = ({navigation}) => {
     biography: '',
     photoUrl: '',
     gender: Gender.OTHER,
-    birthDate: new Date()
+    birthDate: new Date(),
+    coordinates:[]
   }
 
   let formik = useFormik(
@@ -110,7 +111,8 @@ const EditProfile = ({navigation}) => {
         biography: userData.findUserById.user.biography? userData.findUserById.user.biography : '',
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
-        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date()
+        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date(),
+        coordinates: userData.findUserById.coordinates ? userData.findUserById.coordinates: []
       })
     }
   }, [userData])

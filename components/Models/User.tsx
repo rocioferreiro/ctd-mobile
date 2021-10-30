@@ -25,6 +25,7 @@ export type UserForEdition = {
     address?: Address,
 
     favouriteODS?: number[]
+    coordinates:[]
 }
 
 export type GoogleUser = {

@@ -119,18 +119,8 @@ const ProfileLocation = (props: Props) => {
                             <Marker coordinate={marker}/>
                         }
                     </MapView>}
-
                 </View>
-                <TextInput
-                    style={styles.input}
-                    mode={'flat'}
-                    dense={false}
-                    multiline={true}
-                    label="Add additional info (optional)"
-                    value={props.formik.values.locationExtraInfo}
-                    onChangeText={(value) => {props.formik.setFieldValue('locationExtraInfo', value)}}
-                />
-            </View>
+        </View>
         </View>
     );
 }
