@@ -31,7 +31,7 @@ const OdsChoiceProfile  = (props: Props) => {
             fontWeight: 'bold',
             color: colors.primary,
             marginLeft: 5,
-            marginTop: -20,
+            padding:10
         },
         container: {
             zIndex:5,
@@ -171,8 +171,9 @@ const OdsChoiceProfile  = (props: Props) => {
                     </View>
                 }
             </View>
-
+            <View style={{marginLeft:-Dimensions.get('window').width*0.08,backgroundColor: "rgba(0,0,0,0)",width:"100%"}}>
             <ImageCarousel data={onuInfo} setCurrentIndex={setCurrentIndex}/>
+            </View>
             <View style={styles.plusContainer}>
                 <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
                             onPress={() => {

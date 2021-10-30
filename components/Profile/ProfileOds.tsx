@@ -175,7 +175,7 @@ const ProfileOds = (props: Props) => {
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, padding:15}}>
             <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
                 <View style={styles.card}>
                     {openChoices ?

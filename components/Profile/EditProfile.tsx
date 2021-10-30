@@ -428,7 +428,10 @@ const EditProfile = ({navigation}) => {
       expanded={odsExpanded}
       onPress={handlePressOds}>
     <View>
+      <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+        backgroundColor: 'rgba(0,0,0,0)',}}>
       <ProfileOds setDisabled={setDisabled} formik={formik}/>
+      </View>
     </View>
     </List.Accordion>
 
