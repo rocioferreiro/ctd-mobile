@@ -410,7 +410,7 @@ const EditProfile = ({navigation}) => {
             fontSize: 15,
             marginLeft: 2,
             paddingHorizontal: 15,
-            paddingTop: 5
+            paddingTop: 10
           }}> {t('register.change-location')}</Text>
         </View>
         <View style={{marginLeft:-Dimensions.get('window').width*0.15,
