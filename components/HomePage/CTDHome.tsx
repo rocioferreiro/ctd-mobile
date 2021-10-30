@@ -264,7 +264,7 @@ const CTDHome = ({navigation}) => {
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('challenge-verification')}></Button>
+                <Button onPress={()=> navigation.navigate('challenge-verification')}/>
               </View>
             </View>
           </LinearGradient>
@@ -340,7 +340,7 @@ const CTDHome = ({navigation}) => {
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
               {categories.map((s, index) => {
-                return <TouchableWithoutFeedback key={index}>
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking')}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{
