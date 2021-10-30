@@ -18,7 +18,6 @@ import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreatio
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
-import JoinButton from "../Challenge/JoinButton";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -32,6 +31,7 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
+
   const categories = ["1", "2", "3"]
   const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
   const [createPost, setCreatePost] = React.useState(false);
@@ -223,7 +223,7 @@ const CTDHome = ({navigation}) => {
       text2: t('home.create-post-error-subtitle'),
       topOffset: Dimensions.get("window").height * 0.05,
     });
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -233,164 +233,170 @@ const CTDHome = ({navigation}) => {
         height: Dimensions.get('screen').height,
         backgroundColor: colors.surface
       }}>
-        <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
-                    style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
-          <LinearGradient
-            colors={[colors.primary, "rgba(0,0,0,0)"]}
-            start={{
-              x: 1,
-              y: 0,
-            }}
-            end={{
-              x: 1,
-              y: 1,
-            }}
-            style={styles.box}
-          >
-            <View style={{
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 10,
-              paddingTop: 30,
-              backgroundColor: "rgba(0,0,0,0)"
-            }}>
+          <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
+                      style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
+              <LinearGradient
+                  colors={[colors.primary, "rgba(0,0,0,0)"]}
+                  start={{
+                    x: 1,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 1,
+                    y: 1,
+                  }}
+                  style={styles.box}
+              >
+                  <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
+                    paddingTop: 30,
+                    backgroundColor: "rgba(0,0,0,0)"
+                  }}>
+                      <View style={{
+                        width: "70%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                        backgroundColor: "rgba(0,0,0,0)"
+                      }}>
+
+                          <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')}
+                                 style={styles.logo}/>
+                          <Text style={styles.title}>Connect the Dots</Text>
+                      </View>
+                  </View>
+              </LinearGradient>
               <View style={{
-                width: "70%",
                 justifyContent: "center",
                 alignItems: "center",
                 padding: 10,
-                backgroundColor: "rgba(0,0,0,0)"
+                backgroundColor: colors.surface
               }}>
 
-                <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
-                <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('challenge-verification')}></Button>
-              </View>
-            </View>
-          </LinearGradient>
-          <View style={{justifyContent: "center", alignItems: "center", padding: 10, backgroundColor: colors.surface}}>
-
-            <View style={{
-              width: "80%",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 15,
-              backgroundColor: colors.primary,
-              borderRadius: 90
-            }}>
-                <View style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  backgroundColor: colors.primary,
-                  alignItems: "center",
-                  justifyContent: 'space-between'
-                }}>
-                  <Text style={styles.subtitle}>36500k </Text>
-                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                    <Text style={styles.detailtitle}> {t('home.global')}</Text>
-                    <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
-                    <Text style={styles.detailtitle}> {t('home.points')}</Text>
+                  <View style={{
+                    width: "80%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 15,
+                    backgroundColor: colors.primary,
+                    borderRadius: 90
+                  }}>
+                      <View style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        backgroundColor: colors.primary,
+                        alignItems: "center",
+                        justifyContent: 'space-between'
+                      }}>
+                          <Text style={styles.subtitle}>36500k </Text>
+                          <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                              <Text style={styles.detailtitle}> {t('home.global')}</Text>
+                              <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
+                              <Text style={styles.detailtitle}> {t('home.points')}</Text>
+                          </View>
+                      </View>
                   </View>
-                </View>
-            </View>
-          </View>
-          <View style={{
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 10,
-            backgroundColor: colors.surface
-          }}>
-            <View style={{
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              backgroundColor: colors.surface
-            }}>
-              <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.surface}}>
-                <Text style={styles.level}> {t('home.level')} 1</Text>
-                <Text style={styles.nextlevel}>{t('home.level')} 2</Text>
               </View>
-            </View>
-            <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3}
-                          width={350} height={30}/>
-          </View>
-          <View style={{
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 10,
-            backgroundColor: colors.surface
-          }}>
-            <View style={{
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              backgroundColor: colors.surface
-            }}>
-              <Text style={styles.topSDGs}>{t('home.top')}</Text>
-            </View>
-            <View style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: "center",
-              paddingHorizontal: 10,
-              paddingTop: 10,
-              backgroundColor: 'rgba(0,0,0,0)'
-            }}>
-              {categories.map((s, index) => {
-                return <TouchableWithoutFeedback key={index}>
-                  <View style={{backgroundColor: colors.surface}}>
-                    <CTDBadge color={categoryColors[index]} number={index + 1}/>
-                    <Image style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 40,
-                      borderColor: categoryColors[index],
-                      borderWidth: 6,
-                      marginHorizontal: 20
-                    }}
-                           source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
-                    <View style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: 10,
-                      backgroundColor: colors.surface
-                    }}>
-                      <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
-                    </View>
+              <View style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 10,
+                backgroundColor: colors.surface
+              }}>
+                  <View style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    backgroundColor: colors.surface
+                  }}>
+                      <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
+                      <View style={{flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.surface}}>
+                          <Text style={styles.level}> {t('home.level')} 1</Text>
+                          <Text style={styles.nextlevel}>{t('home.level')} 2</Text>
+                      </View>
                   </View>
-                </TouchableWithoutFeedback>
-              })}
-            </View>
-          </View>
+                  <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent}
+                                progress={0.3}
+                                width={350} height={30}/>
+              </View>
+              <View style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 10,
+                backgroundColor: colors.surface
+              }}>
+                  <View style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    backgroundColor: colors.surface
+                  }}>
+                      <Text style={styles.topSDGs}>{t('home.top')}</Text>
+                  </View>
+                  <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: "center",
+                    paddingHorizontal: 10,
+                    paddingTop: 10,
+                    backgroundColor: 'rgba(0,0,0,0)'
+                  }}>
+                    {categories.map((s, index) => {
+                      return <TouchableWithoutFeedback key={index}>
+                        <View style={{backgroundColor: colors.surface}}>
+                          <CTDBadge color={categoryColors[index]} number={index + 1}/>
+                          <Image style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: 40,
+                            borderColor: categoryColors[index],
+                            borderWidth: 6,
+                            marginHorizontal: 20
+                          }}
+                                 source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                          <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            padding: 10,
+                            backgroundColor: colors.surface
+                          }}>
+                            <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
+                          </View>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    })}
+                  </View>
+              </View>
 
-          <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
-            <Button onPress={() => setCreatePost(true)}
-                    icon={{name: 'add', type: 'ionicon'}}
-                    buttonStyle={styles.button}
-            />
-          </View>
+              <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
+                  <Button onPress={() => setCreatePost(true)}
+                          icon={{name: 'add', type: 'ionicon'}}
+                          buttonStyle={styles.button}
+                  />
+              </View>
 
-            <TouchableWithoutFeedback
-                onPress={() => setCreate(true)}>
-                <View style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  backgroundColor: 'transparent',
-                  alignItems: "center",
-                  justifyContent: 'space-between'
-                }}>
-                    <Text style={styles.create}>{t('home.challenge')}!</Text>
-                    <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                  onPress={() => setCreate(true)}>
+                  <View style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    backgroundColor: 'transparent',
+                    alignItems: "center",
+                    justifyContent: 'space-between'
+                  }}>
+                      <Text style={styles.create}>{t('home.challenge')}!</Text>
+                      <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                      </View>
+                  </View>
+              </TouchableWithoutFeedback>
 
-          <PostFeed navigation={navigation}/>
+              <PostFeed navigation={navigation}/>
 
-        </ScrollView>
+          </ScrollView>
       </View>}
 
       {createPost && <Card style={styles.creationCard}>
