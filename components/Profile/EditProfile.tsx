@@ -112,7 +112,7 @@ const EditProfile = ({navigation}) => {
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
         birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date(),
-        coordinates: userData.findUserById.coordinates
+        coordinates: userData.findUserById.user.address.coordinates
       })
     }
   }, [userData])

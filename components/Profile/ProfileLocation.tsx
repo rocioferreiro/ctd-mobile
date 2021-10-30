@@ -14,7 +14,7 @@ type Props = {
 const ProfileLocation = (props: Props) => {
     const { colors } = useTheme();
     const [marker, setMarker] = useState<LatLng>();
-    const [location, setLocation] = useState(null);
+    const [location, setLocation] = useState(props.formik.coordinates);
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 
@@ -23,10 +23,12 @@ const ProfileLocation = (props: Props) => {
             props.setDisabled(true)
         }
         if(props.formik.values.coordinates) {
-            setMarker({latitude: props.formik.values.coordinates.coordinates[0], longitude: props.formik.values.coordinates.coordinates[1]})
+            setLocation(props.formik.values.coordinates)
+            setMarker({latitude: props.formik.values.coordinates.latitude, longitude: props.formik.values.coordinates.longitude})
+
             props.setDisabled(false)
         }
-        (async () => {
+    /*    (async () => {
             let enabled = await Location.hasServicesEnabledAsync();
             console.log(enabled)
             if (!enabled) {
@@ -36,7 +38,7 @@ const ProfileLocation = (props: Props) => {
             let location = await Location.getLastKnownPositionAsync({});
             console.log(location)
             setLocation(location.coords);
-        })();
+        })();*/
 
         const showSubscription = Keyboard.addListener("keyboardDidShow", e => {
             setKeyboardShown(true);
@@ -96,7 +98,6 @@ const ProfileLocation = (props: Props) => {
     return (
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
             <View style={styles.card}>
-                <Text style={styles.title}>Where will your challenge be?</Text>
                 <View style={styles.mapWrapper}>
                     {location &&
                     <MapView
