@@ -31,7 +31,7 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const categories = ["1", "2", "3"]
+  const categories = ["1", "13", "15"]
   const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
