@@ -6,32 +6,14 @@ import {AuthContext} from "../../App";
 import Toast from "react-native-toast-message";
 import {useMutation} from "@apollo/client";
 import {SAVE_GOOGLE_USER} from "../apollo-graph/Mutations";
-import {setContext} from "@apollo/client/link/context";
-import {getToken} from "../Storage";
 import {jsonToGoogleLogin} from "../Models/User";
+import {androidClientId, iOSClientId} from "../../ClientId";
+import firebase from "firebase";
 
 const AuthScreen = () => {
 
   const auth = useContext(AuthContext);
-  const [saveUser, {data: user, loading, client}] = useMutation(SAVE_GOOGLE_USER, {
-    onCompleted: response => {
-      auth.signIn({idUser: response.saveGoogleUser.id, token: response.saveGoogleUser.token}).then(() => {
-      client.setLink(setContext(async (_, { headers }) => {
-        const token = await getToken();
-        return {
-          headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : "",
-          }
-        }
-      }))
-    }).catch(() => {
-      toastOn('Error', 'Something went wrong')
-    });
-  },
-  onError: error => {
-      console.log(error)
-  }});
+  const [saveUser] = useMutation(SAVE_GOOGLE_USER, {});
 
   function toastOn(message: string, description: string = '') {
     Toast.show({
@@ -45,32 +27,47 @@ const AuthScreen = () => {
   async function signInWithGoogleAsync() {
     try {
       const result = await Google.logInAsync({
-        androidClientId: '746337143443-o7i5sscrcv8n70g445an6fc6orcagco9.apps.googleusercontent.com',
-        iosClientId: '746337143443-uph0bsq7i5sthtddijmn217qlr20edti.apps.googleusercontent.com',
+        androidClientId: androidClientId,
+        iosClientId: iOSClientId,
         scopes: ['profile', 'email'],
       });
 
       if (result.type === 'success') {
-        await saveUser({variables: {googleUser: jsonToGoogleLogin(result)}})
-        //TODO: send this info to back and create the real userId (not ready in back)
 
-        // auth.signIn({idUser: result.user.id, token: result.idToken}).catch(() => {
-        //   toastOn('Error', 'Authentication Failed')
-        // });
+        saveUser({variables: {googleUser: jsonToGoogleLogin(result)}}).then(res => {
+          console.log(res)
+          // Pass the user to the firebase client. This is needed to refresh the token (see /components/apollo-graph/Client.tsx)
+          const cred = firebase.auth.GoogleAuthProvider.credential(null, result.accessToken); // Create credentials
+          firebase.auth().signInWithCredential(cred).catch(console.error); // Sign in with the credentials created
+          // Sign in to the app using the data from the request
+          auth.signIn({
+            idUser: res.data.googleLogin.id,
+            token: result.idToken,
+            refreshToken: result.refreshToken,
+            tokenType: 'google'
+          }).catch(() => {
+            toastOn('Error', 'Authentication Failed')
+          });
+        }).catch(e => {
+          console.log('error in google login mutation');
+          console.log(e);
+        });
+
         return result.accessToken;
 
       } else {
         console.log('cancelled')
       }
     } catch (e) {
-      console.log('error')
+      console.log('error');
+      console.log(e);
     }
   }
 
   return (
     <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
       <Pressable onPress={signInWithGoogleAsync}>
-        <Image source={require('../../assets/images/google-icon.png')} style={{width:40, height:40}}/>
+        <Image source={require('../../assets/images/google-icon.png')} style={{width: 40, height: 40}}/>
       </Pressable>
     </View>
   )

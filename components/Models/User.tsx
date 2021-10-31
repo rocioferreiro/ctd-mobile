@@ -44,7 +44,7 @@ export type GoogleLogin = {
 export function jsonToGoogleLogin(json) {
     const user: GoogleUser = {
         email: json["user"]["email"],
-        familyName: json["user"]["familyName"],
+        familyName: json["user"]["familyName"] ? json["user"]["familyName"] : '',
         givenName: json["user"]["givenName"],
         photoUrl: json["user"]["photoUrl"]
     }
