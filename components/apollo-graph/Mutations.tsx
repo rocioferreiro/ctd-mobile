@@ -92,3 +92,11 @@ export const UNJOIN_CHALLENGE = gql`
 }
 
 `;
+
+export const UPDATE_USER  = gql`
+mutation editUser($user: UserInput!){
+updateUser(user:$user)
+}
+`;
+
+
