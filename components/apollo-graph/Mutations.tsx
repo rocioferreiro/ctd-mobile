@@ -99,4 +99,11 @@ updateUser(user:$user)
 }
 `;
 
+export const UPDATE_USER_LOCATION =gql`
+mutation editUserLocation($address: AdressInput!){
+updateUserLocation(address:$address)
+}
+
+`;
+
 
