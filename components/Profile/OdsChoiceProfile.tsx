@@ -176,7 +176,7 @@ const OdsChoiceProfile  = (props: Props) => {
                             onPress={() => {
                                 if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
                                     if(props.selected.length===3){
-                                        toastOn("Max Favorite ODS Number is 3", "You can't add anymore ODS to your favourites list!")
+                                        toastOn(t('ods-choice-profile.max-ods-error'),t('ods-choice-profile.max-ods-error-description') )
                                     }
                                     else{
                                     props.setSelected([...props.selected, {
@@ -196,7 +196,7 @@ const OdsChoiceProfile  = (props: Props) => {
                 <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
                     <IconButton style={styles.done} icon={"check-bold"} onPress={() =>
-                    {                         if(props.selected.length<3 ) toastOn("Minimun Number of Favorite SGD is 3","You Have to Choose 3 SDG`s")
+                    {                         if(props.selected.length<3 ) toastOn(t('ods-choice-profile.min-ods-error'),t('ods-choice-profile.min-ods-error-description'))
                                                                                   else{     props.setOpen(false)
                                                                                         props.setOdsIsOpen(true)}}} color={colors.background}/>
                 </View>

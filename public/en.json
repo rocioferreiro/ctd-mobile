@@ -224,7 +224,11 @@
   "ods-choice-profile": {
     "choose-ods": "Choose SDG",
     "current-ods": "Current SGD",
-    "ods": "Objetive"
+    "ods": "Objetive",
+    "error-max-ods": "Max Favorite SDG Number is 3",
+    "error-max-ods-description": "You can't add anymore SDG`s to your favourites list!",
+    "error-min-ods": "Minimun Number of Favorite SGD is 3",
+    "error-min-ods-description": "You Have to Choose 3 SDG`s"
 
   }
 }

@@ -166,14 +166,6 @@ const ProfileOds = (props: Props) => {
 
     }, [])
 
-    function toastOn(message: string, description: string = '') {
-        Toast.show({
-            type: 'error',
-            text1: message,
-            text2: description,
-            topOffset: Dimensions.get("window").height * 0.05,
-        });
-    }
 
     return (
         <View style={{flex: 1, padding:15}}>

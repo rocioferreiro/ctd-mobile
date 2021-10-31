@@ -224,7 +224,11 @@
   "ods-choice-profile": {
     "choose-ods": "Elige ODS Favorito",
     "current-ods": "ODS Actual",
-    "ods": "Objetivo"
+    "ods": "Objetivo",
+    "error-max-ods": "El Número Máximo de ODS`s Favoritos es 3",
+    "error-max-ods-description": "¡No Puedes Agregar mas ODS a tu lista !",
+    "error-min-ods": "El Número Mínimo de ODS`s Favoritos es 3",
+    "error-min-ods-description": "Debes Elegir 3 ODS"
 
   }
 }
