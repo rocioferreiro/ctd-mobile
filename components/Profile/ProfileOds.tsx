@@ -103,12 +103,12 @@ const ProfileOds = (props: Props) => {
         },
         editOptionsButton: {
             width: Dimensions.get('window').width * 0.4,
-            height: Dimensions.get('window').height * 0.04,
+            height: Dimensions.get('window').height * 0.05,
             borderRadius: 30,
             backgroundColor: colorShade(colors.accent, 5),
-            textAlign: "center",
+            //textAlign: "center",
             justifyContent: "center",
-            marginBottom: 10
+            //marginBottom: 10
         },
         listItem: {
             backgroundColor: colors.surface,
