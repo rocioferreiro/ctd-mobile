@@ -195,8 +195,10 @@ const OdsChoiceProfile  = (props: Props) => {
                 <Text style={styles.label}>{onuInfo[currentIndex].title}</Text>
                 <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
-                    <IconButton style={styles.done} icon={"check-bold"} onPress={() => {props.setOpen(false)
-                                                                                        props.setOdsIsOpen(true)}} color={colors.background}/>
+                    <IconButton style={styles.done} icon={"check-bold"} onPress={() =>
+                    {                         if(props.selected.length<3 ) toastOn("Minimun Number of Favorite SGD is 3","You Have to Choose 3 SDG`s")
+                                                                                  else{     props.setOpen(false)
+                                                                                        props.setOdsIsOpen(true)}}} color={colors.background}/>
                 </View>
             </View>
         </View>
