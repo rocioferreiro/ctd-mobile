@@ -26,7 +26,9 @@
     "bio": "Biography",
     "add-profile-image": "Add Profile Picture",
     "profile-info": "Profile info",
-    "profile-image": "Profile Picture"
+    "profile-image": "Profile Picture",
+    "location": "Location",
+    "change-location": "Change Your Location"
 
   },
   "profile": {
