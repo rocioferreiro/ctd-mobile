@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 
-import {Card, TextInput, useTheme} from "react-native-paper";
+import {ActivityIndicator, Card, TextInput, useTheme} from "react-native-paper";
 import {Text, View} from "../Themed";
 import MapView, {LatLng, Marker} from "react-native-maps";
 import {Dimensions, Keyboard, StyleSheet} from "react-native";
@@ -13,22 +13,26 @@ type Props = {
 
 const ProfileLocation = (props: Props) => {
     const { colors } = useTheme();
-    const [marker, setMarker] = useState<LatLng>();
+    const [marker, setMarker] = useState<LatLng>({latitude: 0, longitude: 0});
     const [location, setLocation] = useState(props.formik.coordinates);
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
 
     useEffect(() => {
+        console.log(props.formik.values)
         if(!marker){
             props.setDisabled(true)
         }
         if(props.formik.values.coordinates) {
-            setLocation(props.formik.values.coordinates)
+            //setLocation({latitude: props.formik.values.coordinates.latitude, longitude: props.formik.values.coordinates.longitude})
+            console.log("THIS WORKSSSSS")
+            console.log(props.formik.values.coordinates.latitude)
+            console.log(props.formik.values.coordinates.longitude)
             setMarker({latitude: props.formik.values.coordinates.latitude, longitude: props.formik.values.coordinates.longitude})
 
             props.setDisabled(false)
         }
-    /*    (async () => {
+        (async () => {
             let enabled = await Location.hasServicesEnabledAsync();
             console.log(enabled)
             if (!enabled) {
@@ -38,7 +42,7 @@ const ProfileLocation = (props: Props) => {
             let location = await Location.getLastKnownPositionAsync({});
             console.log(location)
             setLocation(location.coords);
-        })();*/
+        })();
 
         const showSubscription = Keyboard.addListener("keyboardDidShow", e => {
             setKeyboardShown(true);
@@ -88,7 +92,7 @@ const ProfileLocation = (props: Props) => {
         }
     });
 
-    return (
+    return ( location && marker ?
         <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
             <View style={styles.card}>
                 <View style={styles.mapWrapper}>
@@ -104,7 +108,8 @@ const ProfileLocation = (props: Props) => {
                         onPress={(e) => {
                             props.setDisabled(false)
                             setMarker(e.nativeEvent.coordinate);
-                            props.formik.setFieldValue('coordinates', {coordinates: [e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude]});
+                            props.formik.setFieldValue('coordinates', {latitude: e.nativeEvent.coordinate.latitude, longitude:  e.nativeEvent.coordinate.longitude});
+                            props.formik.setFieldValue('address', {coordinates: {latitude: e.nativeEvent.coordinate.latitude, longitude:  e.nativeEvent.coordinate.longitude}});
                             console.log(marker);
                             console.log(props.formik.values.coordinates);
                         }}>
@@ -115,7 +120,7 @@ const ProfileLocation = (props: Props) => {
                     </MapView>}
                 </View>
         </View>
-        </View>
+        </View> : <ActivityIndicator size="large" />
     );
 }
 

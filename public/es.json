@@ -230,5 +230,11 @@
     "error-min-ods": "El Número Mínimo de ODS`s Favoritos es 3",
     "error-min-ods-description": "Debes Elegir 3 ODS"
 
+  },
+  "ranking": {
+    "challenge": "Desafíos",
+    "users": "Participantes",
+    "score": "Puntos",
+    "top": "Los mejores desafíos"
   }
 }

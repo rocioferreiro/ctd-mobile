@@ -17,7 +17,7 @@ type Props = {
 
 const Register = (props: Props) => {
     const {colors} = useTheme();
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -57,7 +57,7 @@ const Register = (props: Props) => {
     }, [])
 
     const [register, {loading}] = useMutation(REGISTER, {
-        onCompleted: token => {
+        onCompleted: () => {
             props.onCancel();
             successToast(t('register.success'), t('register.successDescription'));
         },
