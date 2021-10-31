@@ -18,7 +18,6 @@ import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreatio
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
-import JoinButton from "../Challenge/JoinButton";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -32,7 +31,7 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const categories = ["1", "2", "3"]
+  const categories = ["1", "13", "15"]
   const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
@@ -264,7 +263,7 @@ const CTDHome = ({navigation}) => {
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('challenge-verification')}></Button>
+                <Button onPress={()=> navigation.navigate('challenge-verification')}/>
               </View>
             </View>
           </LinearGradient>
@@ -340,7 +339,7 @@ const CTDHome = ({navigation}) => {
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
               {categories.map((s, index) => {
-                return <TouchableWithoutFeedback key={index}>
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{

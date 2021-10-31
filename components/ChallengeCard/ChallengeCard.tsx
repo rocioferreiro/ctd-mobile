@@ -49,11 +49,6 @@ const ChallengeCard = (props: Props) => {
   });
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     variables: {targetUserId: props.challenge.owner},
-    context: {
-      headers: {
-        'Authorization': 'Bearer ' + props.token
-      }
-    },
     onError: error1 => {
       console.log('challenge card error');
       console.log(error1);

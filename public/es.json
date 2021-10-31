@@ -212,5 +212,11 @@
     "exp": "de Experiencia",
     "well-done": "¡Buen Trabajo!",
     "return": "Volver"
+  },
+  "ranking": {
+    "challenge": "Desafíos",
+    "users": "Participantes",
+    "score": "Puntos",
+    "top": "Los mejores desafíos"
   }
 }

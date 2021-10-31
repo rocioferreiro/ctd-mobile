@@ -212,5 +212,11 @@
     "exp": "Experience!",
     "well-done": "Well Done!",
     "return": "Return"
+  },
+  "ranking": {
+    "challenge": "Challenge",
+    "users": "Participants",
+    "score": "Points",
+    "top": "Top Challenges"
   }
 }
