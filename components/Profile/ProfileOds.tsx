@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 
 type Props = {
     setDisabled: (boolean) => void
+    setOdsIsOpen: (boolean) => void
     formik: any
 }
 

@@ -35,6 +35,8 @@ const EditProfile = ({navigation}) => {
   const [open, setOpen] = React.useState(false);
   const [disabled, setDisabled] = React.useState(true)
   const [ addImage, setAddImage] = React.useState(false)
+  const [ odsIsOpen, setOdsIsOpen] = React.useState(false)
+
 
 
   const onDismissSingle = React.useCallback(() => {
@@ -219,7 +221,10 @@ const EditProfile = ({navigation}) => {
   });
 
 
-  return <View style={styles.container}>
+  return (
+
+  odsIsOpen?
+  <View style={styles.container}>
     <IconButton icon={'chevron-left'} style={{marginTop: 25}} onPress={navigation.goBack}/>
     <View style={{height: Dimensions.get('window').height*0.05, paddingTop: 10, alignSelf: 'center'}}/>
     <ScrollView style={{
@@ -430,7 +435,7 @@ const EditProfile = ({navigation}) => {
     <View>
       <View style={{marginLeft:-Dimensions.get('window').width*0.15,
         backgroundColor: 'rgba(0,0,0,0)',}}>
-      <ProfileOds setDisabled={setDisabled} formik={formik}/>
+      <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen} formik={formik}/>
       </View>
     </View>
     </List.Accordion>
@@ -442,7 +447,10 @@ const EditProfile = ({navigation}) => {
 
     <Button style={styles.doneButton}> Done! </Button>
     </ScrollView>
-  </View>
+  </View>:
+      <View>
+        <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen}  formik={formik}/>
+      </View>)
 }
 
 export default EditProfile;
