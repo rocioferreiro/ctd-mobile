@@ -20,7 +20,7 @@ type Props = {
 }
 
 const OdsChoiceProfile  = (props: Props) => {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const onuInfo = onuPictures();
     const { colors } = useTheme();
     const [currentIndex, setCurrentIndex] = React.useState(1)
@@ -138,14 +138,25 @@ const OdsChoiceProfile  = (props: Props) => {
         }
     });
 
-    function toastOn(message: string, description: string = '') {
+
+    function toastOnMaxError() {
         Toast.show({
             type: 'error',
-            text1: message,
-            text2: description,
+            text1: t('ods-choice-profile.error-max-ods'),
+            text2: t('ods-choice-profile.error-max-ods-description'),
             topOffset: Dimensions.get("window").height * 0.05,
         });
     }
+
+    function toastOnMinError() {
+        Toast.show({
+            type: 'error',
+            text1: t('ods-choice-profile.error-min-ods'),
+            text2: t('ods-choice-profile.error-min-ods-description'),
+            topOffset: Dimensions.get("window").height * 0.05,
+        });
+    }
+
 
     return (
         <View style={styles.container}>
@@ -176,7 +187,8 @@ const OdsChoiceProfile  = (props: Props) => {
                             onPress={() => {
                                 if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
                                     if(props.selected.length===3){
-                                        toastOn(t('ods-choice-profile.max-ods-error'),t('ods-choice-profile.max-ods-error-description') )
+                                        //toastOn(t('ods-choice-profile.max-ods-error'),t('ods-choice-profile.max-ods-error-description') )
+                                        toastOnMaxError()
                                     }
                                     else{
                                     props.setSelected([...props.selected, {
@@ -196,7 +208,7 @@ const OdsChoiceProfile  = (props: Props) => {
                 <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
                     <IconButton style={styles.done} icon={"check-bold"} onPress={() =>
-                    {                         if(props.selected.length<3 ) toastOn(t('ods-choice-profile.min-ods-error'),t('ods-choice-profile.min-ods-error-description'))
+                    {                         if(props.selected.length<3 ) toastOnMinError()
                                                                                   else{     props.setOpen(false)
                                                                                         props.setOdsIsOpen(true)}}} color={colors.background}/>
                 </View>
