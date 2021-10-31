@@ -37,7 +37,7 @@ const ProfileOds = (props: Props) => {
         },
         card: {
             width: '100%',
-            minHeight: Dimensions.get('window').height * 0.74,
+            //minHeight: Dimensions.get('window').height * 0.74,
             padding: '3%',
             borderWidth: 0,
             backgroundColor: 'rgba(0,0,0,0)'

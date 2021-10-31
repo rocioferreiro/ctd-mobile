@@ -222,8 +222,6 @@ const EditProfile = ({navigation}) => {
 
 
   return (
-
-  odsIsOpen?
   <View style={styles.container}>
     <IconButton icon={'chevron-left'} style={{marginTop: 25}} onPress={navigation.goBack}/>
     <View style={{height: Dimensions.get('window').height*0.05, paddingTop: 10, alignSelf: 'center'}}/>
@@ -447,10 +445,7 @@ const EditProfile = ({navigation}) => {
 
     <Button style={styles.doneButton}> Done! </Button>
     </ScrollView>
-  </View>:
-      <View>
-        <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen}  formik={formik}/>
-      </View>)
+  </View>)
 }
 
 export default EditProfile;
