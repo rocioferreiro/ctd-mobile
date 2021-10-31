@@ -18,7 +18,6 @@ import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreatio
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
-import JoinButton from "../Challenge/JoinButton";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -340,7 +339,7 @@ const CTDHome = ({navigation}) => {
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
               {categories.map((s, index) => {
-                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking')}}>
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{
