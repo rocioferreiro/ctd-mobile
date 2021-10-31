@@ -425,7 +425,7 @@ const EditProfile = ({navigation}) => {
     </List.Accordion>
 
     <List.Accordion
-      title="Favourite ODS"
+      title={t('register.favorite-sdg')}
       style={styles.backgroundAlt}
       left={props => <List.Icon {...props} icon="star-circle-outline" />}
       expanded={odsExpanded}

@@ -28,7 +28,8 @@
     "profile-info": "Información de Perfil",
     "profile-image": "Imagen de Perfil",
     "location": "Ubicación",
-    "change-location": "Cambia tu ubicación"
+    "change-location": "Cambia tu ubicación",
+    "favorite-sdg": "ODS Favoritos"
   },
   "editProfile": {
     "user": "Información del Usuario"
@@ -215,7 +216,7 @@
   },
   "profile-ods": {
     "choose-favorite-ods": "Elige Tus ODS Favoritos",
-    "edit-ods": "Edita Tus ODS Favoritos",
+    "edit-ods": "Edita",
     "select-at-least": "Seleccioná 3 ODS favoritos para ajustar tu experiencia CTD a tus intereses",
     "select-ods": "Seleccioná ODS"
 

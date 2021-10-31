@@ -28,7 +28,8 @@
     "profile-info": "Profile info",
     "profile-image": "Profile Picture",
     "location": "Location",
-    "change-location": "Change Your Location"
+    "change-location": "Change Your Location",
+    "favorite-sdg": "Favorite SDG"
 
   },
   "profile": {
@@ -214,8 +215,8 @@
     "return": "Return"
   },
   "profile-ods": {
-    "choose-favorite-ods": "Choose Favorite SDG",
-    "edit-ods": "Edit Favorite SDG",
+    "choose-favorite-ods": "Your Favorite SDG",
+    "edit-ods": "Edit",
     "select-at-least": "Select 3 Favorite SDG to adjust your CTD experience to your interests",
     "select-ods": "Select SDG"
 

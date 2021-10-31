@@ -183,8 +183,11 @@ const ProfileOds = (props: Props) => {
                         <OdsChoiceProfile formik={formik} setOdsIsOpen={props.setOdsIsOpen}  selected={onuObjectives} setSelected={setOnuObjectives}
                                             setOpen={setOpenChoices}/> :
 
-                        <View>
-                            <Text style={styles.label}> {t('profile-ods.choose-favorite-ods')} </Text>
+                        <View >
+                            <Text style={{fontWeight: "bold",
+                                color: colors.primary,
+                                marginLeft: 5,
+                                fontSize: 20, padding:10}}> {t('profile-ods.choose-favorite-ods')} </Text>
                             {onuObjectives.length > 0 && onuObjectives.length<4 ?
                                 <View style={{display: 'flex', flexDirection: 'column'}}>
                                     <View style={{
