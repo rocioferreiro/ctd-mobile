@@ -15,6 +15,7 @@ type Props = {
     selected: any[],
     setSelected: (any) => void,
     setOpen: (boolean) => void,
+    setOdsIsOpen:(boolean) => void,
     formik: any
 }
 
@@ -155,13 +156,9 @@ const OdsChoiceProfile  = (props: Props) => {
                     <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
                         {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
                             return <TouchableWithoutFeedback key={index} onPress={() => {
-                                if(props.selected.length===2){
-                                    toastOn("Max Favorite ODS Number is 3", "You can't add anymore ODS to your favourites list!")
-                                }
-                                else{
                                 props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
                                 props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index));}
-                            }}>
+                            }>
                                 <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
                             </TouchableWithoutFeedback>
                         })}
@@ -178,15 +175,19 @@ const OdsChoiceProfile  = (props: Props) => {
                 <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
                             onPress={() => {
                                 if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
-
+                                    if(props.selected.length===2){
+                                        toastOn("Max Favorite ODS Number is 3", "You can't add anymore ODS to your favourites list!")
+                                    }
+                                    else{
                                     props.setSelected([...props.selected, {
                                         obj: Object.keys(ONUObjectives)[currentIndex],
                                         index: currentIndex,
                                         image: onuInfo[currentIndex].image
+
                                     }]);
                                     props.formik.setFieldValue('ONUObjective', [...props.formik.values.favouriteODS, currentIndex]);
                                 }
-                            }}
+                            }}}
                 />
             </View>
             <View style={styles.onuContainer}>
@@ -194,7 +195,8 @@ const OdsChoiceProfile  = (props: Props) => {
                 <Text style={styles.label}>{onuInfo[currentIndex].title}</Text>
                 <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
-                    <IconButton style={styles.done} icon={"check-bold"} onPress={() => props.setOpen(false)} color={colors.background}/>
+                    <IconButton style={styles.done} icon={"check-bold"} onPress={() => {props.setOpen(false)
+                                                                                        props.setOdsIsOpen(false)}} color={colors.background}/>
                 </View>
             </View>
         </View>

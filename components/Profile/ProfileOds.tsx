@@ -180,7 +180,7 @@ const ProfileOds = (props: Props) => {
             <ScrollView style={{backgroundColor: "rgba(0,0,0,0)"}}>
                 <View style={styles.card}>
                     {openChoices ?
-                        <OdsChoiceProfile formik={formik} selected={onuObjectives} setSelected={setOnuObjectives}
+                        <OdsChoiceProfile formik={formik} setOdsIsOpen={props.setOdsIsOpen}  selected={onuObjectives} setSelected={setOnuObjectives}
                                             setOpen={setOpenChoices}/> :
 
                         <View>
@@ -210,7 +210,8 @@ const ProfileOds = (props: Props) => {
                                         padding: 15
                                     }}>
                                         <Button style={styles.editOptionsButton} mode={'contained'}
-                                                onPress={() => setOpenChoices(true)}> {t('profile-ods.edit-ods')}</Button>
+                                                onPress={() => {setOpenChoices(true)
+                                                                    props.setOdsIsOpen(true)}}> {t('profile-ods.edit-ods')}</Button>
                                     </View>
                                 </View> :
                                 <View>
