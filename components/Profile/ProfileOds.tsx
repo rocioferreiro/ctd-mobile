@@ -211,7 +211,7 @@ const ProfileOds = (props: Props) => {
                                     }}>
                                         <Button style={styles.editOptionsButton} mode={'contained'}
                                                 onPress={() => {setOpenChoices(true)
-                                                                    props.setOdsIsOpen(true)}}> {t('profile-ods.edit-ods')}</Button>
+                                                                    props.setOdsIsOpen(false)}}> {t('profile-ods.edit-ods')}</Button>
                                     </View>
                                 </View> :
                                 <View>

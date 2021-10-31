@@ -35,7 +35,7 @@ const EditProfile = ({navigation}) => {
   const [open, setOpen] = React.useState(false);
   const [disabled, setDisabled] = React.useState(true)
   const [ addImage, setAddImage] = React.useState(false)
-  const [ odsIsOpen, setOdsIsOpen] = React.useState(false)
+  const [ odsIsOpen, setOdsIsOpen] = React.useState(true)
 
 
 
