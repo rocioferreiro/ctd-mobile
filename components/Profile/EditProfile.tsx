@@ -80,6 +80,7 @@ const EditProfile = ({navigation}) => {
     },
   });
 
+/*
   const parseAndSendUpdateUser = () => {
     const newPostDTOInput = {
       "title": post.title,
@@ -94,6 +95,7 @@ const EditProfile = ({navigation}) => {
       props.toastOn();
     });
   }
+*/
 
   function toastOnUpdateUserError() {
     Toast.show({
