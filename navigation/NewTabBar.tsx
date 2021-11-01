@@ -27,6 +27,7 @@ import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 import RankingList from "../components/ranking/RankingList";
 import RankingView from "../components/ranking/RankingView";
+import VerifyChallenge from "../components/VerifyChallenge";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
@@ -143,6 +144,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'challenges-scrollview'}>
           {(props) => <ChallengeCardScrollView {...props} />}
         </Stack.Screen>
+        <Stack.Screen name={'VerifyChallenge'} component={VerifyChallenge}/>
       </Stack.Navigator>
       <CreateFAB open={openOptions} onClose={() => {setOpenOptions(false)}} navigation={navigation}/>
       <Tabbar
