@@ -147,7 +147,7 @@ export const PROFILE_HTML = (content: Content) => {
                 </div>
             </div>
         </div>
-        <div style="display: flex; break-inside: avoid; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
             <p style="text-align: justify;
                       color: #15006D;
                       line-height: 1.5;
