@@ -64,7 +64,8 @@ const EditProfile = ({navigation}) => {
       console.log(data)
     }});
 
-  const onSubmitEdit = () => {
+  const onSubmitEdit = (formik) => {
+    parseAndSendUpdateUser(formik)
     //TODO integracion
   }
 
@@ -80,22 +81,23 @@ const EditProfile = ({navigation}) => {
     },
   });
 
-/*
-  const parseAndSendUpdateUser = () => {
-    const newPostDTOInput = {
-      "title": post.title,
-      "owner": userId,
-      "text": post.text,
-      "boosted": false,
-      "image": "asdasd",
-      "upvotes": 0
+  const parseAndSendUpdateUser = (formik) => {
+    const  userInputDto = {
+      name: formik.values.name,
+      lastname: formik.values.lastname,
+      favouriteODS: formik.values.favouriteODS,
+      address: formik.values.address,
+      biography: formik.values.address,
+      photoUrl: formik.values.photoUrl,
+      gender: formik.values.gender,
+      birthDate: formik.values.birthDate,
+      coordinates:formik.values.coordinates
     }
-    console.log(newPostDTOInput)
-    createPost({variables: {newPost: newPostDTOInput}}).catch(() => {
-      props.toastOn();
+    console.log(userInputDto)
+    updateUser({variables: {user: userInputDto}}).catch(() => {
+      toastOnUpdateUserError();
     });
   }
-*/
 
   function toastOnUpdateUserError() {
     Toast.show({
@@ -484,7 +486,7 @@ const EditProfile = ({navigation}) => {
     {/*<Button style={styles.button}> Location </Button>*/}
     {/*<Button style={styles.button}> Favourite ODS </Button>*/}
 
-    <Button style={styles.doneButton}> Done! </Button>
+    <Button style={styles.doneButton} onPress={()=>onSubmitEdit(formik)}> Done! </Button>
     </ScrollView>
   </View>)
 }
