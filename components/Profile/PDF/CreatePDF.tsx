@@ -32,6 +32,7 @@ const getSdgIcon = (number: number) => {
 }
 
 export const PROFILE_HTML = (content: Content) => {
+  console.log(content);
   return `
 <html>
 <head>
@@ -174,9 +175,9 @@ export const PROFILE_HTML = (content: Content) => {
         </div>
     </div>
     <div style="width: 100%; padding: 10px; margin: 5px; display: flex; flex-direction: column; align-items: center">
-        ${content.challenges.map(ch => {
-            if (!ch.sdg || ch.sdg.length <= 0) return ``
-            else return `<div style="
+        ${content.challenges?.map(ch => {
+    if (!ch.sdg || ch.sdg.length <= 0) return ``
+    else return `<div style="
                             width: 80%;
                             break-inside: avoid;
                             max-height: 300px;
@@ -225,15 +226,12 @@ export const PROFILE_HTML = (content: Content) => {
                                   </h6>
                               </div>
                                 <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
-                                  <img src="${getSdgIcon(ch.sdg[0])}"
-                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
-                                  <img src="${getSdgIcon(ch.sdg[1])}"
-                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
-                                  <img src="${getSdgIcon(ch.sdg[2])}"
-                                       style="border-radius: 50%;" height="35" alt="challenge-icon">
+                                ${ch.sdg.map((num, i) => {
+                                  return `<img src="${getSdgIcon(ch.sdg[i])}" style="border-radius: 50%;" height="35" alt="challenge-icon">`
+                                })}
                                 </div>
                               </div>`
-          })}
+  })}
     </div>
 </div>
 </body>
