@@ -70,6 +70,7 @@ const EditProfile = ({navigation}) => {
 
   const onSubmitEdit = (formik) => {
     parseAndSendUpdateUser(formik)
+
     navigation.goBack
 
     //TODO integracion
@@ -110,6 +111,10 @@ const EditProfile = ({navigation}) => {
       biography: formik.values.biography,
       photo: formik.values.photoUrl,
       id:userId,
+      age:userData.findUserById.user.age,
+
+
+
       gender:getGender(formik.values.gender),
       birthDate: formik.values.birthDate,
 
@@ -128,6 +133,16 @@ const EditProfile = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
+
+  function toastOnUpdateUserSuccess() {
+    Toast.show({
+      type: 'success',
+      text1: t('edit-profile.update-user-success'),
+      text2: t('edit-profile.update-user-success-description'),
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
+  }
+
 
   const genderList = [
     {
