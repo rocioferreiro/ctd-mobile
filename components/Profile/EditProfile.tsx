@@ -39,8 +39,12 @@ const EditProfile = ({navigation}) => {
   const [ addImage, setAddImage] = React.useState(false)
   const [ odsIsOpen, setOdsIsOpen] = React.useState(true)
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
+  const [userId, setUserId] = React.useState('');
 
-
+  React.useEffect(() => {
+    getUserId().then(id => setUserId(id));
+    getToken().then(t => setToken(t))
+  }, [])
 
   const onDismissSingle = React.useCallback(() => {
     setOpen(false);
@@ -66,6 +70,8 @@ const EditProfile = ({navigation}) => {
 
   const onSubmitEdit = (formik) => {
     parseAndSendUpdateUser(formik)
+    navigation.goBack
+
     //TODO integracion
   }
 
@@ -79,19 +85,34 @@ const EditProfile = ({navigation}) => {
       toastOnUpdateUserError();
       console.log(err);
     },
+    context: {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }
   });
+
+  function getGender(gender) {
+    if(gender==0) return "MALE"
+    if(gender==1) return "FEMALE"
+    else  return "OTHER"
+
+  }
 
   const parseAndSendUpdateUser = (formik) => {
     const  userInputDto = {
       name: formik.values.name,
       lastname: formik.values.lastname,
       favouriteODS: formik.values.favouriteODS,
-      address: formik.values.address,
-      biography: formik.values.address,
-      photoUrl: formik.values.photoUrl,
-      gender: formik.values.gender,
+      address: {coordinates: {latitude: formik.values.address.coordinates.latitude,longitude: formik.values.address.coordinates.latitude },
+        country: formik.values.address.country,id: formik.values.address.id,locality:formik.values.address.locality,
+        number: formik.values.address.number,province: formik.values.address.province,street: formik.values.address.street},
+      biography: formik.values.biography,
+      photo: formik.values.photoUrl,
+      id:userId,
+      gender:getGender(formik.values.gender),
       birthDate: formik.values.birthDate,
-      coordinates:formik.values.coordinates
+
     }
     console.log(userInputDto)
     updateUser({variables: {user: userInputDto}}).catch(() => {
@@ -318,7 +339,7 @@ const EditProfile = ({navigation}) => {
             showDropDown={() => setShowDropDown(true)}
             onDismiss={() => setShowDropDown(false)}
             value={formik.values.gender}
-            setValue={v => formik.setFieldValue('gender', v)}
+            setValue={v => formik.setFieldValue('gender', genderList[v].value)}
             list={genderList}
           />
 
