@@ -18,7 +18,7 @@
     "name": "Nombre",
     "lastname": "Apellido",
     "birthDate": "Fecha de Nacimiento",
-    "gender": "Sexo",
+    "gender": "Genero",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
     "done": "Registrarse",
@@ -26,7 +26,9 @@
     "bio": "Biografía",
     "add-profile-image": "Agrega imagen de perfil",
     "profile-info": "Información de Perfil",
-    "profile-image": "Imagen de Perfil"
+    "profile-image": "Imagen de Perfil",
+    "location": "Ubicación",
+    "change-location": "Cambia tu ubicación"
   },
   "editProfile": {
     "user": "Información del Usuario"
@@ -210,5 +212,11 @@
     "exp": "de Experiencia",
     "well-done": "¡Buen Trabajo!",
     "return": "Volver"
+  },
+  "ranking": {
+    "challenge": "Desafíos",
+    "users": "Participantes",
+    "score": "Puntos",
+    "top": "Los mejores desafíos"
   }
 }

@@ -11,6 +11,7 @@ import {Icon, Input, colors} from "react-native-elements";
 import {useTranslation} from "react-i18next";
 import DropDown from "react-native-paper-dropdown";
 import { DatePickerModal } from 'react-native-paper-dates';
+import ProfileLocation from "./ProfileLocation";
 import CancelButton from "../CreatePost/CancelButton";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import {Text} from "../Themed";
@@ -31,6 +32,7 @@ const EditProfile = ({navigation}) => {
   const handlePressOds = () => setOdsExpanded(!odsExpanded);
   const [showDropDown, setShowDropDown] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(true)
   const [ addImage, setAddImage] = React.useState(false)
 
 
@@ -83,7 +85,8 @@ const EditProfile = ({navigation}) => {
     biography: '',
     photoUrl: '',
     gender: Gender.OTHER,
-    birthDate: new Date()
+    birthDate: new Date(),
+    coordinates:null
   }
 
   let formik = useFormik(
@@ -108,7 +111,8 @@ const EditProfile = ({navigation}) => {
         biography: userData.findUserById.user.biography? userData.findUserById.user.biography : '',
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
-        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date()
+        birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date(),
+        coordinates: userData.findUserById.user.address.coordinates
       })
     }
   }, [userData])
@@ -390,13 +394,30 @@ const EditProfile = ({navigation}) => {
     </List.Accordion>
 
     <List.Accordion
-      title="Location"
+      title={t('register.location')}
       style={styles.background}
       left={props => <List.Icon {...props} icon="map-marker" />}
       expanded={locationExpanded}
       onPress={handlePressLocation}>
-      <List.Item title="First item" />
-      <List.Item title="Second item" />
+      <View>
+        <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+          paddingHorizontal:0,
+          flexDirection: 'row',
+          backgroundColor: 'rgba(0,0,0,0)',}}>
+          <Text style={{
+            color: colors.primary,
+            fontWeight: "bold",
+            fontSize: 15,
+            marginLeft: 2,
+            paddingHorizontal: 15,
+            paddingTop: 10
+          }}> {t('register.change-location')}</Text>
+        </View>
+        <View style={{marginLeft:-Dimensions.get('window').width*0.15,
+          backgroundColor: 'rgba(0,0,0,0)',}}>
+        <ProfileLocation setDisabled={setDisabled} formik={formik}></ProfileLocation>
+        </View>
+      </View>
     </List.Accordion>
 
     <List.Accordion
