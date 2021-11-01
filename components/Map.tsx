@@ -29,6 +29,7 @@ const Map = () => {
     const {colors} = useTheme()
 
     const [location, setLocation] = useState(null);
+    const [currentRegion, setCurrentRegion] = useState(null);
     const getLocationLazily = () => {
         if (location && location.latitude && location.longitude) return {latitude: location.latitude, longitude: location.longitude}
         else return {latitude: 0.0, longitude: 0.0}
@@ -48,6 +49,12 @@ const Map = () => {
             }
             let location = await Location.getLastKnownPositionAsync({});
             setLocation(location.coords);
+            setCurrentRegion({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+            });
         })();
         getToken().then(t => setToken(t))
     }, [])
@@ -142,7 +149,7 @@ const Map = () => {
         }
     }, [userData, challengeData]);
 
-    if (userLoading || challengeLoading || !location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
+    if (!location) return <View style={{display: 'flex', backgroundColor: colors.surface, justifyContent:'center', width: '100%', height: '100%'}}><ActivityIndicator size="large" /></View>;
     if (userError) {
         console.log(userError.message);
         return <View style={{width: Dimensions.get('window').width,
@@ -166,6 +173,14 @@ const Map = () => {
         return <Text>Error :(</Text>;
     }
 
+    const onRegionChangeComplete = (region) => {
+        if (Math.abs(currentRegion.latitude - region.latitude) > Math.abs(region.latitudeDelta) ||
+            Math.abs(currentRegion.longitude - region.longitude) > Math.abs(region.longitudeDelta)) {
+            setLocation({latitude: region.latitude, longitude: region.longitude});
+            setCurrentRegion(region);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <MapView style={styles.map}
@@ -174,7 +189,7 @@ const Map = () => {
                          longitude: location.longitude,
                          latitudeDelta: 0.1,
                          longitudeDelta: 0.1,
-                     }}>
+                     }} onRegionChangeComplete={onRegionChangeComplete}>
 
                 {userMarkers ? userMarkers.map((marker, index) => (
                     <Marker
