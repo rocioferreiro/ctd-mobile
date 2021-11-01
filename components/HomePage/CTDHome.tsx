@@ -263,7 +263,7 @@ const CTDHome = ({navigation}) => {
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('challenge-verification')}/>
+                <Button onPress={()=> navigation.navigate('levelUp')}/>
               </View>
             </View>
           </LinearGradient>
