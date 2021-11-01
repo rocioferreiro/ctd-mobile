@@ -100,7 +100,7 @@ updateUser(user:$user)
 `;
 
 export const UPDATE_USER_LOCATION =gql`
-mutation editUserLocation($address: AdressInput!){
+mutation editUserLocation($address: AddressInput!){
 updateUserLocation(address:$address)
 }
 

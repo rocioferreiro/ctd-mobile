@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Colors, IconButton, List, useTheme} from "react-native-paper";
-import {useLazyQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {useFormik} from "formik";
@@ -18,6 +18,8 @@ import {Text} from "../Themed";
 import ImageButton from "../CreatePost/ImageButton";
 import ImageButtonProfile from "./ImageButtonProfile";
 import ProfileOds from "./ProfileOds";
+import {CREATE_POST, UPDATE_USER} from "../apollo-graph/Mutations";
+import Toast from "react-native-toast-message";
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -36,6 +38,7 @@ const EditProfile = ({navigation}) => {
   const [disabled, setDisabled] = React.useState(true)
   const [ addImage, setAddImage] = React.useState(false)
   const [ odsIsOpen, setOdsIsOpen] = React.useState(true)
+  const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
 
 
 
@@ -63,6 +66,42 @@ const EditProfile = ({navigation}) => {
 
   const onSubmitEdit = () => {
     //TODO integracion
+  }
+
+
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    onCompleted: () => {
+      setUpdateUserSuccess(true);
+    },
+    onError: err => {
+      toastOnUpdateUserError();
+      console.log(err);
+    },
+  });
+
+  const parseAndSendUpdateUser = () => {
+    const newPostDTOInput = {
+      "title": post.title,
+      "owner": userId,
+      "text": post.text,
+      "boosted": false,
+      "image": "asdasd",
+      "upvotes": 0
+    }
+    console.log(newPostDTOInput)
+    createPost({variables: {newPost: newPostDTOInput}}).catch(() => {
+      props.toastOn();
+    });
+  }
+
+  function toastOnUpdateUserError() {
+    Toast.show({
+      type: 'error',
+      text1: t('edit-profile.update-user-error'),
+      text2: t('edit-profile.update-user-error-description'),
+      topOffset: Dimensions.get("window").height * 0.05,
+    });
   }
 
   const genderList = [
