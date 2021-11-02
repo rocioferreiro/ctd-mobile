@@ -98,7 +98,8 @@ const EditProfile = ({navigation}) => {
       headers: {
         "Authorization": "Bearer " + token
       }
-    }
+    },
+    refetchQueries:['newFindUserById']
 
   }
   );
@@ -115,7 +116,8 @@ const EditProfile = ({navigation}) => {
       headers: {
         "Authorization": "Bearer " + token
       }
-    }
+    },
+    refetchQueries:['newFindUserById']
   });
 
   function getGender(gender) {
