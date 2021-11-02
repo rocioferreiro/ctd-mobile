@@ -18,7 +18,7 @@ import {Text} from "../Themed";
 import ImageButton from "../CreatePost/ImageButton";
 import ImageButtonProfile from "./ImageButtonProfile";
 import ProfileOds from "./ProfileOds";
-import {CREATE_POST, UPDATE_USER} from "../apollo-graph/Mutations";
+import {CREATE_POST, UPDATE_USER, UPDATE_USER_LOCATION} from "../apollo-graph/Mutations";
 import Toast from "react-native-toast-message";
 
 const EditProfile = ({navigation}) => {
@@ -39,6 +39,8 @@ const EditProfile = ({navigation}) => {
   const [ addImage, setAddImage] = React.useState(false)
   const [ odsIsOpen, setOdsIsOpen] = React.useState(true)
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
+  const [updateUserLocationSuccess,setUpdateUserLocationSuccess] = React.useState(false)
+
   const [userId, setUserId] = React.useState('');
 
   React.useEffect(() => {
@@ -72,7 +74,8 @@ const EditProfile = ({navigation}) => {
     parseAndSendUpdateUser(formik)
 
     toastOnUpdateUserSuccess()
-    navigation.goBack
+    getUser()
+    navigation.navigate('profile')
 
 
     //TODO integracion
@@ -83,6 +86,21 @@ const EditProfile = ({navigation}) => {
   const [updateUser] = useMutation(UPDATE_USER, {
     onCompleted: () => {
       setUpdateUserSuccess(true);
+    },
+    onError: err => {
+      toastOnUpdateUserError();
+      console.log(err);
+    },
+    context: {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }
+  });
+
+  const [updateUserLocation] = useMutation(UPDATE_USER_LOCATION, {
+    onCompleted: () => {
+      setUpdateUserLocationSuccess(true);
     },
     onError: err => {
       toastOnUpdateUserError();
@@ -129,6 +147,20 @@ const EditProfile = ({navigation}) => {
       toastOnUpdateUserError();
     });
   }
+
+  const parseAndSendUpdateUserLocation = (formik) => {
+    const  addressInputDto = {
+    coordinates: {latitude: formik.values.address.coordinates.latitude,longitude: formik.values.address.coordinates.latitude },
+        country: formik.values.address.country,id: formik.values.address.id,locality:formik.values.address.locality,
+        number: formik.values.address.number,province: formik.values.address.province,street: formik.values.address.street
+    }
+    console.log(addressInputDto)
+    updateUserLocation({variables: {address: addressInputDto}}).catch(() => {
+      toastOnUpdateUserError();
+    });
+  }
+
+
 
   function toastOnUpdateUserError() {
     Toast.show({
