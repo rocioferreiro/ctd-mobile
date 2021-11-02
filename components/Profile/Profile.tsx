@@ -86,6 +86,7 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
+    fetchPolicy:"cache-and-network",
     onError: error => {
       console.log('profile error');
       console.log(error);

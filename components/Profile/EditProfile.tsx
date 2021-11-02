@@ -20,6 +20,11 @@ import ImageButtonProfile from "./ImageButtonProfile";
 import ProfileOds from "./ProfileOds";
 import {CREATE_POST, UPDATE_USER, UPDATE_USER_LOCATION} from "../apollo-graph/Mutations";
 import Toast from "react-native-toast-message";
+import * as Location from "expo-location";
+
+
+
+
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -40,7 +45,6 @@ const EditProfile = ({navigation}) => {
   const [ odsIsOpen, setOdsIsOpen] = React.useState(true)
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
   const [updateUserLocationSuccess,setUpdateUserLocationSuccess] = React.useState(false)
-
   const [userId, setUserId] = React.useState('');
 
   React.useEffect(() => {
@@ -72,12 +76,11 @@ const EditProfile = ({navigation}) => {
 
   const onSubmitEdit = (formik) => {
     parseAndSendUpdateUser(formik)
+    parseAndSendUpdateUser(formik)
 
     toastOnUpdateUserSuccess()
-    getUser()
+
     navigation.navigate('profile')
-
-
     //TODO integracion
   }
 
@@ -96,7 +99,9 @@ const EditProfile = ({navigation}) => {
         "Authorization": "Bearer " + token
       }
     }
-  });
+
+  }
+  );
 
   const [updateUserLocation] = useMutation(UPDATE_USER_LOCATION, {
     onCompleted: () => {
