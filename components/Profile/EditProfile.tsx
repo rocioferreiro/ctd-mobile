@@ -112,9 +112,12 @@ const EditProfile = ({navigation}) => {
       photo: formik.values.photoUrl,
       id:userId,
       age:userData.findUserById.user.age,
-
-
-
+      geoHash: userData.findUserById.user.geoHash,
+      level: userData.findUserById.user.level,
+      mail:userData.findUserById.user.mail,
+      role:userData.findUserById.user.role,
+      socialLogin: userData.findUserById.user.socialLogin,
+      xp:userData.findUserById.user.xp,
       gender:getGender(formik.values.gender),
       birthDate: formik.values.birthDate,
 
