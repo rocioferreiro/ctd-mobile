@@ -71,7 +71,9 @@ const EditProfile = ({navigation}) => {
   const onSubmitEdit = (formik) => {
     parseAndSendUpdateUser(formik)
 
+    toastOnUpdateUserSuccess()
     navigation.goBack
+
 
     //TODO integracion
   }
