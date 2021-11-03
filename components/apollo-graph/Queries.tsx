@@ -69,6 +69,10 @@ query newFindUserById($targetUserId: String!){
     }
     state
     connectionQuantity 
+    age
+    gender
+    birthDate
+    photo
   }
 }
 `;
