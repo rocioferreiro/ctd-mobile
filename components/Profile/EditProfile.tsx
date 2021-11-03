@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {Button, Colors, IconButton, List, useTheme} from "react-native-paper";
 import {useLazyQuery, useMutation} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
@@ -46,6 +46,7 @@ const EditProfile = ({navigation}) => {
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
   const [updateUserLocationSuccess,setUpdateUserLocationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
+  const [openChoices,setOpenChoices] =React.useState(false);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -72,6 +73,8 @@ const EditProfile = ({navigation}) => {
     },
     onCompleted: data => {
       console.log(data)
+      console.log(data.findUserById.user.favouriteODS.length)
+      //if(data.findUserById.user.favouriteODS.length>0) setOpenChoices(true)
     }});
 
   const onSubmitEdit = (formik) => {
@@ -238,8 +241,10 @@ const EditProfile = ({navigation}) => {
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
         gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
         birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date(),
-        coordinates: userData.findUserById.user.address.coordinates
+        coordinates: userData.findUserById.user.address.coordinates,
+        photo: userData.findUserById.user.photo
       })
+
     }
   }, [userData])
 
@@ -340,6 +345,15 @@ const EditProfile = ({navigation}) => {
       flexDirection: 'row',
       backgroundColor: 'rgba(0,0,0,0)',
 
+    },
+    editOptionsButton: {
+      width: Dimensions.get('window').width * 0.4,
+      height: Dimensions.get('window').height * 0.05,
+      borderRadius: 30,
+      backgroundColor: colorShade(colors.accent, 5),
+      //textAlign: "center",
+      justifyContent: "center",
+      //marginBottom: 10
     },
   });
 
@@ -554,10 +568,51 @@ const EditProfile = ({navigation}) => {
       expanded={odsExpanded}
       onPress={handlePressOds}>
     <View>
-      <View style={{marginLeft:-Dimensions.get('window').width*0.15,
-        backgroundColor: 'rgba(0,0,0,0)',}}>
-      <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen} formik={formik}/>
-      </View>
+      {   formik.values.favouriteODS.length>0 ?
+          <View >
+            <Text style={{fontWeight: "bold",
+              color: colors.primary,
+              marginLeft: 5,
+              fontSize: 20, padding:10}}> {t('profile-ods.choose-favorite-ods')} </Text>
+            <View style={{display: 'flex', flexDirection: 'column'}}>
+              <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: "center",
+                paddingHorizontal: 10,
+                paddingTop: 10
+              }}>
+                {formik.values.favouriteODS.map((s, index) => {
+                  return <TouchableWithoutFeedback key={index}>
+                    <Image
+                        style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
+                        source={s.image}/>
+                  </TouchableWithoutFeedback>
+                })}
+              </View>
+              <View style={{
+                display: "flex",
+                justifyContent: 'center',
+                width: '100%',
+                flexDirection: 'row',
+                padding: 15
+              }}>
+                <Button style={styles.editOptionsButton} mode={'contained'}
+                        onPress={() => {setOpenChoices(true)
+                        }}> {t('profile-ods.edit-ods')}</Button>
+              </View>
+            </View>
+          </View>
+
+          :
+        <View style={{
+          marginLeft: -Dimensions.get('window').width * 0.15,
+          backgroundColor: 'rgba(0,0,0,0)',
+        }}>
+          <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen} formik={formik}/>
+        </View>
+
+      }
     </View>
     </List.Accordion>
 

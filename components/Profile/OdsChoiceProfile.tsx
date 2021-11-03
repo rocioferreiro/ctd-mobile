@@ -168,7 +168,7 @@ const OdsChoiceProfile  = (props: Props) => {
                         {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
                             return <TouchableWithoutFeedback key={index} onPress={() => {
                                 props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
-                                props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index));}
+                                props.formik.favouriteODS=props.formik.values.favouriteODS.filter(i => i !== index);}
                             }>
                                 <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
                             </TouchableWithoutFeedback>
@@ -209,7 +209,8 @@ const OdsChoiceProfile  = (props: Props) => {
                 <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
                     <IconButton style={styles.done} icon={"check-bold"} onPress={() =>
                     {                         if(props.selected.length<3 ) toastOnMinError()
-                                                                                  else{     props.setOpen(false)
+                                                                                  else{
+                                                                                      props.setOpen(false)
                                                                                         props.setOdsIsOpen(true)}}} color={colors.background}/>
                 </View>
             </View>

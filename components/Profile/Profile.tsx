@@ -93,6 +93,7 @@ export function Profile(props: Props) {
     },
     onCompleted: data => {
       console.log(data)
+      console.log(data.findUserById.user.favouriteODS.length)
       if(data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
       if(data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
       else setConnectionStatus(ConnectionStatus.connect)
