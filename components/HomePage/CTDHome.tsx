@@ -224,7 +224,7 @@ const CTDHome = ({navigation}) => {
       text2: t('home.create-post-error-subtitle'),
       topOffset: Dimensions.get("window").height * 0.05,
     });
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -234,34 +234,34 @@ const CTDHome = ({navigation}) => {
         height: Dimensions.get('screen').height,
         backgroundColor: colors.surface
       }}>
-        <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
-                    style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
-          <LinearGradient
-            colors={[colors.primary, "rgba(0,0,0,0)"]}
-            start={{
-              x: 1,
-              y: 0,
-            }}
-            end={{
-              x: 1,
-              y: 1,
-            }}
-            style={styles.box}
-          >
-            <View style={{
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 10,
-              paddingTop: 30,
-              backgroundColor: "rgba(0,0,0,0)"
-            }}>
-              <View style={{
-                width: "70%",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 10,
-                backgroundColor: "rgba(0,0,0,0)"
-              }}>
+          <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
+                      style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
+              <LinearGradient
+                  colors={[colors.primary, "rgba(0,0,0,0)"]}
+                  start={{
+                    x: 1,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 1,
+                    y: 1,
+                  }}
+                  style={styles.box}
+              >
+                  <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
+                    paddingTop: 30,
+                    backgroundColor: "rgba(0,0,0,0)"
+                  }}>
+                      <View style={{
+                        width: "70%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                        backgroundColor: "rgba(0,0,0,0)"
+                      }}>
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
@@ -376,24 +376,24 @@ const CTDHome = ({navigation}) => {
             />
           </View>
 
-            <TouchableWithoutFeedback
-                onPress={() => setCreate(true)}>
-                <View style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  backgroundColor: 'transparent',
-                  alignItems: "center",
-                  justifyContent: 'space-between'
-                }}>
-                    <Text style={styles.create}>{t('home.challenge')}!</Text>
-                    <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                  onPress={() => setCreate(true)}>
+                  <View style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    backgroundColor: 'transparent',
+                    alignItems: "center",
+                    justifyContent: 'space-between'
+                  }}>
+                      <Text style={styles.create}>{t('home.challenge')}!</Text>
+                      <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                      </View>
+                  </View>
+              </TouchableWithoutFeedback>
 
-          <PostFeed navigation={navigation}/>
+              <PostFeed navigation={navigation}/>
 
-        </ScrollView>
+          </ScrollView>
       </View>}
 
       {createPost && <Card style={styles.creationCard}>
