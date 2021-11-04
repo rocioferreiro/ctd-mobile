@@ -46,7 +46,7 @@ const EditProfile = ({navigation}) => {
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
   const [updateUserLocationSuccess,setUpdateUserLocationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
-  const [openChoices,setOpenChoices] =React.useState(false);
+ // const [openChoices,setOpenChoices] =React.useState(false);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -568,7 +568,7 @@ const EditProfile = ({navigation}) => {
       expanded={odsExpanded}
       onPress={handlePressOds}>
     <View>
-      {   formik.values.favouriteODS.length>0 ?
+{/*      {   formik.values.favouriteODS.length>0 ?
           <View >
             <Text style={{fontWeight: "bold",
               color: colors.primary,
@@ -604,7 +604,7 @@ const EditProfile = ({navigation}) => {
             </View>
           </View>
 
-          :
+          :*/}
         <View style={{
           marginLeft: -Dimensions.get('window').width * 0.15,
           backgroundColor: 'rgba(0,0,0,0)',
@@ -612,7 +612,7 @@ const EditProfile = ({navigation}) => {
           <ProfileOds setDisabled={setDisabled} setOdsIsOpen={setOdsIsOpen} formik={formik}/>
         </View>
 
-      }
+
     </View>
     </List.Accordion>
 
