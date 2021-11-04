@@ -31,8 +31,10 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const categories = ["1", "13", "15"]
-  const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
+  const categories = ["1", "13", "15", "0", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "16"]
+  const categoryColors = [colors.accent, "#707070", "#c1c1c1", colors.primary, colors.background, colors.notification,
+    colors.extra, colors.light, colors.text, "#da4c65", "#2fa4ca", "#93d207", "#5c020e", "#4ca4c1", "#9514df", "#35ffff", "#e57900"];
+  const [categoriesQuantity, setCategoriesQuantity] = React.useState(3);
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
   const [creationSuccess, setCreationSuccess] = React.useState(false)
@@ -334,11 +336,13 @@ const CTDHome = ({navigation}) => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: "center",
+              flex: 1,
+              flexWrap: "wrap",
               paddingHorizontal: 10,
               paddingTop: 10,
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
-              {categories.map((s, index) => {
+              {categories.slice(0, categoriesQuantity).map((s, index) => {
                 return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
@@ -365,12 +369,12 @@ const CTDHome = ({navigation}) => {
             </View>
           </View>
 
-              <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
-                  <Button onPress={() => setCreatePost(true)}
-                          icon={{name: 'add', type: 'ionicon'}}
-                          buttonStyle={styles.button}
-                  />
-              </View>
+          <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
+            <Button onPress={() => categoriesQuantity === 3 ? setCategoriesQuantity(categories.length) : setCategoriesQuantity(3)}
+                    icon={{name: categoriesQuantity === 3 ? 'add' : 'remove', type: 'ionicon'}}
+                    buttonStyle={styles.button}
+            />
+          </View>
 
               <TouchableWithoutFeedback
                   onPress={() => setCreate(true)}>
