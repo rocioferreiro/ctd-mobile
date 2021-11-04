@@ -7,10 +7,10 @@ import {
   Modal, Platform,
   ScrollView,
   StyleSheet, TouchableOpacity,
-  TouchableWithoutFeedback,View as ViewR
+  TouchableWithoutFeedback, View as ViewR
 } from "react-native";
 import {Icon, Button, Image} from "react-native-elements";
-import {ActivityIndicator, Badge, IconButton, Title, useTheme} from "react-native-paper";
+import {ActivityIndicator, Badge, IconButton, useTheme} from "react-native-paper";
 import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
@@ -35,6 +35,7 @@ import {Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
+import {createPDF, PROFILE_HTML} from "./PDF/CreatePDF";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -48,11 +49,11 @@ interface Props {
 }
 
 function prettifyDate(date) {
-  return date.toLocaleString('default', { month: 'short' }) + ' ' + date.toLocaleString('default', { day: '2-digit' })
+  return date.toLocaleString('default', {month: 'short'}) + ' ' + date.toLocaleString('default', {day: '2-digit'})
 }
 
 export function Profile(props: Props) {
-  const [open,setOpen]=React.useState(false)
+  const [open, setOpen] = React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
   const [isCreator, setCreator] = useState<boolean>(false)
@@ -64,7 +65,10 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
-  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading, error: verifiedError}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
+  const [getVerifiedChallenges, {
+    data: verifiedChallengesData,
+    loading: verifiedLoading
+  }] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -94,8 +98,8 @@ export function Profile(props: Props) {
     onCompleted: data => {
       console.log(data)
       console.log(data.findUserById.user.favouriteODS.length)
-      if(data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
-      if(data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
+      if (data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
+      if (data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
       else setConnectionStatus(ConnectionStatus.connect)
     }
   });
@@ -110,7 +114,7 @@ export function Profile(props: Props) {
       console.log(error);
     },
     onCompleted: result => {
-      if(result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
+      if (result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
       else setCreator(false) // Change to true to see new challenge button
     }
   });
@@ -211,9 +215,16 @@ export function Profile(props: Props) {
     }
   }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
   useEffect(() => {
-    if(verifiedChallengesData) {
+    if (verifiedChallengesData) {
       setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
-        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title, description: c.description, imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'};
+        return {
+          time: prettifyDate(new Date(c.endEvent)),
+          year: new Date(c.endEvent).getFullYear(),
+          id: c.id,
+          title: c.title,
+          description: c.description,
+          imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'
+        };
       }))
     }
   }, [verifiedLoading])
@@ -226,6 +237,7 @@ export function Profile(props: Props) {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
+
   const onError = () => {
     toastError();
   }
@@ -383,18 +395,18 @@ export function Profile(props: Props) {
       width: "40%",
       height: 30
     },
-    title:{
-      fontSize:22,
+    title: {
+      fontSize: 22,
       fontWeight: 'bold',
-      marginBottom:5
+      marginBottom: 5
     },
-    descriptionContainer:{
+    descriptionContainer: {
       flexDirection: 'row',
       paddingRight: 50,
       backgroundColor: 'transparent',
       opacity: 1
     },
-    imageInRow:{
+    imageInRow: {
       width: 60,
       minHeight: 60,
       height: 100,
@@ -408,17 +420,27 @@ export function Profile(props: Props) {
     }
   });
   const {t, i18n} = useTranslation();
-  function renderTime(rowData, sectionID, rowID){
-    return <ViewR style={{backgroundColor:colors.primary, padding:5, borderRadius:13, width: 50, height: 70, justifyContent: "center", marginTop: 5}}>
-      <Text style={{textAlign: 'center', color:'white', fontSize: 17}}>{rowData.time}</Text>
-      <Text style={{textAlign: 'center', color:'white', fontSize: 13}}>{rowData.year}</Text>
+
+  function renderTime(rowData, sectionID, rowID) {
+    return <ViewR style={{
+      backgroundColor: colors.primary,
+      padding: 5,
+      borderRadius: 13,
+      width: 50,
+      height: 70,
+      justifyContent: "center",
+      marginTop: 5
+    }}>
+      <Text style={{textAlign: 'center', color: 'white', fontSize: 17}}>{rowData.time}</Text>
+      <Text style={{textAlign: 'center', color: 'white', fontSize: 13}}>{rowData.year}</Text>
     </ViewR>
   }
+
   function renderDetail(rowData, sectionID, rowID) {
     let title = <Text style={[styles.title]}>{rowData.title}</Text>
 
     return (
-      <View style={{flex:1, backgroundColor: 'transparent'}}>
+      <View style={{flex: 1, backgroundColor: 'transparent'}}>
         {title}
         <View style={styles.descriptionContainer}>
           <Image source={{uri: rowData.imageUrl}} style={styles.imageInRow}/>
@@ -428,14 +450,15 @@ export function Profile(props: Props) {
     )
   }
 
-  function onTimeLinePress(data){
+  function onTimeLinePress(data) {
     props.navigation.navigate('challenge', {challengeId: data.id})
   }
 
   function handleDisconnect() {
     setOpen(true)
   }
-  function doDisconnect(){
+
+  function doDisconnect() {
     disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
     setOpen(false)
   }
@@ -486,7 +509,10 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview' ,params: {challengeId: challenge.id, challenges:challengesData.getCreatedChallengesByUser}})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar', {
+      screen: 'challenges-scrollview',
+      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
+    })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -504,7 +530,10 @@ export function Profile(props: Props) {
   }
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar',{screen:'challenges-scrollview',params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}})} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar', {
+      screen: 'challenges-scrollview',
+      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
+    })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
@@ -543,29 +572,25 @@ export function Profile(props: Props) {
 
   return (
     <View style={styles.container}>
-      <ConfirmationModal open={open} onClose={()=>setOpen(false)} onAccept={()=>doDisconnect()} text={t('profile.modal-text')}
+      <ConfirmationModal open={open} onClose={() => setOpen(false)} onAccept={() => doDisconnect()}
+                         text={t('profile.modal-text')}
                          cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
       {!viewPost &&
       <ScrollView>
 
           <ImageBackground style={styles.profileBackground}
-                           //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
+            //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                            source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'}>
-                {props.route.params?.otherId && <View style={styles.imageCoverContainer}>
-                    <IconButton onPress={() => props.navigation.goBack()} style={{marginTop: 50}} icon={'chevron-left'}/>
-                    <Button2 icon="plus"
-                             style={styles.connectButton}
-                             onPress={() => onConnect()} color={colors.background}
-                             labelStyle={{fontWeight: 'bold', fontSize: 11}}
-                    > {getConnectButtonLabel()}
-                    </Button2>
-                </View>}
+            {props.route.params?.otherId && <View style={styles.imageCoverContainer}>
+                <IconButton onPress={() => props.navigation.goBack()} style={{marginTop: 50}} icon={'chevron-left'}/>
+                <Button2 icon="plus"
+                         style={styles.connectButton}
+                         onPress={() => onConnect()} color={colors.background}
+                         labelStyle={{fontWeight: 'bold', fontSize: 11}}
+                > {getConnectButtonLabel()}
+                </Button2>
+            </View>}
           </ImageBackground>
-        {/*  <Image*/}
-        {/*  source={require('../../assets/images/profile-background.jpg')}*/}
-        {/*  resizeMode={'cover'}*/}
-        {/*  style={styles.profileBackground}*/}
-        {/*/>*/}
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
@@ -607,7 +632,26 @@ export function Profile(props: Props) {
                         <Icon type={'feather'} name={'edit-2'}/>
                     </View>
                 </TouchableWithoutFeedback>
-
+                <TouchableWithoutFeedback onPress={() => {
+                  createPDF(PROFILE_HTML({
+                    username: userData?.findUserById?.user?.name + ' ' + userData?.findUserById?.user?.lastname,
+                    email: userData?.findUserById?.user?.mail,
+                    connected: userData?.findUserById?.connectionQuantity || 0,
+                    level: 2,
+                    verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
+                    sdg: [1,2,3], //userData?.findUserById?.user?.favouriteODS,
+                    challenges: verifiedChallengesData ?
+                      verifiedChallengesData.getVerifiedChallenges.map(c => {
+                        return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
+                      })
+                      :
+                      []
+                  }));
+                }}>
+                    <View style={{backgroundColor: 'transparent'}}>
+                        <Icon type={'feather'} name={'download'}/>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
             }
           </View>
@@ -652,47 +696,61 @@ export function Profile(props: Props) {
                   <Text style={styles.secondaryText}>{t('profile.challenges')}</Text>
               </View>
               <View style={{backgroundColor: 'transparent'}}>
-                  {!viewBiography ? <Button2
-                      style={{backgroundColor: colors.accent, borderRadius: 20}}
-                      onPress={() => setViewBiography(true)} color={colors.background} labelStyle={{fontWeight: 'bold'}}
+                {!viewBiography ? <Button2
+                    style={{backgroundColor: colors.accent, borderRadius: 20}}
+                    onPress={() => setViewBiography(true)} color={colors.background} labelStyle={{fontWeight: 'bold'}}
                   > {t('profile.about')}
-                  </Button2> :  <Icon onPress={() => setViewBiography(false)} style={{marginRight: 4}} type={'feather'} name={'x'} color={colors.accent} size={32}/>}
+                  </Button2> :
+                  <Icon onPress={() => setViewBiography(false)} style={{marginRight: 4}} type={'feather'} name={'x'}
+                        color={colors.accent} size={32}/>}
               </View>
           </View>
-        { !viewBiography ? <View style={{backgroundColor: 'transparent'}}>
+        {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             {/*TODO change to challenges im subscribed to*/}
-              <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
-              <ScrollView horizontal={true}>
-                {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
-                })}
-              </ScrollView>
-            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
-            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
-            }
-          </View>
-        {postsOfUser &&
-        <View style={styles.sectionContainer}>
-            <Text style={styles.primaryText}>{t('profile.posts')}</Text>
+            <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
-              {postsOfUser?.findPostByOwner?.map((post, i) => {
-                return <PostThumbnail onPressed={(postId) => {
-                  // setViewPostId(postId);
-                  // setViewPost(true);
-                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
-                }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
+              {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+                if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
-          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
-          <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
+            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            <NoResults text={t('profile.no-results')}
+                       subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
+            }
+          </View>
+          {postsOfUser &&
+          <View style={styles.sectionContainer}>
+              <Text style={styles.primaryText}>{t('profile.posts')}</Text>
+              <ScrollView horizontal={true}>
+                {postsOfUser?.findPostByOwner?.map((post, i) => {
+                  return <PostThumbnail onPressed={(postId) => {
+                    // setViewPostId(postId);
+                    // setViewPost(true);
+                    props.navigation.navigate('tabbar', {
+                      screen: 'post',
+                      params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}
+                    })
+                  }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
+                })}
+              </ScrollView>
+            {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
+            <NoResults text={t('profile.no-results')}
+                       subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
+            }
+          </View>
           }
-        </View>
-        }
 
-        { (!props.route.params?.otherId && isCreator) &&
+          {(!props.route.params?.otherId && isCreator) &&
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
-              <View style={{backgroundColor: 'transparent', display: "flex", flexDirection: "row", justifyContent: "space-between", height:40, alignItems:"center"}}>
+              <View style={{
+                backgroundColor: 'transparent',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                height: 40,
+                alignItems: "center"
+              }}>
                   <Text style={styles.primaryText}>{t('profile.my-challenges')}</Text>
                   <Button onPress={() => props.navigation.navigate('challengeCreation')}
                           icon={{name: 'add', type: 'ionicon'}}
@@ -706,75 +764,77 @@ export function Profile(props: Props) {
                 })}
               </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
-            <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
+            <NoResults text={t('profile.no-results')}
+                       subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
-        }
-        {(!props.route.params?.otherId) &&
-        <View style={{...styles.sectionContainer}}>
-            <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
-            <Timeline
-                circleSize={20}
-                circleColor={colors.accent}
-                lineColor={colors.accent}
-                descriptionStyle={{color: '#c2c2c2'}}
-                renderDetail={renderDetail}
-                renderTime={renderTime}
-                detailContainerStyle={{
-                  marginBottom: 30,
-                  paddingLeft: 5,
-                  paddingRight: 5,
-                  backgroundColor: colorShade(colors.surface, -15),
-                  borderRadius: 10
-                }}
-                options={{
-                  style: {paddingTop: 1, paddingHorizontal: 10}
-                }}
-                data={timeLineData}
-                onEventPress={onTimeLinePress}
-            />
-          {(verifiedLoading) ? <ActivityIndicator size="large"/> : (timeLineData.length == 0) &&
-              <NoResults text={t('profile.no-results')}
-                         subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
           }
-        </View>
-        }
+          {(!props.route.params?.otherId) &&
+          <View style={{...styles.sectionContainer}}>
+              <Text style={styles.primaryText}>{t('profile.finished-challenges')}</Text>
+              <Timeline
+                  circleSize={20}
+                  circleColor={colors.accent}
+                  lineColor={colors.accent}
+                  descriptionStyle={{color: '#c2c2c2'}}
+                  renderDetail={renderDetail}
+                  renderTime={renderTime}
+                  detailContainerStyle={{
+                    marginBottom: 30,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    backgroundColor: colorShade(colors.surface, -15),
+                    borderRadius: 10
+                  }}
+                  options={{
+                    style: {paddingTop: 1, paddingHorizontal: 10}
+                  }}
+                  data={timeLineData}
+                  onEventPress={onTimeLinePress}
+              />
+            {(verifiedLoading) ? <ActivityIndicator size="large"/> : (timeLineData.length == 0) &&
+                <NoResults text={t('profile.no-results')}
+                           subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
+            }
+          </View>
+          }
 
-        {!props.route.params?.otherId &&
-        <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
-            <Button2
-                uppercase={false}
-                mode={'outlined'}
-                style={{width: '40%'}}
-                onPress={() => {
-                  auth.signOut().catch(e => console.log(e))
-                  //props.navigation.navigate('landing')
-                }}
-            >
-              {t('profile.logout')}
-            </Button2>
-        </View>}
+          {!props.route.params?.otherId &&
+          <View style={[styles.sectionContainer, styles.logout, {marginBottom: 100, marginTop: 30}]}>
+              <Button2
+                  uppercase={false}
+                  mode={'outlined'}
+                  style={{width: '40%'}}
+                  onPress={() => {
+                    auth.signOut().catch(e => console.log(e))
+                    //props.navigation.navigate('landing')
+                  }}
+              >
+                {t('profile.logout')}
+              </Button2>
+          </View>}
 
-      <Modal animationType="fade"
-             presentationStyle={"fullScreen"}
-             visible={viewConnectionsFeed}
-             onRequestClose={() => {
-               setViewConnectionsFeed(!viewConnectionsFeed);
-               getConnectionRequestsNumber();
-             }}>
-        <View style={{backgroundColor: colors.surface}}>
-          <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.05}: {}} onPress={() => {
-            setViewConnectionsFeed(false)
-            getConnectionRequestsNumber()
-          }}
-                      icon={'chevron-left'}
-          />
-        </View>
-        <ConnectionsFeed navigation={props.navigation}/>
-      </Modal>
-        </View>: <View/>}
+          <Modal animationType="fade"
+                 presentationStyle={"fullScreen"}
+                 visible={viewConnectionsFeed}
+                 onRequestClose={() => {
+                   setViewConnectionsFeed(!viewConnectionsFeed);
+                   getConnectionRequestsNumber();
+                 }}>
+            <View style={{backgroundColor: colors.surface}}>
+              <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height * 0.05} : {}}
+                          onPress={() => {
+                            setViewConnectionsFeed(false)
+                            getConnectionRequestsNumber()
+                          }}
+                          icon={'chevron-left'}
+              />
+            </View>
+            <ConnectionsFeed navigation={props.navigation}/>
+          </Modal>
+        </View> : <View/>}
       </ScrollView>}
-        </View>
+    </View>
   );
 }
 

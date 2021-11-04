@@ -329,6 +329,7 @@ query getVerifiedChallenges {
     getVerifiedChallenges {
         description
         endEvent
+        categories
         id
         title
         score
