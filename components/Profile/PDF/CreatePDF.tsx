@@ -38,12 +38,17 @@ export const PROFILE_HTML = (content: Content) => {
 <head>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <link rel="stylesheet" href="profile.css">
     <title>Connect the Dots - Participation Certificate</title>
 </head>
 <body style="text-align: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9">
 <style> 
-   @page { margin: 20px; } 
+   @page { 
+     margin: 0;
+     /* A4 size */
+     size: A4;
+     height: 297mm;
+     width: 210mm; 
+   } 
 </style>
 <h1 style="font-size: 50px; margin: 10px; font-family: ApfelGrotezk, Helvetica, monospace; font-weight: bold; color: #15006D">
     Connect the Dots
@@ -52,8 +57,8 @@ export const PROFILE_HTML = (content: Content) => {
     Participation Certificate
 </h3>
 <div style="align-items: center; justify-content: center; display: flex; flex-direction: column">
-    <div style="display: flex; flex-direction: row; width: 100%; padding: 10px; align-items: center; justify-content: space-evenly;">
-        <div style="width: 50%;
+    <div style="display: flex; flex-direction: row; width: 100%; padding: 5px; align-items: center; justify-content: space-between;">
+        <div style="width: 46%;
                     border-radius: 15px;
                     padding: 8px;
                     background-color: #fff;
@@ -148,7 +153,7 @@ export const PROFILE_HTML = (content: Content) => {
                 </div>
             </div>
         </div>
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 50%;">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 46%;">
             <p style="text-align: justify;
                       color: #15006D;
                       line-height: 1.5;
@@ -167,71 +172,73 @@ export const PROFILE_HTML = (content: Content) => {
                       padding: 10px;
                       font-family: 'DM Sans', sans-serif;">
                 An individual's message becomes the
-                inspiration for the cause of a large group. Connect the dots identifies these "specials" and helps them
+                inspiration for the caConnect the dots identifies these "specials" and helps them
                 bond with others to cause a high-impact movement. By visualizing the emerging narrative, which a person
                 shares from his corner in the world, they manage to amplify the call to be part of a globally connected
                 coalition.
             </p>
         </div>
     </div>
-    <div style="width: 100%; padding: 10px; margin: 5px; display: flex; flex-direction: column; align-items: center">
+    <div style="page-break-inside: avoid !important; break-inside: avoid !important; -webkit-column-break-inside: avoid !important; width: 100%; padding: 10px; margin: 5px; display: flex; flex-direction: column; align-items: center;">
         ${content.challenges?.map(ch => {
     if (!ch.sdg || ch.sdg.length <= 0) return ``
     else return `<div style="
-                            width: 80%;
-                            break-inside: avoid;
-                            max-height: 300px;
-                            border-radius: 15px;
-                            padding: 8px;
-                            background-color: #fff;
-                            position: relative;
-                            display: flex;
-                            flex-direction: row;
-                            word-wrap: break-word;
-                            background-clip: border-box;
-                            justify-content: space-evenly;
-                            border: 1px
-                            solid rgba(0,0,0,.125);">
-                                <div style="
-                                display: flex;
-                                text-align: center;
-                                justify-content: space-evenly;
-                                align-items: center;
-                                width: 70%;
-                                flex-direction: row;">
-                                  <p style="
+                  width: 90%;
+                  max-height: 300px;
+                  border-radius: 15px;
+                  padding: 8px;
+                  background-color: #fff;
+                  position: relative;
+                  display: flex;
+                  flex-direction: row;
+                  margin-top: 5px;
+                  word-wrap: break-word;
+                  background-clip: border-box;
+                  justify-content: space-evenly;
+                  border: 1px
+                  solid rgba(0,0,0,.125);">
+                      <div style="
+                      display: flex;
+                      text-align: center;
+                      justify-content: space-evenly;
+                      align-items: center;
+                      width: 70%;
+                      flex-direction: row;">
+                        <img src="https://i.imgur.com/JgYD2nQ.jpg" style="border-radius: 50%;" height="35" alt="profile-pic">
+                        <p style="
+                        margin: 0;
+                        font-weight: 400;
+                        word-wrap: break-word;
+                        text-align: center;
+                        color: #15006D;
+                        min-width: 120px;
+                        font-size: 1.2rem;
+                        -webkit-text-size-adjust: 100%;
+                        -webkit-tap-highlight-color: transparent;">
+                          ${ch.completionDate}
+                        </p>
+                        <h6 style="
                                   margin: 0;
-                                  font-weight: 400;
+                                  font-weight: 300;
+                                  width: 50%;
                                   word-wrap: break-word;
                                   text-align: center;
                                   color: #15006D;
-                                  min-width: 120px;
+                                  padding: 10px;
                                   font-size: 1.2rem;
+                                  line-height: 1.5;
                                   -webkit-text-size-adjust: 100%;
                                   -webkit-tap-highlight-color: transparent;">
-                                    ${ch.completionDate}
-                                  </p>
-                                  <h6 style="
-                                                      margin: 0;
-                                                      font-weight: 300;
-                                                      word-wrap: break-word;
-                                                      text-align: justify;
-                                                      color: #15006D;
-                                                      padding: 10px;
-                                                      font-size: 1.2rem;
-                                                      line-height: 1.5;
-                                                      -webkit-text-size-adjust: 100%;
-                                                      -webkit-tap-highlight-color: transparent;">
-                                    ${ch.title}
-                                  </h6>
-                              </div>
-                                <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
-                                ${ch.sdg.map((num, i) => {
-                                  return `<img src="${getSdgIcon(ch.sdg[i])}" style="border-radius: 50%;" height="35" alt="challenge-icon">`
-                                })}
-                                </div>
-                              </div>`
-  })}
+                          ${ch.title}
+                        </h6>
+                    </div>
+                      <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
+                      ${ch.sdg.map((num, i) => {
+                        return `<img src="${getSdgIcon(ch.sdg[i])}" style="border-radius: 50%;" height="35" alt="challenge-icon">`
+                      }).join('')}
+                      </div>
+                 </div>`
+  }).join('')}
     </div>
 </div>
 </body>
