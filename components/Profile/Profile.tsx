@@ -15,7 +15,7 @@ import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
   FIND_POSTS_OF_USER,
-  GET_CONNECTIONS, GET_VERIFIED_CHALLENGES,
+  GET_CONNECTIONS, GET_JOINED_CHALLENGES, GET_VERIFIED_CHALLENGES,
   NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
@@ -112,7 +112,7 @@ export function Profile(props: Props) {
       else setCreator(false) // Change to true to see new challenge button
     }
   });
-  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+  const [getChallenges, {data: challengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
     context: {
       headers: {
         'Authorization': 'Bearer ' + token

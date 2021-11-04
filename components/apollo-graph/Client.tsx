@@ -13,7 +13,7 @@ import {AuthContext} from "../../App";
 export function getApolloClientInstance(): ApolloClient<object> {
   const auth = useContext(AuthContext);
 
-  const uri = 'http://192.168.0.231:8080/graphql';
+  const uri = 'http://172.22.36.145:8080/graphql';
   const refreshTokenMutation =
     `
       mutation updateToken($refreshToken: String!) {
