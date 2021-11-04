@@ -66,33 +66,35 @@ const ImagePicker = (props: Props) =>  {
 
   const takeImage = async () => {
     let result = await IPicker.launchCameraAsync({
-      mediaTypes: IPicker.MediaTypeOptions.All,
+      mediaTypes: IPicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true
     })
 
     console.log(result);
 
     if (!result.cancelled) {
       // @ts-ignore
-      setImage(result.uri);
+      setImage(result.base64);
     }
   }
 
   const pickImage = async () => {
     let result = await IPicker.launchImageLibraryAsync({
-      mediaTypes: IPicker.MediaTypeOptions.All,
+      mediaTypes: IPicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true,
     });
 
     console.log(result);
 
     if (!result.cancelled) {
       // @ts-ignore
-      setImage(result.uri);
+      setImage(result.base64);
     }
   };
 
