@@ -333,7 +333,7 @@ query getVerifiedChallenges {
 
 export const GET_JOINED_CHALLENGES =gql`
 query getAllChallengesToWhichTheUserIsSuscribed{
-getAllChallengesToWhichTheUserIsSubscribed{
+    getAllChallengesToWhichTheUserIsSubscribed{
       boost
        categories
        coordinates {
@@ -358,3 +358,5 @@ getAllChallengesToWhichTheUserIsSubscribed{
 
 }
 }`
+
+

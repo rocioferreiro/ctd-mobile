@@ -113,10 +113,14 @@ export function Profile(props: Props) {
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
+    fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: result => {
+     console.log(challengesData.getAllChallengesToWhichTheUserIsSuscribed)
     }
   });
   const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
