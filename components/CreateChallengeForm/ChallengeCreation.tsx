@@ -68,6 +68,8 @@ const ChallengeCreation = (props: Props) => {
       },
       "image": challenge.image,
     }
+    console.log('creating challenge from challenge creation with values: ')
+    console.log(newChallengeDTOInput);
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
     });

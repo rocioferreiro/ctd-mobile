@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./Details/ChallengeDetails";
@@ -63,6 +63,10 @@ const Stepper = (props: Props) => {
             paddingBottom: 8,
         },
     });
+
+    useEffect(() => {
+        props.formik.setFieldValue('image', image);
+    }, [image]);
 
     return <ProgressSteps style={{position: 'relative', overflow: 'visible'}} completedStepIconColor={colors.primary} activeStepIconBorderColor={colors.primary}
                           completedProgressBarColor={colors.primary} disabledStepIconColor={colors.accent}

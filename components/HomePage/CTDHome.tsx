@@ -81,7 +81,8 @@ const CTDHome = ({navigation}) => {
       },
       "image": challenge.image,
     }
-    console.log(newChallengeDTOInput)
+    console.log('creating challenge from home with values: ')
+    console.log(newChallengeDTOInput);
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
     });
