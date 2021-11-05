@@ -55,6 +55,7 @@ query newFindUserById($targetUserId: String!){
         mail
         role
         level
+        xp
         lastname
         favouriteODS
         biography
