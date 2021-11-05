@@ -35,6 +35,7 @@ import {Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
+import {ip} from "../apollo-graph/Client";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -211,7 +212,7 @@ export function Profile(props: Props) {
   useEffect(() => {
     if(verifiedChallengesData) {
       setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
-        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title, description: c.description, imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'};
+        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title, description: c.description, imageUrl: c.image ? c.image.replace('127.0.0.1', ip) : 'https://i0.wp.com/www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/SDG-Wheel_WEB.png?resize=150%2C150&ssl=1'};
       }))
     }
   }, [verifiedLoading])

@@ -327,6 +327,7 @@ query getVerifiedChallenges {
         id
         title
         score
+        image
     }
 }
 `;

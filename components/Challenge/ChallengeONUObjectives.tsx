@@ -6,7 +6,7 @@ import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import {Challenge} from "../Models/Challenge";
 
 type Props = {
-  challenge:Challenge
+  challenge: Challenge
 }
 const ChallengeONUObjetives = (props: Props) => {
 

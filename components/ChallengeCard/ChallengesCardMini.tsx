@@ -1,19 +1,15 @@
 //Esta Challenge Card tiene menos info y es para la pantalla de my challenges
 import * as React from 'react';
 import {Avatar, Button, Card, Title, Paragraph, useTheme} from 'react-native-paper';
-import {Challenge} from "../Models/Challenge";
-import {StyleSheet,Text} from "react-native";
+import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
-
 interface Props {
     challenge: any;
 }
 
 const ChallengeCardMini = (props: Props) => {
     const { colors } = useTheme();
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const styles = StyleSheet.create({
         joinButton: {
             borderRadius: 20,
