@@ -18,12 +18,9 @@ export type UserForEdition = {
     name: string,
     birthDate?: Date,
     gender?: Gender,
-
     photoUrl?: string,
     biography?: string,
-
     address?: Address,
-
     favouriteODS?: number[]
     coordinates:[]
 }
