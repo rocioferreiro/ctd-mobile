@@ -130,6 +130,7 @@ export const FIND_CHALLENGES_OF_USER = gql`
        startInscription
        title
        upVotes
+       image
     }
   }
 `;
