@@ -34,6 +34,13 @@
   "editProfile": {
     "user": "Información del Usuario"
   },
+  "edit-profile": {
+    "update-user-error": "Error al Editar el Perfil",
+    "update-user-error-description":" Ocurrió un error al tratar de actualizar tu perfil!",
+    "update-user-success": "Edición de Perfil Exitosa!",
+    "update-user-success-description": "Tu perfil esta actualizado! Echale un vistazo!",
+    "done": "Hecho!"
+  },
   "gender": {
     "male": "Masculino",
     "female": "Femenino",

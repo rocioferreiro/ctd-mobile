@@ -621,7 +621,7 @@ const EditProfile = ({navigation}) => {
     {/*<Button style={styles.button}> Location </Button>*/}
     {/*<Button style={styles.button}> Favourite ODS </Button>*/}
 
-    <Button style={styles.doneButton} onPress={()=>onSubmitEdit(formik)}> Done! </Button>
+    <Button style={styles.doneButton} onPress={()=>onSubmitEdit(formik)}> {t("edit-profile.done")} </Button>
     </ScrollView>
   </View>)
 }

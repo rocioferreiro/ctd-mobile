@@ -54,7 +54,16 @@
   },
   "editProfile": {
     "user": "User Information"
+
   },
+  "edit-profile": {
+    "update-user-error": "Edit Profile Error",
+    "update-user-error-description":" An error ocurred while trying to update your profile!",
+    "update-user-success": "Edit Profile Success!",
+    "update-user-success-description": "Your profile is now updated! Check it out!",
+    "done": "Done!"
+  },
+
   "gender": {
     "male": "Male",
     "female": "Female",
