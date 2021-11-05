@@ -66,9 +66,14 @@ query newFindUserById($targetUserId: String!){
           province
           country
         }
+        
+    gender
+    birthDate
+    photo
     }
     state
     connectionQuantity 
+  
   }
 }
 `;
@@ -324,6 +329,7 @@ query getVerifiedChallenges {
     getVerifiedChallenges {
         description
         endEvent
+        categories
         id
         title
         score
