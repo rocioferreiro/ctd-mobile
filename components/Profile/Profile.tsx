@@ -810,7 +810,7 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {/*if (new Date(challenge.endEvent) > new Date())*/}
               {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
-                         return getActiveChallenge(challenge, key);
+                if (new Date(challenge.endEvent) > new Date())  return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
             {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed ||activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
