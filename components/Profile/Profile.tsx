@@ -676,10 +676,8 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
-                  // setViewPostId(postId);
-                  // setViewPost(true);
                   props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
-                }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
+                }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i} image={post.image}/>
               })}
             </ScrollView>
           {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&

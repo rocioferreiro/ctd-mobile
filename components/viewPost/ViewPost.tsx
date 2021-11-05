@@ -13,6 +13,7 @@ import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import {share} from "../Share";
 import * as Linking from 'expo-linking';
+import {ip} from "../apollo-graph/Client";
 
 type Props = {
   post?: Post,
@@ -66,7 +67,6 @@ const ViewPost = (props:Props) => {
     if (props.additionalPosts) setAdditionalPosts(props.additionalPosts);
     else if (props.route.params?.additionalPosts) setAdditionalPosts(props.route.params.additionalPosts);
   }, [props.route.params, props.additionalPosts])
-
 
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     context: {
@@ -123,8 +123,6 @@ const ViewPost = (props:Props) => {
     setLiked(!liked)
   }
 
-  const [language, setLanguage] = React.useState(i18n.language);
-
   useEffect(() => {
     if (ownerData) {
       setOwner(ownerData.findUserById.user);
@@ -174,7 +172,7 @@ const ViewPost = (props:Props) => {
             <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{post.text}</Paragraph>
           </Card.Content>
           {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}}
-                                                            source={require('../../assets/images/post.jpg')}/>}
+                                                            source={post.image ? {uri: post.image.replace('127.0.0.1', ip)} : require('../../assets/images/post.jpg')}/>}
           <Card.Actions style={{width: '100%', display: 'flex', justifyContent: 'space-between', marginVertical: 10}}>
             <View style={{
               display: 'flex',
@@ -186,8 +184,6 @@ const ViewPost = (props:Props) => {
               <IconButton disabled={post.owner?.id == userId} icon={liked ? 'heart' : 'heart-outline'}
                           onPress={() => likePost(!liked)}/>
               <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
-              {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
-              {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
             </View>
             <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
               <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
@@ -198,22 +194,9 @@ const ViewPost = (props:Props) => {
               }}/>
             </View>
           </Card.Actions>
-          {/*<Modal animationType="fade"*/}
-          {/*       presentationStyle={"fullScreen"}*/}
-          {/*       visible={viewProfile}*/}
-          {/*       onRequestClose={() => {*/}
-          {/*         setViewProfile(!viewProfile);*/}
-          {/*       }}>*/}
-          {/*  <IconButton onPress={() => setViewProfile(false)}*/}
-          {/*              icon={'chevron-left'}*/}
-          {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}*/}
-          {/*              size={40}*/}
-          {/*  />*/}
-          {/*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*/}
-          {/*</Modal>*/}
         </Card>
     )
-  }
+  }//http://127.0.0.1:9090/images/images/0/0HrW0KACuwBxnjyUipPL5jkKrG1WiW6vr3Tse7mf4m408HNYCocmyg4ERcC1YPSH9OqUgMFT4eNo9V/CtXov9mkp6zmQEh3dQhPJ0qClIWeT3fWxkFvCz20UuwQkzb%2BoRKMGO5iRjGUHh3t%2BLIqw%3D%3D
 
   return (additionalPosts ?
     <ScrollView>
