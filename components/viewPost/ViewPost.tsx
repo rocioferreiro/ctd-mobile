@@ -83,7 +83,7 @@ const ViewPost = (props:Props) => {
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
     },
-    onError: err => {
+    onError: () => {
     },
     refetchQueries: [],
     context: {
@@ -93,7 +93,7 @@ const ViewPost = (props:Props) => {
   const [unlike] = useMutation(UNLIKE_POST, {
     onCompleted: () => {
     },
-    onError: err => {
+    onError: () => {
     },
     refetchQueries: [],
     context: {
@@ -141,7 +141,7 @@ const ViewPost = (props:Props) => {
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={owner && (owner.name[0] + owner.lastname[0])} {...props}/>
-  const RightContent = props => <OptionsMenu
+  const RightContent = () => <OptionsMenu
     customButton={myIcon}
     destructiveIndex={0}
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
@@ -196,7 +196,7 @@ const ViewPost = (props:Props) => {
           </Card.Actions>
         </Card>
     )
-  }//http://127.0.0.1:9090/images/images/0/0HrW0KACuwBxnjyUipPL5jkKrG1WiW6vr3Tse7mf4m408HNYCocmyg4ERcC1YPSH9OqUgMFT4eNo9V/CtXov9mkp6zmQEh3dQhPJ0qClIWeT3fWxkFvCz20UuwQkzb%2BoRKMGO5iRjGUHh3t%2BLIqw%3D%3D
+  }
 
   return (additionalPosts ?
     <ScrollView>

@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View} from "../Themed";
 import {ImageBackground, StyleSheet, TouchableOpacity} from "react-native";
 import {IconButton, useTheme} from "react-native-paper";
+import {ip} from "../apollo-graph/Client";
 
 type Props = {
   title: string,
@@ -76,7 +77,7 @@ const PostThumbnail = (props: Props) => {
     }} style={{backgroundColor: 'transparent', marginRight: 20}}>
     <ImageBackground style={{height: 180, width: 150}}
                      imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                     source={props.image ? {uri: props.image} : require('../../assets/images/post.jpg')} resizeMode={'cover'}>
+                     source={props.image ? {uri: props.image.replace('127.0.0.1', ip)} : require('../../assets/images/post.jpg')} resizeMode={'cover'}>
       <View style={styles.imageTextContainer}>
         <Text style={styles.whiteText}>{props.title}</Text>
       </View>
