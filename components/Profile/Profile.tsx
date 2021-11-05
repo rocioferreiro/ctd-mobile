@@ -707,7 +707,7 @@ export function Profile(props: Props) {
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
+                  <Avatar.Image size={86} source={userData?.findUserById?.user?.photo? {uri: userData?.findUserById?.user?.photo.replace('127.0.0.1', ip)} : require('../../assets/images/profile.png')}
                                 style={styles.profileImage}/>
                   <View style={{backgroundColor: 'transparent', marginRight: 25}}>
                       <Text
