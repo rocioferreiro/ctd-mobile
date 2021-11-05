@@ -361,6 +361,7 @@ query getAllChallengesToWhichTheUserIsSubscribed{
        startInscription
        title
        upVotes
+       score
 
 }
 }`
