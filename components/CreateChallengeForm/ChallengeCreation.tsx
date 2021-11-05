@@ -96,7 +96,8 @@ const ChallengeCreation = (props: Props) => {
       initialValues: initialValues,
       onSubmit: onSubmitCreation
     }
-  )
+  );
+
   const styles = StyleSheet.create({
     creationCard: {
       width: Dimensions.get('window').width,
@@ -120,8 +121,6 @@ const ChallengeCreation = (props: Props) => {
       zIndex: 0
     }
   });
-
-
 
   return <View style={{backgroundColor: colors.surface}}>
     <Card style={styles.creationCard}>

@@ -23,6 +23,7 @@ import {JOIN_CHALLENGE, UNJOIN_CHALLENGE} from "../apollo-graph/Mutations";
 import ViewParticipantsButton from "./ViewParticipantsButton";
 import UnJoinButton from "./UnJoinButton";
 import VerifyQRButton from "./VerifyQRButton";
+import {ip} from "../apollo-graph/Client";
 
 interface Props {
   challenge?: Challenge
@@ -246,7 +247,7 @@ const ChallengePage = (props: Props) => {
 
           <ImageBackground
             style={{width: "100%", height: 300, display: "flex", justifyContent: "center", alignItems: "center"}}
-            source={require('../../assets/images/compost.jpg')}
+            source={challengeInfo.image? {uri: challengeInfo.image.replace('127.0.0.1', ip)} : require('../../assets/images/compost.jpg')}
           >
             <Avatar.Text style={{borderColor: colors.background, borderWidth: 3}}
                          label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]}/>

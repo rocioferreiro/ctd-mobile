@@ -78,7 +78,8 @@ const CTDHome = ({navigation}) => {
       "coordinates": {
         "latitude": challenge.coordinates.coordinates[0],
         "longitude": challenge.coordinates.coordinates[1]
-      }
+      },
+      "image": challenge.image,
     }
     console.log(newChallengeDTOInput)
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
@@ -100,7 +101,8 @@ const CTDHome = ({navigation}) => {
     startsFrom: new Date(),
     finishesOn: new Date(),
     totalPoints: 0,
-    ONUObjective: []
+    ONUObjective: [],
+    image: ''
   }
 
   const formik = useFormik(

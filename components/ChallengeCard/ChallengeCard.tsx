@@ -94,7 +94,7 @@ const ChallengeCard = (props: Props) => {
             marginBottom: 5
           }}>{t('challenge-card.challenge-description')}</Paragraph>
         </Card.Content>
-        <Card.Cover source={props.challenge.image ? props.challenge.image.replace('127.0.0.1', ip) : require('../../assets/images/compost.jpg')}/>
+        <Card.Cover source={props.challenge.image ? {uri: props.challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/compost.jpg')}/>
         <Card.Actions>
           <Button style={{
             backgroundColor: '#c1c1c1',

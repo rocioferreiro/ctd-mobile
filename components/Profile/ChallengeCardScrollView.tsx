@@ -27,7 +27,6 @@ const ChallengeCardScrollView = (props:Props) => {
             setToken(t);
             getUserId().then(id => {
                 setUserId(id);
-
             });
         });
     }, []);
@@ -36,7 +35,7 @@ const ChallengeCardScrollView = (props:Props) => {
        <View>
            {
                 selectedChallenge ?
-                    <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+                    <ChallengePage currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                     <Card style={{
                         width: Dimensions.get('window').width,
                         height: '100%',

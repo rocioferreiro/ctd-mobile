@@ -14,6 +14,7 @@ query findChallengeById($id: Long!){
     }
     endEvent
     score
+    image
     startEvent
     startInscription
     endInscription
@@ -87,6 +88,7 @@ query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
     description
     owner
     categories
+    image
     endEvent
     endInscription
     locationGeohash
