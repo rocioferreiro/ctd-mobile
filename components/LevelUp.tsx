@@ -16,6 +16,7 @@ const LevelUp = (props: Props) => {
             height: Dimensions.get('window').height,
             paddingTop: Dimensions.get('window').height * 0.15,
             alignContent: 'center',
+            alignItems: 'center'
         },
         title: {
             fontSize: 42,
