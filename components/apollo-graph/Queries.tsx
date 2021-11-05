@@ -338,7 +338,7 @@ query getVerifiedChallenges {
 `;
 
 export const GET_JOINED_CHALLENGES =gql`
-query getAllChallengesToWhichTheUserIsSuscribed{
+query getAllChallengesToWhichTheUserIsSubscribed{
     getAllChallengesToWhichTheUserIsSubscribed{
       boost
        categories
