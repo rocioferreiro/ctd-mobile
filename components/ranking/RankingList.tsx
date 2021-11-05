@@ -53,7 +53,7 @@ const RankingList = (props: Props) => {
       color: '#717171'
     },
     emptyContainer: {
-      marginVertical: 30,
+      marginVertical: 50,
       justifyContent: "center",
       flexDirection: 'column',
       alignItems: 'center',
@@ -69,7 +69,9 @@ const RankingList = (props: Props) => {
         <Col size={25}><Text style={styles.tableTitle}>{t('ranking.users')}</Text></Col>
         <Col size={15}><Text style={styles.tableTitle}>{t('ranking.score')} </Text></Col>
       </Row>
-      {listData.length === 0 ? <View style={styles.emptyContainer}><Text style={styles.emptyMessage}> There are no challenges of this ODS! </Text></View> :
+      {listData.length === 0 ? <View style={styles.emptyContainer}>
+          <Text style={styles.emptyMessage}> {t('ranking.empty')} </Text>
+      </View> :
       listData.map((i, index) => {
         return (//<View style={styles.rowContainer} key={index}>
           <Row style={styles.row} key={index} onPress={() => {props.navigation.navigate('challenge', {challengeId: i.id})}}>

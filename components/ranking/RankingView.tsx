@@ -48,7 +48,9 @@ const RankingView = ({navigation,route}) => {
     },
   })
 
-  if(loading) return <ActivityIndicator size={'large'}/>
+  if(loading) return <View style={{backgroundColor: colors.surface, height: Dimensions.get('window').height, display: "flex", justifyContent: "center"}}>
+    <ActivityIndicator size={'large'}/>
+  </View>
 
   return data ? <View style={{backgroundColor: colors.surface, height: '100%'}}>
     <ImageBackground source={onuInfo[onuODS].image} imageStyle={{height: '60%'}} style={{width: '100%', height: '100%', marginTop: -95, overflow: "visible",backgroundColor: colors.surface}}>
