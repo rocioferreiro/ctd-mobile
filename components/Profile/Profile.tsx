@@ -121,7 +121,7 @@ export function Profile(props: Props) {
       else setCreator(false) // Change to true to see new challenge button
     }
   });
-  const [getChallenges, {data: challengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
+  const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -129,9 +129,22 @@ export function Profile(props: Props) {
       }
     },
     onCompleted: result => {
-     console.log(challengesData.getAllChallengesToWhichTheUserIsSuscribed)
+     console.log(challengesData)
     }
   });
+
+  const [getActiveChallenges, {data: activeChallengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onCompleted: result => {
+      console.log(getActiveChallenges)
+    }
+  });
+
   const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
     context: {
       headers: {
@@ -187,6 +200,7 @@ export function Profile(props: Props) {
           getConnectionRequestsNumber({variables: {userId: id}});
         });
         getVerifiedChallenges();
+        getActiveChallenges()
       }
     });
   }, []);
@@ -210,6 +224,7 @@ export function Profile(props: Props) {
       findPostsOfUser({variables: {ownerId: userId}});
       getUser({variables: {targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
+
     }
   }, [userId, loggedInUserId]);
   useEffect(() => {
@@ -792,11 +807,11 @@ export function Profile(props: Props) {
             {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
-              {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+              {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
                 if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
-            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed ||activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
