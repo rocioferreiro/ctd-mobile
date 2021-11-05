@@ -65,7 +65,8 @@ const ChallengeCreation = (props: Props) => {
       "coordinates": {
         "latitude": challenge.coordinates.coordinates[0],
         "longitude": challenge.coordinates.coordinates[1]
-      }
+      },
+      "image": challenge.image,
     }
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
@@ -86,7 +87,8 @@ const ChallengeCreation = (props: Props) => {
     startsFrom: new Date(),
     finishesOn: new Date(),
     totalPoints: 0,
-    ONUObjective: []
+    ONUObjective: [],
+    image: ''
   }
 
   const formik = useFormik(

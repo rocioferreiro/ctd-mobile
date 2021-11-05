@@ -73,8 +73,6 @@ const ImagePicker = (props: Props) =>  {
       base64: true
     })
 
-    console.log(result);
-
     if (!result.cancelled) {
       // @ts-ignore
       setImage(result.base64);
@@ -89,8 +87,6 @@ const ImagePicker = (props: Props) =>  {
       quality: 1,
       base64: true,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       // @ts-ignore

@@ -10,6 +10,7 @@ export type CreateChallengeFormValues = {
     finishesOn: Date,
     totalPoints: number,
     ONUObjective: number[],
+    image: string
 }
 
 export type CreatePostFormValues = {

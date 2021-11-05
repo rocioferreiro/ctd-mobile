@@ -1,6 +1,5 @@
 import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import ChallengeDetails from "./Details/ChallengeDetails";
 import ChallengeLocation from "./ChallengeLocation";
@@ -16,12 +15,13 @@ type Props = {
 }
 
 const Stepper = (props: Props) => {
-    const [disabled, setDisabled] = React.useState(true)
+    const [disabled, setDisabled] = React.useState(true);
+    const [image, setImage] = React.useState(undefined);
 
     const content = [
         <ChallengeDetails formik={props.formik} setDisabled={setDisabled}/>,
         <ChallengeLocation formik={props.formik} setDisabled={setDisabled}/>,
-        <ChallengeExtraInfo formik={props.formik} setDisabled={setDisabled}/>,
+        <ChallengeExtraInfo image={image} setImage={setImage} formik={props.formik} setDisabled={setDisabled}/>,
         <ChallengePoints formik={props.formik} setDisabled={setDisabled}/>
     ];
 
