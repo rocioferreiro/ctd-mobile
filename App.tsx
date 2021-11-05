@@ -7,9 +7,17 @@ import {ApolloProvider} from '@apollo/client';
 import {getApolloClientInstance} from './components/apollo-graph/Client';
 import {configureFonts, DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {useFonts} from 'expo-font';
-import {Linking, LogBox} from 'react-native';
+import {LogBox} from 'react-native';
+import * as Linking from "expo-linking";
 import Landing from "./components/Landing/Landing";
-import {deleteToken, getTokenAndUserId, saveToken, saveUserId} from "./components/Storage";
+import {
+  deleteRefreshToken,
+  deleteToken, deleteTokenType,
+  deleteUserId,
+  getTokenAndUserId, saveRefreshToken,
+  saveToken, saveTokenType,
+  saveUserId
+} from "./components/Storage";
 import {View} from "./components/Themed";
 import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
@@ -17,6 +25,8 @@ import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import firebase from "firebase";
+import {firebaseConfig} from "./ClientId";
 
 i18next.init({
   interpolation: {escapeValue: false},  // React already does escaping
@@ -136,12 +146,27 @@ export default function App() {
       saveUserId(userInfo.idUser).catch(e => {
         console.log(e);
       });
+      saveRefreshToken(userInfo.refreshToken).catch(e => {
+        console.log(e);
+      });
+      saveTokenType(userInfo.tokenType).catch(e => {
+        console.log(e);
+      })
       dispatch({type: 'LOGIN', userToken: userInfo.token, userId: userInfo.idUser});
     },
     signOut: async () => {
       deleteToken().catch(e => {
         console.log(e);
       });
+      deleteUserId().catch(e => {
+        console.log(e);
+      });
+      deleteRefreshToken().catch(e => {
+        console.log(e);
+      });
+      deleteTokenType().catch(e => {
+        console.log(e);
+      })
       dispatch({type: 'LOGOUT'});
     },
     signUp: () => {
@@ -150,6 +175,7 @@ export default function App() {
   }), []);
   // This useEffect fetches the token from the storage so that the user doesn't have to log in every time
   useEffect(() => {
+    firebase.initializeApp(firebaseConfig);
     setTimeout(async () => {
       getTokenAndUserId().then(r => {
         dispatch({type: 'RETRIEVE_TOKEN', userToken: r.token, userId: r.id});
@@ -159,6 +185,18 @@ export default function App() {
       })
     }, 1000);
   }, []);
+
+  const prefix = Linking.makeUrl("/");
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Landing: "landing",
+        NewTabBar: "tabbar"
+      },
+    },
+  };
 
   const Stack = createNativeStackNavigator();
 
@@ -177,7 +215,7 @@ export default function App() {
           <ApolloProvider client={getApolloClientInstance()}>
             <PaperProvider theme={reactNativePaperTheme}>
               <AuthContext.Provider value={authContext}>
-                <NavigationContainer>
+                <NavigationContainer linking={linking}>
                   <Stack.Navigator screenOptions={{
                     headerShown: false
                   }}>

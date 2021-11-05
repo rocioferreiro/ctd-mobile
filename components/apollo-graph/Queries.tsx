@@ -66,8 +66,14 @@ query newFindUserById($targetUserId: String!){
           province
           country
         }
+        
+    gender
+    birthDate
+    photo
     }
-    state 
+    state
+    connectionQuantity 
+  
   }
 }
 `;
@@ -315,5 +321,18 @@ query getChallengeByFilter($title: String!) {
             totalElements
             totalPages
            }
+}
+`;
+
+export const GET_VERIFIED_CHALLENGES = gql`
+query getVerifiedChallenges {
+    getVerifiedChallenges {
+        description
+        endEvent
+        categories
+        id
+        title
+        score
+    }
 }
 `;

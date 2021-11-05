@@ -63,11 +63,11 @@ const ChallengePage = (props: Props) => {
   const [joinChallenge] = useMutation(JOIN_CHALLENGE, {
     onCompleted: () => {
       setIsJoined(true);
-      toastOn()
+      toastOn('You joined this challenge successfully')
 
     },
     onError: err => {
-      toastOnError();
+      toastOnError('Joining this challenge failed');
       console.log('challenge page error');
       console.log(err);
     },
@@ -80,19 +80,17 @@ const ChallengePage = (props: Props) => {
   });
 
   function handleJoin() {
-    joinChallenge({variables: {idUser: currentId, idChallenge: challengeInfo.id}}).catch(() => {
-      toastOn();
-    });
+    joinChallenge({variables: {idChallenge: challengeInfo.id}}).catch(e => console.log(e));
   }
 
-  const [unjoinChallenge] = useMutation(UNJOIN_CHALLENGE, {
+  const [unJoinChallenge] = useMutation(UNJOIN_CHALLENGE, {
     onCompleted: () => {
       setIsJoined(false);
-      toastOn()
+      toastOn('You abandoned this challenge successfully')
 
     },
     onError: () => {
-      toastOnError();
+      toastOnError('Abandoning this challenge failed');
 
     },
     refetchQueries: ["FIND_POSTS_OF_USER"],
@@ -103,26 +101,23 @@ const ChallengePage = (props: Props) => {
     }
   });
 
-  function handleUnjoin() {
-    /* unjoinChallenge({variables: {userId:props.currentUserId,subscriptionChallengeId:props.challenge.id}}).catch(() => {
-         toastOn();
-     });*/
-    console.log("unjoin")
+  function handleUnJoin() {
+    unJoinChallenge({variables: {challengeId: challengeInfo.id}}).catch(e => console.log(e));
   }
 
-  function toastOn() {
+  function toastOn(message) {
     Toast.show({
       type: 'success',
-      text1: 'You Joined this Challenge',
+      text1: message,
       text2: 'Good Luck!',
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
 
-  function toastOnError() {
+  function toastOnError(message) {
     Toast.show({
       type: 'error',
-      text1: 'Join Challenge Error',
+      text1: message,
       text2: 'Try Again Later',
       topOffset: Dimensions.get("window").height * 0.05,
     });
@@ -339,12 +334,12 @@ const ChallengePage = (props: Props) => {
           <JoinButton handleJoin={()=>handleJoin()}/>
           }
           {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
-          <UnJoinButton handleUnJoin={()=>handleUnjoin()}/>
-          }
-          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
-          <ViewParticipantsButton/>
+          <UnJoinButton handleUnJoin={()=>handleUnJoin()}/>
           }
           {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
+          <ViewParticipantsButton/>
+          }
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
           <VerifyQRButton navigation={props.navigation} challengeId={challengeInfo.id}/>
           }
         </View>

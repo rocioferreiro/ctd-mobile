@@ -9,10 +9,9 @@ mutation createChallenge($newChallenge: ChallengeDTOInput!){
 `;
 
 export const SAVE_GOOGLE_USER = gql`
-mutation saveGoogleUser($googleUser: GoogleLoginRequestInput!){
-  saveGoogleUser(req: $googleUser){
+mutation googleLogin($googleUser: GoogleLoginRequestInput!){
+  googleLogin(req: $googleUser) {
     id
-    token
   }
 }
 `;
@@ -28,6 +27,7 @@ mutation login($loginUser: LoginUserInput!){
   login(loginUser:$loginUser){
     idUser
     token
+    refreshToken
   }
 }
 `;
@@ -53,8 +53,8 @@ mutation unlikePost($userId: String!, $postId: String!){
 `;
 
 export const CONNECT = gql`
-mutation connect($followingUserId: String!, $loggedUserId: String!){
-  connect(followingUserId: $followingUserId, loggedUserId: $loggedUserId)
+mutation connect($followingUserId: String!){
+  connect(followingUserId: $followingUserId)
 }
 `;
 
@@ -65,8 +65,8 @@ mutation disconnect($targetUserId: String!, $followingUserId: String!){
 `;
 
 export const ACCEPT_CONNECTION = gql`
-mutation acceptConnection($myUserID: String!, $otherUserID: String!){
-  acceptConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+mutation acceptConnection($otherUserID: String!){
+  acceptConnection(otherUserID: $otherUserID)
 }
 `;
 
@@ -80,15 +80,30 @@ mutation rejectConnection($myUserID: String!, $otherUserID: String!){
 addUserToChallenge(idUser: String!, idChallenge: Long!): String!*/
 
 export const JOIN_CHALLENGE = gql`
- mutation JoinChallenge($idUser:String!,$idChallenge:Long!){
-  addUserToChallenge(idUser: $idUser,idChallenge:$idChallenge)
+ mutation JoinChallenge($idChallenge:Long!){
+  addUserToChallenge(idChallenge:$idChallenge)
 }
 
 `;
 
 export const UNJOIN_CHALLENGE = gql`
- mutation UnjoinChallenge($subscriptionChallengeId:String!,$userId:String!){
-  addUserToChallenge(subscriptionChallengeId: $subscriptionChallengeId,userId:$userId)
+ mutation UnJoinChallenge($challengeId: Long!){
+  unsubscribeFromAChallenge(challengeId: $challengeId)
 }
 
 `;
+
+export const UPDATE_USER  = gql`
+mutation editUser($user: UserInput!){
+updateUser(user:$user)
+}
+`;
+
+export const UPDATE_USER_LOCATION =gql`
+mutation editUserLocation($address: AddressInput!){
+updateUserLocation(address:$address)
+}
+
+`;
+
+

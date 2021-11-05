@@ -18,13 +18,28 @@
     "name": "Nombre",
     "lastname": "Apellido",
     "birthDate": "Fecha de Nacimiento",
-    "gender": "Sexo",
+    "gender": "Genero",
     "emailError": "Mail inválido",
     "passwordError": "min. 8 caracteres, con una mayúscula y un número",
-    "done": "Registrarse"
+    "done": "Registrarse",
+    "bio-placeholder": "Cuentanos sobre ti...",
+    "bio": "Biografía",
+    "add-profile-image": "Agrega imagen de perfil",
+    "profile-info": "Información de Perfil",
+    "profile-image": "Imagen de Perfil",
+    "location": "Ubicación",
+    "change-location": "Cambia tu ubicación",
+    "favorite-sdg": "ODS Favoritos"
   },
   "editProfile": {
     "user": "Información del Usuario"
+  },
+  "edit-profile": {
+    "update-user-error": "Error al Editar el Perfil",
+    "update-user-error-description":" Ocurrió un error al tratar de actualizar tu perfil!",
+    "update-user-success": "Edición de Perfil Exitosa!",
+    "update-user-success-description": "Tu perfil esta actualizado! Echale un vistazo!",
+    "done": "Hecho!"
   },
   "gender": {
     "male": "Masculino",
@@ -49,7 +64,11 @@
     "no-results": "Nada para mostrar",
     "modal-text": "¿Seguro que quieres Desconectarte de este usuario?",
     "modal-cancel": "Cancelar",
-    "modal-accept": "Aceptar"
+    "modal-accept": "Aceptar",
+    "menuLanguage": "Cambiar Idioma",
+    "menuEdit": "Editar Perfil",
+    "menuReq": "Solicitudes de Conexión",
+    "menuCv": "Descargar CV"
   },
   "create-post": {
     "create-post": "Crear Publicación",
@@ -198,5 +217,35 @@
   },
   "verifyQR-button": {
     "verify": "Mostrar Código de Verificación"
+  },
+  "verification": {
+    "challenge-completed": "¡Desafío Completado!",
+    "you-earned": "Ganaste",
+    "exp": "de Experiencia",
+    "well-done": "¡Buen Trabajo!",
+    "return": "Volver"
+  },
+  "profile-ods": {
+    "choose-favorite-ods": "Elige Tus ODS Favoritos",
+    "edit-ods": "Edita",
+    "select-at-least": "Seleccioná 3 ODS favoritos para ajustar tu experiencia CTD a tus intereses",
+    "select-ods": "Seleccioná ODS"
+
+  },
+  "ods-choice-profile": {
+    "choose-ods": "Elige ODS Favorito",
+    "current-ods": "ODS Actual",
+    "ods": "Objetivo",
+    "error-max-ods": "El Número Máximo de ODS`s Favoritos es 3",
+    "error-max-ods-description": "¡No Puedes Agregar mas ODS a tu lista !",
+    "error-min-ods": "El Número Mínimo de ODS`s Favoritos es 3",
+    "error-min-ods-description": "Debes Elegir 3 ODS"
+
+  },
+  "ranking": {
+    "challenge": "Desafíos",
+    "users": "Participantes",
+    "score": "Puntos",
+    "top": "Los mejores desafíos"
   }
 }

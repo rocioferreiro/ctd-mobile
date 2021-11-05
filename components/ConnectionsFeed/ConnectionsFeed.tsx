@@ -110,7 +110,7 @@ const ConnectionsFeed = (props: Props) => {
 
     const onAction = (connectionUserId, accept: boolean) => {
         setLastConnectionAnswered(connectionUserId);
-        const variables = {otherUserID: connectionUserId, myUserID: userId};
+        const variables = {otherUserID: connectionUserId};
         if (accept) acceptConnection({variables}).catch(e => console.log(e));
         else rejectConnection({variables}).catch(e => console.log(e));
     }

@@ -24,6 +24,9 @@ import ChallengeCreation from "../components/CreateChallengeForm/ChallengeCreati
 import ChallengeCreationSuccessful from "../components/CreateChallengeForm/ChallengeCreationSuccessful";
 import ChallengeCardScrollView from "../components/Profile/ChallengeCardScrollView";
 import CreateFAB from "./CreateFAB";
+import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
+import RankingView from "../components/ranking/RankingView";
+import LevelUp from "../components/LevelUp";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
@@ -120,10 +123,23 @@ const MyTabbar = ({navigation}) => {
             navigation.goBack()
           }}/>}
         </Stack.Screen>
+        <Stack.Screen name={'levelUp'}>
+          {props => <LevelUp {...props} close={() => {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
         <Stack.Screen name={'challengeCreation'} component={ChallengeCreation}/>
         <Stack.Screen name={'map'} component={Map}/>
+        <Stack.Screen name={'ranking'} component={RankingView}/>
         <Stack.Screen name={'profile'} component={Profile}/>
         <Stack.Screen name={'edit-profile'} component={EditProfile}/>
+        <Stack.Screen name={'challenge-verification'} >
+          {props => <ChallengeVerificationPage {...props} close={()=> {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
         <Stack.Screen name={'challenge'}>
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>
