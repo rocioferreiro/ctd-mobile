@@ -32,8 +32,8 @@ const CTDHome = ({navigation}) => {
     });
   }
   const categories = ["1", "13", "15", "0", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "16"]
-  const categoryColors = [colors.accent, "#707070", "#c1c1c1", colors.primary, colors.background, colors.notification,
-    colors.extra, colors.light, colors.text, "#da4c65", "#2fa4ca", "#93d207", "#5c020e", "#4ca4c1", "#9514df", "#35ffff", "#e57900"];
+  const categoryColors = [colors.accent, "#707070", "#919191", "#a1a1a1", "#b1b1b1", "#c1c1c1",
+    "#d1d1d1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1"];
   const [categoriesQuantity, setCategoriesQuantity] = React.useState(3);
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
@@ -376,20 +376,20 @@ const CTDHome = ({navigation}) => {
             />
           </View>
 
-              <TouchableWithoutFeedback
-                  onPress={() => setCreate(true)}>
-                  <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    backgroundColor: 'transparent',
-                    alignItems: "center",
-                    justifyContent: 'space-between'
-                  }}>
-                      <Text style={styles.create}>{t('home.challenge')}!</Text>
-                      <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                      </View>
-                  </View>
-              </TouchableWithoutFeedback>
+              {/*<TouchableWithoutFeedback*/}
+              {/*    onPress={() => setCreate(true)}>*/}
+              {/*    <View style={{*/}
+              {/*      flexDirection: 'row',*/}
+              {/*      flexWrap: 'wrap',*/}
+              {/*      backgroundColor: 'transparent',*/}
+              {/*      alignItems: "center",*/}
+              {/*      justifyContent: 'space-between'*/}
+              {/*    }}>*/}
+              {/*        <Text style={styles.create}>{t('home.challenge')}!</Text>*/}
+              {/*        <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>*/}
+              {/*        </View>*/}
+              {/*    </View>*/}
+              {/*</TouchableWithoutFeedback>*/}
 
               <PostFeed navigation={navigation}/>
 

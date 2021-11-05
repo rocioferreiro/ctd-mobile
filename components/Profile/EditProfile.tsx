@@ -15,16 +15,10 @@ import ProfileLocation from "./ProfileLocation";
 import CancelButton from "../CreatePost/CancelButton";
 import ImagePicker from "../CreateChallengeForm/inscriptions/ImagePicker";
 import {Text} from "../Themed";
-import ImageButton from "../CreatePost/ImageButton";
 import ImageButtonProfile from "./ImageButtonProfile";
 import ProfileOds from "./ProfileOds";
-import {CREATE_POST, UPDATE_USER, UPDATE_USER_LOCATION} from "../apollo-graph/Mutations";
+import {UPDATE_USER, UPDATE_USER_LOCATION} from "../apollo-graph/Mutations";
 import Toast from "react-native-toast-message";
-import * as Location from "expo-location";
-
-
-
-
 
 const EditProfile = ({navigation}) => {
   const {colors} = useTheme();
@@ -135,7 +129,7 @@ const EditProfile = ({navigation}) => {
       name: formik.values.name,
       lastname: formik.values.lastname,
       favouriteODS: formik.values.favouriteODS,
-      address: {coordinates: {latitude: formik.values.address.coordinates.latitude,longitude: formik.values.address.coordinates.latitude },
+      address: {coordinates: {latitude: formik.values.address.coordinates.latitude,longitude: formik.values.address.coordinates.longitude },
         country: formik.values.address.country,id: formik.values.address.id,locality:formik.values.address.locality,
         number: formik.values.address.number,province: formik.values.address.province,street: formik.values.address.street},
       biography: formik.values.biography,

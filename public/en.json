@@ -50,7 +50,11 @@
     "no-results": "Nothing to show",
     "modal-text": "Are you sure you want to Disconnect from this user?",
     "modal-cancel": "Cancel",
-    "modal-accept": "Accept"
+    "modal-accept": "Accept",
+    "menuLanguage": "Change Language",
+    "menuEdit": "Edit Profile",
+    "menuReq": "Connections Requests",
+    "menuCv": "Download Resume"
   },
   "editProfile": {
     "user": "User Information"
@@ -244,6 +248,5 @@
     "error-max-ods-description": "You can't add anymore SDG`s to your favourites list!",
     "error-min-ods": "Minimun Number of Favorite SGD is 3",
     "error-min-ods-description": "You Have to Choose 3 SDG`s"
-
   }
 }

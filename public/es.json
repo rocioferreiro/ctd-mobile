@@ -64,7 +64,11 @@
     "no-results": "Nada para mostrar",
     "modal-text": "¿Seguro que quieres Desconectarte de este usuario?",
     "modal-cancel": "Cancelar",
-    "modal-accept": "Aceptar"
+    "modal-accept": "Aceptar",
+    "menuLanguage": "Cambiar Idioma",
+    "menuEdit": "Editar Perfil",
+    "menuReq": "Solicitudes de Conexión",
+    "menuCv": "Descargar CV"
   },
   "create-post": {
     "create-post": "Crear Publicación",

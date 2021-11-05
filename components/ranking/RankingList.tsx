@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {Text} from "../Themed";
-import {DataTable, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {useTranslation} from "react-i18next";
 import { Col, Row, Grid } from "react-native-easy-grid";
 
