@@ -31,6 +31,9 @@ const ChallengeCardScrollView = (props:Props) => {
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
+    const [dataSourceCords, setDataSourceCords] = useState([]);
+    const [scrollToIndex,setScrollToIndex]= useState(0)
+    const [ref, setRef] = useState(null);
 
 /*    React.useEffect(() => {
         if (props.challenges) setChallenges(props.challenges);
@@ -38,7 +41,22 @@ const ChallengeCardScrollView = (props:Props) => {
     }, [])*/
 
 
+
+    const scrollHandler = () => {
+        console.log(dataSourceCords.length, scrollToIndex);
+        if (dataSourceCords.length > scrollToIndex) {
+            ref.scrollTo({
+                x: 0,
+                y: dataSourceCords[scrollToIndex - 1],
+                animated: true,
+            });
+        } else {
+            alert('Out of Max Index');
+        }
+    };
+
     useEffect(() => {
+
         getToken().then(t => {
             setToken(t);
             getUserId().then(id => {
@@ -62,13 +80,24 @@ const ChallengeCardScrollView = (props:Props) => {
                     }}>
                                 <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                                     <Divider/>
-                                    <ScrollView style={{
+                                    <ScrollView  ref={(ref) => {
+                                        setRef(ref);
+                                    }} style={{
                                         marginBottom: Dimensions.get('screen').height * 0.20,
                                         backgroundColor: 'rgba(0,0,0,0)',
                                         overflow: "visible"
                                     }}>
                                         {props.route.params.challenges.map((challenge, i) =>
-                                            <View key={i} style={{marginBottom: 5}}>
+                                            <View   onLayout={(event) => {
+                                                const layout = event.nativeEvent.layout;
+                                                dataSourceCords[i] = layout.y;
+                                                setDataSourceCords(dataSourceCords);
+                                                console.log(dataSourceCords);
+                                                console.log('height:', layout.height);
+                                                console.log('width:', layout.width);
+                                                console.log('x:', layout.x);
+                                                console.log('y:', layout.y);
+                                            }}key={i} style={{marginBottom: 5}}>
                                                 <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                                                 <Divider/>
                                             </View>

@@ -68,6 +68,7 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
+  const [dataSourceCords, setDataSourceCords] = useState([]);
   const [getVerifiedChallenges, {
     data: verifiedChallengesData,
     loading: verifiedLoading
@@ -552,10 +553,21 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar', {
+    return <View onLayout={(event) => {
+      const layout = event.nativeEvent.layout;
+      dataSourceCords[key] = layout.y;
+      setDataSourceCords(dataSourceCords);
+      console.log(dataSourceCords);
+      console.log('height:', layout.height);
+      console.log('width:', layout.width);
+      console.log('x:', layout.x);
+      console.log('y:', layout.y);
+    }}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
       screen: 'challenges-scrollview',
       params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
-    })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+    })}
+
+    } style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
@@ -570,6 +582,7 @@ export function Profile(props: Props) {
           style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </TouchableOpacity>
+    </View>
   }
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
