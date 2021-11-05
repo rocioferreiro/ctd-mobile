@@ -134,52 +134,52 @@ const OnuObjectiveChoice  = (props: Props) => {
   });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('onu-objective-choice.choose-sustainable-objectives')} </Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>{t('onu-objective-choice.choose-sustainable-objectives')} </Text>
 
-      <View style={{height: Dimensions.get('window').height * 0.12}}>
-        <Text style={styles.label}> {t('onu-objective-choice.current-objectives')} </Text>
-        {props.selected.length > 0 ?
-          <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
-            {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
-              return <TouchableWithoutFeedback key={index} onPress={() => {
-                  props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
-                  props.formik.setFieldValue('ONUObjective', props.formik.values.ONUObjective.filter(i => i !== index));
-              }}>
-                <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
-              </TouchableWithoutFeedback>
-            })}
-          </View> :
-          <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center"}}>
-            <Icon style={styles.emptyOption} name={'remove-outline'} type={'ionicon'}/>
+        <View style={{height: Dimensions.get('window').height * 0.12}}>
+          <Text style={styles.label}> {t('onu-objective-choice.current-objectives')} </Text>
+          {props.selected.length > 0 ?
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center", paddingHorizontal: 10}}>
+                {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
+                  return <TouchableWithoutFeedback key={index} onPress={() => {
+                    props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
+                    props.formik.setFieldValue('ONUObjective', props.formik.values.ONUObjective.filter(i => i !== index));
+                  }}>
+                    <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
+                  </TouchableWithoutFeedback>
+                })}
+              </View> :
+              <View style={{display: 'flex', flexDirection: 'row', justifyContent: "center"}}>
+                <Icon style={styles.emptyOption} name={'remove-outline'} type={'ionicon'}/>
+              </View>
+          }
+        </View>
+
+        <ImageCarousel data={onuInfo} setCurrentIndex={setCurrentIndex}/>
+        <View style={styles.plusContainer}>
+          <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
+                      onPress={() => {
+                        if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
+                          props.setSelected([...props.selected, {
+                            obj: Object.keys(ONUObjectives)[currentIndex],
+                            index: currentIndex,
+                            image: onuInfo[currentIndex].image
+                          }]);
+                          props.formik.setFieldValue('ONUObjective', [...props.formik.values.ONUObjective, currentIndex]);
+                        }
+                      }}
+          />
+        </View>
+        <View style={styles.onuContainer}>
+          <Text style={styles.label}> {t('onu-objective-choice.objective')} {currentIndex+1}:</Text>
+          <Text style={styles.label}>{onuInfo[currentIndex].title}</Text>
+          <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
+          <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
+            <IconButton style={styles.done} icon={"check-bold"} onPress={() => props.setOpen(false)} color={colors.background}/>
           </View>
-        }
-      </View>
-
-      <ImageCarousel data={onuInfo} setCurrentIndex={setCurrentIndex}/>
-      <View style={styles.plusContainer}>
-        <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
-          onPress={() => {
-            if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
-              props.setSelected([...props.selected, {
-                obj: Object.keys(ONUObjectives)[currentIndex],
-                index: currentIndex,
-                image: onuInfo[currentIndex].image
-              }]);
-              props.formik.setFieldValue('ONUObjective', [...props.formik.values.ONUObjective, currentIndex]);
-            }
-          }}
-        />
-      </View>
-      <View style={styles.onuContainer}>
-        <Text style={styles.label}> {t('onu-objective-choice.objective')} {currentIndex+1}:</Text>
-        <Text style={styles.label}>{onuInfo[currentIndex].title}</Text>
-        <Text style={styles.text}>{onuInfo[currentIndex].description}</Text>
-        <View style={{justifyContent: "center", display: "flex", flexDirection: 'row', width: '100%'}}>
-          <IconButton style={styles.done} icon={"check-bold"} onPress={() => props.setOpen(false)} color={colors.background}/>
         </View>
       </View>
-    </View>
   )
 }
 

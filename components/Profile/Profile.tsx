@@ -21,6 +21,7 @@ import {
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
+import { Col, Row, Grid } from "react-native-easy-grid";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
@@ -36,6 +37,7 @@ import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
 import {createPDF, PROFILE_HTML} from "./PDF/CreatePDF";
+import MenuDrawer from 'react-native-side-drawer'
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -60,6 +62,7 @@ export function Profile(props: Props) {
   const [userId, setUserId] = useState('');
   const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>();
   const [viewConnectionsFeed, setViewConnectionsFeed] = useState(false);
   const [viewBiography, setViewBiography] = useState(false);
@@ -90,12 +93,14 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
+    fetchPolicy:"cache-and-network",
     onError: error => {
       console.log('profile error');
       console.log(error);
     },
     onCompleted: data => {
       console.log(data)
+      console.log(data.findUserById.user.favouriteODS.length)
       if (data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
       if (data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
       else setConnectionStatus(ConnectionStatus.connect)
@@ -238,6 +243,9 @@ export function Profile(props: Props) {
 
   const onError = () => {
     toastError();
+  }
+  const toggleOpen = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   const styles = StyleSheet.create({
@@ -415,6 +423,45 @@ export function Profile(props: Props) {
       marginLeft: 10,
       width: '90%',
       color: 'gray'
+    },
+    menuContainer: {
+      backgroundColor: "transparent",
+      alignItems: "flex-start",
+      justifyContent: "center",
+      zIndex: 3
+    },
+    animatedBox: {
+      backgroundColor: colorShade(colors.surface, -5),
+      height: Dimensions.get('window').height,
+      padding: 20,
+      zIndex: 3,
+      paddingTop: Platform.OS === 'ios' ? 40 : 0,
+      shadowOffset: {width: 2, height: 2},
+      shadowOpacity: 0.5,
+      shadowColor: '#DAB99D',
+      elevation: 4,
+    },
+    menuBody: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+      paddingRight: 10,
+    },
+    element:{
+      width: 35,
+      paddingRight: 2
+    },
+    menuBox: {
+      backgroundColor: 'transparent',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: "center",
+      height: 60,
+      paddingHorizontal: 5,
+      borderTopColor: colorShade(colors.surface, -15),
+      borderBottomColor: colorShade(colors.surface, -15),
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
     }
   });
   const {t, i18n} = useTranslation();
@@ -455,7 +502,6 @@ export function Profile(props: Props) {
   function handleDisconnect() {
     setOpen(true)
   }
-
   function doDisconnect() {
     disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
     setOpen(false)
@@ -493,7 +539,6 @@ export function Profile(props: Props) {
     }
 
   }
-
   const getConnectButtonLabel = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
@@ -547,9 +592,12 @@ export function Profile(props: Props) {
     </TouchableOpacity>
   }
 
-  const myIcon = <ImageElement style={{height: 40, width: 40}}
-                               source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}
-  />
+  const myIcon = <View style={styles.menuBox}>
+      <ImageElement style={{height: 35, width: 35}}
+                    source={require('../../assets/images/logos/favpng_translation-language-google-translate-clip-art.png')}/>
+
+      <Text> {t('profile.menuLanguage')} </Text>
+  </View>
 
   function handleChange(itemValue) {
     i18n.changeLanguage(itemValue)
@@ -568,8 +616,81 @@ export function Profile(props: Props) {
     return location;
   }
 
+  const drawerContent = () => {
+    return (
+      <View style={styles.animatedBox}>
+        <Grid>
+          <Row style={{padding: 0, margin: 0, maxHeight: 40}}>
+            <TouchableOpacity onPress={toggleOpen}>
+              <Icon type={'feather'} name={'x'}/>
+            </TouchableOpacity>
+          </Row>
+
+          <OptionsMenu
+            customButton={myIcon}
+            options={["English", "Español", "Cancel"]}
+            actions={[() => handleChange("en"), () => handleChange("es"), () => {
+            }]}
+          />
+        <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
+          <View style={styles.menuBox}>
+            {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
+            <Badge size={20} style={{
+              backgroundColor: colors.accent,
+              position: 'absolute',
+              bottom: 10,
+              left: -15,
+              zIndex: 2
+            }}>
+              {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
+            </Badge>}
+            <Icon style={styles.element} type={'feather'} name={'user-plus'}/>
+            <Text> {t('profile.menuReq')} </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => props.navigation.navigate('edit-profile')}>
+          <View style={styles.menuBox}>
+            <Icon style={styles.element} type={'feather'} name={'edit-2'}/>
+            <Text> {t('profile.menuEdit')} </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => {
+          createPDF(PROFILE_HTML({
+            username: userData?.findUserById?.user?.name + ' ' + userData?.findUserById?.user?.lastname,
+            email: userData?.findUserById?.user?.mail,
+            connected: userData?.findUserById?.connectionQuantity || 0,
+            level: 2,
+            verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
+            sdg: [1,2,3], //userData?.findUserById?.user?.favouriteODS,
+            challenges: verifiedChallengesData ?
+              verifiedChallengesData.getVerifiedChallenges.map(c => {
+                return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
+              })
+              :
+              []
+          }));
+        }}>
+          <View style={styles.menuBox}>
+            <Icon style={styles.element} type={'feather'} name={'download'}/>
+            <Text> {t('profile.menuCv')} </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        </Grid>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
+      <MenuDrawer
+        open={isMenuOpen}
+        drawerContent={drawerContent()}
+        drawerPercentage={70}
+        animationTime={250}
+        overlay={true}
+        position={'right'}
+        opacity={0.4}
+      >
       <ConfirmationModal open={open} onClose={() => setOpen(false)} onAccept={() => doDisconnect()}
                          text={t('profile.modal-text')}
                          cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
@@ -603,53 +724,12 @@ export function Profile(props: Props) {
                   </View>
               </View>
             {(!props.route.params?.otherId) &&
-            <View style={{backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center'}}>
-                <OptionsMenu
-                    customButton={myIcon}
-                    options={["English", "Español", "Cancel"]}
-                    actions={[() => handleChange("en"), () => handleChange("es"), () => {
-                    }]}
-                />
-                <TouchableWithoutFeedback onPress={() => setViewConnectionsFeed(true)}>
-                    <View style={{backgroundColor: 'transparent'}}>
-                      {pendingConnectionsNumberData?.getMyPendingConnectionsNumber > 0 &&
-                      <Badge size={20} style={{
-                        backgroundColor: colors.accent,
-                        position: 'absolute',
-                        bottom: 10,
-                        left: -15,
-                        zIndex: 2
-                      }}>
-                        {pendingConnectionsNumberData?.getMyPendingConnectionsNumber}
-                      </Badge>}
-                        <Icon type={'feather'} name={'user-plus'}/>
-                    </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => props.navigation.navigate('edit-profile')}>
-                    <View style={{backgroundColor: 'transparent'}}>
-                        <Icon type={'feather'} name={'edit-2'}/>
-                    </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => {
-                  createPDF(PROFILE_HTML({
-                    username: userData?.findUserById?.user?.name + ' ' + userData?.findUserById?.user?.lastname,
-                    email: userData?.findUserById?.user?.mail,
-                    connected: userData?.findUserById?.connectionQuantity || 0,
-                    level: 2,
-                    verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
-                    sdg: [1,2,3], //userData?.findUserById?.user?.favouriteODS,
-                    challenges: verifiedChallengesData ?
-                      verifiedChallengesData.getVerifiedChallenges.map(c => {
-                        return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
-                      })
-                      :
-                      []
-                  }));
-                }}>
-                    <View style={{backgroundColor: 'transparent'}}>
-                        <Icon type={'feather'} name={'download'}/>
-                    </View>
-                </TouchableWithoutFeedback>
+            <View style={styles.menuContainer}>
+
+                    <TouchableOpacity onPress={toggleOpen} style={styles.menuBody}>
+                        <Icon type={'feather'} name={'menu'} style={{color: colors.primary}}/>
+                    </TouchableOpacity>
+
             </View>
             }
           </View>
@@ -832,6 +912,7 @@ export function Profile(props: Props) {
           </Modal>
         </View> : <View/>}
       </ScrollView>}
+      </MenuDrawer>
     </View>
   );
 }

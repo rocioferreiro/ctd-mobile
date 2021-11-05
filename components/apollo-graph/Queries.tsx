@@ -66,9 +66,14 @@ query newFindUserById($targetUserId: String!){
           province
           country
         }
+        
+    gender
+    birthDate
+    photo
     }
     state
     connectionQuantity 
+  
   }
 }
 `;

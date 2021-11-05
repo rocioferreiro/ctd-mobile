@@ -33,6 +33,7 @@ const ProfileLocation = (props: Props) => {
             props.setDisabled(false)
         }
         (async () => {
+
             let enabled = await Location.hasServicesEnabledAsync();
             console.log(enabled)
             if (!enabled) {

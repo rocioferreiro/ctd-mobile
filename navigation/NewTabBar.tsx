@@ -25,7 +25,6 @@ import ChallengeCreationSuccessful from "../components/CreateChallengeForm/Chall
 import ChallengeCardScrollView from "../components/Profile/ChallengeCardScrollView";
 import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
-import RankingList from "../components/ranking/RankingList";
 import RankingView from "../components/ranking/RankingView";
 
 const MyTabbar = ({navigation}) => {
