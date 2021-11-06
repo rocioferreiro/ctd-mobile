@@ -28,7 +28,7 @@ import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {FIND_CHALLENGES_OF_USER} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
-import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
+import {ACCEPT_CONNECTION, CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
@@ -41,6 +41,7 @@ import MenuDrawer from 'react-native-side-drawer'
 
 enum ConnectionStatus {
   connect = "Connect",
+  accept = "Accept",
   pending = "Pending",
   connected = "Connected"
 }
@@ -101,9 +102,10 @@ export function Profile(props: Props) {
     onCompleted: data => {
       console.log(data)
       console.log(data.findUserById.user.favouriteODS.length)
-      if (data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected)
-      if (data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.pending)
-      else setConnectionStatus(ConnectionStatus.connect)
+      if (data.findUserById.state === "ACCEPTED") setConnectionStatus(ConnectionStatus.connected);
+      else if (data.findUserById.state === "RESPOND_TO_REQUEST") setConnectionStatus(ConnectionStatus.pending);
+      else if (data.findUserById.state === "PENDING") setConnectionStatus(ConnectionStatus.accept);
+      else setConnectionStatus(ConnectionStatus.connect);
     }
   });
   const [getLoggedInUser, {data: loggedInUserData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
@@ -165,6 +167,17 @@ export function Profile(props: Props) {
   const [disconnect] = useMutation(DISCONNECT, {
     onCompleted: () => {
       setConnectionStatus(ConnectionStatus.connect);
+    },
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    }
+  });
+
+  const [acceptConnection] = useMutation(ACCEPT_CONNECTION, {
+    onCompleted: () => {
+      setConnectionStatus(ConnectionStatus.connected);
     },
     context: {
       headers: {
@@ -532,6 +545,9 @@ export function Profile(props: Props) {
         const variables = {variables: {followingUserId: userId}}
         connect(variables).catch(e => console.log(e));
         break;
+      case ConnectionStatus.accept:
+        acceptConnection({variables: {otherUserID: userId}}).catch(e => console.log(e));
+        break;
       case ConnectionStatus.pending:
       case ConnectionStatus.connected:
         handleDisconnect()
@@ -542,6 +558,7 @@ export function Profile(props: Props) {
   const getConnectButtonLabel = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
+      case ConnectionStatus.accept:
         return t('profile.connect');
       case ConnectionStatus.pending:
         return t('profile.pending');
