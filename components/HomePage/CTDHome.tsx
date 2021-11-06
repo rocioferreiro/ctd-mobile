@@ -11,13 +11,14 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
-import {useMutation} from "@apollo/client";
+import {useMutation, useQuery} from "@apollo/client";
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import Stepper from "../CreateChallengeForm/Stepper";
 import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
+import {GET_SUSTAINABLE_POINTS} from "../apollo-graph/Queries";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -56,6 +57,9 @@ const CTDHome = ({navigation}) => {
       }
     }
   });
+
+
+  const {data: sustainablePointsData} = useQuery(GET_SUSTAINABLE_POINTS);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -286,7 +290,7 @@ const CTDHome = ({navigation}) => {
                   alignItems: "center",
                   justifyContent: 'space-between'
                 }}>
-                  <Text style={styles.subtitle}>36500k </Text>
+                  <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
                   <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
