@@ -15,7 +15,8 @@ export type Challenge  = {
     startEvent: string,
     startInscription: string,
     title?: string,
-    upVotes?: number
+    upVotes?: number,
+    score?: number
 }
 
 export type ChallengeObjective = {
