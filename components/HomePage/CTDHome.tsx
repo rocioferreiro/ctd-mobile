@@ -11,13 +11,14 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
-import {useMutation} from "@apollo/client";
+import {useMutation, useQuery} from "@apollo/client";
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import Stepper from "../CreateChallengeForm/Stepper";
 import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
+import {GET_TOP_ODS} from "../apollo-graph/Queries";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -31,7 +32,7 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const categories = ["1", "13", "15", "0", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "16"]
+  const categories = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
   const categoryColors = [colors.accent, "#707070", "#919191", "#a1a1a1", "#b1b1b1", "#c1c1c1",
     "#d1d1d1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1"];
   const [categoriesQuantity, setCategoriesQuantity] = React.useState(3);
@@ -40,6 +41,10 @@ const CTDHome = ({navigation}) => {
   const [creationSuccess, setCreationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
   const [token, setToken] = React.useState('');
+  const [topOds, setTopOds] = React.useState([]);
+
+  const {data: topOdsData} = useQuery(GET_TOP_ODS);
+
   const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
     onCompleted: () => {
       setCreationSuccess(true);
@@ -63,6 +68,14 @@ const CTDHome = ({navigation}) => {
       setToken(t)
     })
   }, [])
+
+  React.useEffect(() => {
+    if (topOdsData) {
+      const onlyTopOds = topOdsData.getOdsOrderedByPopularity.map(top => top.ods.toString());
+      const restOfOds =  categories.filter(category => !onlyTopOds.includes(category));
+      setTopOds(onlyTopOds.concat(restOfOds));
+    }
+  }, [topOdsData])
 
   const parseAndSendChallenge = (challenge) => {
     const newChallengeDTOInput = {
@@ -342,8 +355,8 @@ const CTDHome = ({navigation}) => {
               paddingTop: 10,
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
-              {categories.slice(0, categoriesQuantity).map((s, index) => {
-                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
+              {topOds.slice(0, categoriesQuantity).map((ods, index) => {
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(ods)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{
@@ -354,7 +367,7 @@ const CTDHome = ({navigation}) => {
                       borderWidth: 6,
                       marginHorizontal: 20
                     }}
-                           source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                           source={onuLogos[parseInt(ods)].image} resizeMode={'cover'}/>
                     <View style={{
                       justifyContent: "center",
                       alignItems: "center",
