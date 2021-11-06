@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
+import {Dimensions, Image, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {Card, useTheme} from "react-native-paper";
 import {Button} from "react-native-elements";
 import {View, Text} from "../Themed";
@@ -34,12 +34,13 @@ const CTDHome = ({navigation}) => {
   const categories = ["1", "13", "15", "0", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "16"]
   const categoryColors = [colors.accent, "#707070", "#919191", "#a1a1a1", "#b1b1b1", "#c1c1c1",
     "#d1d1d1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1"];
-  const [categoriesQuantity, setCategoriesQuantity] = React.useState(3);
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
   const [creationSuccess, setCreationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
   const [token, setToken] = React.useState('');
+  const [showAll, setShowAll] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
   const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
     onCompleted: () => {
       setCreationSuccess(true);
@@ -63,6 +64,12 @@ const CTDHome = ({navigation}) => {
       setToken(t)
     })
   }, [])
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    setToken(token)
+    setTimeout(() => setRefreshing(false), 70)
+  }, [refreshing]);
 
   const parseAndSendChallenge = (challenge) => {
     const newChallengeDTOInput = {
@@ -99,7 +106,7 @@ const CTDHome = ({navigation}) => {
     inscriptionsTo: new Date(),
     startsFrom: new Date(),
     finishesOn: new Date(),
-    totalPoints: 0,
+    score: 0,
     ONUObjective: []
   }
 
@@ -235,7 +242,7 @@ const CTDHome = ({navigation}) => {
         backgroundColor: colors.surface
       }}>
           <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
-                      style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
+                      style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
               <LinearGradient
                   colors={[colors.primary, "rgba(0,0,0,0)"]}
                   start={{
@@ -342,7 +349,7 @@ const CTDHome = ({navigation}) => {
               paddingTop: 10,
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
-              {categories.slice(0, categoriesQuantity).map((s, index) => {
+              {categories.slice(0, 3).map((s, index) => {
                 return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
@@ -370,26 +377,48 @@ const CTDHome = ({navigation}) => {
           </View>
 
           <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
-            <Button onPress={() => categoriesQuantity === 3 ? setCategoriesQuantity(categories.length) : setCategoriesQuantity(3)}
-                    icon={{name: categoriesQuantity === 3 ? 'add' : 'remove', type: 'ionicon'}}
+            <Button onPress={() => setShowAll(!showAll)}
+                    icon={{name: !showAll ? 'add' : 'remove', type: 'ionicon'}}
                     buttonStyle={styles.button}
             />
           </View>
 
-              {/*<TouchableWithoutFeedback*/}
-              {/*    onPress={() => setCreate(true)}>*/}
-              {/*    <View style={{*/}
-              {/*      flexDirection: 'row',*/}
-              {/*      flexWrap: 'wrap',*/}
-              {/*      backgroundColor: 'transparent',*/}
-              {/*      alignItems: "center",*/}
-              {/*      justifyContent: 'space-between'*/}
-              {/*    }}>*/}
-              {/*        <Text style={styles.create}>{t('home.challenge')}!</Text>*/}
-              {/*        <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>*/}
-              {/*        </View>*/}
-              {/*    </View>*/}
-              {/*</TouchableWithoutFeedback>*/}
+            {showAll && <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: "center",
+                flex: 1,
+                flexWrap: "wrap",
+                paddingHorizontal: 10,
+                paddingTop: 10,
+                backgroundColor: 'rgba(0,0,0,0)'
+              }}>
+
+            {categories.slice(3).map((s, index) => {
+              return <TouchableWithoutFeedback key={index+3} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
+                <View style={{backgroundColor: colors.surface}}>
+                  <CTDBadge color={categoryColors[index+3]} number={index + 4}/>
+                  <Image style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    borderColor: categoryColors[index+3],
+                    borderWidth: 6,
+                    marginHorizontal: 20
+                  }}
+                         source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                  <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
+                    backgroundColor: colors.surface
+                  }}>
+                    <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            })}
+              </View>}
 
               <PostFeed navigation={navigation}/>
 

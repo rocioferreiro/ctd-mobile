@@ -239,7 +239,7 @@ export function Profile(props: Props) {
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     setToken(token)
-    setTimeout(() => setRefreshing(false), 100)
+    setTimeout(() => setRefreshing(false), 50)
   }, [refreshing]);
 
   function toastError() {
@@ -422,16 +422,16 @@ export function Profile(props: Props) {
       opacity: 1
     },
     imageInRow: {
-      width: 60,
+      width: 190,
       minHeight: 60,
       height: 100,
       borderRadius: 5,
-      marginTop: 3
+      marginTop: 3,
+      marginRight: 3
     },
     textDescription: {
-      marginLeft: 10,
-      width: '90%',
-      color: 'gray'
+      color: colors.accent,
+      marginLeft: 5
     },
     menuContainer: {
       backgroundColor: "transparent",
@@ -498,6 +498,9 @@ export function Profile(props: Props) {
         {title}
         <View style={styles.descriptionContainer}>
           <Image source={{uri: rowData.imageUrl}} style={styles.imageInRow}/>
+          <View style={{backgroundColor: colors.accent, borderRadius: 8, padding: 1, height: 17, marginLeft: 10}}>
+            <Icon size={15} type={'feather'} name={'star'} color={colors.background}/>
+          </View>
           <Text style={[styles.textDescription]}>{rowData.score}</Text>
         </View>
       </View>
