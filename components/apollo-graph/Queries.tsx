@@ -336,3 +336,12 @@ query getVerifiedChallenges {
     }
 }
 `;
+
+export const GET_TOP_ODS = gql`
+query topODS {
+    getOdsOrderedByPopularity {
+        ods
+        times
+    }
+}
+`;
