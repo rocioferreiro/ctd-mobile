@@ -130,6 +130,7 @@
   },
   "challenge-card":{
     "join": "Join",
+    "share": "Share",
     "view": "View",
     "challenge-description": "Challenge Description",
     "level": "Level"

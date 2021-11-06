@@ -127,6 +127,7 @@
   },
   "challenge-card": {
     "join": "Únete",
+    "share": "Compartir",
     "view": "Ver más",
     "challenge-description": "Descripcion de Desafío",
     "level": "Nivel"

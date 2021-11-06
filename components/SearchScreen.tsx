@@ -75,9 +75,9 @@ const SearchScreen = ({navigation}) => {
     }
 
     const onChange = (searchValue: string) => {
-        if (!searchValue || searchValue === "") setChallengeList(data.getCreatedChallengesByUser);
+        if (!searchValue || searchValue === "") setChallengeList(data.getChallengeByFilter.challenges);
         else {
-            const filteredChallenges = data.getCreatedChallengesByUser.filter(challenge =>
+            const filteredChallenges = data.getChallengeByFilter.challenges.filter(challenge =>
                 challenge.title.toLowerCase().includes(searchValue.toLowerCase().trim())
             );
             setChallengeList(filteredChallenges);

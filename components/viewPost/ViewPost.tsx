@@ -11,6 +11,7 @@ import {FIND_POST_BY_ID, NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {getToken, getUserId} from "../Storage";
 import {useMutation} from "@apollo/client";
 import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
+import Clipboard from 'expo-clipboard';
 import {share} from "../Share";
 import * as Linking from 'expo-linking';
 
@@ -147,7 +148,9 @@ const ViewPost = (props:Props) => {
     customButton={myIcon}
     destructiveIndex={0}
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
-    actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
+    actions={[()=>{console.log("TODO Report Post")}, ()=>{Clipboard.setString(Linking.createURL('post', {
+      queryParams: { id: post.id },
+    }))}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
   const getPostCard = (post) => {
     return (
