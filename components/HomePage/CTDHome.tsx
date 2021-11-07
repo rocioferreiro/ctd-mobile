@@ -307,10 +307,11 @@ const CTDHome = ({navigation}) => {
                   flexWrap: 'wrap',
                   backgroundColor: colors.primary,
                   alignItems: "center",
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  width: '80%'
                 }}>
                   <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
-                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                  <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'flex-end'}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
                     <Text style={styles.detailtitle}> {t('home.points')}</Text>
