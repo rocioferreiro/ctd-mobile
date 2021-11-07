@@ -75,6 +75,7 @@ const SearchScreen = ({navigation}) => {
     }
 
     const onChange = (searchValue: string) => {
+        console.log(data)
         if (!searchValue || searchValue === "") setChallengeList(data.getChallengeByFilter.challenges);
         else {
             const filteredChallenges = data.getChallengeByFilter.challenges.filter(challenge =>

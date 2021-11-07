@@ -232,7 +232,8 @@
     "challenge": "Challenge",
     "users": "Participants",
     "score": "Points",
-    "top": "Top Challenges"
+    "top": "Top Challenges",
+    "empty": "There are no Challenges for this Sustainable Goal!"
   },
   "profile-ods": {
     "choose-favorite-ods": "Your Favorite SDG",

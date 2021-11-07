@@ -247,6 +247,7 @@
     "challenge": "Desafíos",
     "users": "Participantes",
     "score": "Puntos",
-    "top": "Los mejores desafíos"
+    "top": "Los mejores desafíos",
+    "empty": "Todavía no hay Desafíos para este Objetivo Sustentable!"
   }
 }
