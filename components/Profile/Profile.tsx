@@ -15,7 +15,7 @@ import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
   FIND_POSTS_OF_USER,
-  GET_CONNECTIONS, GET_VERIFIED_CHALLENGES,
+  GET_CONNECTIONS, GET_JOINED_CHALLENGES, GET_VERIFIED_CHALLENGES,
   NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
@@ -122,12 +122,28 @@ export function Profile(props: Props) {
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+    fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: result => {
+     console.log(challengesData)
     }
   });
+  const [getActiveChallenges, {data: activeChallengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onCompleted: () => {
+      console.log(activeChallengesData)
+    }
+  });
+
   const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
     context: {
       headers: {
@@ -183,6 +199,7 @@ export function Profile(props: Props) {
           getConnectionRequestsNumber({variables: {userId: id}});
         });
         getVerifiedChallenges();
+
       }
     });
   }, []);
@@ -206,6 +223,7 @@ export function Profile(props: Props) {
       findPostsOfUser({variables: {ownerId: userId}});
       getUser({variables: {targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
+      getActiveChallenges({variables: {userId: userId}})
     }
   }, [userId, loggedInUserId]);
   useEffect(() => {
@@ -604,18 +622,6 @@ export function Profile(props: Props) {
     console.log(i18n.language)
   }
 
-  const getLocationString = () => {
-    const address = userData?.findUserById?.user?.address;
-
-    let location = null;
-
-    if (address?.province) location = address.province;
-    if (address?.country) location += ", " + address.country;
-    if (!location) location = "Not completed";
-
-    return location;
-  }
-
   const drawerContent = () => {
     return (
       <View style={styles.animatedBox}>
@@ -791,14 +797,14 @@ export function Profile(props: Props) {
           </View>
         {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
-            {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
-              {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                return getActiveChallenge(challenge, key);
+              {/*if (new Date(challenge.endEvent) > new Date())*/}
+              {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
+                if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
-            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed || activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
@@ -891,7 +897,6 @@ export function Profile(props: Props) {
                   style={{width: '40%'}}
                   onPress={() => {
                     auth.signOut().catch(e => console.log(e))
-                    //props.navigation.navigate('landing')
                   }}
               >
                 {t('profile.logout')}
