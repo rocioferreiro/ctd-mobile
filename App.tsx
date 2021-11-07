@@ -193,7 +193,11 @@ export default function App() {
     config: {
       screens: {
         Landing: "landing",
-        NewTabBar: "tabbar"
+        NewTabBar: {
+          screens: {
+            VerifyChallenge: "verify-challenge/:challengeId"
+          }
+        }
       },
     },
   };
@@ -219,13 +223,11 @@ export default function App() {
                   <Stack.Navigator screenOptions={{
                     headerShown: false
                   }}>
-
                     {(loginState.userToken && loginState.userId) ?
-                      <Stack.Screen name={'tabbar'} component={NewTabBar}/>
+                      <Stack.Screen name={'NewTabBar'} component={NewTabBar}/>
                       :
-                      <Stack.Screen name={'landing'} component={Landing}/>
+                      <Stack.Screen name={'Landing'} component={Landing}/>
                     }
-
                   </Stack.Navigator>
                 </NavigationContainer>
                 <Toast ref={(ref) => Toast.setRef(ref)}/>
