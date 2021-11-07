@@ -16,7 +16,8 @@ export type Challenge  = {
     startInscription: string,
     title?: string,
     upVotes?: number,
-    image: string
+    image: string,
+    score?: number
 }
 
 export type ChallengeObjective = {

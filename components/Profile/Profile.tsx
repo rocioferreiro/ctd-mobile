@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {
   Dimensions,
   ImageBackground,
-  Modal, Platform,
+  Modal, Platform, RefreshControl,
   ScrollView,
   StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback, View as ViewR
@@ -69,10 +69,8 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
-  const [getVerifiedChallenges, {
-    data: verifiedChallengesData,
-    loading: verifiedLoading
-  }] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -113,6 +111,7 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
+    fetchPolicy:"cache-and-network",
     onError: error => {
       console.log('profile error');
       console.log(error);
@@ -150,7 +149,8 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    }
+    },
+    fetchPolicy:"cache-and-network"
   });
   const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
     fetchPolicy: 'cache-and-network',
@@ -238,11 +238,18 @@ export function Profile(props: Props) {
   }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
   useEffect(() => {
     if (verifiedChallengesData) {
+      console.log(verifiedChallengesData)
       setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
-        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title, description: c.description, imageUrl: c.image ? c.image.replace('127.0.0.1', ip) : 'https://i0.wp.com/www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/SDG-Wheel_WEB.png?resize=150%2C150&ssl=1'};
+        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title,score: c.score, description: c.description, imageUrl: c.image ? c.image.replace('127.0.0.1', ip) : 'https://i0.wp.com/www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/SDG-Wheel_WEB.png?resize=150%2C150&ssl=1'};
       }))
     }
   }, [verifiedLoading])
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    setToken(token)
+    setTimeout(() => setRefreshing(false), 50)
+  }, [refreshing]);
 
   function toastError() {
     Toast.show({
@@ -252,7 +259,6 @@ export function Profile(props: Props) {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-
   const onError = () => {
     toastError();
   }
@@ -426,16 +432,16 @@ export function Profile(props: Props) {
       opacity: 1
     },
     imageInRow: {
-      width: 60,
+      width: 190,
       minHeight: 60,
       height: 100,
       borderRadius: 5,
-      marginTop: 3
+      marginTop: 3,
+      marginRight: 3
     },
     textDescription: {
-      marginLeft: 10,
-      width: '90%',
-      color: 'gray'
+      color: colors.accent,
+      marginLeft: 5
     },
     menuContainer: {
       backgroundColor: "transparent",
@@ -502,7 +508,10 @@ export function Profile(props: Props) {
         {title}
         <View style={styles.descriptionContainer}>
           <Image source={{uri: rowData.imageUrl}} style={styles.imageInRow}/>
-          <Text style={[styles.textDescription]}>{rowData.description}</Text>
+          <View style={{backgroundColor: colors.accent, borderRadius: 8, padding: 1, height: 17, marginLeft: 10}}>
+            <Icon size={15} type={'feather'} name={'star'} color={colors.background}/>
+          </View>
+          <Text style={[styles.textDescription]}>{rowData.score}</Text>
         </View>
       </View>
     )
@@ -523,25 +532,6 @@ export function Profile(props: Props) {
   const onConnect = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
-        // const target = userData.findUserById.user;
-        // const following = loggedInUserData.findUserById.user;
-        // const targetUser = {
-        //   id: target.id, mail: target.mail, address: {
-        //     coordinates: {
-        //       latitude: target.address.coordinates.latitude,
-        //       longitude: target.address.coordinates.latitude
-        //     }
-        //   }, favouriteODS: target.favouriteODS
-        // };
-        // const followingUser = {
-        //   id: following.id, mail: following.mail, address: {
-        //     coordinates: {
-        //       latitude: target.address.coordinates.latitude,
-        //       longitude: target.address.coordinates.latitude
-        //     }
-        //   }, favouriteODS: following.favouriteODS
-        // };
-
         const variables = {variables: {followingUserId: userId}}
         connect(variables).catch(e => console.log(e));
         break;
@@ -697,7 +687,7 @@ export function Profile(props: Props) {
                          text={t('profile.modal-text')}
                          cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
       {!viewPost &&
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
           <ImageBackground style={styles.profileBackground}
                            source={require('../../assets/images/connections.png')}

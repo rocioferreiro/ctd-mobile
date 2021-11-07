@@ -7,6 +7,8 @@ import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
 import {ip} from "../apollo-graph/Client";
+import * as Linking from "expo-linking";
+import {share} from "../Share";
 
 interface Props {
   token: string,
@@ -55,6 +57,7 @@ const ChallengeCard = (props: Props) => {
       console.log(error1);
     }
   });
+
   const LeftContent = props => <Avatar.Text
     label={data.findUserById.user.name[0] + data.findUserById.user.lastname[0]} {...props}/>
 
@@ -114,9 +117,15 @@ const ChallengeCard = (props: Props) => {
             borderRadius: 20,
             width: 100,
           }}
+              onPress={() => {
+                let redirectUrl = Linking.createURL('tabbar/challenge', {
+                  queryParams: { id: props.challenge.id },
+                });
+                share(redirectUrl);
+              }}
           ><Title style={{
             fontSize: 15, color: colors.primary, padding: 0
-          }}>{t('challenge-card.join')}</Title>
+          }}>{t('challenge-card.share')}</Title>
           </Button>
         </Card.Actions>
       </Card>

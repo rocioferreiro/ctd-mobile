@@ -67,9 +67,8 @@ const ChallengeCreation = (props: Props) => {
         "longitude": challenge.coordinates.coordinates[1]
       },
       "image": challenge.image,
+      "score": challenge.score
     }
-    console.log('creating challenge from challenge creation with values: ')
-    console.log(newChallengeDTOInput);
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
     });
@@ -88,7 +87,7 @@ const ChallengeCreation = (props: Props) => {
     inscriptionsTo: new Date(),
     startsFrom: new Date(),
     finishesOn: new Date(),
-    totalPoints: 0,
+    score: 0,
     ONUObjective: [],
     image: ''
   }
