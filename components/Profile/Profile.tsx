@@ -251,7 +251,8 @@ export function Profile(props: Props) {
     },
     profileBackground: {
       width: '100%',
-      height: 200
+      height: 200,
+      transform: [{ rotateX: '180deg' }, { rotateY: '180deg' }]
     },
     profileImage: {
       marginTop: -38,
