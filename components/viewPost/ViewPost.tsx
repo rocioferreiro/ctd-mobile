@@ -33,11 +33,27 @@ const ViewPost = (props:Props) => {
   const [additionalPosts, setAdditionalPosts] = useState<Post[]>();
   const [likes, setLikes] = React.useState<number>()
   const [token,setToken] = React.useState('')
+  const [dataSourceCords, setDataSourceCords] = useState([]);
+  const [scrollToIndex,setScrollToIndex]= useState(props.key)
+  const [ref, setRef] = useState(null);
 
   React.useEffect(() => {
     getToken().then(t => setToken(t))
   }, []);
 
+
+  const scrollHandler = () => {
+    console.log(dataSourceCords.length, scrollToIndex);
+    if (dataSourceCords.length > scrollToIndex) {
+      ref.scrollTo({
+        x: 0,
+        y: dataSourceCords[scrollToIndex - 1],
+        animated: true,
+      });
+    } else {
+      alert('Out of Max Index');
+    }
+  };
   const [getPost] = useLazyQuery(FIND_POST_BY_ID, {
     context: {
       headers: {'Authorization' : 'Bearer ' + token}
@@ -139,7 +155,9 @@ const ViewPost = (props:Props) => {
         setUserId(id);
         if (post.owner.id == id) setLiked(true);
       })
+      scrollHandler()
     }
+
   }, [post])
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
@@ -150,8 +168,18 @@ const ViewPost = (props:Props) => {
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
     actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
-  const getPostCard = (post) => {
+  const getPostCard = (post,scrollToIndex) => {
     return (
+        <View onLayout={(event) => {
+          const layout = event.nativeEvent.layout;
+          dataSourceCords[scrollToIndex] = layout.y;
+          setDataSourceCords(dataSourceCords);
+          console.log(dataSourceCords);
+          console.log('height:', layout.height);
+          console.log('width:', layout.width);
+          console.log('x:', layout.x);
+          console.log('y:', layout.y);
+        }}>
         <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
           <TouchableOpacity onPress={() => {
             props.navigation.navigate('profile', {otherId: post.owner?.id ? post.owner?.id : post.owner})
@@ -213,14 +241,17 @@ const ViewPost = (props:Props) => {
           {/*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*/}
           {/*</Modal>*/}
         </Card>
+        </View>
     )
   }
 
   return (additionalPosts ?
-    <ScrollView>
+    <ScrollView ref={(ref) => {
+      setRef(ref);
+    }}  >
       {post && getPostCard(post)}
       {additionalPosts.map(additionalPost => additionalPost.id !== post?.id && getPostCard(additionalPost))}
-    </ScrollView> : (post ? <View>{getPostCard(post)}</View> : <View/>)
+    </ScrollView> : (post ? <View >{getPostCard(post,scrollToIndex)}</View> : <View/>)
   )
 };
 

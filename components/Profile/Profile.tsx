@@ -68,7 +68,6 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
-  const [dataSourceCords, setDataSourceCords] = useState([]);
   const [getVerifiedChallenges, {
     data: verifiedChallengesData,
     loading: verifiedLoading
@@ -553,18 +552,9 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View onLayout={(event) => {
-      const layout = event.nativeEvent.layout;
-      dataSourceCords[key] = layout.y;
-      setDataSourceCords(dataSourceCords);
-      console.log(dataSourceCords);
-      console.log('height:', layout.height);
-      console.log('width:', layout.width);
-      console.log('x:', layout.x);
-      console.log('y:', layout.y);
-    }}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
+    return <View ><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
       screen: 'challenges-scrollview',
-      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
+      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser,key:key}
     })}
 
     } style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
@@ -802,7 +792,7 @@ export function Profile(props: Props) {
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
               {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
+              return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
@@ -820,7 +810,7 @@ export function Profile(props: Props) {
                     // setViewPost(true);
                     props.navigation.navigate('tabbar', {
                       screen: 'post',
-                      params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}
+                      params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner,key:i}
                     })
                   }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
                 })}
@@ -851,7 +841,7 @@ export function Profile(props: Props) {
 
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
+                   return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
