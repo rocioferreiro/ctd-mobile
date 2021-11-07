@@ -353,6 +353,15 @@ query getVerifiedChallenges {
 }
 `;
 
+export const GET_TOP_ODS = gql`
+query topODS {
+    getOdsOrderedByPopularity {
+        ods
+        times
+    }
+}
+`;
+
 export const GET_JOINED_CHALLENGES =gql`
 query getAllChallengesToWhichTheUserIsSubscribed{
     getAllChallengesToWhichTheUserIsSubscribed{
