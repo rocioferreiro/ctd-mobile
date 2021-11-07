@@ -15,13 +15,13 @@ import {Avatar, ProgressBar} from 'react-native-paper';
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
   FIND_POSTS_OF_USER,
-  GET_CONNECTIONS, GET_VERIFIED_CHALLENGES,
+  GET_CONNECTIONS, GET_JOINED_CHALLENGES, GET_VERIFIED_CHALLENGES,
   NEW_FIND_USER_BY_ID, NEW_GET_PENDING_CONNECTIONS, PENDING_CONNECTION_REQUESTS_NUMBER
 } from "../apollo-graph/Queries";
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Row, Grid } from "react-native-easy-grid";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
@@ -32,7 +32,7 @@ import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
-import {Role} from "../Models/User";
+import {getXpRange, Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
@@ -122,12 +122,28 @@ export function Profile(props: Props) {
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
+    fetchPolicy: 'cache-and-network',
     context: {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    },
+    onCompleted: result => {
+     console.log(challengesData)
     }
   });
+  const [getActiveChallenges, {data: activeChallengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
+    fetchPolicy: 'cache-and-network',
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onCompleted: () => {
+      console.log(activeChallengesData)
+    }
+  });
+
   const {data: connectionsData} = useQuery(GET_CONNECTIONS, {
     context: {
       headers: {
@@ -183,6 +199,7 @@ export function Profile(props: Props) {
           getConnectionRequestsNumber({variables: {userId: id}});
         });
         getVerifiedChallenges();
+
       }
     });
   }, []);
@@ -206,6 +223,7 @@ export function Profile(props: Props) {
       findPostsOfUser({variables: {ownerId: userId}});
       getUser({variables: {targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
+      getActiveChallenges({variables: {userId: userId}})
     }
   }, [userId, loggedInUserId]);
   useEffect(() => {
@@ -604,18 +622,6 @@ export function Profile(props: Props) {
     console.log(i18n.language)
   }
 
-  const getLocationString = () => {
-    const address = userData?.findUserById?.user?.address;
-
-    let location = null;
-
-    if (address?.province) location = address.province;
-    if (address?.country) location += ", " + address.country;
-    if (!location) location = "Not completed";
-
-    return location;
-  }
-
   const drawerContent = () => {
     return (
       <View style={styles.animatedBox}>
@@ -736,12 +742,18 @@ export function Profile(props: Props) {
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-                  <Text style={styles.secondaryText}>{t('profile.level')} 4</Text>
-                  <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} {userData?.findUserById?.user?.level}</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} {userData?.findUserById?.user?.level+1}</Text>
               </View>
+            {userData &&
               <View style={{backgroundColor: 'transparent'}}>
-                  <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
+                <ProgressBar progress={userData?.findUserById?.user?.level === 0 ?
+                  userData?.findUserById?.user?.xp / getXpRange(1)[1] :
+                  userData?.findUserById?.user?.xp / getXpRange(userData?.findUserById?.user?.level)[1]}
+                             color={colors.accent}
+                             style={{height: 14, borderRadius: 8}}/>
               </View>
+            }
               <View style={styles.objectivesContainer}>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[0].image}
@@ -785,14 +797,14 @@ export function Profile(props: Props) {
           </View>
         {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
-            {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
-              {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
+              {/*if (new Date(challenge.endEvent) > new Date())*/}
+              {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
                 if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
-            {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed || activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
@@ -885,7 +897,6 @@ export function Profile(props: Props) {
                   style={{width: '40%'}}
                   onPress={() => {
                     auth.signOut().catch(e => console.log(e))
-                    //props.navigation.navigate('landing')
                   }}
               >
                 {t('profile.logout')}
