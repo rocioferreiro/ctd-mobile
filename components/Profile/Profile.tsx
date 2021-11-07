@@ -654,8 +654,9 @@ export function Profile(props: Props) {
             email: userData?.findUserById?.user?.mail,
             connected: userData?.findUserById?.connectionQuantity || 0,
             level: 2,
+            profileImage: userData?.findUserById?.user?.photo? userData?.findUserById?.user?.photo.replace('127.0.0.1', ip) : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg',
             verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
-            sdg: [1,2,3], //userData?.findUserById?.user?.favouriteODS,
+            sdg: userData?.findUserById?.user?.favouriteODS,
             challenges: verifiedChallengesData ?
               verifiedChallengesData.getVerifiedChallenges.map(c => {
                 return {title: c.title, completionDate: c.endEvent, sdg: c.categories}

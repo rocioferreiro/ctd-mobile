@@ -9,7 +9,8 @@ export type Content = {
   level: number,
   verifiedChallenges: number,
   sdg: number[],
-  challenges: ChallengeSnack[]
+  challenges: ChallengeSnack[],
+  profileImage: string
 }
 
 export type ChallengeSnack = {
@@ -84,7 +85,7 @@ export const PROFILE_HTML = (content: Content) => {
                             border: 3px
                             solid #fff;
                             border-radius: 50%;">
-                    <img src="https://i.imgur.com/JgYD2nQ.jpg"
+                    <img src=${content.profileImage}
                          style="border-radius: 50%;" width="80" alt="profile-pic">
                 </div>
             </div>
@@ -204,7 +205,7 @@ export const PROFILE_HTML = (content: Content) => {
                       align-items: center;
                       width: 70%;
                       flex-direction: row;">
-                        <img src="https://i.imgur.com/JgYD2nQ.jpg" style="border-radius: 50%;" height="35" alt="profile-pic">
+                        <img src=${content.profileImage} style="border-radius: 50%;" height="35" alt="profile-pic">
                         <p style="
                         margin: 0;
                         font-weight: 400;
