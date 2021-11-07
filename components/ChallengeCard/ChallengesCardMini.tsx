@@ -40,7 +40,7 @@ const ChallengeCardMini = (props: Props) => {
                     marginTop: 5}}>{props.challenge.title}</Title>
                 <Paragraph style={{ color: colors.background,fontSize:15,marginBottom:5}}>{t('challenge-card-mini.challenge-description')}</Paragraph>
             </Card.Content>
-            <Card.Cover source={props.challenge.image? {uri: props.challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/compost.jpg')}/>
+            <Card.Cover source={props.challenge.image? {uri: props.challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')}/>
             <Card.Actions>
                 <Button style={ {backgroundColor:  '#c1c1c1', borderRadius: 20,  width: 100,marginLeft:40,marginRight:120,}}>
                     <Title style={{ fontSize: 15, color: colors.primary,
