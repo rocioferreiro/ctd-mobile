@@ -152,7 +152,7 @@ const ImagePicker = (props: Props) =>  {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {image ? <Image source={{ uri: image }} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />:
+      {image ? <Image source={{uri: 'data:image/png;base64,' + image}} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />:
       <Image source={require('../../../assets/images/no-image.png')} style={{ width: Dimensions.get('window').width*0.7, height: 200, borderRadius: 20 }} />}
       <View style={styles.buttonWrap}>
         <IconButton style={styles.iconWrap} onPress={pickImage} icon={'folder-image'} color={'#fff'}/>
