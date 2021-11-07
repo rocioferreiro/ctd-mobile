@@ -194,7 +194,7 @@ const ViewPost = (props:Props) => {
             </View>
             <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
               <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
-                let redirectUrl = Linking.createURL('post', {
+                let redirectUrl = Linking.createURL('tabbar/post', {
                   queryParams: { id: post.id },
                 });
                 share(redirectUrl);

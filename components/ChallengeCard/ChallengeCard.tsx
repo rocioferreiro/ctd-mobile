@@ -117,7 +117,7 @@ const ChallengeCard = (props: Props) => {
             width: 100,
           }}
               onPress={() => {
-                let redirectUrl = Linking.createURL('challenge', {
+                let redirectUrl = Linking.createURL('tabbar/challenge', {
                   queryParams: { id: props.challenge.id },
                 });
                 share(redirectUrl);
