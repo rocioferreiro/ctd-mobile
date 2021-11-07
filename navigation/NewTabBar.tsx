@@ -131,8 +131,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'edit-profile'} component={EditProfile}/>
         <Stack.Screen name={'challenge-verification'} >
           {props => <ChallengeVerificationPage {...props} close={()=> {
-            navigation.goBack()
-            navigation.goBack()
+            props.navigation.navigate('home')
           }}/>}
         </Stack.Screen>
         <Stack.Screen name={'challenge'}>
