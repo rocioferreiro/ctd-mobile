@@ -383,3 +383,10 @@ query getAllChallengesToWhichTheUserIsSubscribed{
 }`
 
 
+
+
+export const GET_SUSTAINABLE_POINTS = gql`
+query getSustainablePoints {
+    getGlobalSustainablePoints
+}
+`;

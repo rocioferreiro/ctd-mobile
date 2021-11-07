@@ -11,13 +11,14 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
-import {useLazyQuery, useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import Stepper from "../CreateChallengeForm/Stepper";
 import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
+import {GET_SUSTAINABLE_POINTS} from "../apollo-graph/Queries";
 import {getXpRange} from "../Models/User";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 
@@ -69,6 +70,9 @@ const CTDHome = ({navigation}) => {
       console.log(error);
     }
   });
+
+
+  const {data: sustainablePointsData} = useQuery(GET_SUSTAINABLE_POINTS);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -303,10 +307,11 @@ const CTDHome = ({navigation}) => {
                   flexWrap: 'wrap',
                   backgroundColor: colors.primary,
                   alignItems: "center",
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  width: '80%'
                 }}>
-                  <Text style={styles.subtitle}>36500k </Text>
-                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                  <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
+                  <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'flex-end'}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
                     <Text style={styles.detailtitle}> {t('home.points')}</Text>
