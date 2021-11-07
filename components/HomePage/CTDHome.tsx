@@ -11,7 +11,7 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
-import {useMutation, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import Stepper from "../CreateChallengeForm/Stepper";
 import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
@@ -19,6 +19,9 @@ import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
 import {GET_TOP_ODS} from "../apollo-graph/Queries";
+import {GET_SUSTAINABLE_POINTS} from "../apollo-graph/Queries";
+import {getXpRange} from "../Models/User";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -61,6 +64,20 @@ const CTDHome = ({navigation}) => {
       }
     }
   });
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onError: error => {
+      console.log('user error');
+      console.log(error);
+    }
+  });
+
+
+  const {data: sustainablePointsData} = useQuery(GET_SUSTAINABLE_POINTS);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -76,6 +93,12 @@ const CTDHome = ({navigation}) => {
       setTopOds(onlyTopOds.concat(restOfOds));
     }
   }, [topOdsData])
+
+  React.useEffect(() => {
+    if (userId) {
+      getUser({variables: {targetUserId: userId}});
+    }
+  }, [userId]);
 
   const parseAndSendChallenge = (challenge) => {
     const newChallengeDTOInput = {
@@ -237,7 +260,7 @@ const CTDHome = ({navigation}) => {
       text2: t('home.create-post-error-subtitle'),
       topOffset: Dimensions.get("window").height * 0.05,
     });
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -297,10 +320,11 @@ const CTDHome = ({navigation}) => {
                   flexWrap: 'wrap',
                   backgroundColor: colors.primary,
                   alignItems: "center",
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  width: '80%'
                 }}>
-                  <Text style={styles.subtitle}>36500k </Text>
-                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                  <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
+                  <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'flex-end'}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
                     <Text style={styles.detailtitle}> {t('home.points')}</Text>
@@ -323,12 +347,17 @@ const CTDHome = ({navigation}) => {
             }}>
               <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
               <View style={{flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.surface}}>
-                <Text style={styles.level}> {t('home.level')} 1</Text>
-                <Text style={styles.nextlevel}>{t('home.level')} 2</Text>
+                <Text style={styles.level}> {t('home.level')} {userData?.findUserById?.user?.level}</Text>
+                <Text style={styles.nextlevel}>{t('home.level')} {userData?.findUserById?.user?.level+1}</Text>
               </View>
             </View>
-            <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3}
-                          width={350} height={30}/>
+            {userData &&
+              <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent}
+                            progress={userData?.findUserById?.user?.level === 0 ?
+                              userData?.findUserById?.user?.xp / getXpRange(1)[1] :
+                              userData?.findUserById?.user?.xp / getXpRange(userData?.findUserById?.user?.level)[1]}
+                            width={350} height={30}/>
+            }
           </View>
           <View style={{
             width: "100%",
