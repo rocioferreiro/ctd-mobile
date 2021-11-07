@@ -33,7 +33,6 @@ const getSdgIcon = (number: number) => {
 }
 
 export const PROFILE_HTML = (content: Content) => {
-  console.log(content);
   return `
 <html>
 <head>

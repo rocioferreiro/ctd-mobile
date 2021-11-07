@@ -142,6 +142,7 @@ const ChallengePage = (props: Props) => {
       getToken().then(t => {
         setToken(t);
         if (props.challenge) {
+          console.log(props.challenge)
           setChallengeInfo(props.challenge);
           setMarker(props.challenge.coordinates);
         } else if (props.route.params?.challengeId)
