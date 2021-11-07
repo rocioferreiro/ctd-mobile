@@ -38,6 +38,7 @@ const ChallengePoints = (props: Props) => {
             "owner": "",
             "categories": challenge.ONUObjective.map(c => c + 1),
             "objectives": challenge.challengeObjectives,
+            "score": 0,
             "coordinates": {
                 "latitude": 0,
                 "longitude": 0
@@ -64,7 +65,8 @@ const ChallengePoints = (props: Props) => {
 
     const [getScore, {data: resultedPoints}] = useLazyQuery(GET_SCORE, {
         variables: {newChallenge: parseChallenge(props.formik.values)},
-        onError: () => {
+        onError: (e) => {
+            console.log(e)
             toastOn();
         },
         context: {
@@ -77,6 +79,7 @@ const ChallengePoints = (props: Props) => {
     useEffect(() => {
         if (resultedPoints) {
             setTotalPoints(parseInt(resultedPoints.getSuggestedScore))
+            props.formik.setFieldValue('score', parseInt(resultedPoints.getSuggestedScore));
         }
     }, [resultedPoints])
 
@@ -201,7 +204,7 @@ const ChallengePoints = (props: Props) => {
                     maximumTrackTintColor={`rgba(${colors.primary}, 0.5)`}
                     thumbTintColor={colors.accent}
                     onValueChange={(current) => {
-                        props.formik.setFieldValue('totalPoints', current);
+                        props.formik.setFieldValue('score', current);
                         setTotalPoints(current);
                     }}
                 />

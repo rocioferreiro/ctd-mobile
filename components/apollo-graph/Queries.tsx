@@ -55,6 +55,7 @@ query newFindUserById($targetUserId: String!){
         mail
         role
         level
+        xp
         lastname
         favouriteODS
         biography
@@ -77,6 +78,21 @@ query newFindUserById($targetUserId: String!){
   }
 }
 `;
+
+export const GET_TOP_CHALLENGES_BY_ODS = gql`
+  query topODS($ods: Int!){
+  getTopChallengesByOds(ods: $ods, pageNumber: 0, pageSize: 15){
+    challenges{
+      id
+      title
+      score
+      subscribersQuantity
+    }
+  }
+}
+`
+
+
 
 export const GET_SCORE = gql`
 query getScore($newChallenge: ChallengeDTOInput!){
@@ -334,5 +350,52 @@ query getVerifiedChallenges {
         title
         score
     }
+}
+`;
+
+export const GET_TOP_ODS = gql`
+query topODS {
+    getOdsOrderedByPopularity {
+        ods
+        times
+    }
+}
+`;
+
+export const GET_JOINED_CHALLENGES =gql`
+query getAllChallengesToWhichTheUserIsSubscribed{
+    getAllChallengesToWhichTheUserIsSubscribed{
+      boost
+       categories
+       coordinates {
+        longitude
+        latitude
+      }
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives {
+        points
+        name
+      }
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
+       score
+
+}
+}`
+
+
+
+
+export const GET_SUSTAINABLE_POINTS = gql`
+query getSustainablePoints {
+    getGlobalSustainablePoints
 }
 `;

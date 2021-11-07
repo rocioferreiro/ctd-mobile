@@ -52,6 +52,7 @@ const ChallengeCreation = (props: Props) => {
   }, [])
 
   const parseAndSendChallenge = (challenge) => {
+    console.log(challenge)
     const newChallengeDTOInput = {
       "title": challenge.title,
       "startEvent": convertDateToString(challenge.startsFrom),
@@ -65,7 +66,8 @@ const ChallengeCreation = (props: Props) => {
       "coordinates": {
         "latitude": challenge.coordinates.coordinates[0],
         "longitude": challenge.coordinates.coordinates[1]
-      }
+      },
+      "score": challenge.score
     }
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
@@ -85,7 +87,7 @@ const ChallengeCreation = (props: Props) => {
     inscriptionsTo: new Date(),
     startsFrom: new Date(),
     finishesOn: new Date(),
-    totalPoints: 0,
+    score: 0,
     ONUObjective: []
   }
 
