@@ -32,8 +32,10 @@ const ChallengeCardScrollView = (props:Props) => {
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
     const [dataSourceCords, setDataSourceCords] = useState([]);
-    const [scrollToIndex,setScrollToIndex]= useState(props.key)
+    const [scrollToIndex,setScrollToIndex]= useState(0)
     const [ref, setRef] = useState(null);
+    const [dataSource, setDataSource] = useState([]);
+
 
 /*    React.useEffect(() => {
         if (props.challenges) setChallenges(props.challenges);
@@ -56,7 +58,6 @@ const ChallengeCardScrollView = (props:Props) => {
     };
 
     useEffect(() => {
-        scrollHandler()
         getToken().then(t => {
             setToken(t);
             getUserId().then(id => {
@@ -64,7 +65,8 @@ const ChallengeCardScrollView = (props:Props) => {
 
             });
         });
-
+        setDataSource(props.challenges)
+        setScrollToIndex(props.key)
         scrollHandler()
     }, []);
 
