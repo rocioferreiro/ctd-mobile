@@ -79,6 +79,21 @@ query newFindUserById($targetUserId: String!){
 }
 `;
 
+export const GET_TOP_CHALLENGES_BY_ODS = gql`
+  query topODS($ods: Int!){
+  getTopChallengesByOds(ods: $ods, pageNumber: 0, pageSize: 15){
+    challenges{
+      id
+      title
+      score
+      subscribersQuantity
+    }
+  }
+}
+`
+
+
+
 export const GET_SCORE = gql`
 query getScore($newChallenge: ChallengeDTOInput!){
     getSuggestedScore(challengeDTO: $newChallenge)
