@@ -181,7 +181,7 @@ const ViewPost = (props:Props) => {
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
     actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
-  const getPostCard = (post) => {
+  /*const getPostCard = (post) => {
     return (
         <View >
         <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
@@ -219,8 +219,8 @@ const ViewPost = (props:Props) => {
               <IconButton disabled={post.owner?.id == userId} icon={liked ? 'heart' : 'heart-outline'}
                           onPress={() => likePost(!liked)}/>
               <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
-              {/*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*/}
-              {/*<Text style={{color: colors.primary}}> 1 </Text>*/}
+              {/!*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*!/}
+              {/!*<Text style={{color: colors.primary}}> 1 </Text>*!/}
             </View>
             <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
               <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
@@ -231,23 +231,23 @@ const ViewPost = (props:Props) => {
               }}/>
             </View>
           </Card.Actions>
-          {/*<Modal animationType="fade"*/}
-          {/*       presentationStyle={"fullScreen"}*/}
-          {/*       visible={viewProfile}*/}
-          {/*       onRequestClose={() => {*/}
-          {/*         setViewProfile(!viewProfile);*/}
-          {/*       }}>*/}
-          {/*  <IconButton onPress={() => setViewProfile(false)}*/}
-          {/*              icon={'chevron-left'}*/}
-          {/*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}*/}
-          {/*              size={40}*/}
-          {/*  />*/}
-          {/*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*/}
-          {/*</Modal>*/}
+          {/!*<Modal animationType="fade"*!/}
+          {/!*       presentationStyle={"fullScreen"}*!/}
+          {/!*       visible={viewProfile}*!/}
+          {/!*       onRequestClose={() => {*!/}
+          {/!*         setViewProfile(!viewProfile);*!/}
+          {/!*       }}>*!/}
+          {/!*  <IconButton onPress={() => setViewProfile(false)}*!/}
+          {/!*              icon={'chevron-left'}*!/}
+          {/!*              style={[styles.button, Platform.OS === 'ios' ? {marginTop: 15}: {}]}*!/}
+          {/!*              size={40}*!/}
+          {/!*  />*!/}
+          {/!*  <Profile navigation={props.navigation} otherUserId={typeof post.owner === "string" ? post.owner : post.owner.id}/>*!/}
+          {/!*</Modal>*!/}
         </Card>
         </View>
     )
-  }
+  }*/
 
   return (<View style={{ backgroundColor: colors.surface}}>
     <ScrollView ref={(ref) => {
