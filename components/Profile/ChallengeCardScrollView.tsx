@@ -120,7 +120,7 @@ const ChallengeCardScrollView = (props:Props) => {
 
                                             }} key={i} style={{marginBottom: 5,backgroundColor: 'rgba(0,0,0,0)'}}>
                                                 <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
-                                                <Divider/>
+
                                             </View>
                                         )}
                                     </ScrollView>
