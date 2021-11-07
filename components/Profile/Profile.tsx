@@ -132,7 +132,6 @@ export function Profile(props: Props) {
      console.log(challengesData)
     }
   });
-
   const [getActiveChallenges, {data: activeChallengesData}] = useLazyQuery(GET_JOINED_CHALLENGES, {
     fetchPolicy: 'cache-and-network',
     context: {
@@ -140,7 +139,7 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
-    onCompleted: result => {
+    onCompleted: () => {
       console.log(activeChallengesData)
     }
   });
@@ -624,18 +623,6 @@ export function Profile(props: Props) {
     console.log(i18n.language)
   }
 
-  const getLocationString = () => {
-    const address = userData?.findUserById?.user?.address;
-
-    let location = null;
-
-    if (address?.province) location = address.province;
-    if (address?.country) location += ", " + address.country;
-    if (!location) location = "Not completed";
-
-    return location;
-  }
-
   const drawerContent = () => {
     return (
       <View style={styles.animatedBox}>
@@ -805,15 +792,14 @@ export function Profile(props: Props) {
           </View>
         {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
-            {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
               {/*if (new Date(challenge.endEvent) > new Date())*/}
               {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
-                if (new Date(challenge.endEvent) > new Date())  return getActiveChallenge(challenge, key);
+                if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
-            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed ||activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed || activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
@@ -906,7 +892,6 @@ export function Profile(props: Props) {
                   style={{width: '40%'}}
                   onPress={() => {
                     auth.signOut().catch(e => console.log(e))
-                    //props.navigation.navigate('landing')
                   }}
               >
                 {t('profile.logout')}
