@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {
   Dimensions,
   ImageBackground,
-  Modal, Platform,
+  Modal, Platform, RefreshControl,
   ScrollView,
   StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback, View as ViewR
@@ -68,10 +68,8 @@ export function Profile(props: Props) {
   const [viewBiography, setViewBiography] = useState(false);
   const [token, setToken] = React.useState('')
   const [timeLineData, setTimeLineData] = React.useState([])
-  const [getVerifiedChallenges, {
-    data: verifiedChallengesData,
-    loading: verifiedLoading
-  }] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [getVerifiedChallenges, {data: verifiedChallengesData, loading: verifiedLoading}] = useLazyQuery(GET_VERIFIED_CHALLENGES, {
     fetchPolicy: 'cache-and-network',
     context: {
       headers: {
@@ -112,13 +110,14 @@ export function Profile(props: Props) {
         'Authorization': 'Bearer ' + token
       }
     },
+    fetchPolicy:"cache-and-network",
     onError: error => {
       console.log('profile error');
       console.log(error);
     },
     onCompleted: result => {
       if (result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
-      else setCreator(false) // Change to true to see new challenge button
+      else setCreator(true) // Change to true to see new challenge button
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
@@ -149,7 +148,8 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    }
+    },
+    fetchPolicy:"cache-and-network"
   });
   const [getPendingConnections, {data: pendingConnectionsData}] = useLazyQuery(NEW_GET_PENDING_CONNECTIONS, {
     fetchPolicy: 'cache-and-network',
@@ -237,18 +237,26 @@ export function Profile(props: Props) {
   }, [connectionsData, pendingConnectionsData, props.route.params?.otherId]);
   useEffect(() => {
     if (verifiedChallengesData) {
+      console.log(verifiedChallengesData)
       setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
         return {
           time: prettifyDate(new Date(c.endEvent)),
           year: new Date(c.endEvent).getFullYear(),
           id: c.id,
           title: c.title,
+          score: c.score,
           description: c.description,
           imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'
         };
       }))
     }
   }, [verifiedLoading])
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    setToken(token)
+    setTimeout(() => setRefreshing(false), 50)
+  }, [refreshing]);
 
   function toastError() {
     Toast.show({
@@ -258,7 +266,6 @@ export function Profile(props: Props) {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-
   const onError = () => {
     toastError();
   }
@@ -431,16 +438,16 @@ export function Profile(props: Props) {
       opacity: 1
     },
     imageInRow: {
-      width: 60,
+      width: 190,
       minHeight: 60,
       height: 100,
       borderRadius: 5,
-      marginTop: 3
+      marginTop: 3,
+      marginRight: 3
     },
     textDescription: {
-      marginLeft: 10,
-      width: '90%',
-      color: 'gray'
+      color: colors.accent,
+      marginLeft: 5
     },
     menuContainer: {
       backgroundColor: "transparent",
@@ -507,7 +514,10 @@ export function Profile(props: Props) {
         {title}
         <View style={styles.descriptionContainer}>
           <Image source={{uri: rowData.imageUrl}} style={styles.imageInRow}/>
-          <Text style={[styles.textDescription]}>{rowData.description}</Text>
+          <View style={{backgroundColor: colors.accent, borderRadius: 8, padding: 1, height: 17, marginLeft: 10}}>
+            <Icon size={15} type={'feather'} name={'star'} color={colors.background}/>
+          </View>
+          <Text style={[styles.textDescription]}>{rowData.score}</Text>
         </View>
       </View>
     )
@@ -528,25 +538,6 @@ export function Profile(props: Props) {
   const onConnect = () => {
     switch (connectionStatus) {
       case ConnectionStatus.connect:
-        // const target = userData.findUserById.user;
-        // const following = loggedInUserData.findUserById.user;
-        // const targetUser = {
-        //   id: target.id, mail: target.mail, address: {
-        //     coordinates: {
-        //       latitude: target.address.coordinates.latitude,
-        //       longitude: target.address.coordinates.latitude
-        //     }
-        //   }, favouriteODS: target.favouriteODS
-        // };
-        // const followingUser = {
-        //   id: following.id, mail: following.mail, address: {
-        //     coordinates: {
-        //       latitude: target.address.coordinates.latitude,
-        //       longitude: target.address.coordinates.latitude
-        //     }
-        //   }, favouriteODS: following.favouriteODS
-        // };
-
         const variables = {variables: {followingUserId: userId}}
         connect(variables).catch(e => console.log(e));
         break;
@@ -701,7 +692,7 @@ export function Profile(props: Props) {
                          text={t('profile.modal-text')}
                          cancelText={t('profile.modal-cancel')} acceptText={t('profile.modal-accept')}/>
       {!viewPost &&
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
           <ImageBackground style={styles.profileBackground}
             //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
