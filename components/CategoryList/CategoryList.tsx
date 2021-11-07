@@ -36,6 +36,7 @@ const CategoryList = (props: Props) => {
 
   useEffect(() => {
     if (data) {
+      console.log(data)
       setChallengeList(data.getChallengeByFilter.challenges)
     }
   }, [data]);

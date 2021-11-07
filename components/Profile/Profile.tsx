@@ -21,7 +21,7 @@ import {
 import {AuthContext} from "../../App";
 import {useTranslation} from "react-i18next";
 import OptionsMenu from "react-native-options-menu";
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Row, Grid } from "react-native-easy-grid";
 import {Image as ImageElement} from 'react-native-elements';
 import PostThumbnail from "./PostThumbnail";
 import Toast from "react-native-toast-message";
@@ -32,7 +32,7 @@ import {CONNECT, DISCONNECT} from "../apollo-graph/Mutations";
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
-import {Role} from "../Models/User";
+import {getXpRange, Role} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
@@ -224,7 +224,6 @@ export function Profile(props: Props) {
       getUser({variables: {targetUserId: userId}});
       getChallenges({variables: {userId: userId}});
       getActiveChallenges({variables: {userId: userId}})
-
     }
   }, [userId, loggedInUserId]);
   useEffect(() => {
@@ -743,12 +742,18 @@ export function Profile(props: Props) {
           <View style={{backgroundColor: 'transparent', padding: 30}}>
               <View
                   style={{backgroundColor: 'transparent', flexDirection: "row", justifyContent: "space-between"}}>
-                  <Text style={styles.secondaryText}>{t('profile.level')} 4</Text>
-                  <Text style={styles.secondaryText}>{t('profile.level')} 5</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} {userData?.findUserById?.user?.level}</Text>
+                  <Text style={styles.secondaryText}>{t('profile.level')} {userData?.findUserById?.user?.level+1}</Text>
               </View>
+            {userData &&
               <View style={{backgroundColor: 'transparent'}}>
-                  <ProgressBar progress={0.7} color={colors.accent} style={{height: 14, borderRadius: 8}}/>
+                <ProgressBar progress={userData?.findUserById?.user?.level === 0 ?
+                  userData?.findUserById?.user?.xp / getXpRange(1)[1] :
+                  userData?.findUserById?.user?.xp / getXpRange(userData?.findUserById?.user?.level)[1]}
+                             color={colors.accent}
+                             style={{height: 14, borderRadius: 8}}/>
               </View>
+            }
               <View style={styles.objectivesContainer}>
                   <View>
                       <Avatar.Image size={50} source={onuLogos[0].image}
