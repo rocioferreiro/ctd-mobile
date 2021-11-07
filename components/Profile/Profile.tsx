@@ -552,7 +552,7 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View ><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
+    return <View style={{backgroundColor: 'rgba(0,0,0,0)'}}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
       screen: 'challenges-scrollview',
       params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser,key:key}
     })}
@@ -790,7 +790,7 @@ export function Profile(props: Props) {
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} style={{backgroundColor: 'rgba(0,0,0,0)'}}>
               {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
               return getActiveChallenge(challenge, key);
               })}
