@@ -117,7 +117,7 @@ export function Profile(props: Props) {
     },
     onCompleted: result => {
       if (result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
-      else setCreator(false) // Change to true to see new challenge button
+      else setCreator(true) // Change to true to see new challenge button
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
