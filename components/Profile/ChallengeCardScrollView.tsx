@@ -1,14 +1,7 @@
 import React, {useEffect, useState} from "react";
-
-import {ActivityIndicator, Card, Divider, useTheme} from 'react-native-paper';
-
-import {useLazyQuery} from "@apollo/client";
-import {Dimensions, ScrollView, Text} from "react-native";
-
-import LottieView from "lottie-react-native";
-
+import {Card, Divider, useTheme} from 'react-native-paper';
+import {Dimensions, ScrollView} from "react-native";
 import {useTranslation} from "react-i18next";
-import {Post} from "../Models/Post";
 import {Challenge} from "../Models/Challenge";
 import {getToken, getUserId} from "../Storage";
 import {View} from "../Themed";
@@ -22,8 +15,6 @@ type Props = {
     route?: any,
 }
 
-
-
 const ChallengeCardScrollView = (props:Props) => {
     const {t} = useTranslation();
     const [selectedChallenge, setSelectedChallenge] = useState();
@@ -31,29 +22,20 @@ const ChallengeCardScrollView = (props:Props) => {
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
 
-/*    React.useEffect(() => {
-        if (props.challenges) setChallenges(props.challenges);
-        else setChallenges([]);
-    }, [])*/
-
-
     useEffect(() => {
         getToken().then(t => {
             setToken(t);
             getUserId().then(id => {
                 setUserId(id);
-
             });
         });
     }, []);
-
-
 
     return (
        <View>
            {
                 selectedChallenge ?
-                    <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+                    <ChallengePage currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                     <Card style={{
                         width: Dimensions.get('window').width,
                         height: '100%',

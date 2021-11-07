@@ -1,4 +1,4 @@
-import {Address, Tuple, User} from "./User"
+import {Tuple} from "./User"
 
 export type Challenge  = {
     boost?: Boolean,
@@ -16,6 +16,7 @@ export type Challenge  = {
     startInscription: string,
     title?: string,
     upVotes?: number,
+    image: string,
     score?: number
 }
 

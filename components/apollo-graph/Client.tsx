@@ -10,10 +10,12 @@ import firebase from "firebase";
 import {useContext} from "react";
 import {AuthContext} from "../../App";
 
+export const ip = '192.168.1.101';
+
 export function getApolloClientInstance(): ApolloClient<object> {
   const auth = useContext(AuthContext);
 
-  const uri = 'http://192.168.1.101:8080/graphql';
+  const uri = 'http://' + ip + ':8080/graphql';
   const refreshTokenMutation =
     `
       mutation updateToken($refreshToken: String!) {

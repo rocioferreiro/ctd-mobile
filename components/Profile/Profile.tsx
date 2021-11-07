@@ -38,6 +38,7 @@ import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
 import {createPDF, PROFILE_HTML} from "./PDF/CreatePDF";
 import MenuDrawer from 'react-native-side-drawer'
+import {ip} from "../apollo-graph/Client";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -117,7 +118,7 @@ export function Profile(props: Props) {
     },
     onCompleted: result => {
       if (result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
-      else setCreator(true) // Change to true to see new challenge button
+      else setCreator(false) // Change to true to see new challenge button
     }
   });
   const [getChallenges, {data: challengesData}] = useLazyQuery(FIND_CHALLENGES_OF_USER, {
@@ -239,15 +240,7 @@ export function Profile(props: Props) {
     if (verifiedChallengesData) {
       console.log(verifiedChallengesData)
       setTimeLineData(verifiedChallengesData.getVerifiedChallenges.map(c => {
-        return {
-          time: prettifyDate(new Date(c.endEvent)),
-          year: new Date(c.endEvent).getFullYear(),
-          id: c.id,
-          title: c.title,
-          score: c.score,
-          description: c.description,
-          imageUrl: 'https://cloud.githubusercontent.com/assets/21040043/24240405/0ba41234-0fe4-11e7-919b-c3f88ced349c.jpg'
-        };
+        return {time: prettifyDate(new Date(c.endEvent)), year: new Date(c.endEvent).getFullYear(), id: c.id, title: c.title,score: c.score, description: c.description, imageUrl: c.image ? c.image.replace('127.0.0.1', ip) : 'https://i0.wp.com/www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/SDG-Wheel_WEB.png?resize=150%2C150&ssl=1'};
       }))
     }
   }, [verifiedLoading])
@@ -282,7 +275,8 @@ export function Profile(props: Props) {
     },
     profileBackground: {
       width: '100%',
-      height: 200
+      height: 200,
+      transform: [{ rotateX: '180deg' }, { rotateY: '180deg' }]
     },
     profileImage: {
       marginTop: -38,
@@ -567,7 +561,7 @@ export function Profile(props: Props) {
     })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                       source={require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
+                       source={challenge.image? {uri: challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')} resizeMode={'cover'}>
 
         <View style={styles.imageTextContainer}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
@@ -657,8 +651,9 @@ export function Profile(props: Props) {
             email: userData?.findUserById?.user?.mail,
             connected: userData?.findUserById?.connectionQuantity || 0,
             level: 2,
+            profileImage: userData?.findUserById?.user?.photo? userData?.findUserById?.user?.photo.replace('127.0.0.1', ip) : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg',
             verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
-            sdg: [1,2,3], //userData?.findUserById?.user?.favouriteODS,
+            sdg: userData?.findUserById?.user?.favouriteODS,
             challenges: verifiedChallengesData ?
               verifiedChallengesData.getVerifiedChallenges.map(c => {
                 return {title: c.title, completionDate: c.endEvent, sdg: c.categories}
@@ -695,8 +690,8 @@ export function Profile(props: Props) {
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
           <ImageBackground style={styles.profileBackground}
-            //imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                           source={require('../../assets/images/profile-background.jpg')} resizeMode={'cover'}>
+                           source={require('../../assets/images/connections.png')}
+                           resizeMode={'cover'}>
             {props.route.params?.otherId && <View style={styles.imageCoverContainer}>
                 <IconButton onPress={() => props.navigation.goBack()} style={{marginTop: 50}} icon={'chevron-left'}/>
                 <Button2 icon="plus"
@@ -710,7 +705,7 @@ export function Profile(props: Props) {
 
           <View style={styles.userInfoContainer}>
               <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
-                  <Avatar.Image size={86} source={require('../../assets/images/profile.png')}
+                  <Avatar.Image size={86} source={userData?.findUserById?.user?.photo? {uri: userData?.findUserById?.user?.photo.replace('127.0.0.1', ip)} : require('../../assets/images/profile.png')}
                                 style={styles.profileImage}/>
                   <View style={{backgroundColor: 'transparent', marginRight: 25}}>
                       <Text
@@ -800,27 +795,21 @@ export function Profile(props: Props) {
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
           </View>
-          {postsOfUser &&
-          <View style={styles.sectionContainer}>
-              <Text style={styles.primaryText}>{t('profile.posts')}</Text>
-              <ScrollView horizontal={true}>
-                {postsOfUser?.findPostByOwner?.map((post, i) => {
-                  return <PostThumbnail onPressed={(postId) => {
-                    // setViewPostId(postId);
-                    // setViewPost(true);
-                    props.navigation.navigate('tabbar', {
-                      screen: 'post',
-                      params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}
-                    })
-                  }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i}/>
-                })}
-              </ScrollView>
-            {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
-            <NoResults text={t('profile.no-results')}
-                       subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
-            }
-          </View>
+        {postsOfUser &&
+        <View style={styles.sectionContainer}>
+            <Text style={styles.primaryText}>{t('profile.posts')}</Text>
+            <ScrollView horizontal={true}>
+              {postsOfUser?.findPostByOwner?.map((post, i) => {
+                return <PostThumbnail onPressed={(postId) => {
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
+                }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i} image={post.image}/>
+              })}
+            </ScrollView>
+          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
+          <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
           }
+        </View>
+        }
 
           {(!props.route.params?.otherId && isCreator) &&
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
