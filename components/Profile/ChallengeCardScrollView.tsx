@@ -97,8 +97,8 @@ const ChallengeCardScrollView = (props:Props) => {
                                     <ScrollView  ref={(ref) => {
                                         setRef(ref);
                                     }} style={{
-                                        marginBottom: Dimensions.get('screen').height * 0.20,
-                                        marginTop: Dimensions.get('screen').height * 0.20,
+                                        marginBottom: Dimensions.get('screen').height * 0.15,
+                                        marginTop: Dimensions.get('screen').height * 0.04,
                                         backgroundColor: 'rgba(0,0,0,0)',
                                         overflow: "visible"
                                     }}
