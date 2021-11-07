@@ -168,18 +168,21 @@ const ViewPost = (props:Props) => {
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
     actions={[()=>{console.log("TODO Report Post")}, ()=>{console.log("TODO Copy Link")}, ()=>{console.log("TODO Disconnect to user")},()=>{}]}/>
 
-  const getPostCard = (post,scrollToIndex) => {
+  const getPostCard = (post,i) => {
     return (
         <View onLayout={(event) => {
           const layout = event.nativeEvent.layout;
-          dataSourceCords[scrollToIndex] = layout.y;
-          setDataSourceCords(dataSourceCords);
-          console.log(dataSourceCords);
-          console.log('height:', layout.height);
-          console.log('width:', layout.width);
-          console.log('x:', layout.x);
+          let aux= [...dataSourceCords]
+          aux[i]=layout.y
+          // dataSourceCords[i] = layout.y;
+          setDataSourceCords(aux);
+          /*  console.log(dataSourceCords);
+            console.log('height:', layout.height);
+            console.log('width:', layout.width);
+            console.log('x:', layout.x);*/
           console.log('y:', layout.y);
-        }}>
+
+        }} key={i}>
         <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
           <TouchableOpacity onPress={() => {
             props.navigation.navigate('profile', {otherId: post.owner?.id ? post.owner?.id : post.owner})
@@ -251,7 +254,7 @@ const ViewPost = (props:Props) => {
     }}  >
       {post && getPostCard(post)}
       {additionalPosts.map(additionalPost => additionalPost.id !== post?.id && getPostCard(additionalPost))}
-    </ScrollView> : (post ? <View >{getPostCard(post,scrollToIndex)}</View> : <View/>)
+    </ScrollView> : (post ? <View >{getPostCard(post,i)}</View> : <View/>)
   )
 };
 
