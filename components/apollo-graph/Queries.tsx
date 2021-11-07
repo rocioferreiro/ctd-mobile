@@ -336,3 +336,34 @@ query getVerifiedChallenges {
     }
 }
 `;
+
+export const GET_JOINED_CHALLENGES =gql`
+query getAllChallengesToWhichTheUserIsSubscribed{
+    getAllChallengesToWhichTheUserIsSubscribed{
+      boost
+       categories
+       coordinates {
+        longitude
+        latitude
+      }
+       description
+       downVotes
+       endEvent
+       endInscription
+       id
+       locationGeohash
+       objectives {
+        points
+        name
+      }
+       owner
+       startEvent
+       startInscription
+       title
+       upVotes
+       score
+
+}
+}`
+
+
