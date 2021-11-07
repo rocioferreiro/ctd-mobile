@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useEffect} from "react";
 import {Text, View} from "../Themed";
 import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 import { Dimensions, ImageBackground, Platform, ScrollView, StyleSheet} from "react-native";
@@ -7,9 +7,8 @@ import {LinearGradient} from "expo-linear-gradient";
 import RankingList from "./RankingList";
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
-import {FIND_POSTS_OF_USER, GET_TOP_CHALLENGES_BY_ODS} from "../apollo-graph/Queries";
-import {AuthContext} from "../../App";
-import {getToken, getUserId} from "../Storage";
+import {GET_TOP_CHALLENGES_BY_ODS} from "../apollo-graph/Queries";
+import {getToken} from "../Storage";
 
 const RankingView = ({navigation,route}) => {
   const onuInfo = onuPictures();
@@ -61,7 +60,7 @@ const RankingView = ({navigation,route}) => {
         style={styles.box}
       >
           <ScrollView style={{padding: 10, backgroundColor: "rgba(0,0,0,0)"}}>
-            <IconButton style={Platform.OS === 'ios' ? {marginTop: Dimensions.get("window").height*0.13}: {}} onPress={() => {
+            <IconButton style={{marginTop: Dimensions.get("window").height*0.13}} onPress={() => {
               navigation.goBack()
             }}
                 icon={'chevron-left'}
