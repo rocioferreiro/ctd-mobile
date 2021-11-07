@@ -98,9 +98,12 @@ const ChallengeCardScrollView = (props:Props) => {
                                         setRef(ref);
                                     }} style={{
                                         marginBottom: Dimensions.get('screen').height * 0.20,
+                                        marginTop: Dimensions.get('screen').height * 0.20,
                                         backgroundColor: 'rgba(0,0,0,0)',
                                         overflow: "visible"
-                                    }}>
+                                    }}
+
+                                    >
 
                                         {props.route.params.challenges.map((challenge, i) =>
                                             <View   onLayout={(event) => {
@@ -115,7 +118,7 @@ const ChallengeCardScrollView = (props:Props) => {
                                                 console.log('x:', layout.x);*/
                                                 console.log('y:', layout.y);
 
-                                            }} key={i} style={{marginBottom: 5}}>
+                                            }} key={i} style={{marginBottom: 5,backgroundColor: 'rgba(0,0,0,0)'}}>
                                                 <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
                                                 <Divider/>
                                             </View>
