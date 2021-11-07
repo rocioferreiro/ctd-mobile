@@ -571,7 +571,7 @@ export function Profile(props: Props) {
     })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                       source={challenge.image? {uri: challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/compost.jpg')} resizeMode={'cover'}>
+                       source={challenge.image? {uri: challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')} resizeMode={'cover'}>
 
         <View style={styles.imageTextContainer}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
