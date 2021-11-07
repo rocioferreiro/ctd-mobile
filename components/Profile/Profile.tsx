@@ -805,12 +805,11 @@ export function Profile(props: Props) {
           </View>
         {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
-            {/*TODO change to challenges im subscribed to*/}
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true}>
               {/*if (new Date(challenge.endEvent) > new Date())*/}
               {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
-                if (new Date(challenge.endEvent) > new Date())  return getActiveChallenge(challenge, key);
+                return getActiveChallenge(challenge, key);
               })}
             </ScrollView>
             {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed ||activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
