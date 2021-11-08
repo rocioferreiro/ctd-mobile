@@ -670,7 +670,7 @@ export function Profile(props: Props) {
             username: userData?.findUserById?.user?.name + ' ' + userData?.findUserById?.user?.lastname,
             email: userData?.findUserById?.user?.mail,
             connected: userData?.findUserById?.connectionQuantity || 0,
-            level: 2,
+            level: userData?.findUserById?.user?.level,
             profileImage: userData?.findUserById?.user?.photo? userData?.findUserById?.user?.photo.replace('127.0.0.1', ip) : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg',
             verifiedChallenges: verifiedChallengesData ? verifiedChallengesData.getVerifiedChallenges.length : 0,
             sdg: userData?.findUserById?.user?.favouriteODS,
@@ -801,7 +801,16 @@ export function Profile(props: Props) {
                         color={colors.accent} size={32}/>}
               </View>
           </View>
-        {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
+        {viewBiography ?
+        <View style={{backgroundColor: 'transparent', padding: 15, margin: 15}}>
+          <Text style={{color: colors.primary}}>
+            {userData?.findUserById?.user?.biography}
+          </Text>
+        </View>
+        :
+        <View/>
+        }
+        <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
             <ScrollView horizontal={true} style={{backgroundColor: 'rgba(0,0,0,0)'}}>
@@ -922,7 +931,7 @@ export function Profile(props: Props) {
             </View>
             <ConnectionsFeed navigation={props.navigation}/>
           </Modal>
-        </View> : <View/>}
+        </View>
       </ScrollView>}
       </MenuDrawer>
     </View>
