@@ -250,6 +250,7 @@ query getChallengeByFilter($title: String!) {
             categories
             boost
             description
+            image
             endEvent
             startEvent
             endInscription 
