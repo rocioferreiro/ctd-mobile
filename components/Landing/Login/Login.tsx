@@ -11,8 +11,6 @@ import {LOGIN} from "../../apollo-graph/Mutations";
 import {AuthContext} from "../../../App";
 import Toast from "react-native-toast-message";
 import {useTranslation} from "react-i18next";
-import {getToken} from "../../Storage";
-import {setContext} from "@apollo/client/link/context";
 
 type Props = {
   onCancel: () => void

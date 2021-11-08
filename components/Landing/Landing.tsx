@@ -11,7 +11,7 @@ const Landing = ({navigation}) => {
     const { colors } = useTheme();
     const [registerOpen, setRegisterOpen] = React.useState(false);
     const [loginOpen, setLoginOpen] = React.useState(false);
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
 
     const styles = StyleSheet.create({
         background: {

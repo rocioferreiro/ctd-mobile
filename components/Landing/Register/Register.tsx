@@ -154,6 +154,8 @@ const Register = (props: Props) => {
     }, [])
 
     const onRegister = () => {
+        let r = 'NORMAL';
+        if (email.endsWith('.org')) r = 'ENTERPRISE'
         register({
             variables: {
                 newUser: {
@@ -162,7 +164,7 @@ const Register = (props: Props) => {
                     mail: email,
                     biography: '',
                     password: password,
-                    role: 'NORMAL',
+                    role: r,
                     address: {
                         country: "",
                         locality: "",

@@ -60,7 +60,7 @@ export function Profile(props: Props) {
   const [open, setOpen] = React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
-  const [isCreator, setCreator] = useState<boolean>(false)
+  const [isCreator, setCreator] = useState<boolean>(false);
   const [userId, setUserId] = useState('');
   const [loggedInUserId, setLoggedInUserId] = useState('');
   const [viewPost, setViewPost] = useState(false);
@@ -119,7 +119,7 @@ export function Profile(props: Props) {
       console.log(error);
     },
     onCompleted: result => {
-      if (result.findUserById.user.role === Role.ENTERPRISE || result.level > 10) setCreator(true)
+      if (result.findUserById.user.role === "ENTERPRISE" || result.level > 10) setCreator(true)
       else setCreator(false) // Change to true to see new challenge button
     }
   });
