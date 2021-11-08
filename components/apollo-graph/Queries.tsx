@@ -409,3 +409,14 @@ query getSustainablePoints {
     getGlobalSustainablePoints
 }
 `;
+
+export const GET_USER_LEVEL = gql`
+query getUserLevel($targetUserId: String!){
+  findUserById(targetUserId: $targetUserId){
+    user {
+        id
+        level
+    }
+  }
+}
+`;

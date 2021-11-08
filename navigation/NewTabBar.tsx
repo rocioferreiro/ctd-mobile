@@ -126,8 +126,7 @@ const MyTabbar = ({navigation}) => {
         </Stack.Screen>
         <Stack.Screen name={'levelUp'}>
           {props => <LevelUp {...props} close={() => {
-            navigation.goBack()
-            navigation.goBack()
+            navigation.navigate('home')
           }}/>}
         </Stack.Screen>
         <Stack.Screen name={'challengeCreation'} component={ChallengeCreation}/>
@@ -137,7 +136,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'edit-profile'} component={EditProfile}/>
         <Stack.Screen name={'challenge-verification'} >
           {props => <ChallengeVerificationPage {...props} close={()=> {
-            props.navigation.navigate('home')
+            navigation.navigate('home')
           }}/>}
         </Stack.Screen>
         <Stack.Screen name={'challenge'}>
