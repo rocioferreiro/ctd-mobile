@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Card, Divider, useTheme} from 'react-native-paper';
+import { Card, Divider, useTheme} from 'react-native-paper';
 import {Dimensions, ScrollView} from "react-native";
 import {useTranslation} from "react-i18next";
 import {Challenge} from "../Models/Challenge";
@@ -13,6 +13,7 @@ type Props = {
     navigation?: any
     challengeId?: any
     route?: any,
+    key:number,
 }
 
 const ChallengeCardScrollView = (props:Props) => {
@@ -21,6 +22,21 @@ const ChallengeCardScrollView = (props:Props) => {
     const [userId, setUserId] = useState('');
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
+    const [dataSourceCords, setDataSourceCords] = useState([]);
+    const [scrollToIndex,setScrollToIndex]= useState()
+    const [ref, setRef] = useState(null);
+    //const [dataSource, setDataSource] = useState([]);
+
+    const scrollHandler = () => {
+        console.log(dataSourceCords.length, scrollToIndex);
+            ref.scrollTo({
+                x: 0,
+                y: dataSourceCords[scrollToIndex],
+                animated: true,
+            });
+
+    };
+
 
     useEffect(() => {
         getToken().then(t => {
@@ -29,7 +45,26 @@ const ChallengeCardScrollView = (props:Props) => {
                 setUserId(id);
             });
         });
+        setScrollToIndex(props.route.params.key)
     }, []);
+
+
+
+    useEffect(()=>{
+        //console.log(scrollToIndex)
+        //console.log(ref)
+        console.log(dataSourceCords)
+        if(dataSourceCords.length>0 && scrollToIndex && ref) {
+            console.log("inside use effect")
+            scrollHandler()
+        }
+        else{
+            console.log("else")
+        }
+
+    }, [dataSourceCords,setDataSourceCords,scrollToIndex,ref])
+
+
 
     return (
        <View>
@@ -43,15 +78,33 @@ const ChallengeCardScrollView = (props:Props) => {
                     }}>
                                 <View style={{backgroundColor: 'rgba(0,0,0,0)' }}>
                                     <Divider/>
-                                    <ScrollView style={{
-                                        marginBottom: Dimensions.get('screen').height * 0.20,
+                                    <ScrollView  ref={(ref) => {
+                                        setRef(ref);
+                                    }} style={{
+                                        marginBottom: Dimensions.get('screen').height * 0.15,
+                                        marginTop: Dimensions.get('screen').height * 0.04,
                                         backgroundColor: 'rgba(0,0,0,0)',
                                         overflow: "visible"
-                                    }}>
+                                    }}
+
+                                    >
+
                                         {props.route.params.challenges.map((challenge, i) =>
-                                            <View key={i} style={{marginBottom: 5}}>
+                                            <View   onLayout={(event) => {
+                                                const layout = event.nativeEvent.layout;
+                                                let aux= [...dataSourceCords]
+                                                aux[i]=layout.y
+                                               // dataSourceCords[i] = layout.y;
+                                                setDataSourceCords(aux);
+                                              /*  console.log(dataSourceCords);
+                                                console.log('height:', layout.height);
+                                                console.log('width:', layout.width);
+                                                console.log('x:', layout.x);*/
+                                                console.log('y:', layout.y);
+
+                                            }} key={i} style={{marginBottom: 5,backgroundColor: 'rgba(0,0,0,0)'}}>
                                                 <ChallengeCard token={token} navigation={props.navigation} setSelectedChallenge={setSelectedChallenge} challenge={challenge}/>
-                                                <Divider/>
+
                                             </View>
                                         )}
                                     </ScrollView>

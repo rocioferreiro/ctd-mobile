@@ -572,10 +572,12 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar', {
+    return <View style={{backgroundColor: 'rgba(0,0,0,0)'}}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
       screen: 'challenges-scrollview',
-      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
-    })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+      params: {challengeId: challenge.id, challenges: activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed,key:key}
+    })}
+
+    } style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
                        source={challenge.image? {uri: challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')} resizeMode={'cover'}>
@@ -590,6 +592,7 @@ export function Profile(props: Props) {
           style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </TouchableOpacity>
+    </View>
   }
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
@@ -801,13 +804,14 @@ export function Profile(props: Props) {
         {!viewBiography ? <View style={{backgroundColor: 'transparent'}}>
           <View style={{...styles.sectionContainer, paddingTop: 30}}>
             <Text style={styles.primaryText}>{t('profile.active-challenges')}</Text>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} style={{backgroundColor: 'rgba(0,0,0,0)'}}>
               {/*if (new Date(challenge.endEvent) > new Date())*/}
               {activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.map((challenge, key) => {
-                if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
+               return getActiveChallenge(challenge, key);
+
               })}
             </ScrollView>
-            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed || activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
@@ -818,7 +822,7 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
-                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner}})
+                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner,key:i}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i} image={post.image}/>
               })}
             </ScrollView>
@@ -847,7 +851,7 @@ export function Profile(props: Props) {
 
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                  if (new Date(challenge.endEvent) > new Date()) return getActiveChallenge(challenge, key);
+                   return getActiveChallenge(challenge, key);
                 })}
               </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
