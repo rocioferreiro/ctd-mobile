@@ -23,7 +23,7 @@ import {I18nextProvider} from "react-i18next";
 import i18next from "i18next";
 import './i18n';
 import NewTabBar from "./navigation/NewTabBar";
-import {NavigationContainer} from "@react-navigation/native";
+import {LinkingOptions, NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import firebase from "firebase";
 import {firebaseConfig} from "./ClientId";
@@ -188,14 +188,16 @@ export default function App() {
 
   const prefix = Linking.createURL("/");
 
-  const linking = {
+  const linking: LinkingOptions<any> = {
     prefixes: [prefix],
     config: {
       screens: {
         Landing: "landing",
         NewTabBar: {
           screens: {
-            VerifyChallenge: "verify-challenge/:challengeId"
+            VerifyChallenge: "verify-challenge/:challengeId",
+            Post: "post/:postId",
+            Challenge: "challenge/:challengeId"
           }
         }
       },

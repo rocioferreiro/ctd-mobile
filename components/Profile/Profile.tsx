@@ -572,7 +572,7 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <View style={{backgroundColor: 'rgba(0,0,0,0)'}}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
+    return <View style={{backgroundColor: 'rgba(0,0,0,0)'}} key={key}><TouchableOpacity onPress={() => {props.navigation.navigate('NewTabBar', {
       screen: 'challenges-scrollview',
       params: {challengeId: challenge.id, challenges: activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed,key:key}
     })}
@@ -596,7 +596,7 @@ export function Profile(props: Props) {
   }
   const getFinishedChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('tabbar', {
+    return <TouchableOpacity onPress={() => props.navigation.navigate('NewTabBar', {
       screen: 'challenges-scrollview',
       params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
     })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
@@ -822,7 +822,7 @@ export function Profile(props: Props) {
             <ScrollView horizontal={true}>
               {postsOfUser?.findPostByOwner?.map((post, i) => {
                 return <PostThumbnail onPressed={(postId) => {
-                  props.navigation.navigate('tabbar', {screen: 'post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner,key:i}})
+                  props.navigation.navigate('NewTabBar', {screen: 'Post', params: {postId: postId, additionalPosts: postsOfUser.findPostByOwner,key:i}})
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i} image={post.image}/>
               })}
             </ScrollView>

@@ -167,10 +167,10 @@ const MyTabbar = ({navigation}) => {
             navigation.navigate('home')
           }}/>}
         </Stack.Screen>
-        <Stack.Screen name={'challenge'}>
+        <Stack.Screen name={'Challenge'}>
           {props => <ChallengePage {...props}/>}
         </Stack.Screen>
-        <Stack.Screen name={'post'}>
+        <Stack.Screen name={'Post'}>
           {(props) => <ViewPost {...props} open={true}/>}
         </Stack.Screen>
         <Stack.Screen name={'challenges-scrollview'}>
