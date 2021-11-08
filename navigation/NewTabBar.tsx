@@ -27,7 +27,7 @@ import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 import RankingView from "../components/ranking/RankingView";
 import LevelUp from "../components/LevelUp";
-import {Role} from "../components/Models/User";
+import VerifyChallenge from "../components/VerifyChallenge";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
@@ -154,8 +154,7 @@ const MyTabbar = ({navigation}) => {
         </Stack.Screen>
         <Stack.Screen name={'levelUp'}>
           {props => <LevelUp {...props} close={() => {
-            navigation.goBack()
-            navigation.goBack()
+            navigation.navigate('home')
           }}/>}
         </Stack.Screen>
         <Stack.Screen name={'challengeCreation'} component={ChallengeCreation}/>
@@ -165,8 +164,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'edit-profile'} component={EditProfile}/>
         <Stack.Screen name={'challenge-verification'} >
           {props => <ChallengeVerificationPage {...props} close={()=> {
-            navigation.goBack()
-            navigation.goBack()
+            navigation.navigate('home')
           }}/>}
         </Stack.Screen>
         <Stack.Screen name={'challenge'}>
@@ -178,6 +176,7 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'challenges-scrollview'}>
           {(props) => <ChallengeCardScrollView {...props} />}
         </Stack.Screen>
+        <Stack.Screen name={'VerifyChallenge'} component={VerifyChallenge}/>
       </Stack.Navigator>
       <CreateFAB open={openOptions} onClose={() => {setOpenOptions(false)}} navigation={navigation}/>
       <Tabbar

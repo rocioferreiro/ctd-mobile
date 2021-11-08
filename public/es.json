@@ -249,5 +249,11 @@
     "score": "Puntos",
     "top": "Los mejores desafíos",
     "empty": "Todavía no hay Desafíos para este Objetivo Sustentable!"
+  },
+  "level-up": {
+    "level-up": "Subiste de Nivel",
+    "congratulations": "Felicitaciones!",
+    "level": "Ahora sos nivel",
+    "return": "Volver"
   }
 }

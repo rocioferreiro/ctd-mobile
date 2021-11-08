@@ -1,15 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text} from "../Themed";
 import {Button, Card, useTheme} from "react-native-paper";
 import {Dimensions, StyleSheet} from "react-native";
 import LottieView from 'lottie-react-native';
 import {useTranslation} from "react-i18next";
+import {useLazyQuery} from "@apollo/client";
+import {FIND_CHALLENGE_BY_ID} from "../apollo-graph/Queries";
 
-type Props = {
-    close: () => void
-}
-
-const ChallengeVerificationPage = (props: Props) => {
+const ChallengeVerificationPage = (props) => {
     const { colors } = useTheme();
     const {t} = useTranslation();
 
@@ -71,12 +69,18 @@ const ChallengeVerificationPage = (props: Props) => {
         }
     });
 
+    const [getChallenge, {data: challengeData}] = useLazyQuery(FIND_CHALLENGE_BY_ID);
+
+    useEffect(() => {
+        if (props.route.params.challengeId) getChallenge({variables: {id: props.route.params.challengeId}});
+    }, [props.route.params.challengeId])
+
     return(
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                <Text style={styles.challengetitle}> Save the Turtles </Text>
+                <Text style={styles.challengetitle}> {challengeData?.findChallengeById?.title || ""} </Text>
                 <Text style={styles.title}>{t('verification.challenge-completed')}</Text>
-                <Text style={styles.subtitle}>{t('verification.you-earned')} 300 {t('verification.exp')}</Text>
+                <Text style={styles.subtitle}>{t('verification.you-earned')} {challengeData ? challengeData?.findChallengeById?.score : ""} {t('verification.exp')}</Text>
                 <Text style={styles.subtitle1}>{t('verification.well-done')}</Text>
                 <LottieView
                     style={styles.trophy}

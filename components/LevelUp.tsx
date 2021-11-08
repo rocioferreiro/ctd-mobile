@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Card, useTheme} from "react-native-paper";
 import {Dimensions, StyleSheet} from "react-native";
 import LottieView from 'lottie-react-native';
 import {View, Text} from "./Themed";
+import {getUserId} from "./Storage";
+import {useLazyQuery} from "@apollo/client";
+import {GET_USER_LEVEL} from "./apollo-graph/Queries";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     close: () => void
@@ -10,6 +14,7 @@ type Props = {
 
 const LevelUp = (props: Props) => {
     const { colors } = useTheme();
+    const {t} = useTranslation();
 
     const styles = StyleSheet.create({
         container: {
@@ -48,12 +53,20 @@ const LevelUp = (props: Props) => {
         }
     });
 
+    const [getUserLevel, {data: userLevelData}] = useLazyQuery(GET_USER_LEVEL);
+
+    useEffect(() => {
+        getUserId().then(id => {
+            getUserLevel({variables: {targetUserId: id}})
+        });
+    }, []);
+
     return(
         <Card style={styles.container}>
             <View style={{backgroundColor: 'rgba(0,0,0,0)'}}>
-                <Text style={styles.title}>LEVEL UP!</Text>
-                <Text style={styles.subTitle}>Congratulations!</Text>
-                <Text style={styles.subTitle}>You are now level 4.</Text>
+                <Text style={styles.title}>{t("level-up.level-up")}</Text>
+                <Text style={styles.subTitle}>{t("level-up.congratulations")}</Text>
+                <Text style={styles.subTitle}>{t("level-up.level")} {userLevelData ? userLevelData.findUserById.user.level : ""}.</Text>
                 <LottieView
                     style={styles.animation}
                     source={require('../assets/lottie/level-up.json')}
@@ -63,7 +76,7 @@ const LevelUp = (props: Props) => {
                     resizeMode={'cover'}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>Return</Button>
+                    <Button dark={false} style={styles.button} mode={'contained'} onPress={props.close}>{t("level-up.return")}</Button>
                 </View>
             </View>
         </Card>
