@@ -18,11 +18,9 @@ import {ip} from "../apollo-graph/Client";
 
 type Props = {
   post?: Post,
-  additionalPosts?: Post[];
   open: boolean,
   route?: any,
   navigation?: any
-  key: number
 }
 
 const ViewPost = (props: Props) => {
@@ -35,7 +33,7 @@ const ViewPost = (props: Props) => {
   const [likes, setLikes] = React.useState<number>()
   const [token, setToken] = React.useState('')
   const [dataSourceCords, setDataSourceCords] = useState([]);
-  const [scrollToIndex, setScrollToIndex] = useState()
+  const [scrollToIndex, setScrollToIndex] = useState(-1)
   const [ref, setRef] = useState(null);
 
   React.useEffect(() => {
@@ -44,19 +42,13 @@ const ViewPost = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    console.log(dataSourceCords)
-    if (dataSourceCords.length > 0 && scrollToIndex && ref) {
-      console.log("inside use effect")
+    if (dataSourceCords.length > 0 && scrollToIndex !== -1 && ref) {
       scrollHandler()
-    } else {
-      console.log("else")
     }
-
   }, [dataSourceCords, setDataSourceCords, scrollToIndex, ref])
 
 
   const scrollHandler = () => {
-    console.log(dataSourceCords.length, scrollToIndex);
     ref.scrollTo({
       x: 0,
       y: dataSourceCords[scrollToIndex],
@@ -146,7 +138,7 @@ const ViewPost = (props: Props) => {
         setUserId(id);
         if (post.owner.id == id) setLiked(true);
       })
-      scrollHandler()
+      if(props.route.params.additionalPosts) scrollHandler()
     }
 
   }, [post])
@@ -162,15 +154,13 @@ const ViewPost = (props: Props) => {
     actions={[() => {
       console.log("TODO Report Post")
     }, () => {
-      Clipboard.setString(Linking.createURL('post', {
-        queryParams: {id: post.id},
-      }))
+      Clipboard.setString(Linking.createURL(`post/${post.id}`));
     }, () => {
       console.log("TODO Disconnect to user")
     }, () => {
     }]}/>
 
-  return (<View style={{backgroundColor: colors.surface}}>
+  return (props.route.params.additionalPosts ? <View style={{backgroundColor: colors.surface}}>
     <ScrollView ref={(ref) => {
       setRef(ref);
     }} style={{
@@ -179,7 +169,7 @@ const ViewPost = (props: Props) => {
       backgroundColor: 'rgba(0,0,0,0)',
       overflow: "visible"
     }}>
-      {props.route.params.additionalPosts.map((post, i) =>
+      {props.route.params.additionalPosts?.map((post, i) =>
         <View onLayout={(event) => {
           const layout = event.nativeEvent.layout;
           let aux = [...dataSourceCords]
@@ -228,9 +218,7 @@ const ViewPost = (props: Props) => {
                 <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
                   <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'}
                         onPress={() => {
-                          let redirectUrl = Linking.createURL('post', {
-                            queryParams: {id: post.id},
-                          });
+                          let redirectUrl = Linking.createURL(`post/${post.id}`);
                           share(redirectUrl);
                         }}/>
                 </View>
@@ -242,7 +230,54 @@ const ViewPost = (props: Props) => {
 
     </ScrollView>
 
-  </View>)
+  </View> : post ? <View style={{backgroundColor: colors.surface}}>
+    <Card style={{backgroundColor: colors.background, borderRadius: 20, marginHorizontal: 10, marginTop: 10}}>
+      <TouchableOpacity onPress={() => {
+        props.navigation.navigate('profile', {otherId: post.owner?.id ? post.owner?.id : post.owner})
+      }} style={{backgroundColor: 'transparent', marginRight: 20}}>
+        <Card.Title subtitleStyle={{color: colors.primary, fontFamily: 'sans-serif-medium'}}
+                    title={<Text style={{
+                      fontWeight: 'bold',
+                      color: colors.primary,
+                      fontSize: 20,
+                      fontFamily: 'sans-serif-medium'
+                    }}>{owner && owner.mail}</Text>}
+                    subtitle={post.creationDate}
+                    left={LeftContent}
+                    right={RightContent}/>
+      </TouchableOpacity>
+      <Card.Content style={{marginHorizontal: 7, marginBottom: 10}}>
+        <Text style={{
+          fontSize: 20, color: colors.primary,
+          marginTop: 5, fontWeight: 'bold'
+        }}>{post.title}</Text>
+        <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{post.text}</Paragraph>
+      </Card.Content>
+      {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}}
+                                                        source={require('../../assets/images/post.jpg')}/>}
+      <Card.Actions
+        style={{width: '100%', display: 'flex', justifyContent: 'space-between', marginVertical: 10}}>
+        <View style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 15,
+          backgroundColor: 'rgba(0,0,0,0)'
+        }}>
+          <IconButton disabled={post.owner?.id == userId} icon={liked ? 'heart' : 'heart-outline'}
+                      onPress={() => likePost(!liked)}/>
+          <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
+        </View>
+        <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
+          <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'}
+                onPress={() => {
+                  let redirectUrl = Linking.createURL(`post/${post.id}`);
+                  share(redirectUrl);
+                }}/>
+        </View>
+      </Card.Actions>
+    </Card>
+  </View> : <View/>)
 
 };
 

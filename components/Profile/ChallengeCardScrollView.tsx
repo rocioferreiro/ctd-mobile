@@ -9,11 +9,8 @@ import ChallengePage from "../Challenge/ChallengePage";
 import ChallengeCard from "../ChallengeCard/ChallengeCard";
 
 type Props = {
-    challenges?: Challenge[];
     navigation?: any
-    challengeId?: any
     route?: any,
-    key:number,
 }
 
 const ChallengeCardScrollView = (props:Props) => {
@@ -23,13 +20,14 @@ const ChallengeCardScrollView = (props:Props) => {
     const {colors} = useTheme();
     const [token, setToken] = React.useState('')
     const [dataSourceCords, setDataSourceCords] = useState([]);
-    const [scrollToIndex,setScrollToIndex]= useState()
+    const [scrollToIndex,setScrollToIndex]= useState(-1)
     const [ref, setRef] = useState(null);
     //const [dataSource, setDataSource] = useState([]);
 
     const scrollHandler = () => {
         console.log(dataSourceCords.length, scrollToIndex);
-            ref.scrollTo({
+            // @ts-ignore
+        ref.scrollTo({
                 x: 0,
                 y: dataSourceCords[scrollToIndex],
                 animated: true,
@@ -54,7 +52,7 @@ const ChallengeCardScrollView = (props:Props) => {
         //console.log(scrollToIndex)
         //console.log(ref)
         console.log(dataSourceCords)
-        if(dataSourceCords.length>0 && scrollToIndex && ref) {
+        if(dataSourceCords.length>0 && scrollToIndex !== -1 && ref) {
             console.log("inside use effect")
             scrollHandler()
         }
