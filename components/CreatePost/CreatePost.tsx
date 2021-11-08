@@ -15,12 +15,11 @@ import {CREATE_POST} from "../apollo-graph/Mutations";
 import {getToken, getUserId} from "../Storage";
 import {useTranslation} from "react-i18next";
 import {FIND_POSTS_OF_USER} from "../apollo-graph/Queries";
-import {getApolloClientInstance} from "../apollo-graph/Client";
+
 type Props = {
     setCreatePost:(Boolean)=>void
     toastOn:()=>void
 }
-
 
 const CreatePost = (props:Props) => {
     const { colors } = useTheme();
@@ -77,10 +76,9 @@ const CreatePost = (props:Props) => {
             "owner": userId,
             "text": post.text,
             "boosted": false,
-            "image": "asdasd",
+            "image": image,
             "upvotes": 0
         }
-        console.log(newPostDTOInput)
         createPost({variables: {newPost: newPostDTOInput}}).catch(() => {
             props.toastOn();
         });

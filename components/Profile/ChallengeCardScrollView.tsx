@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Card, Divider, useTheme} from 'react-native-paper';
-import {Dimensions, ScrollView, Text} from "react-native";
+import {Dimensions, ScrollView} from "react-native";
 import {useTranslation} from "react-i18next";
 import {Challenge} from "../Models/Challenge";
 import {getToken, getUserId} from "../Storage";
@@ -16,8 +16,6 @@ type Props = {
     key:number,
 }
 
-
-
 const ChallengeCardScrollView = (props:Props) => {
     const {t} = useTranslation();
     const [selectedChallenge, setSelectedChallenge] = useState();
@@ -28,14 +26,6 @@ const ChallengeCardScrollView = (props:Props) => {
     const [scrollToIndex,setScrollToIndex]= useState()
     const [ref, setRef] = useState(null);
     //const [dataSource, setDataSource] = useState([]);
-
-
-/*    React.useEffect(() => {
-        if (props.challenges) setChallenges(props.challenges);
-        else setChallenges([]);
-    }, [])*/
-
-
 
     const scrollHandler = () => {
         console.log(dataSourceCords.length, scrollToIndex);
@@ -53,15 +43,9 @@ const ChallengeCardScrollView = (props:Props) => {
             setToken(t);
             getUserId().then(id => {
                 setUserId(id);
-
             });
         });
-
-        //setDataSource(props.route.params.challenges)
         setScrollToIndex(props.route.params.key)
-        //console.log(props.route.params.key)
-
-
     }, []);
 
 
@@ -86,7 +70,7 @@ const ChallengeCardScrollView = (props:Props) => {
        <View>
            {
                 selectedChallenge ?
-                    <ChallengePage  currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
+                    <ChallengePage currentUserId={userId} setSelectedChallenge={setSelectedChallenge} challenge={selectedChallenge}/> :
                     <Card style={{
                         width: Dimensions.get('window').width,
                         height: '100%',

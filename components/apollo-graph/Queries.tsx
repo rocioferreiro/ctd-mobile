@@ -14,6 +14,7 @@ query findChallengeById($id: Long!){
     }
     endEvent
     score
+    image
     startEvent
     startInscription
     endInscription
@@ -108,6 +109,7 @@ query findNearbyChallenges($latitude: Float!, $longitude: Float!) {
     description
     owner
     categories
+    image
     endEvent
     endInscription
     locationGeohash
@@ -149,6 +151,7 @@ export const FIND_CHALLENGES_OF_USER = gql`
        startInscription
        title
        upVotes
+       image
     }
   }
 `;
@@ -349,6 +352,7 @@ query getVerifiedChallenges {
         id
         title
         score
+        image
     }
 }
 `;

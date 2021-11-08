@@ -14,6 +14,7 @@ import {LIKE_POST, UNLIKE_POST} from "../apollo-graph/Mutations";
 import Clipboard from 'expo-clipboard';
 import {share} from "../Share";
 import * as Linking from 'expo-linking';
+import {ip} from "../apollo-graph/Client";
 import ChallengeCard from "../ChallengeCard/ChallengeCard";
 
 type Props = {
@@ -98,7 +99,6 @@ const ViewPost = (props:Props) => {
     else if (props.route.params?.additionalPosts) setAdditionalPosts(props.route.params.additionalPosts);
   }, [props.route.params, props.additionalPosts])
 
-
   const [getOwnerData, {data: ownerData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     context: {
       headers: {'Authorization' : 'Bearer ' + token}
@@ -114,7 +114,7 @@ const ViewPost = (props:Props) => {
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
     },
-    onError: err => {
+    onError: () => {
     },
     refetchQueries: [],
     context: {
@@ -124,7 +124,7 @@ const ViewPost = (props:Props) => {
   const [unlike] = useMutation(UNLIKE_POST, {
     onCompleted: () => {
     },
-    onError: err => {
+    onError: () => {
     },
     refetchQueries: [],
     context: {
@@ -154,8 +154,6 @@ const ViewPost = (props:Props) => {
     setLiked(!liked)
   }
 
-  const [language, setLanguage] = React.useState(i18n.language);
-
   useEffect(() => {
     if (ownerData) {
       setOwner(ownerData.findUserById.user);
@@ -176,7 +174,7 @@ const ViewPost = (props:Props) => {
 
   const myIcon = <Icon type={'ionicon'} name={'ellipsis-horizontal'} style={{marginRight: 10}} {...props}/>
   const LeftContent = props => <Avatar.Text style={{width: 50, height: 50, borderRadius: 50, backgroundColor: colors.extra}} label={owner && (owner.name[0] + owner.lastname[0])} {...props}/>
-  const RightContent = props => <OptionsMenu
+  const RightContent = () => <OptionsMenu
     customButton={myIcon}
     destructiveIndex={0}
     options={[t('view-post.report'), t('view-post.copy-link'), t('view-post.disconnect'), t('view-post.cancel')]}
@@ -210,7 +208,8 @@ const ViewPost = (props:Props) => {
             <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{post.text}</Paragraph>
           </Card.Content>
           {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}}
-                                                            source={require('../../assets/images/post.jpg')}/>}
+                                                            resizeMode={'cover'}
+                                                            source={post.image ? {uri: post.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')}/>}
           <Card.Actions style={{width: '100%', display: 'flex', justifyContent: 'space-between', marginVertical: 10}}>
             <View style={{
               display: 'flex',
@@ -222,6 +221,19 @@ const ViewPost = (props:Props) => {
               <IconButton disabled={post.owner?.id == userId} icon={liked ? 'heart' : 'heart-outline'}
                           onPress={() => likePost(!liked)}/>
               <Text style={{marginRight: 10, color: colors.primary}}> {likes} </Text>
+            </View>
+            <View style={{marginRight: 15, backgroundColor: 'rgba(0,0,0,0)'}}>
+              <Icon name={'share-variant'} style={{color: colors.primary}} type={'material-community'} onPress={() => {
+                let redirectUrl = Linking.createURL('tabbar/post', {
+                  queryParams: { id: post.id },
+                });
+                share(redirectUrl);
+              }}/>
+            </View>
+          </Card.Actions>
+        </Card>
+    )
+  }
               {/!*<Icon name={'chat-outline'} type={'material-community'} style={{color: colors.primary}} onPress={() => {}}/>*!/}
               {/!*<Text style={{color: colors.primary}}> 1 </Text>*!/}
             </View>

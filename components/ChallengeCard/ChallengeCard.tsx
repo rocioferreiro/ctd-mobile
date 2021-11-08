@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import {useLazyQuery} from "@apollo/client";
 import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 import {View} from "../Themed";
+import {ip} from "../apollo-graph/Client";
 import * as Linking from "expo-linking";
 import {share} from "../Share";
 
@@ -96,7 +97,7 @@ const ChallengeCard = (props: Props) => {
             marginBottom: 5
           }}>{t('challenge-card.challenge-description')}</Paragraph>
         </Card.Content>
-        <Card.Cover source={require('../../assets/images/compost.jpg')}/>
+        <Card.Cover source={props.challenge.image ? {uri: props.challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')}/>
         <Card.Actions>
           <Button style={{
             backgroundColor: '#c1c1c1',
