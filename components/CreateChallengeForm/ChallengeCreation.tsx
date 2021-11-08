@@ -65,7 +65,9 @@ const ChallengeCreation = (props: Props) => {
       "coordinates": {
         "latitude": challenge.coordinates.coordinates[0],
         "longitude": challenge.coordinates.coordinates[1]
-      }
+      },
+      "image": challenge.image,
+      "score": challenge.score
     }
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
@@ -85,8 +87,9 @@ const ChallengeCreation = (props: Props) => {
     inscriptionsTo: new Date(),
     startsFrom: new Date(),
     finishesOn: new Date(),
-    totalPoints: 0,
-    ONUObjective: []
+    score: 0,
+    ONUObjective: [],
+    image: ''
   }
 
   const formik = useFormik(
@@ -94,7 +97,8 @@ const ChallengeCreation = (props: Props) => {
       initialValues: initialValues,
       onSubmit: onSubmitCreation
     }
-  )
+  );
+
   const styles = StyleSheet.create({
     creationCard: {
       width: Dimensions.get('window').width,
@@ -118,8 +122,6 @@ const ChallengeCreation = (props: Props) => {
       zIndex: 0
     }
   });
-
-
 
   return <View style={{backgroundColor: colors.surface}}>
     <Card style={styles.creationCard}>

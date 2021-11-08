@@ -93,6 +93,19 @@ export const UNJOIN_CHALLENGE = gql`
 
 `;
 
+export const UPDATE_USER  = gql`
+mutation editUser($user: UserInput!){
+updateUser(user:$user)
+}
+`;
+
+export const UPDATE_USER_LOCATION =gql`
+mutation editUserLocation($address: AddressInput!){
+updateUserLocation(address:$address)
+}
+
+`;
+
 export const VERIFY_CHALLENGE = gql`
  mutation VerifyChallenge($challengeId: Long!, $challengeToken: String!){
   verifyChallenge(challengeId: $challengeId, challengeToken: $challengeToken) {

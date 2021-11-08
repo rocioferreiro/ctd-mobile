@@ -18,12 +18,9 @@ export type UserForEdition = {
     name: string,
     birthDate?: Date,
     gender?: Gender,
-
     photoUrl?: string,
     biography?: string,
-
     address?: Address,
-
     favouriteODS?: number[]
     coordinates:[]
 }
@@ -108,4 +105,10 @@ export function userToGeoJson(user: User): string {
     }
   }
   `;
+}
+
+export function getXpRange(level: number): number[] {
+    const from = 1000 * Math.pow(level, 2)
+    const to = 1000 * Math.pow(level+1, 2) - 1
+    return [from, to]
 }

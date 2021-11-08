@@ -10,6 +10,8 @@ import {useTranslation} from "react-i18next";
 type Props = {
   formik: any
   setDisabled: (boolean) => void
+  image: string
+  setImage: (string) => void
 }
 
 const ChallengeExtraInfo = (props: Props) => {
@@ -17,7 +19,6 @@ const ChallengeExtraInfo = (props: Props) => {
   const {colors} = useTheme()
   const [openInscriptionCalendar, setOpenInscriptionCalendar] = React.useState(false)
   const [openChallengeCalendar, setOpenChallengeCalendar] = React.useState(false)
-  const [image, setImage] = React.useState(null)
   const [errorIns, setErrorIns] = React.useState(false)
   const [errorCh, setErrorCh] = React.useState(false)
 
@@ -94,8 +95,7 @@ const ChallengeExtraInfo = (props: Props) => {
       setErrorCh(false)
       props.setDisabled(false)
     }
-
-    if(!image) props.setDisabled(true)
+    if(!props.image) props.setDisabled(true)
 
   }
   useEffect(() => {
@@ -104,7 +104,7 @@ const ChallengeExtraInfo = (props: Props) => {
 
   useEffect(() => {
     verifyErrors()
-  }, [openInscriptionCalendar, openChallengeCalendar, image])
+  }, [openInscriptionCalendar, openChallengeCalendar, props.image])
 
   return (
     <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0)'}}>
@@ -179,7 +179,7 @@ const ChallengeExtraInfo = (props: Props) => {
         </View>
 
         <Text style={styles.label}>{t('challenge-extra-info.upload-image')}</Text>
-        <ImagePicker image={image} setImage={setImage}/>
+        <ImagePicker image={props.image} setImage={i => props.setImage(i)}/>
       </View>
 
       <DatePicker startDate={props.formik.values.inscriptionsFrom} setStartDate={date => {props.formik.setFieldValue('inscriptionsFrom', date)}} close={() => setOpenInscriptionCalendar(false)}

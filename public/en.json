@@ -28,7 +28,8 @@
     "profile-info": "Profile info",
     "profile-image": "Profile Picture",
     "location": "Location",
-    "change-location": "Change Your Location"
+    "change-location": "Change Your Location",
+    "favorite-sdg": "Favorite SDG"
 
   },
   "profile": {
@@ -49,11 +50,24 @@
     "no-results": "Nothing to show",
     "modal-text": "Are you sure you want to Disconnect from this user?",
     "modal-cancel": "Cancel",
-    "modal-accept": "Accept"
+    "modal-accept": "Accept",
+    "menuLanguage": "Change Language",
+    "menuEdit": "Edit Profile",
+    "menuReq": "Connections Requests",
+    "menuCv": "Download Resume"
   },
   "editProfile": {
     "user": "User Information"
+
   },
+  "edit-profile": {
+    "update-user-error": "Edit Profile Error",
+    "update-user-error-description":" An error ocurred while trying to update your profile!",
+    "update-user-success": "Edit Profile Success!",
+    "update-user-success-description": "Your profile is now updated! Check it out!",
+    "done": "Done!"
+  },
+
   "gender": {
     "male": "Male",
     "female": "Female",
@@ -116,6 +130,7 @@
   },
   "challenge-card":{
     "join": "Join",
+    "share": "Share",
     "view": "View",
     "challenge-description": "Challenge Description",
     "level": "Level"
@@ -217,6 +232,23 @@
     "challenge": "Challenge",
     "users": "Participants",
     "score": "Points",
-    "top": "Top Challenges"
+    "top": "Top Challenges",
+    "empty": "There are no Challenges for this Sustainable Goal!"
+  },
+  "profile-ods": {
+    "choose-favorite-ods": "Your Favorite SDG",
+    "edit-ods": "Edit",
+    "select-at-least": "Select 3 Favorite SDG to adjust your CTD experience to your interests",
+    "select-ods": "Select SDG"
+
+  },
+  "ods-choice-profile": {
+    "choose-ods": "Choose SDG",
+    "current-ods": "Current SGD",
+    "ods": "Objetive",
+    "error-max-ods": "Max Favorite SDG Number is 3",
+    "error-max-ods-description": "You can't add anymore SDG`s to your favourites list!",
+    "error-min-ods": "Minimun Number of Favorite SGD is 3",
+    "error-min-ods-description": "You Have to Choose 3 SDG`s"
   }
 }

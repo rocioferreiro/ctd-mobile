@@ -8,8 +8,9 @@ export type CreateChallengeFormValues = {
     inscriptionsTo?: Date,
     startsFrom: Date,
     finishesOn: Date,
-    totalPoints: number,
+    score: number,
     ONUObjective: number[],
+    image: string
 }
 
 export type CreatePostFormValues = {
@@ -32,10 +33,11 @@ export interface Coordinates {
 
 export const convertDateToString: (Date) => string = (date: Date) => {
     let d = date.getDate() + '';
-    let m = date.getMonth() + '';
+    let m = date.getMonth() + 1 + '';
     const y = date.getFullYear();
     if (parseInt(d) < 10) d = '0' + d;
     if (parseInt(m) < 10) m = '0' + m;
+    console.log(y + '-' + m + '-' + d)
     return y + '-' + m + '-' + d;
 }
 

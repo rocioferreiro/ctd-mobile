@@ -186,7 +186,7 @@ export default function App() {
     }, 1000);
   }, []);
 
-  const prefix = Linking.makeUrl("/");
+  const prefix = Linking.createURL("/");
 
   const linking = {
     prefixes: [prefix],

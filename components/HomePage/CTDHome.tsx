@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, Image, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
+import {Dimensions, Image, RefreshControl, ScrollView, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {Card, useTheme} from "react-native-paper";
 import {Button} from "react-native-elements";
 import {View, Text} from "../Themed";
@@ -11,13 +11,17 @@ import CreatePost from "../CreatePost/CreatePost";
 import Toast from "react-native-toast-message";
 import {onuLogos} from "../ONUObjectives";
 import {useTranslation} from "react-i18next";
-import {useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {CREATE_CHALLENGE} from "../apollo-graph/Mutations";
 import Stepper from "../CreateChallengeForm/Stepper";
 import ChallengeCreationSuccessful from "../CreateChallengeForm/ChallengeCreationSuccessful";
 import {useFormik} from "formik";
 import {convertDateToString, CreateChallengeFormValues} from "../CreateChallengeForm/Types";
 import {getToken, getUserId} from "../Storage";
+import {GET_TOP_ODS} from "../apollo-graph/Queries";
+import {GET_SUSTAINABLE_POINTS} from "../apollo-graph/Queries";
+import {getXpRange} from "../Models/User";
+import {NEW_FIND_USER_BY_ID} from "../apollo-graph/Queries";
 
 const CTDHome = ({navigation}) => {
   const {t} = useTranslation();
@@ -31,13 +35,20 @@ const CTDHome = ({navigation}) => {
       topOffset: Dimensions.get("window").height * 0.05,
     });
   }
-  const categories = ["1", "13", "15"]
-  const categoryColors = [colors.accent, "#707070", "#c1c1c1"]
+  const categories = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
+  const categoryColors = [colors.accent, "#707070", "#919191", "#a1a1a1", "#b1b1b1", "#c1c1c1",
+    "#d1d1d1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1", "#e1e1e1"];
   const [createPost, setCreatePost] = React.useState(false);
   const [create, setCreate] = React.useState(false)
   const [creationSuccess, setCreationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
   const [token, setToken] = React.useState('');
+  const [showAll, setShowAll] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [topOds, setTopOds] = React.useState([]);
+
+  const {data: topOdsData} = useQuery(GET_TOP_ODS);
+
   const [createChallenge, {loading}] = useMutation(CREATE_CHALLENGE, {
     onCompleted: () => {
       setCreationSuccess(true);
@@ -54,6 +65,20 @@ const CTDHome = ({navigation}) => {
       }
     }
   });
+  const [getUser, {data: userData}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    onError: error => {
+      console.log('user error');
+      console.log(error);
+    }
+  });
+
+
+  const {data: sustainablePointsData} = useQuery(GET_SUSTAINABLE_POINTS);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -61,6 +86,26 @@ const CTDHome = ({navigation}) => {
       setToken(t)
     })
   }, [])
+
+  React.useEffect(() => {
+    if (topOdsData) {
+      const onlyTopOds = topOdsData.getOdsOrderedByPopularity.map(top => top.ods.toString());
+      const restOfOds =  categories.filter(category => !onlyTopOds.includes(category));
+      setTopOds(onlyTopOds.concat(restOfOds));
+    }
+  }, [topOdsData])
+
+  React.useEffect(() => {
+    if (userId) {
+      getUser({variables: {targetUserId: userId}});
+    }
+  }, [userId]);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    setToken(token)
+    setTimeout(() => setRefreshing(false), 70)
+  }, [refreshing]);
 
   const parseAndSendChallenge = (challenge) => {
     const newChallengeDTOInput = {
@@ -76,9 +121,9 @@ const CTDHome = ({navigation}) => {
       "coordinates": {
         "latitude": challenge.coordinates.coordinates[0],
         "longitude": challenge.coordinates.coordinates[1]
-      }
+      },
+      "image": challenge.image,
     }
-    console.log(newChallengeDTOInput)
     createChallenge({variables: {newChallenge: newChallengeDTOInput}}).catch(() => {
       toastOn();
     });
@@ -97,8 +142,9 @@ const CTDHome = ({navigation}) => {
     inscriptionsTo: new Date(),
     startsFrom: new Date(),
     finishesOn: new Date(),
-    totalPoints: 0,
-    ONUObjective: []
+    score: 0,
+    ONUObjective: [],
+    image: ''
   }
 
   const formik = useFormik(
@@ -232,38 +278,38 @@ const CTDHome = ({navigation}) => {
         height: Dimensions.get('screen').height,
         backgroundColor: colors.surface
       }}>
-        <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
-                    style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}}>
-          <LinearGradient
-            colors={[colors.primary, "rgba(0,0,0,0)"]}
-            start={{
-              x: 1,
-              y: 0,
-            }}
-            end={{
-              x: 1,
-              y: 1,
-            }}
-            style={styles.box}
-          >
-            <View style={{
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 10,
-              paddingTop: 30,
-              backgroundColor: "rgba(0,0,0,0)"
-            }}>
-              <View style={{
-                width: "70%",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 10,
-                backgroundColor: "rgba(0,0,0,0)"
-              }}>
+          <ScrollView contentContainerStyle={{justifyContent: "center", width: '100%'}}
+                      style={{flex: 1, backgroundColor: "rgba(0,0,0,0)"}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+              <LinearGradient
+                  colors={[colors.primary, "rgba(0,0,0,0)"]}
+                  start={{
+                    x: 1,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 1,
+                    y: 1,
+                  }}
+                  style={styles.box}
+              >
+                  <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
+                    paddingTop: 30,
+                    backgroundColor: "rgba(0,0,0,0)"
+                  }}>
+                      <View style={{
+                        width: "70%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                        backgroundColor: "rgba(0,0,0,0)"
+                      }}>
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('challenge-verification')}/>
+                <Button onPress={()=> navigation.navigate('levelUp')}/>
               </View>
             </View>
           </LinearGradient>
@@ -282,10 +328,11 @@ const CTDHome = ({navigation}) => {
                   flexWrap: 'wrap',
                   backgroundColor: colors.primary,
                   alignItems: "center",
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  width: '80%'
                 }}>
-                  <Text style={styles.subtitle}>36500k </Text>
-                  <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
+                  <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
+                  <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'flex-end'}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
                     <Text style={styles.detailtitle}> {t('home.points')}</Text>
@@ -308,12 +355,17 @@ const CTDHome = ({navigation}) => {
             }}>
               <Text style={styles.othertitle}> {t('home.your-experience')}</Text>
               <View style={{flexDirection: 'row', flexWrap: 'wrap', backgroundColor: colors.surface}}>
-                <Text style={styles.level}> {t('home.level')} 1</Text>
-                <Text style={styles.nextlevel}>{t('home.level')} 2</Text>
+                <Text style={styles.level}> {t('home.level')} {userData?.findUserById?.user?.level}</Text>
+                <Text style={styles.nextlevel}>{t('home.level')} {userData?.findUserById?.user?.level+1}</Text>
               </View>
             </View>
-            <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent} progress={0.3}
-                          width={350} height={30}/>
+            {userData &&
+              <Progress.Bar style={{borderRadius: 20}} unfilledColor={'#ffffff'} color={colors.accent}
+                            progress={userData?.findUserById?.user?.level === 0 ?
+                              userData?.findUserById?.user?.xp / getXpRange(1)[1] :
+                              userData?.findUserById?.user?.xp / getXpRange(userData?.findUserById?.user?.level)[1]}
+                            width={350} height={30}/>
+            }
           </View>
           <View style={{
             width: "100%",
@@ -334,12 +386,14 @@ const CTDHome = ({navigation}) => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: "center",
+              flex: 1,
+              flexWrap: "wrap",
               paddingHorizontal: 10,
               paddingTop: 10,
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
-              {categories.map((s, index) => {
-                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
+              {topOds.slice(0, 3).map((ods, index) => {
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(ods)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{
@@ -350,7 +404,7 @@ const CTDHome = ({navigation}) => {
                       borderWidth: 6,
                       marginHorizontal: 20
                     }}
-                           source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                           source={onuLogos[parseInt(ods)].image} resizeMode={'cover'}/>
                     <View style={{
                       justifyContent: "center",
                       alignItems: "center",
@@ -366,30 +420,52 @@ const CTDHome = ({navigation}) => {
           </View>
 
           <View style={{backgroundColor: colors.surface, alignItems: "flex-end", marginTop: -20}}>
-            <Button onPress={() => setCreatePost(true)}
-                    icon={{name: 'add', type: 'ionicon'}}
+            <Button onPress={() => setShowAll(!showAll)}
+                    icon={{name: !showAll ? 'add' : 'remove', type: 'ionicon'}}
                     buttonStyle={styles.button}
             />
           </View>
 
-            <TouchableWithoutFeedback
-                onPress={() => setCreate(true)}>
-                <View style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  backgroundColor: 'transparent',
-                  alignItems: "center",
-                  justifyContent: 'space-between'
-                }}>
-                    <Text style={styles.create}>{t('home.challenge')}!</Text>
-                    <View style={{backgroundColor: 'rgba(0,0,0,0)', flex: 1}}>
-                    </View>
+            {showAll && <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: "center",
+                flex: 1,
+                flexWrap: "wrap",
+                paddingHorizontal: 10,
+                paddingTop: 10,
+                backgroundColor: 'rgba(0,0,0,0)'
+              }}>
+
+            {categories.slice(3).map((s, index) => {
+              return <TouchableWithoutFeedback key={index+3} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
+                <View style={{backgroundColor: colors.surface}}>
+                  <CTDBadge color={categoryColors[index+3]} number={index + 4}/>
+                  <Image style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    borderColor: categoryColors[index+3],
+                    borderWidth: 6,
+                    marginHorizontal: 20
+                  }}
+                         source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                  <View style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 10,
+                    backgroundColor: colors.surface
+                  }}>
+                    <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
+                  </View>
                 </View>
-            </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>
+            })}
+              </View>}
 
-          <PostFeed navigation={navigation}/>
+              <PostFeed navigation={navigation}/>
 
-        </ScrollView>
+          </ScrollView>
       </View>}
 
       {createPost && <Card style={styles.creationCard}>

@@ -7,7 +7,7 @@ import ViewPost from "../viewPost/ViewPost";
 import {useLazyQuery} from "@apollo/client";
 import {GET_POST_BY_CONNECTIONS} from "../apollo-graph/Queries";
 import {useEffect} from "react";
-import {getToken, getUserId} from "../Storage";
+import {getToken} from "../Storage";
 
 const PostFeed = ({navigation}) => {
   const [open, setOpen] = React.useState(false)

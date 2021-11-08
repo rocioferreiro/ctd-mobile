@@ -25,8 +25,8 @@ import ChallengeCreationSuccessful from "../components/CreateChallengeForm/Chall
 import ChallengeCardScrollView from "../components/Profile/ChallengeCardScrollView";
 import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
-import RankingList from "../components/ranking/RankingList";
 import RankingView from "../components/ranking/RankingView";
+import LevelUp from "../components/LevelUp";
 import VerifyChallenge from "../components/VerifyChallenge";
 
 const MyTabbar = ({navigation}) => {
@@ -120,6 +120,12 @@ const MyTabbar = ({navigation}) => {
         <Stack.Screen name={'creationSuccessful'} component={PostCreationSuccessful}/>
         <Stack.Screen name={'challengeCreationSuccessful'}>
           {props => <ChallengeCreationSuccessful {...props} close={() => {
+            navigation.goBack()
+            navigation.goBack()
+          }}/>}
+        </Stack.Screen>
+        <Stack.Screen name={'levelUp'}>
+          {props => <LevelUp {...props} close={() => {
             navigation.goBack()
             navigation.goBack()
           }}/>}
