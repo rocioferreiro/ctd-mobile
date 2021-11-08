@@ -32,7 +32,7 @@ import {ACCEPT_CONNECTION, CONNECT, DISCONNECT} from "../apollo-graph/Mutations"
 import {Button as Button2} from "react-native-paper"
 import ConnectionsFeed from "../ConnectionsFeed/ConnectionsFeed";
 import NoResults from "./NoResults";
-import {getXpRange, Role} from "../Models/User";
+import {getXpRange} from "../Models/User";
 import ConfirmationModal from "../Challenge/ConfirmationModal";
 import Timeline from 'react-native-timeline-flatlist';
 import {colorShade} from "../Models/shadingColor";
@@ -386,6 +386,7 @@ export function Profile(props: Props) {
       display: 'flex',
       flexDirection: 'row',
       backgroundColor: 'transparent',
+      transform: [{ rotateX: '180deg' }, { rotateY: '180deg' }],
       position: 'absolute',
       top: 0,
       left: 0,
