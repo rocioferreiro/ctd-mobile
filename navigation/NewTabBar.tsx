@@ -56,8 +56,6 @@ const MyTabbar = ({navigation}) => {
       console.log(error);
     },
     onCompleted: result => {
-      console.log(result.findUserById.user.role)
-      console.log(isCreator)
       if (result.findUserById.user.role === "ENTERPRISE" || result.level > 10) setCreator(true);
       else setCreator(false); // Change to true to see new challenge button
     }
