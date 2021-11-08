@@ -254,7 +254,7 @@ const ViewPost = (props: Props) => {
         <Paragraph style={{color: colors.primary, fontSize: 17, marginBottom: 5}}>{post.text}</Paragraph>
       </Card.Content>
       {(post.image && post.image !== "") && <Card.Cover style={{marginHorizontal: 15, borderRadius: 20}}
-                                                        source={require('../../assets/images/post.jpg')}/>}
+                                                        source={post.image? {uri: post.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')}/>}
       <Card.Actions
         style={{width: '100%', display: 'flex', justifyContent: 'space-between', marginVertical: 10}}>
         <View style={{
