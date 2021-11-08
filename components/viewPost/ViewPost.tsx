@@ -38,7 +38,7 @@ const ViewPost = (props: Props) => {
 
   React.useEffect(() => {
     getToken().then(t => setToken(t))
-    setScrollToIndex(props.route.params.key)
+    setScrollToIndex(props.route?.params?.key)
   }, []);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const ViewPost = (props: Props) => {
         setPost(props.post)
         setLikes(props.post.upvotes)
       } else {
-        getPost({variables: {id: props.route.params?.postId}})
+        getPost({variables: {id: props.route?.params?.postId}})
       }
     }
   }, [token])
@@ -95,8 +95,10 @@ const ViewPost = (props: Props) => {
 
   const [like] = useMutation(LIKE_POST, {
     onCompleted: () => {
+      console.log("LIKED!")
     },
-    onError: () => {
+    onError: (e) => {
+      console.log(e)
     },
     refetchQueries: [],
     context: {
@@ -117,10 +119,10 @@ const ViewPost = (props: Props) => {
   const likePost = (isLiking: boolean) => {
     if (isLiking) {
       setLikes(likes + 1)
-      like({variables: {userId: userId, postId: post.id}});
+      like({variables: {postId: post.id}});
     } else {
       setLikes(likes - 1)
-      unlike({variables: {userId: userId, postId: post.id}});
+      unlike({variables: {postId: post.id}});
     }
     setLiked(!liked)
   }
@@ -138,7 +140,7 @@ const ViewPost = (props: Props) => {
         setUserId(id);
         if (post.owner.id == id) setLiked(true);
       })
-      if(props.route.params.additionalPosts) scrollHandler()
+      if(props.route?.params?.additionalPosts) scrollHandler()
     }
 
   }, [post])
@@ -160,7 +162,7 @@ const ViewPost = (props: Props) => {
     }, () => {
     }]}/>
 
-  return (props.route.params.additionalPosts ? <View style={{backgroundColor: colors.surface}}>
+  return (props.route?.params?.additionalPosts ? <View style={{backgroundColor: colors.surface}}>
     <ScrollView ref={(ref) => {
       setRef(ref);
     }} style={{
@@ -169,7 +171,7 @@ const ViewPost = (props: Props) => {
       backgroundColor: 'rgba(0,0,0,0)',
       overflow: "visible"
     }}>
-      {props.route.params.additionalPosts?.map((post, i) =>
+      {props.route?.params?.additionalPosts?.map((post, i) =>
         <View onLayout={(event) => {
           const layout = event.nativeEvent.layout;
           let aux = [...dataSourceCords]

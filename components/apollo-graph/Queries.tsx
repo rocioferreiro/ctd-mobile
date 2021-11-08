@@ -147,6 +147,7 @@ export const FIND_CHALLENGES_OF_USER = gql`
        endEvent
        endInscription
        id
+       score
        locationGeohash
        objectives {
         points
@@ -256,6 +257,7 @@ query getChallengeByFilter($title: String!) {
             endInscription 
             startInscription 
             id
+            score
             title
             owner
             upVotes
@@ -330,6 +332,7 @@ query getChallengeByFilter($title: String!) {
             endInscription 
             startInscription 
             id
+            score
             title
             owner
             upVotes
@@ -396,6 +399,7 @@ query getAllChallengesToWhichTheUserIsSubscribed{
        startEvent
        startInscription
        title
+       image
        upVotes
        score
 

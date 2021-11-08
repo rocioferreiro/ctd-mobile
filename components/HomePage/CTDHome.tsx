@@ -93,16 +93,17 @@ const CTDHome = ({navigation}) => {
       const restOfOds =  categories.filter(category => !onlyTopOds.includes(category)).map(category => ({ods: category, times: 0}));
       setTopOds(topOdsData.getOdsOrderedByPopularity.concat(restOfOds));
     }
-  }, [topOdsData])
+  }, [topOdsData, token])
 
   React.useEffect(() => {
     if (userId) {
       getUser({variables: {targetUserId: userId}});
     }
-  }, [userId]);
+  }, [userId, token]);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    setToken('')
     setToken(token)
     setTimeout(() => setRefreshing(false), 70)
   }, [refreshing]);
@@ -309,7 +310,6 @@ const CTDHome = ({navigation}) => {
 
                 <Image resizeMode={"contain"} source={require('../../assets/images/ctd-logo.png')} style={styles.logo}/>
                 <Text style={styles.title}>Connect the Dots</Text>
-                <Button onPress={()=> navigation.navigate('levelUp')}/>
               </View>
             </View>
           </LinearGradient>
@@ -331,7 +331,7 @@ const CTDHome = ({navigation}) => {
                   justifyContent: 'space-between',
                   width: '80%'
                 }}>
-                  <Text style={styles.subtitle}>{sustainablePointsData ? sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
+                  <Text style={styles.subtitle}>{sustainablePointsData ? (sustainablePointsData.getGlobalSustainablePoints + '').length >= 5 ? (sustainablePointsData.getGlobalSustainablePoints + '').substring(0, (sustainablePointsData.getGlobalSustainablePoints+'').length-3) + 'K' : sustainablePointsData.getGlobalSustainablePoints : ""} </Text>
                   <View style={{backgroundColor: 'rgba(0,0,0,0)', display: 'flex', justifyContent: 'flex-end'}}>
                     <Text style={styles.detailtitle}> {t('home.global')}</Text>
                     <Text style={styles.detailtitle}> {t('home.sustainable')}</Text>
@@ -463,7 +463,7 @@ const CTDHome = ({navigation}) => {
             })}
               </View>}
 
-              <PostFeed navigation={navigation}/>
+              <PostFeed navigation={navigation} token={token}/>
 
           </ScrollView>
       </View>}

@@ -6,6 +6,7 @@
   "login": {
     "password": "Contraseña",
     "email": "Mail",
+    "email-error": "Ingresar un mail válido",
     "cancel": "Cancelar",
     "done": "Iniciar Sesión"
   },

@@ -333,7 +333,7 @@ const ChallengePage = (props: Props) => {
           </View>
 
         <View style={{width: "100%", justifyContent: "center", padding: 10, backgroundColor: colors.surface}}>
-          {currentId !==challengeInfo.owner && !isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
+          {currentId !==challengeInfo.owner && !isJoined /* && (new Date(challengeInfo.endInscription) > new Date())*/ &&
           <JoinButton handleJoin={()=>handleJoin()}/>
           }
           {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&

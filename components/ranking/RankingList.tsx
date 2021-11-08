@@ -74,7 +74,7 @@ const RankingList = (props: Props) => {
       </View> :
       listData.map((i, index) => {
         return (//<View style={styles.rowContainer} key={index}>
-          <Row style={styles.row} key={index} onPress={() => {props.navigation.navigate('challenge', {challengeId: i.id})}}>
+          <Row style={styles.row} key={index} onPress={() => {props.navigation.navigate('Challenge', {challengeId: i.id})}}>
             <Col size={65} style={{padding: 0, display: "flex", justifyContent: "center"}}><Text style={{color: colors.primary, fontWeight:"bold", fontFamily: 'aria'}}>{i.title}</Text></Col>
             <Col size={20} style={{padding: 0, display: "flex", justifyContent: "center", alignItems: "center"}}><Text style={{color: colors.primary, fontWeight:"bold", fontFamily: 'aria'}}>{i.subscribersQuantity}</Text></Col>
             <Col size={15} style={{padding: 0, display: "flex", justifyContent: "center", alignItems: "center"}}><Text style={{color: colors.accent, fontWeight:"bold", fontFamily: 'aria'}}>{i.score}</Text></Col>

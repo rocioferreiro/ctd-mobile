@@ -9,9 +9,8 @@ import {GET_POST_BY_CONNECTIONS} from "../apollo-graph/Queries";
 import {useEffect} from "react";
 import {getToken} from "../Storage";
 
-const PostFeed = ({navigation}) => {
+const PostFeed = ({navigation, token}) => {
   const [open, setOpen] = React.useState(false)
-  const [token, setToken] = React.useState('')
   const [getPostsByConnections, {data: postsByConnectionsData}] = useLazyQuery(GET_POST_BY_CONNECTIONS, {
     fetchPolicy: 'cache-and-network',
     context: {
@@ -22,18 +21,25 @@ const PostFeed = ({navigation}) => {
   });
   const {colors} = useTheme();
 
+  // useEffect(() => {
+  //   getToken().then(t => {
+  //     setToken(t);
+  //
+  //   })
+  // }, []);
+
   useEffect(() => {
-    getToken().then(t => {
-      setToken(t);
+    if(token) {
+      console.log("IS HERE")
       getPostsByConnections({
         context: {
           headers: {
-            'Authorization': 'Bearer ' + t
+            'Authorization': 'Bearer ' + token
           }
         }
       });
-    })
-  }, []);
+    }
+  }, [token])
 
   return (
     <View style={{marginBottom: 70}}>

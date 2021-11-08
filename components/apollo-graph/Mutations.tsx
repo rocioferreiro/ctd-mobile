@@ -41,14 +41,14 @@ mutation register($newUser: InputUserInput!) {
 `;
 
 export const LIKE_POST = gql`
-mutation likePost($userId: String!, $postId: String!){
-  likePost(userId: $userId, postId: $postId)
+mutation likePost($postId: String!){
+  likePost(postId: $postId)
 }
 `;
 
 export const UNLIKE_POST = gql`
-mutation unlikePost($userId: String!, $postId: String!){
-  unlikePost(userId: $userId, postId: $postId)
+mutation unlikePost($postId: String!){
+  unlikePost(postId: $postId)
 }
 `;
 
@@ -59,8 +59,8 @@ mutation connect($followingUserId: String!){
 `;
 
 export const DISCONNECT = gql`
-mutation disconnect($targetUserId: String!, $followingUserId: String!){
-  disconnect(targetUserId: $targetUserId, followingUserId: $followingUserId)
+mutation disconnect($followingUserId: String!){
+  disconnect(followingUserId: $followingUserId)
 }
 `;
 
@@ -71,8 +71,8 @@ mutation acceptConnection($otherUserID: String!){
 `;
 
 export const REJECT_CONNECTION = gql`
-mutation rejectConnection($myUserID: String!, $otherUserID: String!){
-  rejectConnection(myUserID: $myUserID, otherUserID: $otherUserID)
+mutation rejectConnection($otherUserID: String!){
+  rejectConnection(otherUserID: $otherUserID)
 }
 `;
 

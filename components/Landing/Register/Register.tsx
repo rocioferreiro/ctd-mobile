@@ -165,6 +165,7 @@ const Register = (props: Props) => {
                     biography: '',
                     password: password,
                     role: r,
+                    xp: 200,
                     address: {
                         country: "",
                         locality: "",

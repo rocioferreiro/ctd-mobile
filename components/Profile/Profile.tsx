@@ -121,7 +121,7 @@ export function Profile(props: Props) {
       console.log(error);
     },
     onCompleted: result => {
-      if (result.findUserById.user.role === "ENTERPRISE" || result.level > 10) setCreator(true)
+      if (result.findUserById.user.role === "ENTERPRISE" || result.findUserById.user.role === "MENTOR" || result.level > 10) setCreator(true)
       else setCreator(false) // Change to true to see new challenge button
     }
   });
@@ -181,7 +181,8 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    }
+    },
+    refetchQueries: ['GET_POST_BY_CONNECTIONS']
   });
   const [disconnect] = useMutation(DISCONNECT, {
     onCompleted: () => {
@@ -191,7 +192,8 @@ export function Profile(props: Props) {
       headers: {
         'Authorization': 'Bearer ' + token
       }
-    }
+    },
+    refetchQueries: ['GET_POST_BY_CONNECTIONS']
   });
 
   const [acceptConnection] = useMutation(ACCEPT_CONNECTION, {
@@ -541,7 +543,7 @@ export function Profile(props: Props) {
     setOpen(true)
   }
   function doDisconnect() {
-    disconnect({variables: {targetUserId: userId, followingUserId: loggedInUserId}}).catch(e => console.log(e));
+    disconnect({variables: {followingUserId: loggedInUserId}}).catch(e => console.log(e));
     setOpen(false)
   }
 
@@ -575,6 +577,7 @@ export function Profile(props: Props) {
 
   const getActiveChallenge = (challenge, key) => {
     if (!challenge) return null;
+    console.log(challenge)
     return <View style={{backgroundColor: 'rgba(0,0,0,0)'}} key={key}><TouchableOpacity onPress={() => {props.navigation.navigate('NewTabBar', {
       screen: 'challenges-scrollview',
       params: {challengeId: challenge.id, challenges: activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed,key:key}
@@ -597,25 +600,31 @@ export function Profile(props: Props) {
     </TouchableOpacity>
     </View>
   }
-  const getFinishedChallenge = (challenge, key) => {
+
+  const getMyChallenge = (challenge, key) => {
     if (!challenge) return null;
-    return <TouchableOpacity onPress={() => props.navigation.navigate('NewTabBar', {
+    console.log(challenge)
+    return <View style={{backgroundColor: 'rgba(0,0,0,0)'}} key={key}><TouchableOpacity onPress={() => {props.navigation.navigate('NewTabBar', {
       screen: 'challenges-scrollview',
-      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser}
-    })} style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
+      params: {challengeId: challenge.id, challenges: challengesData?.getCreatedChallengesByUser,key:key}
+    })}
+
+    } style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
       <ImageBackground style={{height: 180, width: 150}}
                        imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
-                       source={require('../../assets/images/tree.jpg')} resizeMode={'cover'}>
+                       source={challenge.image? {uri: challenge.image.replace('127.0.0.1', ip)} : require('../../assets/images/background/dots-background.png')} resizeMode={'cover'}>
+
         <View style={styles.imageTextContainer}>
           <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.background}}>{challenge.title}</Text>
           <Text style={styles.whiteText}>{challenge.endEvent}</Text>
         </View>
       </ImageBackground>
-      <View style={{...styles.footer, flexDirection: 'row', alignItems: 'center'}}>
-        <Icon style={{marginRight: 4}} type={'feather'} name={'user'} color={colors.background}/>
-        <Text style={styles.whiteText}>154</Text>
+      <View style={styles.footer}>
+        <Text style={styles.whiteText}><Text
+          style={[{fontWeight: 'bold'}, styles.whiteText]}>{challenge.score}</Text> Points</Text>
       </View>
     </TouchableOpacity>
+    </View>
   }
 
   const myIcon = <View style={styles.menuBox}>
@@ -866,7 +875,7 @@ export function Profile(props: Props) {
 
               <ScrollView horizontal={true}>
                 {challengesData?.getCreatedChallengesByUser?.map((challenge, key) => {
-                   return getActiveChallenge(challenge, key);
+                   return getMyChallenge(challenge, key);
                 })}
               </ScrollView>
             {(!challengesData?.getCreatedChallengesByUser || challengesData?.getCreatedChallengesByUser?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
