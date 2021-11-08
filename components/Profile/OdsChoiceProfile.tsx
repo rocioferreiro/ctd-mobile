@@ -168,7 +168,7 @@ const OdsChoiceProfile  = (props: Props) => {
                         {props.selected.sort((a, b) => a.index > b.index ? 1 : -1).map((s, index) => {
                             return <TouchableWithoutFeedback key={index} onPress={() => {
                                 props.setSelected(props.selected.filter(i => i.obj !== Object.keys(ONUObjectives)[s.index]));
-                                props.formik.favouriteODS=props.formik.values.favouriteODS.filter(i => i !== index);}
+                                props.formik.setFieldValue('favouriteODS', props.formik.values.favouriteODS.filter(i => i !== index+1))}
                             }>
                                 <Image style={styles.imageOpt} source={onuInfo[s.index].image}/>
                             </TouchableWithoutFeedback>
@@ -186,6 +186,7 @@ const OdsChoiceProfile  = (props: Props) => {
                 <IconButton icon={'plus-thick'} style={styles.add} color={colors.background}
                             onPress={() => {
                                 if(props.selected.filter(i => i.obj === Object.keys(ONUObjectives)[currentIndex]).length <= 0) {
+                                    console.log(props.selected)
                                     if(props.selected.length===3){
                                         //toastOn(t('ods-choice-profile.max-ods-error'),t('ods-choice-profile.max-ods-error-description') )
                                         toastOnMaxError()
@@ -197,7 +198,7 @@ const OdsChoiceProfile  = (props: Props) => {
                                         image: onuInfo[currentIndex].image
 
                                     }]);
-                                    props.formik.setFieldValue('ONUObjective', [...props.formik.values.favouriteODS, currentIndex]);
+                                    props.formik.setFieldValue('favouriteODS', [...props.formik.values.favouriteODS, currentIndex+1]);
                                 }
                             }}}
                 />

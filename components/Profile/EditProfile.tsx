@@ -40,7 +40,6 @@ const EditProfile = ({navigation}) => {
   const [updateUserSuccess,setUpdateUserSuccess] = React.useState(false)
   const [updateUserLocationSuccess,setUpdateUserLocationSuccess] = React.useState(false)
   const [userId, setUserId] = React.useState('');
- // const [openChoices,setOpenChoices] =React.useState(false);
 
   React.useEffect(() => {
     getUserId().then(id => setUserId(id));
@@ -78,7 +77,6 @@ const EditProfile = ({navigation}) => {
     toastOnUpdateUserSuccess()
 
     navigation.navigate('profile')
-    //TODO integracion
   }
 
 
@@ -121,7 +119,12 @@ const EditProfile = ({navigation}) => {
     if(gender==0) return "MALE"
     if(gender==1) return "FEMALE"
     else  return "OTHER"
+  }
 
+  function getGenderInverse(gender) {
+    if(gender=="MALE") return 0
+    if(gender=="FEMALE") return 1
+    else  return 2
   }
 
   const parseAndSendUpdateUser = (formik) => {
@@ -233,7 +236,7 @@ const EditProfile = ({navigation}) => {
         favouriteODS: userData.findUserById.user.favouriteODS,
         biography: userData.findUserById.user.biography? userData.findUserById.user.biography : '',
         photoUrl: userData.findUserById.user.photoUrl? userData.findUserById.user.photoUrl : '',
-        gender: userData.findUserById.user.gender? userData.findUserById.user.gender : Gender.OTHER,
+        gender: userData.findUserById.user.gender? getGenderInverse(userData.findUserById.user.gender) : Gender.OTHER,
         birthDate: userData.findUserById.user.birthDate ? new Date(userData.findUserById.user.birthDate) : new Date(),
         coordinates: userData.findUserById.user.address.coordinates,
         photo: userData.findUserById.user.photo
@@ -562,43 +565,6 @@ const EditProfile = ({navigation}) => {
       expanded={odsExpanded}
       onPress={handlePressOds}>
     <View>
-{/*      {   formik.values.favouriteODS.length>0 ?
-          <View >
-            <Text style={{fontWeight: "bold",
-              color: colors.primary,
-              marginLeft: 5,
-              fontSize: 20, padding:10}}> {t('profile-ods.choose-favorite-ods')} </Text>
-            <View style={{display: 'flex', flexDirection: 'column'}}>
-              <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: "center",
-                paddingHorizontal: 10,
-                paddingTop: 10
-              }}>
-                {formik.values.favouriteODS.map((s, index) => {
-                  return <TouchableWithoutFeedback key={index}>
-                    <Image
-                        style={{width: 50, height: 50, borderRadius: 25, marginHorizontal: 10}}
-                        source={s.image}/>
-                  </TouchableWithoutFeedback>
-                })}
-              </View>
-              <View style={{
-                display: "flex",
-                justifyContent: 'center',
-                width: '100%',
-                flexDirection: 'row',
-                padding: 15
-              }}>
-                <Button style={styles.editOptionsButton} mode={'contained'}
-                        onPress={() => {setOpenChoices(true)
-                        }}> {t('profile-ods.edit-ods')}</Button>
-              </View>
-            </View>
-          </View>
-
-          :*/}
         <View style={{
           marginLeft: -Dimensions.get('window').width * 0.15,
           backgroundColor: 'rgba(0,0,0,0)',
@@ -609,11 +575,6 @@ const EditProfile = ({navigation}) => {
 
     </View>
     </List.Accordion>
-
-    {/*<Button style={styles.button}> User info </Button>*/}
-    {/*<Button style={styles.button}> Profile info </Button>*/}
-    {/*<Button style={styles.button}> Location </Button>*/}
-    {/*<Button style={styles.button}> Favourite ODS </Button>*/}
 
     <Button style={styles.doneButton} onPress={()=>onSubmitEdit(formik)}> {t("edit-profile.done")} </Button>
     </ScrollView>

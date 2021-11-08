@@ -62,7 +62,7 @@
   },
   "edit-profile": {
     "update-user-error": "Edit Profile Error",
-    "update-user-error-description":" An error ocurred while trying to update your profile!",
+    "update-user-error-description":" An error occurred while trying to update your profile!",
     "update-user-success": "Edit Profile Success!",
     "update-user-success-description": "Your profile is now updated! Check it out!",
     "done": "Done!"
@@ -148,10 +148,10 @@
     "goal-at-least": "You need at least one Goal",
     "goal-placeholder": "Goal..",
     "challenge-goals": "Challenge Goals",
-    "choose-objectives": "Choose Objetives",
+    "choose-objectives": "Choose Objectives",
     "select-at-least": "Select at least one objective",
-    "edit-objectives": "Edit Objetives",
-    "sustainable-objectives": "Sustainable Objetives",
+    "edit-objectives": "Edit Objectives",
+    "sustainable-objectives": "Sustainable Objectives",
     "challenge-description": "Challenge Description",
     "challenge-title": "Challenge Title",
     "create-new-challenge": "Create a new Challenge!"
@@ -245,10 +245,10 @@
   "ods-choice-profile": {
     "choose-ods": "Choose SDG",
     "current-ods": "Current SGD",
-    "ods": "Objetive",
+    "ods": "Objective",
     "error-max-ods": "Max Favorite SDG Number is 3",
     "error-max-ods-description": "You can't add anymore SDG`s to your favourites list!",
-    "error-min-ods": "Minimun Number of Favorite SGD is 3",
+    "error-min-ods": "Minimum Number of Favorite SGD is 3",
     "error-min-ods-description": "You Have to Choose 3 SDG`s"
   },
   "level-up": {

@@ -39,6 +39,7 @@ import {colorShade} from "../Models/shadingColor";
 import {createPDF, PROFILE_HTML} from "./PDF/CreatePDF";
 import MenuDrawer from 'react-native-side-drawer'
 import {ip} from "../apollo-graph/Client";
+import {onuPictures} from "../CreateChallengeForm/Details/onuObjectiveInfo";
 
 enum ConnectionStatus {
   connect = "Connect",
@@ -60,6 +61,7 @@ export function Profile(props: Props) {
   const [open, setOpen] = React.useState(false)
   const {colors} = useTheme();
   const auth = useContext(AuthContext);
+  const onuInfo = onuPictures();
   const [isCreator, setCreator] = useState<boolean>(false);
   const [userId, setUserId] = useState('');
   const [loggedInUserId, setLoggedInUserId] = useState('');
@@ -261,7 +263,7 @@ export function Profile(props: Props) {
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     setToken(token)
-    setTimeout(() => setRefreshing(false), 50)
+    setTimeout(() => setRefreshing(false), 100)
   }, [refreshing]);
 
   function toastError() {
@@ -531,7 +533,7 @@ export function Profile(props: Props) {
   }
 
   function onTimeLinePress(data) {
-    props.navigation.navigate('challenge', {challengeId: data.id})
+    props.navigation.navigate('Challenge', {challengeId: data.id})
   }
 
   function handleDisconnect() {
@@ -760,23 +762,26 @@ export function Profile(props: Props) {
                              style={{height: 14, borderRadius: 8}}/>
               </View>
             }
+            {userData?.findUserById?.user?.favouriteODS.length === 3 &&
               <View style={styles.objectivesContainer}>
-                  <View>
-                      <Avatar.Image size={50} source={onuLogos[0].image}
-                                    style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.no-poverty')}</Text>
-                  </View>
-                  <View>
-                      <Avatar.Image size={50} source={onuLogos[1].image}
-                                    style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.zero-hunger')}</Text>
-                  </View>
-                  <View>
-                      <Avatar.Image size={50} source={onuLogos[13].image}
-                                    style={styles.profileImage}/>
-                      <Text style={[styles.secondaryText, styles.forODS]}>{t('onu-objective-info.life-water')}</Text>
-                  </View>
-              </View>
+                      <View>
+                          <Avatar.Image size={50} source={onuLogos[userData?.findUserById?.user?.favouriteODS[0]-1].image}
+                                        style={styles.profileImage}/>
+                          <Text
+                              style={[styles.secondaryText, styles.forODS]}>{onuInfo[userData?.findUserById?.user?.favouriteODS[0]-1].title}</Text>
+                      </View>
+                      <View>
+                      <Avatar.Image size={50} source={onuLogos[userData?.findUserById?.user?.favouriteODS[1]-1].image}
+                      style={styles.profileImage}/>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{onuInfo[userData?.findUserById?.user?.favouriteODS[1]-1].title}</Text>
+                      </View>
+                      <View>
+                      <Avatar.Image size={50} source={onuLogos[userData?.findUserById?.user?.favouriteODS[2]-1].image}
+                      style={styles.profileImage}/>
+                      <Text style={[styles.secondaryText, styles.forODS]}>{onuInfo[userData?.findUserById?.user?.favouriteODS[2]-1].title}</Text>
+                      </View>
+                    </View>
+                }
           </View>
           <View style={styles.detailsContainer}>
               <View style={styles.detail}>

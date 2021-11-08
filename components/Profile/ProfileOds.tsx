@@ -17,12 +17,12 @@ type Props = {
 }
 
 const ProfileOds = (props: Props) => {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
     const { colors } = useTheme();
     const {formik} = props;
     const [keyboardShown, setKeyboardShown] = React.useState(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
-    const [onuObjectives, setOnuObjectives] = React.useState(props.formik.values.favouriteODS);
+    const [onuObjectives, setOnuObjectives] = React.useState(props.formik.values.favouriteODS.map(i => i-1));
     const [openChoices, setOpenChoices] = React.useState(false);
     const [errorMarker, setErrorMarker] = React.useState({title: false, description: false, goals: false, onu: false})
     const onuInfo = onuPictures();
@@ -142,7 +142,7 @@ const ProfileOds = (props: Props) => {
 
     useEffect(() => {
         if(formik.values.favouriteODS && formik.values.favouriteODS.length > 0) {
-            setOnuObjectives(formik.values.favouriteODS.map(i =>{return {image: onuInfo[i].image, index: i, obj: Object.keys(ONUObjectives)[i]}} ))
+            setOnuObjectives(formik.values.favouriteODS.map(i =>{return {image: onuInfo[i-1].image, index: i-1, obj: Object.keys(ONUObjectives)[i-1]}} ))
             verifyChange(true)
         }
         else {

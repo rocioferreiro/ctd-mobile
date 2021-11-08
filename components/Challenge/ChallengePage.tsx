@@ -49,7 +49,7 @@ const ChallengePage = (props: Props) => {
     else return ''
   }
   const [token, setToken] = React.useState('');
-
+  let date = new Date();
   const [getUser, {data, loading, error}] = useLazyQuery(NEW_FIND_USER_BY_ID, {
     variables: {targetUserId: getOwner()},
     fetchPolicy: 'cache-and-network',
@@ -137,6 +137,7 @@ const ChallengePage = (props: Props) => {
     });
 
   useEffect(() => {
+    date.setDate(date.getDate() + 2)
     getUserId().then(u => {
       setCurrentId(u);
       getToken().then(t => {
@@ -338,10 +339,7 @@ const ChallengePage = (props: Props) => {
           {currentId!==challengeInfo.owner && isJoined && (new Date(challengeInfo.endInscription) > new Date()) &&
           <UnJoinButton handleUnJoin={()=>handleUnJoin()}/>
           }
-          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) < new Date()) &&
-          <ViewParticipantsButton/>
-          }
-          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > new Date()) &&
+          {currentId===challengeInfo.owner && (new Date(challengeInfo.endEvent) > date) &&
           <VerifyQRButton navigation={props.navigation} challengeId={challengeInfo.id}/>
           }
         </View>
