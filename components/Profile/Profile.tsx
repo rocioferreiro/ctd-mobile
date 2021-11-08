@@ -826,7 +826,7 @@ export function Profile(props: Props) {
                 }} postId={post.id} onError={onError} upvotes={post.upvotes} title={post.title} key={i} image={post.image}/>
               })}
             </ScrollView>
-          {(postsOfUser?.findPostByOwner?.length == 0 || !postsOfUser?.findPostByOwner) && (!props.route.params?.otherId) &&
+          {(postsOfUser?.findPostByOwner?.length == 0 || ((!postsOfUser?.findPostByOwner) && (!props.route.params?.otherId))) &&
           <NoResults text={t('profile.no-results')} subtext={props.route.params?.otherId ? '' : t('profile.no-posts')}/>
           }
         </View>
