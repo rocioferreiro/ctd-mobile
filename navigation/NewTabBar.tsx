@@ -13,8 +13,8 @@ import CTDHome from "../components/HomePage/CTDHome";
 import PostCreationSuccessful from "../components/CreatePost/PostCreationSuccessful";
 import {useTranslation} from "react-i18next";
 import {useLazyQuery} from "@apollo/client";
-import {PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Queries";
-import {getToken} from "../components/Storage";
+import {NEW_FIND_USER_BY_ID, PENDING_CONNECTION_REQUESTS_NUMBER} from "../components/apollo-graph/Queries";
+import {getToken, getUserId} from "../components/Storage";
 import PersonIcon from "./PersonIcon";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ChallengePage from "../components/Challenge/ChallengePage";
@@ -27,12 +27,14 @@ import CreateFAB from "./CreateFAB";
 import ChallengeVerificationPage from "../components/ChallengeVerfication/ChallengeVerificationPage";
 import RankingView from "../components/ranking/RankingView";
 import LevelUp from "../components/LevelUp";
+import {Role} from "../components/Models/User";
 
 const MyTabbar = ({navigation}) => {
   const {colors} = useTheme();
   const [token, setToken] = useState('');
   const [createPost, setCreatePost] = React.useState<boolean>(true);
   const [openOptions, setOpenOptions] = React.useState<boolean>(false);
+  const [isCreator, setCreator] = useState<boolean>(false);
   const {t} = useTranslation();
   const [getConnectionRequestsNumber, {data}] = useLazyQuery(PENDING_CONNECTION_REQUESTS_NUMBER, {
     fetchPolicy: 'cache-and-network',
@@ -40,6 +42,24 @@ const MyTabbar = ({navigation}) => {
       headers: {
         'Authorization': 'Bearer ' + token
       }
+    }
+  });
+  const [getLoggedInUser] = useLazyQuery(NEW_FIND_USER_BY_ID, {
+    context: {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    },
+    fetchPolicy:"cache-and-network",
+    onError: error => {
+      console.log('tabbar error');
+      console.log(error);
+    },
+    onCompleted: result => {
+      console.log(result.findUserById.user.role)
+      console.log(isCreator)
+      if (result.findUserById.user.role === "ENTERPRISE" || result.level > 10) setCreator(true);
+      else setCreator(false); // Change to true to see new challenge button
     }
   });
 
@@ -67,12 +87,20 @@ const MyTabbar = ({navigation}) => {
       inactiveIcon: <Icon name={'search-outline'}
                           type={'ionicon'} color="#4d4d4d" size={25}/>
     },
-    {
+    isCreator ?
+      {
       name: t('new-tabbar.new'),
       url: 'creation-options',
       activeIcon: <Icon name="auto-awesome" color="#fff" size={25}/>,
       inactiveIcon: <Icon name="auto-awesome" color="#4d4d4d" size={25}/>
-    },
+      }
+    :
+      {
+        name: t('new-tabbar.new'),
+        url: 'createPost',
+        activeIcon: <Icon name="aperture-outline" type={'ionicon'} color="#fff" size={25}/>,
+        inactiveIcon: <Icon name="aperture-outline" type={'ionicon'} color="#4d4d4d" size={25}/>
+      },
     {
       name: t('new-tabbar.map'),
       url: 'map',
@@ -93,6 +121,9 @@ const MyTabbar = ({navigation}) => {
     getToken().then(token => {
       setToken(token);
       getConnectionRequestsNumber();
+      getUserId().then(id => {
+        getLoggedInUser({variables: {targetUserId: id}});
+      });
     });
   }, []);
 
