@@ -90,8 +90,8 @@ const CTDHome = ({navigation}) => {
   React.useEffect(() => {
     if (topOdsData) {
       const onlyTopOds = topOdsData.getOdsOrderedByPopularity.map(top => top.ods.toString());
-      const restOfOds =  categories.filter(category => !onlyTopOds.includes(category));
-      setTopOds(onlyTopOds.concat(restOfOds));
+      const restOfOds =  categories.filter(category => !onlyTopOds.includes(category)).map(category => ({ods: category, times: 0}));
+      setTopOds(topOdsData.getOdsOrderedByPopularity.concat(restOfOds));
     }
   }, [topOdsData])
 
@@ -392,8 +392,8 @@ const CTDHome = ({navigation}) => {
               paddingTop: 10,
               backgroundColor: 'rgba(0,0,0,0)'
             }}>
-              {topOds.slice(0, 3).map((ods, index) => {
-                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(ods)})}}>
+              {topOds.slice(0, 3).map((top, index) => {
+                return <TouchableWithoutFeedback key={index} onPress={() => {navigation.navigate('ranking', {ods: parseInt(top.ods)})}}>
                   <View style={{backgroundColor: colors.surface}}>
                     <CTDBadge color={categoryColors[index]} number={index + 1}/>
                     <Image style={{
@@ -404,14 +404,14 @@ const CTDHome = ({navigation}) => {
                       borderWidth: 6,
                       marginHorizontal: 20
                     }}
-                           source={onuLogos[parseInt(ods)].image} resizeMode={'cover'}/>
+                           source={onuLogos[parseInt(top.ods)].image} resizeMode={'cover'}/>
                     <View style={{
                       justifyContent: "center",
                       alignItems: "center",
                       padding: 10,
                       backgroundColor: colors.surface
                     }}>
-                      <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
+                      <Text style={styles.ods}>{top.times} {t('home.challenges-active')}</Text>
                     </View>
                   </View>
                 </TouchableWithoutFeedback>
@@ -437,8 +437,8 @@ const CTDHome = ({navigation}) => {
                 backgroundColor: 'rgba(0,0,0,0)'
               }}>
 
-            {categories.slice(3).map((s, index) => {
-              return <TouchableWithoutFeedback key={index+3} onPress={() => {navigation.navigate('ranking', {ods: parseInt(s)})}}>
+            {topOds.slice(3).map((top, index) => {
+              return <TouchableWithoutFeedback key={index+3} onPress={() => {navigation.navigate('ranking', {ods: parseInt(top.ods)})}}>
                 <View style={{backgroundColor: colors.surface}}>
                   <CTDBadge color={categoryColors[index+3]} number={index + 4}/>
                   <Image style={{
@@ -449,14 +449,14 @@ const CTDHome = ({navigation}) => {
                     borderWidth: 6,
                     marginHorizontal: 20
                   }}
-                         source={onuLogos[parseInt(s)].image} resizeMode={'cover'}/>
+                         source={onuLogos[parseInt(top.ods)].image} resizeMode={'cover'}/>
                   <View style={{
                     justifyContent: "center",
                     alignItems: "center",
                     padding: 10,
                     backgroundColor: colors.surface
                   }}>
-                    <Text style={styles.ods}>2k {t('home.challenges-active')}</Text>
+                    <Text style={styles.ods}>{top.times} {t('home.challenges-active')}</Text>
                   </View>
                 </View>
               </TouchableWithoutFeedback>
