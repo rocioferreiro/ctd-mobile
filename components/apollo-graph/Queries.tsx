@@ -29,6 +29,12 @@ query findChallengeById($id: Long!){
 }
 `;
 
+export const GET_CHALLENGE_TOKEN = gql`
+query getChallengeToken($challengeId: Long!) {
+    getChallengeToken(challengeId: $challengeId)
+}
+`;
+
 export const FIND_NEARBY_USERS = gql`
 query findNearbyUsers($latitude: Float!, $longitude: Float!) {
   findNearbyUsers(coordinates: {latitude: $latitude, longitude: $longitude}, xDis: 0.1, yDis: 0.1){
