@@ -106,4 +106,10 @@ updateUserLocation(address:$address)
 
 `;
 
-
+export const VERIFY_CHALLENGE = gql`
+ mutation VerifyChallenge($challengeId: Long!, $challengeToken: String!){
+  verifyChallenge(challengeId: $challengeId, challengeToken: $challengeToken) {
+    levelUp
+    ok
+  }
+}`;

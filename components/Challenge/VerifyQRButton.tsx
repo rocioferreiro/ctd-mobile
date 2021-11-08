@@ -17,9 +17,7 @@ const VerifyQRButton = (props: Props) => {
   const {colors} = useTheme();
   const [clicked, setClicked] = useState<boolean>(false);
 
-  let challengeDeepLink = Linking.createURL('tabbar/challenge', {
-    queryParams: {challengeId: props.challengeId},
-  });
+  let challengeDeepLink = Linking.createURL(`verify-challenge/${props.challengeId}`);
 
   return (
     !clicked ? <Button
