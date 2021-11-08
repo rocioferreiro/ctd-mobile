@@ -10,7 +10,7 @@ const VerifyChallenge = (props) => {
     const {data: challengeTokenData} = useQuery(GET_CHALLENGE_TOKEN, {variables: {challengeId: props.route.params.challengeId}});
 
     const [verifyChallenge] = useMutation(VERIFY_CHALLENGE, {
-        onCompleted: () => props.navigation.navigate('challenge-verification'),
+        onCompleted: () => props.navigation.navigate('challenge-verification', {challengeId: props.route.params.challengeId}),
         onError: () => props.navigation.navigate('home')
     });
 
