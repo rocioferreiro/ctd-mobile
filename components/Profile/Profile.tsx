@@ -563,7 +563,7 @@ export function Profile(props: Props) {
     if (!challenge) return null;
     return <View style={{backgroundColor: 'rgba(0,0,0,0)'}}><TouchableOpacity onPress={() => {props.navigation.navigate('tabbar', {
       screen: 'challenges-scrollview',
-      params: {challengeId: challenge.id, challenges: challengesData.getCreatedChallengesByUser,key:key}
+      params: {challengeId: challenge.id, challenges: activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed,key:key}
     })}
 
     } style={{backgroundColor: 'transparent', marginRight: 20}} key={key}>
@@ -799,7 +799,7 @@ export function Profile(props: Props) {
 
               })}
             </ScrollView>
-            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed || activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed?.filter(c => new Date(c.endEvent) > new Date()).length == 0) &&
+            {(!activeChallengesData?.getAllChallengesToWhichTheUserIsSubscribed) &&
             <NoResults text={t('profile.no-results')}
                        subtext={props.route.params?.otherId ? '' : t('profile.no-challenges')}/>
             }
