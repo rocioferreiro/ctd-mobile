@@ -21,7 +21,7 @@ export type ChallengeSnack = {
 
 export const createPDF = async (html) => {
   try {
-    const {uri} = await Print.printToFileAsync({html});
+    const {uri} = await Print.printToFileAsync({html, height: 1122, width: 793});
     await Sharing.shareAsync(uri);
   } catch (error) {
     console.error(error);
@@ -37,17 +37,13 @@ export const PROFILE_HTML = (content: Content) => {
 <html>
 <head>
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+          content="user-scalable=no"/>
     <title>Connect the Dots - Participation Certificate</title>
 </head>
-<body style="text-align: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9">
+<body style="text-align: center; justify-content: center; font-family: ApfelGrotezk, Helvetica, monospace; background-color: #FFF3E9; padding: 20px">
 <style> 
    @page { 
-     margin: 0;
-     /* A4 size */
-     size: A4;
-     height: 297mm;
-     width: 210mm; 
+     margin: 0 !important;
    } 
 </style>
 <h1 style="font-size: 50px; margin: 10px; font-family: ApfelGrotezk, Helvetica, monospace; font-weight: bold; color: #15006D">
