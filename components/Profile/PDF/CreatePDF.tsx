@@ -96,14 +96,15 @@ export const PROFILE_HTML = (content: Content) => {
                 <span style="color: #6c759f; display: block; margin-bottom: 0.5rem; font-size: 1.5rem;">
                     ${content.email}
                 </span>
-                <div style="display: flex; flex-direction: row; margin-top: 15px; width: 80%; justify-content: space-evenly; align-items: center">
-                    <img src="${getSdgIcon(content.sdg[0])}"
-                         style="border-radius: 50%;" height="35" alt="challenge-icon">
-                    <img src="${getSdgIcon(content.sdg[1])}"
-                         style="border-radius: 50%;" height="35" alt="challenge-icon">
-                    <img src="${getSdgIcon(content.sdg[2])}"
-                         style="border-radius: 50%;" height="35" alt="challenge-icon">
-                </div>
+                ${content.sdg ?
+                  `<div style="display: flex; flex-direction: row; margin-top: 15px; width: 80%; justify-content: space-evenly; align-items: center">
+                      <img src="${getSdgIcon(content.sdg[0])}" style="border-radius: 50%;" height="35" alt="challenge-icon">
+                      <img src="${getSdgIcon(content.sdg[1])}" style="border-radius: 50%;" height="35" alt="challenge-icon">
+                      <img src="${getSdgIcon(content.sdg[2])}" style="border-radius: 50%;" height="35" alt="challenge-icon">
+                    </div>`
+                  :
+                  ``
+                }
                 <div style="display: flex;
                             justify-content: space-between;
                             align-items: center;
@@ -234,8 +235,8 @@ export const PROFILE_HTML = (content: Content) => {
                     </div>
                       <div style="display: flex; flex-direction: row; width: 30%; justify-content: space-evenly; align-items: center">
                       ${ch.sdg.map((num, i) => {
-                        return `<img src="${getSdgIcon(ch.sdg[i])}" style="border-radius: 50%;" height="35" alt="challenge-icon">`
-                      }).join('')}
+      return `<img src="${getSdgIcon(ch.sdg[i])}" style="border-radius: 50%;" height="35" alt="challenge-icon">`
+    }).join('')}
                       </div>
                  </div>`
   }).join('')}
