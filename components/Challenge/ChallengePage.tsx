@@ -46,6 +46,7 @@ const ChallengePage = (props: Props) => {
   });
   const getOwner = () => {
     if (challengeInfo) return challengeInfo.owner
+    if(props.challenge) return props.challenge.owner
     else return ''
   }
   const [token, setToken] = React.useState('');
@@ -143,7 +144,6 @@ const ChallengePage = (props: Props) => {
       getToken().then(t => {
         setToken(t);
         if (props.challenge) {
-          console.log(props.challenge)
           setChallengeInfo(props.challenge);
           setMarker(props.challenge.coordinates);
         } else if (props.route.params?.challengeId)
@@ -160,9 +160,12 @@ const ChallengePage = (props: Props) => {
     if (!token) return;
     if (props.challenge) {
       setChallengeInfo(props.challenge);
-      getUser();
     }
   }, [props.challenge]);
+
+  useEffect(() => {
+    if(challengeInfo) getUser()
+  }, [challengeInfo])
 
   const styles = StyleSheet.create({
     title: {
@@ -223,7 +226,7 @@ const ChallengePage = (props: Props) => {
     />;
   }
 
-  return ((challengeInfo) ?
+  return ((challengeInfo && data) ?
       <View style={{
         width: Dimensions.get("window").width,
         height: Dimensions.get('window').height,
