@@ -29,7 +29,7 @@ export const createPDF = async (html) => {
 };
 
 const getSdgIcon = (number: number) => {
-  return 'https://www.un.org/sites/un2.un.org/files/sdg' + number + '-en.png'
+  return 'https://www.un.org/sites/un2.un.org/files/sdg' + (number+1) + '-en.png'
 }
 
 export const PROFILE_HTML = (content: Content) => {
